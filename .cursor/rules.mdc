@@ -1,0 +1,418 @@
+---
+alwaysApply: true
+---
+# AI声学信号训练平台 - Cursor Rules
+
+## 项目概述
+这是一个本地AI训练playground应用，专注于**声学信号处理**的机器学习，提供可视化界面用于音频数据分析、模型构建、训练和评估。
+
+## 技术栈
+- **Python**: 3.10+
+- **深度学习框架**: TensorFlow 2.x / Keras
+- **GUI框架**: PyQt6
+- **音频处理**: Librosa, SoundFile, SciPy
+- **数据处理**: NumPy, Pandas
+- **可视化**: Matplotlib, PyQtGraph
+
+## 项目结构
+
+> **详细架构文档**: 参见 [ARCHITECTURE.md](./ARCHITECTURE.md)
+> 
+> **维护规则**: 每次修改代码结构前查看架构文档，修改后同步更新
+
+### 核心目录概览
+```
+DT_playground/
+├── main.py                     # 应用入口
+├── src/
+│   ├── app.py                  # 主应用类 AudioTrainingApp
+│   │
+│   ├── core/                   # 🆕 核心抽象层
+│   │   ├── graph_base.py       # 通用图结构基类
+│   │   ├── parameter.py        # 统一参数定义
+│   │   └── event_bus.py        # 全局事件总线
+│   │
+│   ├── controllers/            # 🆕 控制器层
+│   │   ├── workflow_controller.py   # 工作流执行控制
+│   │   ├── training_controller.py   # 训练过程控制
+│   │   └── navigation_controller.py # 视图导航控制
+│   │
+│   ├── audio/                  # 音频处理 (features.py, loader.py, augmentation.py)
+│   ├── model_builder/          # 模型图构建 (layer_base.py, model_graph.py, layers/)
+│   ├── training/               # 训练模块 (trainer.py, data_generator.py, evaluator.py)
+│   │
+│   ├── workflow/               # 工作流系统
+│   │   ├── node_base.py        # 节点基类 (继承 core.GraphNodeBase)
+│   │   ├── workflow.py         # 工作流管理 (继承 core.GraphBase)
+│   │   ├── engine.py           # 执行引擎
+│   │   └── nodes/              # 节点实现
+│   │
+│   ├── ui/                     # UI模块 (纯视图层)
+│   │   ├── main_window.py      # 主窗口布局
+│   │   ├── styles.py           # 统一样式管理
+│   │   ├── views/              # 视图组件 (workflow, model, preview, training)
+│   │   ├── widgets/            # 自定义控件
+│   │   └── dialogs/            # 对话框
+│   │
+│   ├── visualization/          # 可视化模块
+│   └── utils/                  # 工具模块 (config.py, dataset_manager.py)
+│
+├── audio_data/                 # 音频数据 (按类别分目录)
+├── models/                     # 保存的模型
+├── workflows/                  # 工作流配置文件
+└── logs/                       # 运行日志
+```
+
+## 代码规范
+
+### Import 规范
+按以下顺序组织 import 语句，每组之间空一行，**每组内按字母序排列**：
+1. **Python 标准库**（如 os, sys, json）
+2. **第三方库**（如 numpy, tensorflow, PyQt6）
+3. **本地模块**（如 src.audio, src.ui）
+
+```python
+# Python 标准库
+import json
+import os
+import sys
+from pathlib import Path
+
+# 第三方库
+import numpy as np
+import tensorflow as tf
+from PyQt6.QtWidgets import QWidget
+
+# 本地模块
+from src.audio.features import FeatureExtractor
+from src.ui.styles import Styles
+from src.workflow.engine import WorkflowEngine
+```
+
+### Python风格
+- 遵循PEP 8规范
+- 使用类型注解 (Type Hints)
+- 使用docstring记录函数和类
+- 变量命名使用snake_case
+- 类命名使用PascalCase
+- 常量使用UPPER_SNAKE_CASE
+
+### PyQt6规范
+- UI组件类以Widget/Dialog/Window结尾
+- 信号使用pyqtSignal定义
+- 槽函数以_on_或_handle_开头
+- 使用QThread处理耗时操作，避免阻塞UI
+- **样式统一管理**: 使用 `src/ui/styles.py` 中的 `Styles` 类
+  ```python
+  from src.ui.styles import Styles
+  widget.setStyleSheet(Styles.FORM_CONTROLS)
+  button.setStyleSheet(Styles.BUTTON_PRIMARY)
+  group.setStyleSheet(Styles.group_box(Styles.COLORS['blue']))
+  ```
+
+### TensorFlow规范
+- 模型构建使用Keras Sequential或Functional API
+- 训练过程使用自定义Callback与UI交互
+- 使用tf.data.Dataset进行数据管道处理
+- 模型保存使用SavedModel格式
+
+### 音频处理规范
+- 音频加载统一使用librosa或soundfile
+- 采样率处理：加载时明确指定目标采样率
+- 特征提取参数保持一致（n_fft, hop_length等）
+- 音频数据归一化到[-1, 1]范围
+
+## 设计模式与架构规范
+
+### 整体架构（MVC + Controller）
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                        View Layer (UI)                       │
+│  src/ui/views/    src/ui/widgets/    src/ui/dialogs/        │
+└─────────────────────────┬───────────────────────────────────┘
+                          │ 信号/槽
+┌─────────────────────────▼───────────────────────────────────┐
+│                    Controller Layer                          │
+│  src/controllers/workflow_controller.py                      │
+│  src/controllers/training_controller.py                      │
+│  src/controllers/navigation_controller.py                    │
+└─────────────────────────┬───────────────────────────────────┘
+                          │
+┌─────────────────────────▼───────────────────────────────────┐
+│                    Service/Engine Layer                      │
+│  src/workflow/engine.py    src/training/trainer.py          │
+└─────────────────────────┬───────────────────────────────────┘
+                          │
+┌─────────────────────────▼───────────────────────────────────┐
+│                      Model Layer                             │
+│  src/workflow/    src/model_builder/    src/audio/          │
+│  src/core/graph_base.py    src/core/parameter.py            │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### 核心设计模式
+
+#### 1. 工厂模式 + 注册表（Factory + Registry）
+用于节点和层的动态创建，支持插件化扩展。
+
+```python
+# 使用装饰器注册
+@register_node
+class MyNode(BaseNode):
+    node_type = "my_node"
+    ...
+
+# 通过工厂创建
+node = create_node("my_node")
+```
+
+**应用位置**：
+- `src/workflow/node_base.py`: `register_node`, `create_node`
+- `src/model_builder/layer_base.py`: `register_layer`, `create_layer`
+
+#### 2. 观察者模式（Observer via Signal/Slot）
+使用 PyQt6 信号槽机制实现松耦合的事件通知。
+
+```python
+class WorkflowEngine(QObject):
+    # 定义信号
+    workflow_started = pyqtSignal()
+    node_progress = pyqtSignal(str, float, str)  # node_id, progress, data
+    
+    def _execute_node(self, node):
+        self.node_progress.emit(node.node_id, progress, data)
+```
+
+**应用位置**：
+- `src/workflow/engine.py`: 工作流执行事件
+- `src/training/trainer.py`: 训练进度事件
+- `src/core/event_bus.py`: 全局事件总线
+
+#### 3. 模板方法模式（Template Method）
+定义算法骨架，子类实现具体步骤。
+
+```python
+class BaseNode(ABC):
+    def __init__(self):
+        self._setup_ports()        # 钩子方法 - 子类必须实现
+        self._setup_parameters()   # 钩子方法 - 子类可选实现
+    
+    @abstractmethod
+    def execute(self) -> bool:     # 抽象方法 - 子类必须实现
+        pass
+```
+
+**应用位置**：
+- `src/workflow/node_base.py`: BaseNode
+- `src/model_builder/layer_base.py`: LayerNode
+- `src/core/graph_base.py`: GraphNodeBase
+
+#### 4. 策略模式（Strategy）
+不同节点类型实现不同的执行策略。
+
+```python
+# 每个节点有自己的 execute 实现
+class AudioFolderNode(BaseNode):
+    def execute(self): ...  # 加载音频文件策略
+
+class MelSpectrogramNode(BaseNode):
+    def execute(self): ...  # Mel频谱提取策略
+```
+
+#### 5. 单例模式（Singleton）
+全局唯一实例的配置管理。
+
+```python
+# src/utils/config.py
+class ConfigManager:
+    _instance = None
+    
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+        return cls._instance
+
+# 获取配置（推荐使用函数而非直接访问实例）
+def get_config() -> ConfigManager:
+    return ConfigManager()
+```
+
+#### 6. 组合模式（Composite）
+图结构管理节点集合。
+
+```python
+class Workflow:
+    nodes: Dict[str, BaseNode]           # 节点集合
+    connections: List[Connection]        # 连接集合
+    
+    def get_execution_order(self) -> List[str]:  # 拓扑排序
+        ...
+```
+
+**应用位置**：
+- `src/workflow/workflow.py`: Workflow
+- `src/model_builder/model_graph.py`: ModelGraph
+
+#### 7. 中介者模式（Mediator via EventBus）
+解耦视图之间的通信。
+
+```python
+# src/core/event_bus.py
+class EventBus(QObject):
+    """全局事件总线"""
+    preview_requested = pyqtSignal(str, dict)    # node_id, data
+    training_updated = pyqtSignal(int, dict)     # epoch, metrics
+    
+    @classmethod
+    def instance(cls) -> 'EventBus':
+        ...
+```
+
+#### 8. 依赖注入（Dependency Injection）
+通过构造函数注入依赖，便于测试和解耦。
+
+```python
+# ✅ 推荐：注入依赖
+class WorkflowController:
+    def __init__(self, engine: WorkflowEngine, event_bus: EventBus):
+        self._engine = engine
+        self._event_bus = event_bus
+
+# ❌ 避免：直接创建依赖
+class WorkflowController:
+    def __init__(self):
+        self._engine = WorkflowEngine()  # 紧耦合
+```
+
+### 通用抽象层（src/core/）
+
+为避免 `workflow` 和 `model_builder` 的重复代码，提取通用基类：
+
+```python
+# src/core/graph_base.py
+class GraphNodeBase(ABC):
+    """图节点基类 - 被 BaseNode 和 LayerNode 继承"""
+    node_id: str
+    parameters: Dict[str, Parameter]
+    
+class GraphBase(ABC):
+    """图容器基类 - 被 Workflow 和 ModelGraph 继承"""
+    nodes: Dict[str, GraphNodeBase]
+    connections: List[Connection]
+    
+    def get_execution_order(self) -> List[str]:  # 通用拓扑排序
+        ...
+
+# src/core/parameter.py
+class ParamType(Enum):
+    INT = "int"
+    FLOAT = "float"
+    STRING = "str"
+    BOOL = "bool"
+    CHOICE = "choice"
+    FILE = "file"
+    FOLDER = "folder"
+
+@dataclass
+class Parameter:
+    name: str
+    param_type: ParamType
+    default_value: Any
+    ...
+```
+
+### 关注点分离原则
+
+1. **UI 属性不放在数据模型中**
+   - `position` 等 UI 属性通过视图层管理或分离存储
+   
+2. **Controller 负责协调**
+   - View 只处理显示逻辑
+   - Controller 处理用户交互和业务调度
+   - Engine/Service 处理核心业务逻辑
+
+3. **每个类单一职责**
+   - 避免一个类超过 300 行
+   - 功能过多时拆分为多个协作类
+
+## UI/UX设计原则
+- 现代扁平化设计风格
+- 深色主题为主，支持浅色主题切换
+- 响应式布局，支持窗口缩放
+- 实时显示波形和频谱图
+- 提供直观的模型层可视化
+
+## 主要功能模块
+
+### 1. 音频数据管理
+- 支持多种音频格式（WAV, MP3, FLAC, OGG等）
+- 音频文件导入和批量加载
+- 波形可视化和音频播放
+- 音频裁剪、分割功能
+
+### 2. 特征工程
+- **时域特征**: 波形、能量、过零率
+- **频域特征**: FFT频谱、功率谱密度
+- **时频特征**: STFT、Mel频谱图、MFCC
+- 特征可视化对比
+
+### 3. 数据增强
+- 时间拉伸/压缩
+- 音高偏移
+- 添加噪声
+- 时间偏移
+
+### 4. 模型构建
+- 可视化拖拽式模型搭建
+- 预置声学模型模板（1D-CNN, 2D-CNN, LSTM等）
+- 自定义层参数配置
+
+### 5. 训练监控
+- 实时Loss/Accuracy曲线
+- 训练进度显示
+- 早停和学习率调度
+
+### 6. 模型评估
+- 混淆矩阵
+- 分类报告
+- 音频预测测试
+
+## 声学信号处理常用参数
+```python
+# 标准音频参数
+SAMPLE_RATE = 44100      # 采样率
+DURATION = 3.0           # 音频时长（秒）
+N_FFT = 2048             # FFT窗口大小
+HOP_LENGTH = 512         # 帧移
+N_MELS = 128             # Mel滤波器数量
+N_MFCC = 20              # MFCC系数数量
+```
+
+## 线程安全
+- 训练任务在独立QThread中运行
+- 音频处理任务在独立线程中执行
+- 使用信号传递状态到UI线程
+- 避免直接从工作线程更新UI组件
+
+## 错误处理
+- 使用try-except捕获异常
+- 向用户显示友好的错误消息
+- 音频加载失败时提供详细信息
+- 记录详细错误日志
+
+## 性能优化
+- 使用GPU加速（如可用）
+- 音频数据使用生成器加载
+- 频谱图计算缓存
+- UI更新使用定时器批量刷新
+
+## 测试要求
+- 为核心功能编写单元测试
+- UI测试使用pytest-qt
+- 音频处理模块独立测试
+
+## 注释语言
+- 代码注释使用中文
+- docstring使用中文
+- 变量名和函数名使用英文
