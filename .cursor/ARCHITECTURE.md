@@ -65,7 +65,19 @@ DT_playground/
     ├── __init__.py
     ├── app.py                  # AudioTrainingApp 主应用类
     │
-    ├── workflow/               # 【新增】工作流引擎
+    ├── core/                   # 核心模块（通用抽象）
+    │   ├── __init__.py
+    │   ├── parameter.py        # Parameter 统一参数类（NodeParameter/LayerParameter 的基类）
+    │   ├── event_bus.py        # EventBus 全局事件总线（跨组件通信）
+    │   └── graph_base.py       # GraphNodeBase, GraphBase 图结构基类（文档参考）
+    │
+    ├── controllers/            # 控制器层（前后端分离）
+    │   ├── __init__.py
+    │   ├── workflow_controller.py   # WorkflowController（管理 Engine 生命周期）
+    │   ├── training_controller.py   # TrainingController
+    │   └── navigation_controller.py # NavigationController（视图导航）
+    │
+    ├── workflow/               # 工作流引擎
     │   ├── __init__.py
     │   ├── engine.py           # WorkflowEngine 工作流执行引擎
     │   ├── node_base.py        # BaseNode 节点基类
@@ -112,8 +124,8 @@ DT_playground/
     │
     ├── training/               # 训练模块
     │   ├── __init__.py
-    │   ├── trainer.py          # Trainer, TrainerWorker (QThread)
-    │   ├── callbacks.py        # 训练回调 (UI进度更新, 早停)
+    │   ├── trainer.py          # TrainerWorker (QThread，使用 callbacks.TrainingCallback)
+    │   ├── callbacks.py        # TrainingCallback, EarlyStoppingWithUI (统一回调类)
     │   ├── data_generator.py   # AudioDataGenerator (Keras Sequence)
     │   └── evaluator.py        # ModelEvaluator (混淆矩阵, 分类报告)
     │
@@ -129,16 +141,20 @@ DT_playground/
     │   │   ├── preview_view.py        # PreviewView 数据预览视图 (波形/频谱)
     │   │   └── training_view.py       # TrainingView 训练监控视图
     │   │
-    │   ├── node_editor/        # 【新增】节点编辑器组件 (工作流)
+    │   ├── graph_editor/       # 图编辑器基类（复用模块）
     │   │   ├── __init__.py
-    │   │   ├── node_graph.py       # NodeGraphWidget 节点画布 (PyQt6)
+    │   │   └── base_items.py       # BasePortItem, BaseConnectionItem, BaseGraphScene, BaseGraphView
+    │   │
+    │   ├── node_editor/        # 节点编辑器组件 (工作流)
+    │   │   ├── __init__.py
+    │   │   ├── node_graph.py       # NodeGraphWidget 节点画布（继承 BaseGraphView）
     │   │   ├── node_palette.py     # NodePalette 节点面板 (可拖拽)
     │   │   └── property_panel.py   # PropertyPanel 节点属性面板
     │   │
-    │   ├── model_editor/       # 【新增】模型编辑器组件
+    │   ├── model_editor/       # 模型编辑器组件
     │   │   ├── __init__.py
     │   │   ├── layer_palette.py      # LayerPalette 层面板 (可拖拽)
-    │   │   ├── model_graph_widget.py # ModelGraphWidget 模型画布
+    │   │   ├── model_graph_widget.py # ModelGraphWidget 模型画布（继承 BaseGraphView）
     │   │   └── layer_property_panel.py # LayerPropertyPanel 层属性面板
     │   │
     │   ├── widgets/            # 自定义控件
@@ -312,6 +328,8 @@ class DataType(Enum):
 | 🎼 STFTNode | audio | feature_2d | n_fft, hop_length |
 | 📉 StatisticsNode | audio | feature_1d | features[] |
 
+> **实现说明**: 所有特征提取节点内部统一使用 `src.audio.features.FeatureExtractor` 进行特征计算，避免代码重复。
+
 #### 训练节点 (Training)
 | 节点 | 输入端口 | 输出端口 | 说明 |
 |------|----------|----------|------|
@@ -326,6 +344,40 @@ class DataType(Enum):
 | ◇ PassthroughNode | in | out | 透传节点（紧凑尺寸） |
 | 🔄 LoopNode | data | item | 循环遍历数据集 |
 | ✂️ SplitNode | data | train, val, test | 数据集划分 |
+
+### 统一参数类
+
+工作流节点和模型层节点使用统一的参数定义（`src/core/parameter.py`）：
+
+```python
+class ParamType(Enum):
+    """参数类型"""
+    INT = "int"
+    FLOAT = "float"
+    STRING = "string"
+    BOOL = "bool"
+    CHOICE = "choice"      # 下拉选择
+    FILE = "file"          # 文件选择
+    FOLDER = "folder"      # 文件夹选择
+    TUPLE = "tuple"        # 元组（如形状）
+    LIST = "list"          # 列表
+
+@dataclass
+class Parameter:
+    """统一参数定义"""
+    name: str
+    param_type: ParamType
+    default: Any
+    description: str = ""
+    min_value: Optional[float] = None
+    max_value: Optional[float] = None
+    choices: Optional[List[Any]] = None
+    default_directory: str = ""  # 用于 FILE/FOLDER 类型
+
+# 向后兼容别名
+NodeParameter = Parameter   # workflow/node_base.py 使用
+LayerParameter = Parameter  # model_builder/layer_base.py 使用
+```
 
 ### 节点基类
 
@@ -389,6 +441,27 @@ class BaseNode:
 | ModelBuilderView | ModelGraph + 层节点 | 可视化拖拽搭建神经网络模型 |
 | PreviewView | WaveformWidget + SpectrogramWidget | 预览音频/特征数据 |
 | TrainingView | TrainingPanel + MetricsChart | 训练进度和指标监控 |
+
+### 图编辑器基类
+
+工作流编辑器和模型编辑器共享通用的图编辑 UI 基类（`src/ui/graph_editor/base_items.py`）：
+
+| 基类 | 继承者 | 说明 |
+|------|--------|------|
+| BasePortItem | PortItem, LayerPortItem | 端口图形项（连接点） |
+| BaseNodeItem | NodeItem, LayerItem | 节点图形项（可拖拽） |
+| BaseConnectionItem | ConnectionItem, LayerConnectionItem | 连接线 |
+| BaseGraphScene | NodeGraphScene, ModelGraphScene | 图场景（管理节点和连接） |
+| BaseGraphView | NodeGraphView, ModelGraphView | 图视图（缩放、平移、拖放） |
+
+**复用功能**:
+- 节点/端口渲染和交互
+- 连接线绘制（贝塞尔曲线）
+- 网格背景绘制
+- 鼠标滚轮缩放
+- 中键平移
+- 拖放支持
+- 选中状态高亮
 
 ### 模型构建器
 
@@ -479,24 +552,71 @@ class BaseNode:
 
 构建模型时，冻结状态会自动应用到对应的 Keras 层。
 
-### 信号通信
+### 信号通信与事件总线
+
+#### 通信规范
+
+| 场景 | 推荐方式 | 说明 |
+|------|---------|------|
+| 跨组件通信 | EventBus | 不同视图、Controller 与多个 View 之间 |
+| 组件内通信 | pyqtSignal | 父子组件、Widget 内部元素 |
+
+#### EventBus 事件分类
+
+| 分类 | 事件 | 说明 |
+|------|------|------|
+| 工作流 | workflow_started, workflow_finished, workflow_error | 工作流生命周期 |
+| 节点 | node_started, node_finished, node_progress | 节点执行状态 |
+| 断点 | breakpoint_hit, breakpoint_continue | 调试断点 |
+| 训练 | training_started, training_epoch_completed, training_finished | 训练进度 |
+| 状态 | status_message | 状态栏消息 |
+
+#### 信号流向示例
 
 ```
-NodePalette.node_dragged → NodeGraph.add_node
-NodeGraph.node_selected → PropertyPanel.show_properties
-NodeGraph.node_selected → PreviewView.preview_node_output (如果在预览模式)
-NodeGraph.node_double_clicked → MainWindow._on_node_double_clicked (节点双击跳转)
+组件内通信 (pyqtSignal):
+  NodePalette.node_dragged → NodeGraph.add_node
+  PropertyPanel.parameter_changed → BaseNode.update_parameter
 
-PropertyPanel.parameter_changed → BaseNode.update_parameter
-                               → NodeGraph.mark_dirty
+跨组件通信 (EventBus):
+  WorkflowController → EventBus.workflow_started → TrainingView
+  WorkflowController → EventBus.node_finished → WorkflowView.update_node_state
 
-WorkflowView.run_clicked → WorkflowEngine.execute
-WorkflowEngine.node_started → WorkflowView.update_node_state(running)
-WorkflowEngine.node_finished → WorkflowView.update_node_state(completed/error)
-WorkflowEngine.breakpoint_hit → WorkflowView.show_breakpoint_mode(True)
-WorkflowEngine.workflow_finished → TrainingView.show_results
-WorkflowView.continue_requested → WorkflowEngine.continue_from_breakpoint
+前后端分离 (View → Controller → Engine):
+  WorkflowView → WorkflowController.run() → WorkflowEngine.execute()
+  WorkflowEngine (信号) → WorkflowController (转发) → EventBus → Views
 ```
+
+### 前后端分离架构
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                         UI 层 (Views)                           │
+│  WorkflowView │ ModelBuilderView │ PreviewView │ TrainingView   │
+└───────────────────────────┬─────────────────────────────────────┘
+                            │ pyqtSignal (组件内)
+                            ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                     Controller 层                                │
+│  WorkflowController │ TrainingController │ NavigationController │
+│  - 管理 Engine 生命周期                                          │
+│  - 转发 Engine 信号到 EventBus                                   │
+│  - 处理业务逻辑                                                   │
+└───────────────────────────┬─────────────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                     Engine/Service 层                            │
+│  WorkflowEngine │ FeatureExtractor │ TrainerWorker              │
+│  - 纯业务逻辑，无 UI 依赖                                         │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**设计原则**:
+- View 层不直接持有或操作 Engine
+- View 通过 Controller 间接访问 Engine
+- Engine 信号由 Controller 转发到 EventBus
+- 跨组件通信统一使用 EventBus
 
 ### 节点执行状态可视化
 
@@ -659,4 +779,4 @@ def execute(self) -> bool:
 ```
 
 ---
-*最后更新: 2025-12-25* (添加多通道音频支持: AudioData/FeatureData统一为channels-first格式，所有节点分通道处理)
+*最后更新: 2026-01-20* (架构重构: 统一参数类、图编辑器基类抽取、前后端分离、EventBus 规范化)
