@@ -27,6 +27,7 @@ from ..widgets.preview import (
     Feature2DPreviewWidget,
     LabelPreviewWidget,
     MetricsPreviewWidget,
+    ModelPreviewWidget,
 )
 
 
@@ -92,6 +93,7 @@ class PreviewView(QWidget):
             ('feature_2d', Feature2DPreviewWidget),
             ('label', LabelPreviewWidget),
             ('metrics', MetricsPreviewWidget),
+            ('model', ModelPreviewWidget),
         ]
         
         for name, cls in preview_classes:
@@ -374,6 +376,10 @@ class PreviewView(QWidget):
         """根据数据类型获取合适的预览组件"""
         # 按优先级检查各个预览组件
         # 顺序很重要：先检查更具体的类型
+        
+        # 0. 检查是否是 Keras 模型
+        if ModelPreviewWidget.can_display(data):
+            return self._preview_widgets.get('model')
         
         # 1. 检查是否是 FeatureData
         if hasattr(data, 'data') and hasattr(data, 'feature_type'):

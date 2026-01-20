@@ -175,8 +175,12 @@ class NavigationController(QObject):
                 self.switch_to_training()
                 return True
             elif node_type == "load_model":
-                self.switch_to_model()
-                return True
+                # 跳转到预览视图显示模型 summary
+                if has_output and outputs:
+                    self._selected_node_id = node_id
+                    self.switch_to_preview()
+                    return True
+                return False
             elif node_type == "show_history":
                 self.switch_to_training()
                 return True
