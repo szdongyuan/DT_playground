@@ -17,6 +17,7 @@ from PyQt6.QtWidgets import (
 
 from ..node_editor import NodeGraphWidget, NodePalette, PropertyPanel
 from ..styles import Styles
+from ...controllers.workflow_controller import WorkflowController
 from ...workflow.engine import WorkflowEngine
 from ...workflow.workflow import Workflow
 
@@ -280,9 +281,26 @@ class WorkflowView(QWidget):
         
         self._workflow_name_label.setText(f"🔧 {name}")
     
-    def set_engine(self, engine: WorkflowEngine):
-        """设置工作流引擎"""
+    def set_engine(self, engine: 'WorkflowEngine'):
+        """
+        设置工作流引擎（旧接口，保留兼容性）
+        
+        注意: 推荐使用 set_workflow_controller() 代替
+        """
         self._engine = engine
+    
+    def set_workflow_controller(self, controller: 'WorkflowController'):
+        """
+        设置工作流控制器
+        
+        View 通过 Controller 间接访问 Engine，遵循前后端分离原则。
+        
+        Args:
+            controller: WorkflowController 实例
+        """
+        self._workflow_controller = controller
+        # 如果还需要直接访问 engine（兼容旧代码），通过 controller 获取
+        self._engine = controller.engine
     
     def _on_add_node_from_palette(self, node_type: str):
         """从面板添加节点"""

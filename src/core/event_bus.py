@@ -21,12 +21,37 @@ class EventBus(QObject):
     使用中介者模式集中管理应用内的事件通信，
     解耦视图、控制器和服务之间的直接依赖。
     
-    使用方式:
-        # 发送事件
-        EventBus.instance().preview_requested.emit(node_id, data)
+    使用规范
+    --------
+    1. **跨组件通信**: 使用 EventBus
+       - 不同视图之间的通信（如 WorkflowView -> TrainingView）
+       - Controller 与多个 View 之间的广播
+       - 全局状态变更通知
+       
+    2. **组件内通信**: 使用 pyqtSignal
+       - 同一个类内部的子组件通信
+       - 父子组件之间的直接通信
+       - Widget 与其内部元素的通信
+    
+    示例
+    ----
+    跨组件通信（推荐使用 EventBus）::
+    
+        # 在 WorkflowController 中发送事件
+        self._event_bus.workflow_started.emit()
         
-        # 订阅事件
-        EventBus.instance().preview_requested.connect(self._on_preview)
+        # 在 TrainingView 中订阅事件
+        get_event_bus().workflow_started.connect(self._on_workflow_started)
+    
+    组件内通信（推荐使用 pyqtSignal）::
+    
+        class WorkflowView(QWidget):
+            # 组件内信号，供父组件订阅
+            workflow_changed = pyqtSignal()
+            node_selected = pyqtSignal(str)
+            
+            def _on_internal_change(self):
+                self.workflow_changed.emit()  # 直接使用组件信号
     """
     
     _instance: Optional['EventBus'] = None

@@ -1,6 +1,12 @@
 """
 训练器模块
 提供完整的模型训练功能
+
+架构说明
+--------
+- 基础回调类定义在 `callbacks.py` 中
+- `TrainerCallback` 是针对 `TrainerWorker` 的扩展回调（包含 total_epochs 追踪）
+- 节点 `TrainerNode` 直接使用 `callbacks.py` 中的 `TrainingCallback`
 """
 
 import os
@@ -12,19 +18,28 @@ import tensorflow as tf
 from PyQt6.QtCore import QObject, QThread, pyqtSignal
 from tensorflow import keras
 
+# 从 callbacks 模块导入基础回调
+from .callbacks import TrainingCallback as BaseTrainingCallback
 
-class TrainingCallback(keras.callbacks.Callback):
-    """自定义训练回调，用于与UI交互"""
+
+class TrainerCallback(BaseTrainingCallback):
+    """
+    TrainerWorker 专用回调
+    
+    扩展基础回调，增加 total_epochs 追踪和兼容的 epoch_callback 签名。
+    """
     
     def __init__(self, 
                  progress_callback: Callable = None,
                  epoch_callback: Callable = None,
                  batch_callback: Callable = None):
-        super().__init__()
+        # 将 batch_callback 转换为基类格式
+        super().__init__(
+            on_epoch_end=None,  # 使用自定义处理
+            on_batch_end=batch_callback
+        )
         self.progress_callback = progress_callback
         self.epoch_callback = epoch_callback
-        self.batch_callback = batch_callback
-        self.stop_training = False
         self.total_epochs = 0
         self.current_epoch = 0
     
@@ -33,10 +48,10 @@ class TrainingCallback(keras.callbacks.Callback):
         self.total_epochs = epochs
     
     def on_epoch_end(self, epoch, logs=None):
-        """Epoch结束回调"""
+        """Epoch结束回调（扩展签名）"""
         self.current_epoch = epoch + 1
         
-        if self.stop_training:
+        if self._stop_training:
             self.model.stop_training = True
             return
         
@@ -50,18 +65,13 @@ class TrainingCallback(keras.callbacks.Callback):
                 logs.get('val_accuracy', 0)
             )
     
-    def on_batch_end(self, batch, logs=None):
-        """批次结束回调"""
-        if self.stop_training:
-            self.model.stop_training = True
-            return
-        
-        if self.batch_callback:
-            self.batch_callback(batch, logs)
-    
     def request_stop(self):
         """请求停止训练"""
-        self.stop_training = True
+        self._stop_training = True
+
+
+# 向后兼容别名
+TrainingCallback = TrainerCallback
 
 
 class TrainerWorker(QThread):

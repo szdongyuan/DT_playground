@@ -3,10 +3,16 @@
 节点画布组件
 
 使用纯 PyQt6 实现的节点编辑画布。
+
+架构说明
+--------
+- PortItem 继承自 BasePortItem（graph_editor 基类）
+- ConnectionItem 继承自 BaseConnectionItem
+- NodeGraphScene 继承自 BaseGraphScene
+- NodeGraphView 继承自 BaseGraphView
 """
 
 import logging
-from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 
 from PyQt6.QtCore import QPoint, QPointF, QRectF, Qt, pyqtSignal
@@ -15,13 +21,12 @@ from PyQt6.QtGui import (
     QFont, QKeyEvent, QMouseEvent, QPainter, QPainterPath, QPen, QWheelEvent
 )
 from PyQt6.QtWidgets import (
-    QGraphicsEllipseItem, QGraphicsItem, QGraphicsLineItem,
-    QGraphicsPathItem, QGraphicsProxyWidget, QGraphicsRectItem,
-    QGraphicsScene, QGraphicsTextItem, QGraphicsView,
-    QLabel, QMenu, QVBoxLayout, QWidget
+    QGraphicsItem, QGraphicsRectItem,
+    QGraphicsTextItem, QMenu, QVBoxLayout, QWidget
 )
 
 from ..styles import Styles
+from ..graph_editor import BasePortItem, BaseConnectionItem, BaseGraphScene, BaseGraphView
 from ...workflow.connection import Connection
 from ...workflow.node_base import (
     BaseNode, NodeCategory, create_node, get_all_node_types,
@@ -35,35 +40,16 @@ logger = logging.getLogger(__name__)
 
 # ===== 图形节点 =====
 
-class PortItem(QGraphicsEllipseItem):
-    """端口图形项"""
+class PortItem(BasePortItem):
+    """
+    工作流节点端口图形项
     
-    PORT_RADIUS = 6
+    继承自 BasePortItem，增加端口名称属性。
+    """
     
     def __init__(self, port_name: str, is_input: bool, color: str, parent=None):
-        super().__init__(parent)
+        super().__init__(is_input, color, parent)
         self.port_name = port_name
-        self.is_input = is_input
-        self.color = color
-        self.connections: List['ConnectionItem'] = []
-        
-        # 设置样式
-        self.setRect(-self.PORT_RADIUS, -self.PORT_RADIUS, 
-                     self.PORT_RADIUS * 2, self.PORT_RADIUS * 2)
-        self.setBrush(QBrush(QColor(color)))
-        self.setPen(QPen(QColor("#1e1e2e"), 2))
-        
-        # 允许交互
-        self.setAcceptHoverEvents(True)
-        self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsSelectable, False)
-    
-    def hoverEnterEvent(self, event):
-        self.setPen(QPen(QColor("#f5e0dc"), 3))
-        super().hoverEnterEvent(event)
-    
-    def hoverLeaveEvent(self, event):
-        self.setPen(QPen(QColor("#1e1e2e"), 2))
-        super().hoverLeaveEvent(event)
 
 
 class NodeItem(QGraphicsRectItem):
@@ -292,56 +278,28 @@ class NodeItem(QGraphicsRectItem):
         super().mouseDoubleClickEvent(event)
 
 
-class ConnectionItem(QGraphicsPathItem):
-    """连接线图形项"""
+class ConnectionItem(BaseConnectionItem):
+    """
+    工作流节点连接线图形项
+    
+    继承自 BaseConnectionItem，增加对源/目标节点的引用。
+    """
     
     def __init__(self, source_port: PortItem, target_port: PortItem, 
-                 source_node: NodeItem, target_node: NodeItem):
-        super().__init__()
-        self.source_port = source_port
-        self.target_port = target_port
+                 source_node: 'NodeItem', target_node: 'NodeItem'):
         self.source_node = source_node
         self.target_node = target_node
-        
-        # 添加到端口的连接列表
-        source_port.connections.append(self)
-        target_port.connections.append(self)
-        
-        # 样式
-        self.setPen(QPen(QColor(Styles.COLORS['blue']), 2))
-        self.setZValue(-1)  # 在节点下方
-        
-        self.update_path()
-    
-    def update_path(self):
-        """更新路径"""
-        start = self.source_port.scenePos()
-        end = self.target_port.scenePos()
-        
-        # 创建贝塞尔曲线
-        path = QPainterPath()
-        path.moveTo(start)
-        
-        # 控制点
-        dx = abs(end.x() - start.x()) / 2
-        ctrl1 = QPointF(start.x() + dx, start.y())
-        ctrl2 = QPointF(end.x() - dx, end.y())
-        
-        path.cubicTo(ctrl1, ctrl2, end)
-        self.setPath(path)
-    
-    def remove(self):
-        """移除连接"""
-        if self in self.source_port.connections:
-            self.source_port.connections.remove(self)
-        if self in self.target_port.connections:
-            self.target_port.connections.remove(self)
+        super().__init__(source_port, target_port)
 
 
 # ===== 场景和视图 =====
 
-class NodeGraphScene(QGraphicsScene):
-    """节点场景"""
+class NodeGraphScene(BaseGraphScene):
+    """
+    节点场景
+    
+    继承自 BaseGraphScene，增加工作流节点特定功能。
+    """
     
     node_selected = pyqtSignal(str)
     node_double_clicked = pyqtSignal(str)
@@ -350,17 +308,9 @@ class NodeGraphScene(QGraphicsScene):
     
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setSceneRect(-5000, -5000, 10000, 10000)
-        self.setBackgroundBrush(QBrush(QColor(Styles.COLORS['base'])))
         
         self.node_items: Dict[str, NodeItem] = {}
         self.connection_items: List[ConnectionItem] = []
-        
-        # 连接绘制状态
-        self._drawing_connection = False
-        self._temp_line: Optional[QGraphicsLineItem] = None
-        self._start_port: Optional[PortItem] = None
-        self._start_node: Optional[NodeItem] = None
     
     def add_node_item(self, node: BaseNode) -> NodeItem:
         """添加节点图形项"""
@@ -457,24 +407,7 @@ class NodeGraphScene(QGraphicsScene):
             if self.views():
                 self.views()[0].centerOn(node_item)
     
-    def drawBackground(self, painter: QPainter, rect: QRectF):
-        """绘制网格背景"""
-        super().drawBackground(painter, rect)
-        
-        # 绘制网格
-        grid_size = 20
-        left = int(rect.left()) - (int(rect.left()) % grid_size)
-        top = int(rect.top()) - (int(rect.top()) % grid_size)
-        
-        lines = []
-        for x in range(left, int(rect.right()), grid_size):
-            lines.append(((x, rect.top()), (x, rect.bottom())))
-        for y in range(top, int(rect.bottom()), grid_size):
-            lines.append(((rect.left(), y), (rect.right(), y)))
-        
-        painter.setPen(QPen(QColor("#252535"), 1))
-        for line in lines:
-            painter.drawLine(QPointF(*line[0]), QPointF(*line[1]))
+    # drawBackground 继承自 BaseGraphScene
     
     def mousePressEvent(self, event):
         """鼠标按下事件"""
@@ -482,7 +415,7 @@ class NodeGraphScene(QGraphicsScene):
         
         # 检查是否点击了端口
         if isinstance(item, PortItem):
-            self._start_connection(item, event.scenePos())
+            self.start_connection_drawing(item, event.scenePos())
             return
         
         # 检查是否选中了节点
@@ -494,59 +427,41 @@ class NodeGraphScene(QGraphicsScene):
     
     def mouseMoveEvent(self, event):
         """鼠标移动事件"""
-        if self._drawing_connection and self._temp_line:
-            line = self._temp_line.line()
-            self._temp_line.setLine(line.x1(), line.y1(), 
-                                    event.scenePos().x(), event.scenePos().y())
+        self.update_connection_drawing(event.scenePos())
         super().mouseMoveEvent(event)
     
     def mouseReleaseEvent(self, event):
         """鼠标释放事件"""
-        if self._drawing_connection:
+        if self.is_drawing_connection:
             self._finish_connection(event.scenePos())
         super().mouseReleaseEvent(event)
     
-    def _start_connection(self, port: PortItem, pos: QPointF):
-        """开始绘制连接"""
-        self._drawing_connection = True
-        self._start_port = port
-        self._start_node = port.parentItem()
-        
-        # 创建临时线
-        self._temp_line = QGraphicsLineItem()
-        self._temp_line.setPen(QPen(QColor(Styles.COLORS['yellow']), 2, Qt.PenStyle.DashLine))
-        port_pos = port.scenePos()
-        self._temp_line.setLine(port_pos.x(), port_pos.y(), pos.x(), pos.y())
-        self.addItem(self._temp_line)
-    
     def _finish_connection(self, pos: QPointF):
         """完成连接"""
-        if self._temp_line:
-            self.removeItem(self._temp_line)
-            self._temp_line = None
+        start_port, start_node = self.end_connection_drawing()
+        
+        if not start_port:
+            return
         
         # 查找目标端口
         item = self.itemAt(pos, self.views()[0].transform() if self.views() else None)
         
-        if isinstance(item, PortItem) and item != self._start_port:
+        if isinstance(item, PortItem) and item != start_port:
             # 确定源和目标
-            if self._start_port.is_input and not item.is_input:
+            if start_port.is_input and not item.is_input:
                 # 从输入拖到输出，反转
                 source_port = item
-                target_port = self._start_port
+                target_port = start_port
                 source_node = item.parentItem()
-                target_node = self._start_node
-            elif not self._start_port.is_input and item.is_input:
+                target_node = start_node
+            elif not start_port.is_input and item.is_input:
                 # 从输出拖到输入
-                source_port = self._start_port
+                source_port = start_port
                 target_port = item
-                source_node = self._start_node
+                source_node = start_node
                 target_node = item.parentItem()
             else:
                 # 同类型端口，无效
-                self._drawing_connection = False
-                self._start_port = None
-                self._start_node = None
                 return
             
             # 发送连接信号
@@ -556,75 +471,20 @@ class NodeGraphScene(QGraphicsScene):
                 target_node.node.node_id,
                 target_port.port_name
             )
-        
-        self._drawing_connection = False
-        self._start_port = None
-        self._start_node = None
 
 
-class NodeGraphView(QGraphicsView):
-    """节点视图"""
+class NodeGraphView(BaseGraphView):
+    """
+    节点视图
+    
+    继承自 BaseGraphView，增加工作流节点拖放功能。
+    """
     
     def __init__(self, scene: NodeGraphScene, parent=None):
         super().__init__(scene, parent)
-        
-        self.setRenderHint(QPainter.RenderHint.Antialiasing)
-        self.setViewportUpdateMode(QGraphicsView.ViewportUpdateMode.FullViewportUpdate)
-        self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        self.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        self.setTransformationAnchor(QGraphicsView.ViewportAnchor.AnchorUnderMouse)
-        self.setDragMode(QGraphicsView.DragMode.RubberBandDrag)
-        
-        # 允许拖放
-        self.setAcceptDrops(True)
-        
-        self._is_panning = False
-        self._last_pan_pos = QPoint()
     
-    def wheelEvent(self, event: QWheelEvent):
-        """缩放"""
-        factor = 1.15 if event.angleDelta().y() > 0 else 1 / 1.15
-        self.scale(factor, factor)
-    
-    def mousePressEvent(self, event: QMouseEvent):
-        """鼠标按下"""
-        if event.button() == Qt.MouseButton.MiddleButton:
-            self._is_panning = True
-            self._last_pan_pos = event.pos()
-            self.setCursor(Qt.CursorShape.ClosedHandCursor)
-        else:
-            super().mousePressEvent(event)
-    
-    def mouseMoveEvent(self, event: QMouseEvent):
-        """鼠标移动"""
-        if self._is_panning:
-            delta = event.pos() - self._last_pan_pos
-            self._last_pan_pos = event.pos()
-            self.horizontalScrollBar().setValue(
-                self.horizontalScrollBar().value() - delta.x()
-            )
-            self.verticalScrollBar().setValue(
-                self.verticalScrollBar().value() - delta.y()
-            )
-        else:
-            super().mouseMoveEvent(event)
-    
-    def mouseReleaseEvent(self, event: QMouseEvent):
-        """鼠标释放"""
-        if event.button() == Qt.MouseButton.MiddleButton:
-            self._is_panning = False
-            self.setCursor(Qt.CursorShape.ArrowCursor)
-        else:
-            super().mouseReleaseEvent(event)
-    
-    def keyPressEvent(self, event: QKeyEvent):
-        """键盘按下事件 - 支持 DEL 键删除选中节点"""
-        if event.key() == Qt.Key.Key_Delete or event.key() == Qt.Key.Key_Backspace:
-            parent = self.parent()
-            if hasattr(parent, '_delete_selected'):
-                parent._delete_selected()
-            return
-        super().keyPressEvent(event)
+    # wheelEvent, mousePressEvent, mouseMoveEvent, mouseReleaseEvent, keyPressEvent
+    # 继承自 BaseGraphView
     
     def dragEnterEvent(self, event: QDragEnterEvent):
         """拖入事件"""

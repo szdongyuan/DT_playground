@@ -86,12 +86,11 @@ class MainWindow(QWidget):
         # 事件总线
         self._event_bus = get_event_bus()
         
-        # 工作流和引擎
+        # 工作流
         self._workflow: Optional[Workflow] = None
-        self._engine = WorkflowEngine()
         
-        # 控制器（使用依赖注入）
-        self._workflow_controller = WorkflowController(engine=self._engine)
+        # 控制器（Engine 由 WorkflowController 内部管理）
+        self._workflow_controller = WorkflowController()
         self._training_controller = TrainingController()
         self._navigation_controller = NavigationController()
         
@@ -134,8 +133,8 @@ class MainWindow(QWidget):
         self._view_stack.addWidget(self._preview_view)
         self._view_stack.addWidget(self._training_view)
         
-        # 设置引擎到视图
-        self._workflow_view.set_engine(self._engine)
+        # 设置控制器到视图（View 通过 Controller 间接访问 Engine）
+        self._workflow_view.set_workflow_controller(self._workflow_controller)
         
         # 状态栏
         self._create_status_bar(main_layout)
@@ -275,7 +274,12 @@ class MainWindow(QWidget):
             pass
     
     def _init_connections(self):
-        """初始化信号连接"""
+        """
+        初始化信号连接
+        
+        注意: Engine 信号现在通过 EventBus 统一处理，
+        不再直接连接 Engine。参见 _init_event_bus_connections()。
+        """
         # 工作流视图信号
         self._workflow_view.workflow_changed.connect(self._on_workflow_changed)
         self._workflow_view.run_requested.connect(self._on_run_workflow)
@@ -290,23 +294,18 @@ class MainWindow(QWidget):
         self._training_view.resume_requested.connect(self._on_resume_training)
         self._training_view.stop_requested.connect(self._on_stop_training)
         
-        # 引擎信号
-        self._engine.workflow_started.connect(self._on_engine_started)
-        self._engine.workflow_finished.connect(self._on_engine_finished)
-        self._engine.workflow_error.connect(self._on_engine_error)
-        self._engine.node_started.connect(self._on_node_started)
-        self._engine.node_finished.connect(self._on_node_finished)
-        self._engine.progress_updated.connect(self._on_progress_updated)
-        self._engine.node_progress.connect(self._on_node_progress)
-        self._engine.status_message.connect(self._on_status_message)
-        self._engine.breakpoint_hit.connect(self._on_breakpoint_hit)
-        
         # 工作流视图断点继续信号
         self._workflow_view.continue_requested.connect(self._on_continue_from_breakpoint)
         
         # 导航控制器信号
         self._navigation_controller.view_changed.connect(self._on_controller_view_changed)
         self._navigation_controller.preview_updated.connect(self._on_preview_updated)
+        
+        # 工作流控制器信号
+        self._workflow_controller.execution_started.connect(self._on_engine_started)
+        self._workflow_controller.execution_finished.connect(self._on_controller_execution_finished)
+        self._workflow_controller.node_state_changed.connect(self._on_controller_node_state_changed)
+        self._workflow_controller.breakpoint_triggered.connect(self._on_breakpoint_hit)
     
     def _init_event_bus_connections(self):
         """初始化事件总线信号连接"""
@@ -537,6 +536,32 @@ class MainWindow(QWidget):
         self._training_view.finish_training(False, error_msg)
         self.status_label.setText(f"错误: {error_msg}")
         QMessageBox.critical(self, "执行错误", error_msg)
+    
+    # ===== Controller 信号处理 =====
+    
+    def _on_controller_execution_finished(self, success: bool, message: str):
+        """控制器：工作流执行完成"""
+        self._training_view.finish_training(success, message)
+        
+        if success:
+            self.status_label.setText("工作流执行完成")
+            self.training_completed.emit({})
+        else:
+            self.status_label.setText(f"执行失败: {message}")
+    
+    def _on_controller_node_state_changed(self, node_id: str, state: str):
+        """控制器：节点状态变化"""
+        self._workflow_view.update_node_state(node_id, state)
+        
+        # 如果是运行状态，更新状态栏
+        if state == 'running':
+            workflow = self._workflow_view.get_workflow()
+            if workflow:
+                node = workflow.get_node(node_id)
+                if node:
+                    self.status_label.setText(f"执行: {node.display_name}")
+    
+    # ===== Engine 直接信号处理 (旧代码兼容，将逐步迁移) =====
     
     def _on_node_started(self, node_id: str):
         """节点开始执行"""

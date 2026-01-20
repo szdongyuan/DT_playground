@@ -3,6 +3,11 @@
 特征提取节点
 
 提供各类音频特征提取功能：Mel频谱、MFCC、STFT、FFT等。
+
+架构说明
+--------
+特征节点委托给 `src/audio/features.py` 中的 `FeatureExtractor` 类，
+避免重复实现特征提取逻辑。
 """
 
 import logging
@@ -16,6 +21,9 @@ from ..node_base import BaseNode, NodeCategory, register_node
 from ..port import DataType
 from .data_source import AudioData
 from .preprocessing import validate_audio_input
+
+# 导入统一的特征提取器
+from src.audio.features import FeatureExtractor
 
 
 logger = logging.getLogger(__name__)
@@ -149,23 +157,19 @@ class MelSpectrogramNode(BaseNode):
         power_to_db = self.get_parameter("power_to_db")
         
         def extract_mel(audio: AudioData) -> FeatureData:
+            # 使用统一的 FeatureExtractor
+            extractor = FeatureExtractor(
+                sample_rate=audio.sample_rate,
+                n_fft=n_fft,
+                hop_length=hop_length,
+                n_mels=n_mels
+            )
+            
             # 对每个通道分别提取Mel频谱
             channel_features = []
             for ch in range(audio.channels):
                 ch_data = audio.get_channel(ch)
-                mel = librosa.feature.melspectrogram(
-                    y=ch_data,
-                    sr=audio.sample_rate,
-                    n_mels=n_mels,
-                    n_fft=n_fft,
-                    hop_length=hop_length,
-                    fmin=fmin,
-                    fmax=min(fmax, audio.sample_rate / 2)
-                )
-                
-                if power_to_db:
-                    mel = librosa.power_to_db(mel, ref=np.max)
-                
+                mel = extractor.extract_mel_spectrogram(ch_data, to_db=power_to_db)
                 channel_features.append(mel)
             
             # 堆叠为 (channels, n_mels, frames)
@@ -250,31 +254,25 @@ class MFCCNode(BaseNode):
         include_delta2 = self.get_parameter("include_delta2")
         
         def extract_mfcc(audio: AudioData) -> FeatureData:
+            # 使用统一的 FeatureExtractor
+            extractor = FeatureExtractor(
+                sample_rate=audio.sample_rate,
+                n_fft=n_fft,
+                hop_length=hop_length,
+                n_mels=n_mels,
+                n_mfcc=n_mfcc
+            )
+            
             # 对每个通道分别提取MFCC
             channel_features = []
             for ch in range(audio.channels):
                 ch_data = audio.get_channel(ch)
-                mfcc = librosa.feature.mfcc(
-                    y=ch_data,
-                    sr=audio.sample_rate,
-                    n_mfcc=n_mfcc,
-                    n_mels=n_mels,
-                    n_fft=n_fft,
-                    hop_length=hop_length
+                mfcc = extractor.extract_mfcc(
+                    ch_data,
+                    delta=include_delta,
+                    delta_delta=include_delta2
                 )
-                
-                features = [mfcc]
-                
-                if include_delta:
-                    delta = librosa.feature.delta(mfcc)
-                    features.append(delta)
-                
-                if include_delta2:
-                    delta2 = librosa.feature.delta(mfcc, order=2)
-                    features.append(delta2)
-                
-                combined = np.vstack(features)
-                channel_features.append(combined)
+                channel_features.append(mfcc)
             
             # 堆叠为 (channels, n_features, frames)
             stacked = np.stack(channel_features, axis=0)
@@ -342,24 +340,29 @@ class STFTNode(BaseNode):
         output_type = self.get_parameter("output_type")
         
         def extract_stft(audio: AudioData) -> FeatureData:
+            # 使用统一的 FeatureExtractor
+            extractor = FeatureExtractor(
+                sample_rate=audio.sample_rate,
+                n_fft=n_fft,
+                hop_length=hop_length
+            )
+            
             # 对每个通道分别提取STFT
             channel_features = []
             for ch in range(audio.channels):
                 ch_data = audio.get_channel(ch)
-                stft = librosa.stft(
-                    ch_data,
-                    n_fft=n_fft,
-                    hop_length=hop_length
-                )
                 
-                if output_type == "magnitude":
-                    result = np.abs(stft)
+                if output_type == "db":
+                    # 使用 FeatureExtractor 的 extract_stft（已转换为 dB）
+                    result = extractor.extract_stft(ch_data, to_db=True)
+                elif output_type == "magnitude":
+                    result = extractor.extract_stft(ch_data, to_db=False)
                 elif output_type == "power":
-                    result = np.abs(stft) ** 2
-                elif output_type == "db":
-                    result = librosa.amplitude_to_db(np.abs(stft), ref=np.max)
+                    mag = extractor.extract_stft(ch_data, to_db=False)
+                    result = mag ** 2
                 else:  # complex
-                    # 分离实部和虚部，每个通道有2个子通道
+                    # 直接使用 librosa 获取复数结果
+                    stft = librosa.stft(ch_data, n_fft=n_fft, hop_length=hop_length)
                     result = np.stack([stft.real, stft.imag], axis=0)
                 
                 channel_features.append(result)

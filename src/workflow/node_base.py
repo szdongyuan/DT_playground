@@ -4,22 +4,24 @@
 
 所有工作流节点的基类，定义节点的基本结构和接口。
 
-注意: 此模块保持原有 API 以兼容现有节点实现。
-核心抽象类定义在 src/core/graph_base.py 中。
-未来可以考虑让 BaseNode 继承 GraphNodeBase。
+架构说明
+--------
+- 参数定义统一使用 `src/core/parameter.py` 中的 `Parameter` 类
+- `NodeParameter` 是 `Parameter` 的别名，保持向后兼容
+- 此类独立于 `src/core/graph_base.py` 中的 `GraphNodeBase`，
+  因为工作流节点需要端口系统、执行状态等特定功能
 """
 
 import logging
 import uuid
 from abc import ABC, abstractmethod
-from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any, Dict, List, Optional, Tuple, Type
 
 from .port import create_input_port, create_output_port, DataType, Port
 
-# 引入核心参数类型（用于类型提示和未来迁移）
-# from src.core.parameter import Parameter as CoreParameter, ParamType
+# 从核心模块导入统一的参数类
+from src.core.parameter import Parameter as NodeParameter
 
 
 logger = logging.getLogger(__name__)
@@ -62,42 +64,6 @@ class NodeCategory(Enum):
             NodeCategory.OUTPUT: "#fab387",         # 橙色
         }
         return colors.get(self, "#cdd6f4")
-
-
-@dataclass
-class NodeParameter:
-    """节点参数定义"""
-    name: str                       # 参数名称
-    display_name: str               # 显示名称
-    param_type: str                 # 类型: int, float, str, bool, choice, file, folder
-    default_value: Any              # 默认值
-    description: str = ""           # 描述
-    min_value: Any = None           # 最小值（数值类型）
-    max_value: Any = None           # 最大值（数值类型）
-    choices: List[Any] = None       # 选项列表（choice类型）
-    file_filter: str = ""           # 文件过滤器（file类型）
-    default_directory: str = ""     # 文件对话框默认目录（file/folder类型）
-    
-    def validate(self, value: Any) -> Tuple[bool, str]:
-        """验证参数值"""
-        if self.param_type == "int":
-            if not isinstance(value, int):
-                return False, f"参数 {self.display_name} 必须是整数"
-            if self.min_value is not None and value < self.min_value:
-                return False, f"参数 {self.display_name} 不能小于 {self.min_value}"
-            if self.max_value is not None and value > self.max_value:
-                return False, f"参数 {self.display_name} 不能大于 {self.max_value}"
-        elif self.param_type == "float":
-            if not isinstance(value, (int, float)):
-                return False, f"参数 {self.display_name} 必须是数值"
-            if self.min_value is not None and value < self.min_value:
-                return False, f"参数 {self.display_name} 不能小于 {self.min_value}"
-            if self.max_value is not None and value > self.max_value:
-                return False, f"参数 {self.display_name} 不能大于 {self.max_value}"
-        elif self.param_type == "choice":
-            if self.choices and value not in self.choices:
-                return False, f"参数 {self.display_name} 必须是 {self.choices} 之一"
-        return True, ""
 
 
 class NodeState(Enum):

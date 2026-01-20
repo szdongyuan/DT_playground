@@ -3,6 +3,40 @@
 通用图结构基类
 
 为工作流节点和模型层提供统一的图结构抽象。
+
+架构说明
+--------
+此模块定义了图结构的通用抽象类：
+- `GraphNodeBase`: 图节点基类，提供参数管理的通用功能
+- `GraphBase`: 图容器基类，提供节点/连接管理和拓扑分析
+- `Connection`: 通用连接定义
+- `create_registry`: 创建节点注册表的工厂函数
+
+当前使用情况
+-----------
+- `BaseNode` (src/workflow/node_base.py): 工作流节点基类，独立实现
+  - 增加了端口(Port)系统、执行状态、进度回调等工作流特定功能
+  
+- `LayerNode` (src/model_builder/layer_base.py): 模型层基类，独立实现
+  - 增加了 Keras 层构建、输入输出形状、权重状态等模型特定功能
+
+- `Workflow` (src/workflow/workflow.py): 工作流容器，独立实现
+  - 使用 `workflow/connection.py` 中的 Connection 类（带端口信息）
+  
+- `ModelGraph` (src/model_builder/model_graph.py): 模型图容器，独立实现
+  - 使用 `ModelConnection` 类（模型层专用）
+
+设计决策
+--------
+`BaseNode` 和 `LayerNode` 没有直接继承 `GraphNodeBase` 的原因：
+1. 两者都有各自特定的功能需求（端口 vs Keras层）
+2. 强制继承可能导致不必要的 API 复杂性
+3. 当前实现已经稳定且功能完整
+
+此模块中的类可用于：
+1. 作为新图结构实现的参考模板
+2. 提供通用的图算法（拓扑排序、连接管理等）
+3. `create_registry()` 工厂函数被实际使用
 """
 
 import logging
