@@ -27,3 +27,15 @@ patch/
 # IDE 配置
 .cursor/
 .idea/
+.vscode/
+
+# 脚本目录
+scripts/
+
+# 文档文件
+docs/*.xlsx
+docs/*.pdf
+docs/*.docx
+
+# 工作流文件
+workflows/*.json
