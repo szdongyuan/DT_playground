@@ -1,0 +1,404 @@
+{
+  "version": "1.0",
+  "metadata": {
+    "name": "new_workflow",
+    "description": "",
+    "author": "",
+    "created_at": "2025-12-31T11:37:32.587729",
+    "modified_at": "2025-12-31T11:46:18.455291"
+  },
+  "nodes": [
+    {
+      "id": "9f389ac3",
+      "type": "audio_folder",
+      "position": [
+        -294.0,
+        -288.0
+      ],
+      "parameters": {
+        "folder_path": "D:/pyProject/DT_playground/audio_data/archive",
+        "recursive": true,
+        "auto_label": true,
+        "target_sr": 48000,
+        "max_files": 100
+      }
+    },
+    {
+      "id": "b6418ace",
+      "type": "trim_pad",
+      "position": [
+        -297.0,
+        -161.0
+      ],
+      "parameters": {
+        "duration": 3.0,
+        "mode": "pad_trim",
+        "pad_mode": "constant",
+        "position": "center"
+      }
+    },
+    {
+      "id": "b3688e68",
+      "type": "audio_slice",
+      "position": [
+        -296.0,
+        -83.0
+      ],
+      "parameters": {
+        "slice_duration": 0.5,
+        "slice_mode": "random",
+        "multiplier": 10,
+        "overlap": 0.5,
+        "include_remainder": false,
+        "pad_mode": "zero"
+      }
+    },
+    {
+      "id": "f519c2a7",
+      "type": "channel_mapper",
+      "position": [
+        -295.0,
+        -9.0
+      ],
+      "parameters": {
+        "map1": "0",
+        "map2": "",
+        "map3": "",
+        "map4": ""
+      }
+    },
+    {
+      "id": "fb1868d7",
+      "type": "split",
+      "position": [
+        -292.0,
+        138.0
+      ],
+      "parameters": {
+        "train_ratio": 0.7,
+        "val_ratio": 0.15,
+        "test_ratio": 0.15,
+        "shuffle": true,
+        "stratify": true,
+        "random_seed": 42
+      }
+    },
+    {
+      "id": "0d944541",
+      "type": "passthrough",
+      "position": [
+        33.0,
+        328.0
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "ca80beac",
+      "type": "passthrough",
+      "position": [
+        34.0,
+        29.0
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "9edc5b46",
+      "type": "passthrough",
+      "position": [
+        37.0,
+        175.0
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "6801b19c",
+      "type": "fft",
+      "position": [
+        -23.0,
+        370.0
+      ],
+      "parameters": {
+        "n_fft": "auto",
+        "output_type": "magnitude",
+        "normalize": true
+      }
+    },
+    {
+      "id": "9e68373a",
+      "type": "fft",
+      "position": [
+        -24.0,
+        217.0
+      ],
+      "parameters": {
+        "n_fft": "auto",
+        "output_type": "magnitude",
+        "normalize": true
+      }
+    },
+    {
+      "id": "9559d93b",
+      "type": "fft",
+      "position": [
+        -27.0,
+        85.0
+      ],
+      "parameters": {
+        "n_fft": "auto",
+        "output_type": "magnitude",
+        "normalize": true
+      }
+    },
+    {
+      "id": "7ad7593b",
+      "type": "load_model",
+      "position": [
+        -31.0,
+        -72.0
+      ],
+      "parameters": {
+        "model_path": "D:/pyProject/DT_playground/models/feture_extraction_fft.keras",
+        "compile_model": true,
+        "optimizer": "adam",
+        "learning_rate": 0.001,
+        "loss": "auto"
+      }
+    },
+    {
+      "id": "38b267f9",
+      "type": "trainer",
+      "position": [
+        248.0,
+        50.0
+      ],
+      "parameters": {
+        "epochs": 50,
+        "batch_size": 32,
+        "optimizer": "adam",
+        "learning_rate": 0.001,
+        "loss": "auto",
+        "early_stopping": true,
+        "patience": 10
+      }
+    },
+    {
+      "id": "87f86ab2",
+      "type": "evaluator",
+      "position": [
+        519.0,
+        225.0
+      ],
+      "parameters": {
+        "batch_size": 32
+      }
+    },
+    {
+      "id": "bfaa0315",
+      "type": "save_model",
+      "position": [
+        481.0,
+        63.0
+      ],
+      "parameters": {
+        "save_mode": "new_file",
+        "save_dir": "D:/pyProject/DT_playground/models",
+        "file_name": "trained.keras",
+        "existing_file": "",
+        "save_format": "keras",
+        "confirm_overwrite": true
+      }
+    }
+  ],
+  "connections": [
+    {
+      "source": {
+        "node": "b6418ace",
+        "port": "audio"
+      },
+      "target": {
+        "node": "b3688e68",
+        "port": "audio"
+      }
+    },
+    {
+      "source": {
+        "node": "9f389ac3",
+        "port": "audio"
+      },
+      "target": {
+        "node": "b6418ace",
+        "port": "audio"
+      }
+    },
+    {
+      "source": {
+        "node": "b3688e68",
+        "port": "audio"
+      },
+      "target": {
+        "node": "f519c2a7",
+        "port": "audio"
+      }
+    },
+    {
+      "source": {
+        "node": "f519c2a7",
+        "port": "out1"
+      },
+      "target": {
+        "node": "fb1868d7",
+        "port": "data"
+      }
+    },
+    {
+      "source": {
+        "node": "fb1868d7",
+        "port": "train_data"
+      },
+      "target": {
+        "node": "ca80beac",
+        "port": "in"
+      }
+    },
+    {
+      "source": {
+        "node": "fb1868d7",
+        "port": "train_data"
+      },
+      "target": {
+        "node": "9559d93b",
+        "port": "audio"
+      }
+    },
+    {
+      "source": {
+        "node": "fb1868d7",
+        "port": "val_data"
+      },
+      "target": {
+        "node": "9edc5b46",
+        "port": "in"
+      }
+    },
+    {
+      "source": {
+        "node": "fb1868d7",
+        "port": "val_data"
+      },
+      "target": {
+        "node": "9e68373a",
+        "port": "audio"
+      }
+    },
+    {
+      "source": {
+        "node": "fb1868d7",
+        "port": "test_data"
+      },
+      "target": {
+        "node": "0d944541",
+        "port": "in"
+      }
+    },
+    {
+      "source": {
+        "node": "fb1868d7",
+        "port": "test_data"
+      },
+      "target": {
+        "node": "6801b19c",
+        "port": "audio"
+      }
+    },
+    {
+      "source": {
+        "node": "7ad7593b",
+        "port": "model"
+      },
+      "target": {
+        "node": "38b267f9",
+        "port": "model"
+      }
+    },
+    {
+      "source": {
+        "node": "ca80beac",
+        "port": "out"
+      },
+      "target": {
+        "node": "38b267f9",
+        "port": "x_train"
+      }
+    },
+    {
+      "source": {
+        "node": "9559d93b",
+        "port": "feature"
+      },
+      "target": {
+        "node": "38b267f9",
+        "port": "y_train"
+      }
+    },
+    {
+      "source": {
+        "node": "9edc5b46",
+        "port": "out"
+      },
+      "target": {
+        "node": "38b267f9",
+        "port": "x_val"
+      }
+    },
+    {
+      "source": {
+        "node": "9e68373a",
+        "port": "feature"
+      },
+      "target": {
+        "node": "38b267f9",
+        "port": "y_val"
+      }
+    },
+    {
+      "source": {
+        "node": "0d944541",
+        "port": "out"
+      },
+      "target": {
+        "node": "87f86ab2",
+        "port": "x_test"
+      }
+    },
+    {
+      "source": {
+        "node": "6801b19c",
+        "port": "feature"
+      },
+      "target": {
+        "node": "87f86ab2",
+        "port": "y_test"
+      }
+    },
+    {
+      "source": {
+        "node": "38b267f9",
+        "port": "trained_model"
+      },
+      "target": {
+        "node": "87f86ab2",
+        "port": "model"
+      }
+    },
+    {
+      "source": {
+        "node": "38b267f9",
+        "port": "trained_model"
+      },
+      "target": {
+        "node": "bfaa0315",
+        "port": "model"
+      }
+    }
+  ]
+}

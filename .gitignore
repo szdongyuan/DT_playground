@@ -1,0 +1,29 @@
+# Python 缓存
+__pycache__/
+*.pyc
+*.pyo
+
+# 音频数据文件（保留目录）
+audio_data/**/*.wav
+audio_data/**/*.zip
+audio_data/**/*.pkf
+
+# 模型文件（保留目录）
+models/*.keras
+models/*.json
+
+# 日志文件（保留目录）
+logs/*.log
+
+# 编译产物
+build/
+dist/
+*.exe
+*.spec
+
+# 补丁包
+patch/
+
+# IDE 配置
+.cursor/
+.idea/

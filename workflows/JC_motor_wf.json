@@ -1,0 +1,233 @@
+{
+  "version": "1.0",
+  "metadata": {
+    "name": "new_workflow",
+    "description": "",
+    "author": "",
+    "created_at": "2026-01-05T10:29:00.430590",
+    "modified_at": "2026-01-05T11:03:47.974180"
+  },
+  "nodes": [
+    {
+      "id": "2528194f",
+      "type": "audio_folder",
+      "position": [
+        -294.0,
+        32.0
+      ],
+      "parameters": {
+        "folder_path": "D:/pyProject/DT_playground/audio_data/JC_motor",
+        "recursive": true,
+        "auto_label": true,
+        "target_sr": 25600,
+        "max_files": 100
+      }
+    },
+    {
+      "id": "dda2fce5",
+      "type": "audio_slice",
+      "position": [
+        -67.0,
+        71.0
+      ],
+      "parameters": {
+        "slice_duration": 1.0,
+        "slice_mode": "random",
+        "multiplier": 20,
+        "overlap": 0.5,
+        "include_remainder": false,
+        "pad_mode": "zero"
+      }
+    },
+    {
+      "id": "add5011b",
+      "type": "split",
+      "position": [
+        159.0,
+        71.0
+      ],
+      "parameters": {
+        "train_ratio": 0.8,
+        "val_ratio": 0.2,
+        "test_ratio": 0.0,
+        "shuffle": true,
+        "stratify": true,
+        "random_seed": 42
+      }
+    },
+    {
+      "id": "0a5f39b8",
+      "type": "load_model",
+      "position": [
+        159.0,
+        -50.0
+      ],
+      "parameters": {
+        "model_path": "D:/pyProject/DT_playground/models/JC_motor_classifier.keras",
+        "compile_model": true,
+        "optimizer": "adam",
+        "learning_rate": 0.001,
+        "loss": "auto"
+      }
+    },
+    {
+      "id": "79a966be",
+      "type": "trainer",
+      "position": [
+        406.0,
+        9.0
+      ],
+      "parameters": {
+        "epochs": 20,
+        "batch_size": 32,
+        "optimizer": "adam",
+        "learning_rate": 0.001,
+        "loss": "auto",
+        "early_stopping": true,
+        "patience": 10
+      }
+    },
+    {
+      "id": "05006fa1",
+      "type": "save_model",
+      "position": [
+        633.0,
+        61.0
+      ],
+      "parameters": {
+        "save_mode": "new_file",
+        "save_dir": "D:/pyProject/DT_playground/models",
+        "file_name": "trained.keras",
+        "existing_file": "",
+        "save_format": "keras",
+        "confirm_overwrite": true
+      }
+    },
+    {
+      "id": "b0f88e88",
+      "type": "trim_pad",
+      "position": [
+        -69.0,
+        2.0
+      ],
+      "parameters": {
+        "duration": 3.0,
+        "mode": "pad_trim",
+        "pad_mode": "constant",
+        "position": "center"
+      }
+    }
+  ],
+  "connections": [
+    {
+      "source": {
+        "node": "dda2fce5",
+        "port": "audio"
+      },
+      "target": {
+        "node": "add5011b",
+        "port": "data"
+      }
+    },
+    {
+      "source": {
+        "node": "dda2fce5",
+        "port": "labels"
+      },
+      "target": {
+        "node": "add5011b",
+        "port": "labels"
+      }
+    },
+    {
+      "source": {
+        "node": "add5011b",
+        "port": "train_data"
+      },
+      "target": {
+        "node": "79a966be",
+        "port": "x_train"
+      }
+    },
+    {
+      "source": {
+        "node": "add5011b",
+        "port": "train_labels"
+      },
+      "target": {
+        "node": "79a966be",
+        "port": "y_train"
+      }
+    },
+    {
+      "source": {
+        "node": "add5011b",
+        "port": "val_data"
+      },
+      "target": {
+        "node": "79a966be",
+        "port": "x_val"
+      }
+    },
+    {
+      "source": {
+        "node": "add5011b",
+        "port": "val_labels"
+      },
+      "target": {
+        "node": "79a966be",
+        "port": "y_val"
+      }
+    },
+    {
+      "source": {
+        "node": "0a5f39b8",
+        "port": "model"
+      },
+      "target": {
+        "node": "79a966be",
+        "port": "model"
+      }
+    },
+    {
+      "source": {
+        "node": "79a966be",
+        "port": "trained_model"
+      },
+      "target": {
+        "node": "05006fa1",
+        "port": "model"
+      }
+    },
+    {
+      "source": {
+        "node": "2528194f",
+        "port": "labels"
+      },
+      "target": {
+        "node": "dda2fce5",
+        "port": "labels"
+      }
+    },
+    {
+      "source": {
+        "node": "2528194f",
+        "port": "audio"
+      },
+      "target": {
+        "node": "b0f88e88",
+        "port": "audio"
+      }
+    },
+    {
+      "source": {
+        "node": "b0f88e88",
+        "port": "audio"
+      },
+      "target": {
+        "node": "dda2fce5",
+        "port": "audio"
+      }
+    }
+  ]
+}

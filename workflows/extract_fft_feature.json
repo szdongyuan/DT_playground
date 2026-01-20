@@ -1,0 +1,442 @@
+{
+  "version": "1.0",
+  "metadata": {
+    "name": "new_workflow",
+    "description": "",
+    "author": "",
+    "created_at": "2026-01-16T18:14:11.717124",
+    "modified_at": "2026-01-19T14:45:56.701700"
+  },
+  "nodes": [
+    {
+      "id": "03ab51ab",
+      "type": "audio_folder",
+      "position": [
+        -306.0,
+        -178.0
+      ],
+      "parameters": {
+        "folder_path": "D:/pyProject/DT_playground/audio_data/JC_motor/JC_record",
+        "recursive": true,
+        "auto_label": true,
+        "target_sr": 40960,
+        "max_files": 0
+      }
+    },
+    {
+      "id": "799808ba",
+      "type": "pitch_shift",
+      "position": [
+        -33.0,
+        -251.0
+      ],
+      "parameters": {
+        "semitones": 0.0,
+        "random_shift": true,
+        "shift_min": -12.0,
+        "shift_max": 12.0
+      }
+    },
+    {
+      "id": "7851b054",
+      "type": "audio_slice",
+      "position": [
+        -36.0,
+        -106.0
+      ],
+      "parameters": {
+        "slice_duration": 0.1,
+        "slice_mode": "random",
+        "multiplier": 10,
+        "overlap": 0.5,
+        "include_remainder": false,
+        "pad_mode": "zero"
+      }
+    },
+    {
+      "id": "7e6f24bb",
+      "type": "split",
+      "position": [
+        -36.0,
+        0.0
+      ],
+      "parameters": {
+        "train_ratio": 0.7,
+        "val_ratio": 0.15,
+        "test_ratio": 0.15,
+        "shuffle": true,
+        "stratify": true,
+        "random_seed": 42
+      }
+    },
+    {
+      "id": "ae931088",
+      "type": "passthrough",
+      "position": [
+        263.0,
+        226.0
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "162c2200",
+      "type": "passthrough",
+      "position": [
+        253.0,
+        82.0
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "43378fc6",
+      "type": "passthrough",
+      "position": [
+        256.0,
+        -50.0
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "e671e356",
+      "type": "fft",
+      "position": [
+        204.0,
+        266.0
+      ],
+      "parameters": {
+        "n_fft": "auto",
+        "output_type": "magnitude",
+        "normalize": true
+      }
+    },
+    {
+      "id": "ce09f321",
+      "type": "fft",
+      "position": [
+        200.0,
+        124.0
+      ],
+      "parameters": {
+        "n_fft": "auto",
+        "output_type": "magnitude",
+        "normalize": true
+      }
+    },
+    {
+      "id": "0dcb4862",
+      "type": "fft",
+      "position": [
+        201.0,
+        -7.0
+      ],
+      "parameters": {
+        "n_fft": "auto",
+        "output_type": "magnitude",
+        "normalize": true
+      }
+    },
+    {
+      "id": "b899897a",
+      "type": "load_model",
+      "position": [
+        199.0,
+        -153.0
+      ],
+      "parameters": {
+        "model_path": "D:/pyProject/DT_playground/models/fft_mlp_learner.keras",
+        "compile_model": true,
+        "optimizer": "adam",
+        "learning_rate": 0.001,
+        "loss": "auto"
+      }
+    },
+    {
+      "id": "b5a3af34",
+      "type": "save_model",
+      "position": [
+        712.0,
+        -10.0
+      ],
+      "parameters": {
+        "save_mode": "overwrite",
+        "save_dir": "D:/pyProject/DT_playground/models",
+        "file_name": "trained_fft_feature_extraction.keras",
+        "existing_file": "D:/pyProject/DT_playground/models/fft_mlp_learner.keras",
+        "save_format": "keras",
+        "confirm_overwrite": true
+      }
+    },
+    {
+      "id": "9b173cef",
+      "type": "trainer",
+      "position": [
+        457.0,
+        -43.0
+      ],
+      "parameters": {
+        "epochs": 20,
+        "batch_size": 32,
+        "optimizer": "adam",
+        "learning_rate": 0.001,
+        "loss": "auto",
+        "early_stopping": false,
+        "patience": 10
+      }
+    },
+    {
+      "id": "b85cfff9",
+      "type": "predict",
+      "position": [
+        716.0,
+        182.0
+      ],
+      "parameters": {
+        "output_type": "feature_1d",
+        "batch_size": 32,
+        "sample_rate": 48000
+      }
+    },
+    {
+      "id": "1ef56d8a",
+      "type": "channel_mapper",
+      "position": [
+        -297.0,
+        -46.0
+      ],
+      "parameters": {
+        "map1": "0",
+        "map2": "",
+        "map3": "",
+        "map4": ""
+      }
+    },
+    {
+      "id": "81df7e8b",
+      "type": "filter",
+      "position": [
+        -297.0,
+        101.0
+      ],
+      "parameters": {
+        "filter_type": "highpass",
+        "cutoff": 100.0,
+        "cutoff_high": 5000.0,
+        "order": 4
+      }
+    },
+    {
+      "id": "c390408a",
+      "type": "normalize",
+      "position": [
+        -33.0,
+        -179.0
+      ],
+      "parameters": {
+        "method": "peak",
+        "target_level": -10.0
+      }
+    }
+  ],
+  "connections": [
+    {
+      "source": {
+        "node": "7851b054",
+        "port": "audio"
+      },
+      "target": {
+        "node": "7e6f24bb",
+        "port": "data"
+      }
+    },
+    {
+      "source": {
+        "node": "7e6f24bb",
+        "port": "train_data"
+      },
+      "target": {
+        "node": "43378fc6",
+        "port": "in"
+      }
+    },
+    {
+      "source": {
+        "node": "7e6f24bb",
+        "port": "train_data"
+      },
+      "target": {
+        "node": "0dcb4862",
+        "port": "audio"
+      }
+    },
+    {
+      "source": {
+        "node": "7e6f24bb",
+        "port": "val_data"
+      },
+      "target": {
+        "node": "162c2200",
+        "port": "in"
+      }
+    },
+    {
+      "source": {
+        "node": "7e6f24bb",
+        "port": "val_data"
+      },
+      "target": {
+        "node": "ce09f321",
+        "port": "audio"
+      }
+    },
+    {
+      "source": {
+        "node": "7e6f24bb",
+        "port": "test_data"
+      },
+      "target": {
+        "node": "ae931088",
+        "port": "in"
+      }
+    },
+    {
+      "source": {
+        "node": "7e6f24bb",
+        "port": "test_data"
+      },
+      "target": {
+        "node": "e671e356",
+        "port": "audio"
+      }
+    },
+    {
+      "source": {
+        "node": "b899897a",
+        "port": "model"
+      },
+      "target": {
+        "node": "9b173cef",
+        "port": "model"
+      }
+    },
+    {
+      "source": {
+        "node": "43378fc6",
+        "port": "out"
+      },
+      "target": {
+        "node": "9b173cef",
+        "port": "x_train"
+      }
+    },
+    {
+      "source": {
+        "node": "0dcb4862",
+        "port": "feature"
+      },
+      "target": {
+        "node": "9b173cef",
+        "port": "y_train"
+      }
+    },
+    {
+      "source": {
+        "node": "162c2200",
+        "port": "out"
+      },
+      "target": {
+        "node": "9b173cef",
+        "port": "x_val"
+      }
+    },
+    {
+      "source": {
+        "node": "9b173cef",
+        "port": "trained_model"
+      },
+      "target": {
+        "node": "b5a3af34",
+        "port": "model"
+      }
+    },
+    {
+      "source": {
+        "node": "9b173cef",
+        "port": "trained_model"
+      },
+      "target": {
+        "node": "b85cfff9",
+        "port": "model"
+      }
+    },
+    {
+      "source": {
+        "node": "ae931088",
+        "port": "out"
+      },
+      "target": {
+        "node": "b85cfff9",
+        "port": "input_data"
+      }
+    },
+    {
+      "source": {
+        "node": "ce09f321",
+        "port": "feature"
+      },
+      "target": {
+        "node": "9b173cef",
+        "port": "y_val"
+      }
+    },
+    {
+      "source": {
+        "node": "03ab51ab",
+        "port": "audio"
+      },
+      "target": {
+        "node": "1ef56d8a",
+        "port": "audio"
+      }
+    },
+    {
+      "source": {
+        "node": "1ef56d8a",
+        "port": "out1"
+      },
+      "target": {
+        "node": "81df7e8b",
+        "port": "audio"
+      }
+    },
+    {
+      "source": {
+        "node": "799808ba",
+        "port": "audio"
+      },
+      "target": {
+        "node": "c390408a",
+        "port": "audio"
+      }
+    },
+    {
+      "source": {
+        "node": "c390408a",
+        "port": "audio"
+      },
+      "target": {
+        "node": "7851b054",
+        "port": "audio"
+      }
+    },
+    {
+      "source": {
+        "node": "81df7e8b",
+        "port": "audio"
+      },
+      "target": {
+        "node": "799808ba",
+        "port": "audio"
+      }
+    }
+  ]
+}
