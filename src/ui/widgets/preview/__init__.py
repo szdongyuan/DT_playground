@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-预览组件模块
+Preview Components Module
 
-提供各种数据类型的可视化预览组件。
+Provides visual preview components for various data types.
 """
 
 from .base_preview import BasePreviewWidget

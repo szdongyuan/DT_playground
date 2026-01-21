@@ -1,9 +1,9 @@
 """
-模型定义模块
+Model Definition Module
 
-模型定义现在通过以下方式完成：
-1. 使用"模型"视图进行可视化拖拽式模型构建
-2. 在工作流中使用"加载模型"节点加载模型文件
+Model definitions are now completed through:
+1. Using the "Model" view for visual drag-and-drop model construction
+2. Using the "Load Model" node in workflows to load model files
 """
 
 __all__ = []

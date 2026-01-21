@@ -1,5 +1,5 @@
 """
-主应用程序类
+Main Application Class
 """
 
 from PyQt6.QtCore import Qt, QSize

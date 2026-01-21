@@ -1,5 +1,5 @@
 """
-音频工具函数
+Audio Utility Functions
 """
 
 import os

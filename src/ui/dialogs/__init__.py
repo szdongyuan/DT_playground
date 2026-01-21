@@ -1,5 +1,5 @@
 """
-对话框模块
+Dialog Module
 """
 
 from src.ui.dialogs.about_dialog import AboutDialog

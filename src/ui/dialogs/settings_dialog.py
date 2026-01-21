@@ -1,5 +1,5 @@
 """
-设置对话框
+Settings Dialog
 """
 
 from PyQt6.QtCore import Qt, pyqtSignal

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-工作流引擎模块
+Workflow Engine Module
 
-提供节点式数据处理和训练工作流的核心功能。
+Provides core functionality for node-based data processing and training workflows.
 """
 
 from .connection import Connection
@@ -11,7 +11,7 @@ from .node_base import BaseNode, NodeCategory
 from .port import DataType, Port
 from .workflow import Workflow
 
-# 导入节点模块以触发节点注册
+# Import nodes module to trigger node registration
 from . import nodes
 
 __all__ = [

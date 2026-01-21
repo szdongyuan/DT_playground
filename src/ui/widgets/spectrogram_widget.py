@@ -1,5 +1,5 @@
 """
-频谱图显示控件
+Spectrogram Display Widget
 """
 
 import numpy as np

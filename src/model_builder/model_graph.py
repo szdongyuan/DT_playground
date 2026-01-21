@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-模型图数据结构
+Model Graph Data Structure
 
-管理神经网络层的连接和拓扑结构。
+Manages neural network layer connections and topology.
 """
 
 import json

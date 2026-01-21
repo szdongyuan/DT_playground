@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-连接定义
+Connection Definition
 
-定义节点之间的连接关系。
+Defines the connection relationships between nodes.
 """
 
 from dataclasses import dataclass
@@ -12,28 +12,28 @@ from typing import Dict, Optional
 @dataclass
 class Connection:
     """
-    节点连接
+    Node Connection
     
-    表示从一个节点的输出端口到另一个节点的输入端口的连接。
+    Represents a connection from one node's output port to another node's input port.
     """
     
-    source_node_id: str         # 源节点ID
-    source_port: str            # 源端口名称（输出端口）
-    target_node_id: str         # 目标节点ID
-    target_port: str            # 目标端口名称（输入端口）
+    source_node_id: str         # Source node ID
+    source_port: str            # Source port name (output port)
+    target_node_id: str         # Target node ID
+    target_port: str            # Target port name (input port)
     
     @property
     def source_key(self) -> str:
-        """获取源端口的唯一标识"""
+        """Get unique identifier for source port"""
         return f"{self.source_node_id}.{self.source_port}"
     
     @property
     def target_key(self) -> str:
-        """获取目标端口的唯一标识"""
+        """Get unique identifier for target port"""
         return f"{self.target_node_id}.{self.target_port}"
     
     def to_dict(self) -> Dict:
-        """序列化为字典"""
+        """Serialize to dictionary"""
         return {
             "source": {
                 "node": self.source_node_id,
@@ -47,7 +47,7 @@ class Connection:
     
     @classmethod
     def from_dict(cls, data: Dict) -> 'Connection':
-        """从字典反序列化"""
+        """Deserialize from dictionary"""
         source = data.get("source", {})
         target = data.get("target", {})
         return cls(

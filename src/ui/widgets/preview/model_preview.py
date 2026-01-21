@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-模型预览组件
+Model Preview Component
 
-显示 Keras 模型的 summary 信息。
+Displays Keras model summary information.
 """
 
 import io

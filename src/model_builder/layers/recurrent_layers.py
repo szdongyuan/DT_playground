@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-循环层节点 (LSTM, GRU等)
+Recurrent Layer Nodes (LSTM, GRU, etc.)
 """
 
 from ..layer_base import LayerCategory, LayerNode, register_layer

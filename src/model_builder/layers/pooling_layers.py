@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-池化层节点
+Pooling Layer Nodes
 """
 
 from ..layer_base import LayerCategory, LayerNode, register_layer

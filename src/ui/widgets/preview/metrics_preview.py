@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-指标预览组件
+Metrics Preview Component
 
-显示评估指标的可视化。
+Displays visualization of evaluation metrics.
 """
 
 import logging

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-预处理节点
+Preprocessing Nodes
 
-提供音频预处理功能：重采样、裁剪、填充、归一化等。
+Provides audio preprocessing functionality: resampling, trimming, padding, normalization, etc.
 """
 
 import logging

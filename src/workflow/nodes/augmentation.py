@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-数据增强节点
+Data Augmentation Nodes
 
-提供音频数据增强功能：添加噪声、时间拉伸、音高偏移、数据切片等。
+Provides audio data augmentation functionality: adding noise, time stretching, pitch shifting, data slicing, etc.
 """
 
 import logging

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-模型画布组件
+Model Canvas Component
 
-可视化编辑神经网络结构的画布。
+Canvas for visually editing neural network structure.
 
 架构说明
 --------

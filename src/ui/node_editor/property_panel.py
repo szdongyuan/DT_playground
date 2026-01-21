@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-属性面板
+Property Panel
 
-显示和编辑节点属性。
+Displays and edits node properties.
 """
 
 import logging

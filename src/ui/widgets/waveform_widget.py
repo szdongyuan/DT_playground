@@ -1,5 +1,5 @@
 """
-波形显示控件
+Waveform Display Widget
 """
 
 import numpy as np

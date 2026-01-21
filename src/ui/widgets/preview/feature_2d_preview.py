@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-二维特征预览组件
+2D Feature Preview Component
 
-显示二维特征的热力图。
+Displays heatmaps of 2D features.
 """
 
 import logging

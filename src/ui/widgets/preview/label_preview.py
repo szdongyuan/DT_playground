@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-标签预览组件
+Label Preview Component
 
-显示标签数据的表格和统计信息。
+Displays tables and statistics for label data.
 """
 
 import logging

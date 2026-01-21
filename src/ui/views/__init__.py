@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-视图模块
+View Module
 
-提供多视图切换功能。
+Provides multi-view switching functionality.
 """
 
 from .workflow_view import WorkflowView

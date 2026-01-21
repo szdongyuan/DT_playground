@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-卷积层节点
+Convolutional Layer Nodes
 """
 
 from ..layer_base import LayerCategory, LayerNode, register_layer

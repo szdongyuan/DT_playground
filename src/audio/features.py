@@ -1,6 +1,6 @@
 """
-音频特征提取器
-支持多种特征类型及其组合
+Audio Feature Extractor
+Supports multiple feature types and their combinations
 """
 
 from enum import Enum

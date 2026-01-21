@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-注意力层节点 (MultiHeadAttention, TransformerEncoder等)
+Attention Layer Nodes (MultiHeadAttention, TransformerEncoder, etc.)
 
-实现 Transformer 架构相关的层节点。
+Implements Transformer architecture related layer nodes.
 """
 
 from ..layer_base import LayerCategory, LayerNode, register_layer

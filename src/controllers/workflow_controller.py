@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-工作流控制器
+Workflow Controller
 
-负责工作流的执行控制、断点处理和状态管理。
+Responsible for workflow execution control, breakpoint handling, and state management.
 """
 
 import logging

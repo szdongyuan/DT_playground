@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-音频预览组件
+Audio Preview Component
 
-整合波形显示、频谱图和播放控制。
+Integrates waveform display, spectrogram, and playback controls.
 """
 
 import logging

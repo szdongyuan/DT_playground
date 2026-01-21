@@ -1,5 +1,5 @@
 """
-训练模块
+Training Module
 """
 
 from src.training.callbacks import EarlyStoppingWithUI
@@ -9,20 +9,20 @@ from src.training.evaluator import EvaluationResult, ModelEvaluator, quick_evalu
 from src.training.trainer import Trainer, TrainerWorker, TrainingCallback, TrainingPipeline
 
 __all__ = [
-    # 回调
+    # Callbacks
     "EarlyStoppingWithUI",
     "UICallback",
     
-    # 数据生成器
+    # Data generators
     "AudioDataGenerator",
     "create_data_generators",
     
-    # 评估器
+    # Evaluator
     "EvaluationResult",
     "ModelEvaluator",
     "quick_evaluate",
     
-    # 训练器
+    # Trainer
     "Trainer",
     "TrainerWorker",
     "TrainingCallback",

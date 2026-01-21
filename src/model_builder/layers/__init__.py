@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-层节点实现
+Layer Node Implementations
 
-包含所有可用的神经网络层节点。
+Contains all available neural network layer nodes.
 """
 
-# 导入所有层模块以触发注册（按字母序）
+# Import all layer modules to trigger registration (alphabetical order)
 from . import activation_layers
-from . import attention_layers  # Transformer/注意力层
+from . import attention_layers  # Transformer/attention layers
 from . import conv_layers
 from . import core_layers
 from . import input_layers

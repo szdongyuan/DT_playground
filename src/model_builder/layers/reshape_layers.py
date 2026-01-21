@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-形状变换层节点
+Shape Transformation Layer Nodes
 """
 
 from ..layer_base import LayerCategory, LayerNode, register_layer

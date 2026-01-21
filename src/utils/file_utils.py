@@ -1,5 +1,5 @@
 """
-文件工具函数
+File Utility Functions
 """
 
 import hashlib

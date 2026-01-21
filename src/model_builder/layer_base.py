@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-层节点基类定义
+Layer Node Base Class Definition
 
-定义神经网络层节点的基础结构和接口。
+Defines the base structure and interface for neural network layer nodes.
 
-架构说明
---------
-- 参数定义统一使用 `src/core/parameter.py` 中的 `Parameter` 类
-- `LayerParameter` 是 `Parameter` 的别名，保持向后兼容
-- 此类独立于 `src/core/graph_base.py` 中的 `GraphNodeBase`，
-  因为模型层需要 Keras 层构建、形状推断等特定功能
+Architecture Notes
+------------------
+- Parameter definitions uniformly use the `Parameter` class from `src/core/parameter.py`
+- `LayerParameter` is an alias for `Parameter`, maintaining backward compatibility
+- This class is independent from `GraphNodeBase` in `src/core/graph_base.py`,
+  because model layers need Keras layer building, shape inference, and other specific features
 """
 
 import logging

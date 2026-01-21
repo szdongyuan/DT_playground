@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-节点画布组件
+Node Canvas Component
 
-使用纯 PyQt6 实现的节点编辑画布。
+Node editing canvas implemented with pure PyQt6.
 
 架构说明
 --------

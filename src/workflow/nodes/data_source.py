@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-数据源节点
+Data Source Nodes
 
-提供音频文件、标签文件等数据加载节点。
+Provides audio file, label file, and other data loading nodes.
 """
 
 import csv

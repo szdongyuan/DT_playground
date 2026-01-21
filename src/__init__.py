@@ -1,5 +1,5 @@
 """
-AI声学信号训练平台 - 源代码包
+AI Acoustic Signal Training Platform - Source Code Package
 """
 
 __version__ = "1.0.0"

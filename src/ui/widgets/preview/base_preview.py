@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-预览组件抽象基类
+Preview Component Abstract Base Class
 
-定义所有预览组件的通用接口。
+Defines the common interface for all preview components.
 """
 
 import logging

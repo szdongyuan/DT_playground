@@ -1,6 +1,6 @@
 """
-模型评估模块
-提供模型评估、混淆矩阵、分类报告等功能
+Model Evaluation Module
+Provides model evaluation, confusion matrix, classification report, and other functions
 """
 
 from dataclasses import dataclass

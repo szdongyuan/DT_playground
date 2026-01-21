@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-模型构建器模块
+Model Builder Module
 
-提供可视化拖拽式神经网络模型搭建功能。
+Provides visual drag-and-drop neural network model building functionality.
 """
 
 from .layer_base import (
@@ -13,7 +13,7 @@ from .layer_base import (
 
 from .model_graph import ModelGraph, ModelConnection
 
-# 确保所有层节点被注册
+# Ensure all layer nodes are registered
 from . import layers
 
 __all__ = [

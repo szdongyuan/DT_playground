@@ -1,5 +1,5 @@
 """
-音频数据增强
+Audio Data Augmentation
 """
 
 from typing import Optional, Tuple

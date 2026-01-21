@@ -1,6 +1,6 @@
 """
-PyQtGraph兼容性修复
-解决PyQtGraph与PyQt6的字体兼容性问题
+PyQtGraph Compatibility Fix
+Resolves font compatibility issues between PyQtGraph and PyQt6
 """
 
 import sys

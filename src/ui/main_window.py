@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-主窗口界面
+Main Window Interface
 
-支持多视图切换的节点式工作流编辑器。
+Node-based workflow editor with multi-view switching support.
 使用控制器模式分离业务逻辑，使用事件总线解耦组件通信。
 """
 

@@ -1,5 +1,5 @@
 """
-训练指标可视化工具
+Training Metrics Visualization Tools
 """
 
 from typing import Dict, List, Optional, Tuple

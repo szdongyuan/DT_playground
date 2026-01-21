@@ -1,5 +1,5 @@
 """
-波形可视化工具
+Waveform Visualization Tools
 """
 
 from typing import Optional, Tuple

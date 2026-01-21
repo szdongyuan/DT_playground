@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-工作流视图
+Workflow View
 
-提供节点编辑器视图，用于设计和编辑工作流。
+Provides node editor view for designing and editing workflows.
 """
 
 import logging

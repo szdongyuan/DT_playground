@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-激活函数层节点
+Activation Function Layer Nodes
 """
 
 from ..layer_base import LayerCategory, LayerNode, register_layer

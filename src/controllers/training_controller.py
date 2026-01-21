@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-训练控制器
+Training Controller
 
-负责模型训练过程的控制和监控。
+Responsible for controlling and monitoring the model training process.
 """
 
 import logging

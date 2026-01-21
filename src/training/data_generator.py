@@ -1,7 +1,7 @@
 """
-音频数据生成器
-用于从音频文件批量生成训练数据
-支持组合特征提取
+Audio Data Generator
+Used to generate training data in batches from audio files
+Supports combined feature extraction
 """
 
 import os

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-视图导航控制器
+View Navigation Controller
 
-负责应用内视图之间的导航和切换逻辑。
+Responsible for navigation and switching logic between views within the application.
 """
 
 import logging

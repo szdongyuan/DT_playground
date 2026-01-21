@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-图编辑器基类
+Graph Editor Base Classes
 
-提供可复用的图形项基类，供 node_editor 和 model_editor 使用。
+Provides reusable graphics item base classes for node_editor and model_editor.
 """
 
 import logging

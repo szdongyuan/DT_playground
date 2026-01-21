@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-节点编辑器组件
+Node Editor Components
 
-提供可视化节点编辑功能。
+Provides visual node editing functionality.
 """
 
 from .node_graph import NodeGraphWidget

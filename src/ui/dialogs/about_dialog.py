@@ -1,5 +1,5 @@
 """
-关于对话框
+About Dialog
 """
 
 from PyQt6.QtCore import Qt

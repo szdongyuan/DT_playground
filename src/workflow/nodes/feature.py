@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-特征提取节点
+Feature Extraction Nodes
 
-提供各类音频特征提取功能：Mel频谱、MFCC、STFT、FFT等。
+Provides various audio feature extraction functionality: Mel spectrogram, MFCC, STFT, FFT, etc.
 
-架构说明
---------
-特征节点委托给 `src/audio/features.py` 中的 `FeatureExtractor` 类，
-避免重复实现特征提取逻辑。
+Architecture Notes
+------------------
+Feature nodes delegate to the `FeatureExtractor` class in `src/audio/features.py`,
+avoiding duplicate implementation of feature extraction logic.
 """
 
 import logging

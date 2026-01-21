@@ -1,5 +1,5 @@
 """
-音频播放控件
+Audio Player Widget
 """
 
 import os
