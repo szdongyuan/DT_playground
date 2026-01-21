@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-正则化层节点 (Dropout等)
+Regularization Layer Nodes (Dropout, etc.)
 """
 
 from ..layer_base import LayerCategory, LayerNode, register_layer

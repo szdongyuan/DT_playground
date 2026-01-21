@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-控制节点
+Control Nodes
 
-提供工作流控制功能：循环、数据分割等。
+Provides workflow control functionality: loops, data splitting, etc.
 """
 
 import logging

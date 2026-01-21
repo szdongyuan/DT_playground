@@ -1,42 +1,42 @@
 # -*- coding: utf-8 -*-
 """
-通用图结构基类
+Generic Graph Structure Base Classes
 
-为工作流节点和模型层提供统一的图结构抽象。
+Provides unified graph structure abstractions for workflow nodes and model layers.
 
-架构说明
---------
-此模块定义了图结构的通用抽象类：
-- `GraphNodeBase`: 图节点基类，提供参数管理的通用功能
-- `GraphBase`: 图容器基类，提供节点/连接管理和拓扑分析
-- `Connection`: 通用连接定义
-- `create_registry`: 创建节点注册表的工厂函数
+Architecture Notes
+------------------
+This module defines generic abstract classes for graph structures:
+- `GraphNodeBase`: Graph node base class, provides common parameter management functionality
+- `GraphBase`: Graph container base class, provides node/connection management and topology analysis
+- `Connection`: Generic connection definition
+- `create_registry`: Factory function to create node registries
 
-当前使用情况
------------
-- `BaseNode` (src/workflow/node_base.py): 工作流节点基类，独立实现
-  - 增加了端口(Port)系统、执行状态、进度回调等工作流特定功能
+Current Usage
+-------------
+- `BaseNode` (src/workflow/node_base.py): Workflow node base class, independent implementation
+  - Added port system, execution state, progress callbacks and other workflow-specific features
   
-- `LayerNode` (src/model_builder/layer_base.py): 模型层基类，独立实现
-  - 增加了 Keras 层构建、输入输出形状、权重状态等模型特定功能
+- `LayerNode` (src/model_builder/layer_base.py): Model layer base class, independent implementation
+  - Added Keras layer building, input/output shapes, weight status and other model-specific features
 
-- `Workflow` (src/workflow/workflow.py): 工作流容器，独立实现
-  - 使用 `workflow/connection.py` 中的 Connection 类（带端口信息）
+- `Workflow` (src/workflow/workflow.py): Workflow container, independent implementation
+  - Uses Connection class from `workflow/connection.py` (with port information)
   
-- `ModelGraph` (src/model_builder/model_graph.py): 模型图容器，独立实现
-  - 使用 `ModelConnection` 类（模型层专用）
+- `ModelGraph` (src/model_builder/model_graph.py): Model graph container, independent implementation
+  - Uses `ModelConnection` class (model layer specific)
 
-设计决策
---------
-`BaseNode` 和 `LayerNode` 没有直接继承 `GraphNodeBase` 的原因：
-1. 两者都有各自特定的功能需求（端口 vs Keras层）
-2. 强制继承可能导致不必要的 API 复杂性
-3. 当前实现已经稳定且功能完整
+Design Decisions
+----------------
+Reasons why `BaseNode` and `LayerNode` don't directly inherit from `GraphNodeBase`:
+1. Both have their own specific feature requirements (ports vs Keras layers)
+2. Forced inheritance could lead to unnecessary API complexity
+3. Current implementation is stable and feature-complete
 
-此模块中的类可用于：
-1. 作为新图结构实现的参考模板
-2. 提供通用的图算法（拓扑排序、连接管理等）
-3. `create_registry()` 工厂函数被实际使用
+Classes in this module can be used for:
+1. Reference template for new graph structure implementations
+2. Providing common graph algorithms (topological sort, connection management, etc.)
+3. `create_registry()` factory function is actually used
 """
 
 import logging
@@ -54,17 +54,17 @@ logger = logging.getLogger(__name__)
 @dataclass
 class Connection:
     """
-    通用连接定义
+    Generic connection definition
     
-    表示图中两个节点之间的连接关系。
+    Represents the connection relationship between two nodes in the graph.
     """
-    source_id: str          # 源节点ID
-    target_id: str          # 目标节点ID
-    source_port: str = ""   # 源端口名称（可选，用于多端口节点）
-    target_port: str = ""   # 目标端口名称（可选）
+    source_id: str          # Source node ID
+    target_id: str          # Target node ID
+    source_port: str = ""   # Source port name (optional, for multi-port nodes)
+    target_port: str = ""   # Target port name (optional)
     
     def to_dict(self) -> dict:
-        """序列化为字典"""
+        """Serialize to dictionary"""
         data = {
             "source": self.source_id,
             "target": self.target_id,
@@ -77,7 +77,7 @@ class Connection:
     
     @classmethod
     def from_dict(cls, data: dict) -> 'Connection':
-        """从字典反序列化"""
+        """Deserialize from dictionary"""
         return cls(
             source_id=data["source"],
             target_id=data["target"],
@@ -99,44 +99,44 @@ class Connection:
 
 class GraphNodeBase(ABC):
     """
-    图节点基类
+    Graph node base class
     
-    为 BaseNode（工作流节点）和 LayerNode（模型层）提供通用的基础功能。
-    子类需要实现 _setup_parameters 方法。
+    Provides common base functionality for BaseNode (workflow nodes) and LayerNode (model layers).
+    Subclasses need to implement the _setup_parameters method.
     """
     
-    # 类属性 - 子类需要覆盖
-    node_type: str = "base"             # 节点类型标识
-    display_name: str = "Base Node"     # 显示名称
-    description: str = ""               # 节点描述
-    icon: str = "📦"                     # 节点图标
+    # Class attributes - subclasses need to override
+    node_type: str = "base"             # Node type identifier
+    display_name: str = "Base Node"     # Display name
+    description: str = ""               # Node description
+    icon: str = "📦"                     # Node icon
     
     def __init__(self, node_id: str = None):
         """
-        初始化节点
+        Initialize node
         
         Args:
-            node_id: 节点唯一标识，默认自动生成
+            node_id: Node unique identifier, auto-generated by default
         """
         self.node_id = node_id or str(uuid.uuid4())[:8]
         self.parameters: Dict[str, Parameter] = {}
         self.parameter_values: Dict[str, Any] = {}
         
-        # 初始化参数
+        # Initialize parameters
         self._setup_parameters()
         self._init_parameter_values()
     
     @abstractmethod
     def _setup_parameters(self):
         """
-        设置节点参数
+        Setup node parameters
         
-        子类必须实现此方法，使用 add_parameter 添加参数。
+        Subclasses must implement this method, using add_parameter to add parameters.
         """
         pass
     
     def _init_parameter_values(self):
-        """初始化参数值为默认值"""
+        """Initialize parameter values to defaults"""
         for name, param in self.parameters.items():
             self.parameter_values[name] = param.default_value
     
@@ -153,7 +153,7 @@ class GraphNodeBase(ABC):
         file_filter: str = "",
         required: bool = True
     ):
-        """添加节点参数"""
+        """Add node parameter"""
         param = Parameter(
             name=name,
             display_name=display_name or name,
@@ -170,22 +170,22 @@ class GraphNodeBase(ABC):
         self.parameter_values[name] = default_value
     
     def get_parameter(self, name: str) -> Any:
-        """获取参数值"""
+        """Get parameter value"""
         return self.parameter_values.get(name)
     
     def set_parameter(self, name: str, value: Any) -> Tuple[bool, str]:
         """
-        设置参数值
+        Set parameter value
         
         Args:
-            name: 参数名称
-            value: 参数值
+            name: Parameter name
+            value: Parameter value
             
         Returns:
             (success, error_message)
         """
         if name not in self.parameters:
-            return False, f"未知参数: {name}"
+            return False, f"Unknown parameter: {name}"
         
         param = self.parameters[name]
         valid, msg = param.validate(value)
@@ -197,7 +197,7 @@ class GraphNodeBase(ABC):
     
     def validate(self) -> Tuple[bool, str]:
         """
-        验证节点配置
+        Validate node configuration
         
         Returns:
             (is_valid, error_message)
@@ -210,7 +210,7 @@ class GraphNodeBase(ABC):
         return True, ""
     
     def to_dict(self) -> dict:
-        """序列化节点为字典（基础版本，子类可扩展）"""
+        """Serialize node to dictionary (base version, subclasses can extend)"""
         return {
             "id": self.node_id,
             "type": self.node_type,
@@ -219,7 +219,7 @@ class GraphNodeBase(ABC):
     
     @classmethod
     def from_dict(cls, data: dict) -> 'GraphNodeBase':
-        """从字典反序列化节点"""
+        """Deserialize node from dictionary"""
         node = cls(node_id=data.get("id"))
         for name, value in data.get("parameters", {}).items():
             node.set_parameter(name, value)
@@ -231,12 +231,12 @@ class GraphNodeBase(ABC):
 
 class GraphBase(ABC):
     """
-    图容器基类
+    Graph container base class
     
-    为 Workflow 和 ModelGraph 提供通用的图管理功能。
+    Provides common graph management functionality for Workflow and ModelGraph.
     """
     
-    def __init__(self, name: str = "未命名"):
+    def __init__(self, name: str = "Untitled"):
         self.name = name
         self.nodes: Dict[str, GraphNodeBase] = {}
         self.connections: List[Connection] = []
@@ -244,31 +244,31 @@ class GraphBase(ABC):
     
     @property
     def is_dirty(self) -> bool:
-        """是否已修改"""
+        """Whether modified"""
         return self._dirty
     
     def _mark_dirty(self):
-        """标记为已修改"""
+        """Mark as modified"""
         self._dirty = True
     
     def mark_saved(self):
-        """标记为已保存"""
+        """Mark as saved"""
         self._dirty = False
     
-    # ===== 节点管理 =====
+    # ===== Node Management =====
     
     def add_node(self, node: GraphNodeBase) -> bool:
         """
-        添加节点
+        Add node
         
         Args:
-            node: 要添加的节点
+            node: Node to add
             
         Returns:
-            是否添加成功
+            Whether addition was successful
         """
         if node.node_id in self.nodes:
-            logger.warning(f"节点 {node.node_id} 已存在")
+            logger.warning(f"Node {node.node_id} already exists")
             return False
         
         self.nodes[node.node_id] = node
@@ -277,18 +277,18 @@ class GraphBase(ABC):
     
     def remove_node(self, node_id: str) -> bool:
         """
-        移除节点及其所有连接
+        Remove node and all its connections
         
         Args:
-            node_id: 节点ID
+            node_id: Node ID
             
         Returns:
-            是否移除成功
+            Whether removal was successful
         """
         if node_id not in self.nodes:
             return False
         
-        # 移除相关连接
+        # Remove related connections
         self.connections = [
             conn for conn in self.connections
             if conn.source_id != node_id and conn.target_id != node_id
@@ -299,41 +299,41 @@ class GraphBase(ABC):
         return True
     
     def get_node(self, node_id: str) -> Optional[GraphNodeBase]:
-        """获取节点"""
+        """Get node"""
         return self.nodes.get(node_id)
     
-    # ===== 连接管理 =====
+    # ===== Connection Management =====
     
     def add_connection(self, connection: Connection) -> Tuple[bool, str]:
         """
-        添加连接
+        Add connection
         
         Args:
-            connection: 连接对象
+            connection: Connection object
             
         Returns:
             (success, error_message)
         """
-        # 验证节点存在
+        # Validate nodes exist
         if connection.source_id not in self.nodes:
-            return False, f"源节点 {connection.source_id} 不存在"
+            return False, f"Source node {connection.source_id} does not exist"
         if connection.target_id not in self.nodes:
-            return False, f"目标节点 {connection.target_id} 不存在"
+            return False, f"Target node {connection.target_id} does not exist"
         
-        # 检查自连接
+        # Check self-connection
         if connection.source_id == connection.target_id:
-            return False, "不能自连接"
+            return False, "Cannot self-connect"
         
-        # 检查是否已存在
+        # Check if already exists
         if connection in self.connections:
-            return False, "连接已存在"
+            return False, "Connection already exists"
         
         self.connections.append(connection)
         self._mark_dirty()
         return True, ""
     
     def remove_connection(self, connection: Connection) -> bool:
-        """移除连接"""
+        """Remove connection"""
         if connection not in self.connections:
             return False
         
@@ -348,7 +348,7 @@ class GraphBase(ABC):
         source_port: str = "",
         target_port: str = ""
     ) -> Tuple[bool, str]:
-        """创建连接的便捷方法"""
+        """Convenience method to create connection"""
         connection = Connection(
             source_id=source_id,
             target_id=target_id,
@@ -358,31 +358,31 @@ class GraphBase(ABC):
         return self.add_connection(connection)
     
     def get_incoming_connections(self, node_id: str) -> List[Connection]:
-        """获取节点的所有输入连接"""
+        """Get all incoming connections for a node"""
         return [c for c in self.connections if c.target_id == node_id]
     
     def get_outgoing_connections(self, node_id: str) -> List[Connection]:
-        """获取节点的所有输出连接"""
+        """Get all outgoing connections for a node"""
         return [c for c in self.connections if c.source_id == node_id]
     
-    # ===== 拓扑分析 =====
+    # ===== Topology Analysis =====
     
     def get_execution_order(self) -> Tuple[List[str], bool]:
         """
-        获取节点执行顺序（拓扑排序）
+        Get node execution order (topological sort)
         
-        使用 Kahn's 算法进行拓扑排序。
+        Uses Kahn's algorithm for topological sorting.
         
         Returns:
             (ordered_node_ids, has_cycle)
         """
-        # 计算每个节点的入度
+        # Calculate in-degree for each node
         in_degree: Dict[str, int] = {node_id: 0 for node_id in self.nodes}
         for conn in self.connections:
             if conn.target_id in in_degree:
                 in_degree[conn.target_id] += 1
         
-        # Kahn's算法
+        # Kahn's algorithm
         queue = [node_id for node_id, degree in in_degree.items() if degree == 0]
         result = []
         
@@ -399,17 +399,17 @@ class GraphBase(ABC):
         return result, has_cycle
     
     def get_input_nodes(self) -> List[str]:
-        """获取输入节点（没有输入连接的节点）"""
+        """Get input nodes (nodes with no incoming connections)"""
         has_input = set(conn.target_id for conn in self.connections)
         return [nid for nid in self.nodes if nid not in has_input]
     
     def get_output_nodes(self) -> List[str]:
-        """获取输出节点（没有输出连接的节点）"""
+        """Get output nodes (nodes with no outgoing connections)"""
         has_output = set(conn.source_id for conn in self.connections)
         return [nid for nid in self.nodes if nid not in has_output]
     
     def get_upstream_nodes(self, node_id: str) -> Set[str]:
-        """获取指定节点的所有上游节点"""
+        """Get all upstream nodes for a specified node"""
         upstream = set()
         to_visit = [node_id]
         
@@ -423,7 +423,7 @@ class GraphBase(ABC):
         return upstream
     
     def get_downstream_nodes(self, node_id: str) -> Set[str]:
-        """获取指定节点的所有下游节点"""
+        """Get all downstream nodes for a specified node"""
         downstream = set()
         to_visit = [node_id]
         
@@ -438,7 +438,7 @@ class GraphBase(ABC):
     
     def validate(self) -> Tuple[bool, List[str]]:
         """
-        验证图结构
+        Validate graph structure
         
         Returns:
             (is_valid, error_messages)
@@ -448,13 +448,13 @@ class GraphBase(ABC):
         if not self.nodes:
             errors.append("图为空")
         
-        # 验证每个节点
+        # Validate each node
         for node in self.nodes.values():
             valid, msg = node.validate()
             if not valid:
                 errors.append(f"节点 '{node.display_name}' ({node.node_id}): {msg}")
         
-        # 检查循环
+        # Check for cycles
         _, has_cycle = self.get_execution_order()
         if has_cycle:
             errors.append("存在循环依赖")
@@ -462,7 +462,7 @@ class GraphBase(ABC):
         return len(errors) == 0, errors
     
     def to_dict(self) -> dict:
-        """序列化图为字典（基础版本，子类可扩展）"""
+        """Serialize graph to dictionary (base version, subclasses can extend)"""
         return {
             "name": self.name,
             "nodes": [node.to_dict() for node in self.nodes.values()],
@@ -473,16 +473,16 @@ class GraphBase(ABC):
         return f"{self.__class__.__name__}(name='{self.name}', nodes={len(self.nodes)}, connections={len(self.connections)})"
 
 
-# ===== 注册表工具函数 =====
+# ===== Registry Utility Functions =====
 
 def create_registry():
     """
-    创建节点/层注册表
+    Create node/layer registry
     
     Returns:
         (registry_dict, register_decorator, get_class_func, create_instance_func)
     
-    使用示例:
+    Usage example:
         _registry, register_node, get_node_class, create_node = create_registry()
         
         @register_node
@@ -492,24 +492,24 @@ def create_registry():
     registry: Dict[str, Type[GraphNodeBase]] = {}
     
     def register(cls: Type[GraphNodeBase]) -> Type[GraphNodeBase]:
-        """注册装饰器"""
+        """Register decorator"""
         registry[cls.node_type] = cls
-        logger.debug(f"注册: {cls.node_type} -> {cls.__name__}")
+        logger.debug(f"Registered: {cls.node_type} -> {cls.__name__}")
         return cls
     
     def get_class(node_type: str) -> Optional[Type[GraphNodeBase]]:
-        """根据类型获取类"""
+        """Get class by type"""
         return registry.get(node_type)
     
     def create_instance(node_type: str, node_id: str = None) -> Optional[GraphNodeBase]:
-        """根据类型创建实例"""
+        """Create instance by type"""
         cls = get_class(node_type)
         if cls:
             return cls(node_id=node_id)
         return None
     
     def get_all_types() -> List[str]:
-        """获取所有已注册的类型"""
+        """Get all registered types"""
         return list(registry.keys())
     
     return registry, register, get_class, create_instance, get_all_types

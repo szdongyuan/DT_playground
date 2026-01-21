@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-合并层节点
+Merge Layer Nodes
 """
 
 from ..layer_base import LayerCategory, LayerNode, register_layer

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-统一参数定义
+Unified Parameter Definitions
 
-为节点和层提供通用的参数类型定义。
+Provides common parameter type definitions for nodes and layers.
 """
 
 from dataclasses import dataclass, field
@@ -11,7 +11,7 @@ from typing import Any, List, Optional, Tuple
 
 
 class ParamType(Enum):
-    """参数类型枚举"""
+    """Parameter type enumeration"""
     INT = "int"
     FLOAT = "float"
     STRING = "str"
@@ -26,35 +26,35 @@ class ParamType(Enum):
 @dataclass
 class Parameter:
     """
-    通用参数定义
+    Universal parameter definition
     
-    用于节点参数和层参数的统一表示。
-    支持多种参数类型，包括数值、字符串、选择、文件路径等。
+    Used for unified representation of node parameters and layer parameters.
+    Supports multiple parameter types including numeric, string, choice, file path, etc.
     """
-    name: str                               # 参数名称（唯一标识）
-    display_name: str                       # 显示名称
-    param_type: "ParamType | str"           # 参数类型（支持枚举或字符串）
-    default_value: Any                      # 默认值
-    description: str = ""                   # 描述
-    min_value: Optional[Any] = None         # 最小值（数值类型）
-    max_value: Optional[Any] = None         # 最大值（数值类型）
-    choices: Optional[List[Any]] = None     # 选项列表（choice类型）
-    file_filter: str = ""                   # 文件过滤器（file类型）
-    default_directory: str = ""             # 文件对话框默认目录（file/folder类型）
-    required: bool = True                   # 是否必需
+    name: str                               # Parameter name (unique identifier)
+    display_name: str                       # Display name
+    param_type: "ParamType | str"           # Parameter type (supports enum or string)
+    default_value: Any                      # Default value
+    description: str = ""                   # Description
+    min_value: Optional[Any] = None         # Minimum value (for numeric types)
+    max_value: Optional[Any] = None         # Maximum value (for numeric types)
+    choices: Optional[List[Any]] = None     # Options list (for choice type)
+    file_filter: str = ""                   # File filter (for file type)
+    default_directory: str = ""             # File dialog default directory (for file/folder types)
+    required: bool = True                   # Whether required
     
     def _get_param_type_str(self) -> str:
-        """获取参数类型字符串（兼容枚举和字符串）"""
+        """Get parameter type string (compatible with enum and string)"""
         if isinstance(self.param_type, ParamType):
             return self.param_type.value
         return str(self.param_type)
     
     def validate(self, value: Any) -> Tuple[bool, str]:
         """
-        验证参数值
+        Validate parameter value
         
         Args:
-            value: 待验证的值
+            value: Value to validate
             
         Returns:
             (is_valid, error_message)
@@ -64,7 +64,7 @@ class Parameter:
                 return False, f"参数 {self.display_name} 是必需的"
             return True, ""
         
-        # 获取类型字符串，兼容枚举和字符串
+        # Get type string, compatible with enum and string
         ptype = self._get_param_type_str()
         
         if ptype == "int":
@@ -98,7 +98,7 @@ class Parameter:
         return True, ""
     
     def to_dict(self) -> dict:
-        """序列化为字典"""
+        """Serialize to dictionary"""
         return {
             "name": self.name,
             "display_name": self.display_name,
@@ -115,13 +115,13 @@ class Parameter:
     
     @classmethod
     def from_dict(cls, data: dict) -> 'Parameter':
-        """从字典反序列化"""
-        # 兼容枚举值和字符串
+        """Deserialize from dictionary"""
+        # Compatible with enum value and string
         param_type_raw = data["param_type"]
         try:
             param_type = ParamType(param_type_raw)
         except (ValueError, KeyError):
-            param_type = param_type_raw  # 保持字符串形式
+            param_type = param_type_raw  # Keep as string
         
         return cls(
             name=data["name"],
@@ -152,23 +152,23 @@ def create_parameter(
     required: bool = True
 ) -> Parameter:
     """
-    创建参数的便捷函数
+    Convenience function to create parameters
     
     Args:
-        name: 参数名称
-        param_type: 参数类型（ParamType枚举或字符串）
-        default_value: 默认值
-        display_name: 显示名称（默认使用name）
-        description: 描述
-        min_value: 最小值
-        max_value: 最大值
-        choices: 选项列表
-        file_filter: 文件过滤器
-        default_directory: 文件对话框默认目录
-        required: 是否必需
+        name: Parameter name
+        param_type: Parameter type (ParamType enum or string)
+        default_value: Default value
+        display_name: Display name (defaults to name)
+        description: Description
+        min_value: Minimum value
+        max_value: Maximum value
+        choices: Options list
+        file_filter: File filter
+        default_directory: File dialog default directory
+        required: Whether required
         
     Returns:
-        Parameter 实例
+        Parameter instance
     """
     return Parameter(
         name=name,
@@ -185,8 +185,8 @@ def create_parameter(
     )
 
 
-# 向后兼容的类型别名
-# NodeParameter 和 LayerParameter 现在统一使用 Parameter
+# Backward compatibility type aliases
+# NodeParameter and LayerParameter now uniformly use Parameter
 NodeParameter = Parameter
 LayerParameter = Parameter
 

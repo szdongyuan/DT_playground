@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-核心层节点 (Dense, Embedding等)
+Core Layer Nodes (Dense, Embedding, etc.)
 """
 
 from ..layer_base import LayerCategory, LayerNode, register_layer

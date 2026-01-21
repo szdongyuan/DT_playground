@@ -1,5 +1,5 @@
 """
-配置管理器
+Configuration Manager
 """
 
 import json

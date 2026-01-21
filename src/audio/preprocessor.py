@@ -1,5 +1,5 @@
 """
-音频预处理器
+Audio Preprocessor
 """
 
 from typing import Optional, Tuple

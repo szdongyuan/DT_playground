@@ -1,6 +1,6 @@
 """
-统一样式管理模块
-集中管理所有UI组件的样式，避免代码重复
+Unified Style Management Module
+Centrally manages all UI component styles to avoid code duplication
 """
 
 

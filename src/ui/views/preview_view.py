@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-预览视图
+Preview View
 
-显示音频波形、频谱图、特征、标签等数据预览。
+Displays audio waveform, spectrogram, features, labels, and other data previews.
 使用组件化架构，支持多种数据类型的可视化。
 """
 

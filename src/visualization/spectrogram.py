@@ -1,5 +1,5 @@
 """
-频谱图可视化工具
+Spectrogram Visualization Tools
 """
 
 from typing import Optional, Tuple

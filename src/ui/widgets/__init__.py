@@ -1,5 +1,5 @@
 """
-自定义UI控件模块
+Custom UI Widgets Module
 """
 
 from src.ui.widgets.audio_player import AudioPlayerWidget

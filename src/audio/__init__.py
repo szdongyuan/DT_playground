@@ -1,5 +1,5 @@
 """
-音频处理模块
+Audio Processing Module
 """
 
 from src.audio.augmentation import AudioAugmenter

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-训练相关节点
+Training Related Nodes
 
-包含模型加载、训练器、评估器和模型保存节点。
-模型定义通过独立的"模型"视图进行可视化构建。
+Contains model loading, trainer, evaluator, and model saving nodes.
+Model definition is done through the separate "Model" view for visual construction.
 """
 
 import logging

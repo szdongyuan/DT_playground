@@ -1,6 +1,6 @@
 """
-通用对话框工具
-提供可复制错误文本并自动记录日志的对话框
+Common Dialog Utilities
+Provides dialogs with copyable error text and automatic logging
 """
 
 import logging

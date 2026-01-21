@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-模型构建视图
+Model Builder View
 
-提供可视化拖拽式神经网络模型搭建界面。
+Provides visual drag-and-drop neural network model building interface.
 """
 
 import logging

@@ -1,12 +1,12 @@
 """
-训练器模块
-提供完整的模型训练功能
+Trainer Module
+Provides complete model training functionality
 
-架构说明
---------
-- 基础回调类定义在 `callbacks.py` 中
-- `TrainerCallback` 是针对 `TrainerWorker` 的扩展回调（包含 total_epochs 追踪）
-- 节点 `TrainerNode` 直接使用 `callbacks.py` 中的 `TrainingCallback`
+Architecture Notes
+------------------
+- Base callback classes are defined in `callbacks.py`
+- `TrainerCallback` is an extended callback for `TrainerWorker` (includes total_epochs tracking)
+- Node `TrainerNode` directly uses `TrainingCallback` from `callbacks.py`
 """
 
 import os

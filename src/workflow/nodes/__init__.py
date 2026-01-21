@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-工作流节点
+Workflow Nodes
 
-提供各类数据处理和训练节点。
+Provides various data processing and training nodes.
 """
 
-# 导入所有节点模块以触发注册（按字母序）
+# Import all node modules to trigger registration (alphabetical order)
 from . import augmentation
 from . import control
 from . import data_source

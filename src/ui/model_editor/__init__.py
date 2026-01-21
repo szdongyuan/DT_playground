@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-模型编辑器UI组件
+Model Editor UI Components
 """
 
 from .layer_palette import LayerPalette

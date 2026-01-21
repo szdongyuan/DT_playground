@@ -1,5 +1,5 @@
 """
-训练回调
+Training Callbacks
 """
 
 from typing import Callable, Optional

@@ -1,370 +1,370 @@
-# AI声学信号训练平台 - 项目架构
+# AI Acoustic Signal Training Platform - Project Architecture
 
-> **维护说明**: 每次修改代码结构后请同步更新此文件
+> **Maintenance Note**: Please update this file after any code structure changes
 
-## 技术栈
+## Technology Stack
 
-| 类别 | 技术 |
-|------|------|
-| 语言 | Python 3.10+ |
-| GUI框架 | PyQt6 (Catppuccin深色主题) |
-| 节点编辑器 | 自定义 PyQt6 实现 |
-| 深度学习 | TensorFlow 2.15+ / Keras 3.0+ |
-| 音频处理 | librosa, soundfile, scipy, pydub, sounddevice |
-| 可视化 | pyqtgraph, matplotlib |
+| Category | Technology |
+|----------|------------|
+| Language | Python 3.10+ |
+| GUI Framework | PyQt6 (Catppuccin dark theme) |
+| Node Editor | Custom PyQt6 implementation |
+| Deep Learning | TensorFlow 2.15+ / Keras 3.0+ |
+| Audio Processing | librosa, soundfile, scipy, pydub, sounddevice |
+| Visualization | pyqtgraph, matplotlib |
 
-## 核心概念
+## Core Concepts
 
-### 工作流模式
+### Workflow Mode
 
-平台采用 **节点式工作流** 架构，用户通过拖拽节点、连接端口来定义完整的数据处理和训练流程。
+The platform uses a **node-based workflow** architecture, where users define complete data processing and training pipelines by dragging nodes and connecting ports.
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                        工作流示例：降噪模型训练                    │
+│                   Workflow Example: Denoising Model Training     │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                  │
 │   ┌──────────┐     ┌──────────┐     ┌──────────┐                │
-│   │ 音频文件夹│──┬─→│ 添加噪声 │────→│ Mel频谱  │──→ [Input]     │
+│   │AudioFolder│──┬─→│ AddNoise │────→│   Mel    │──→ [Input]     │
 │   └──────────┘  │  └──────────┘     └──────────┘       │        │
 │                 │                                       ▼        │
 │                 │  ┌──────────┐                   ┌──────────┐  │
-│                 └─→│ Mel频谱  │──→ [Target] ────→│  训练器  │  │
+│                 └─→│   Mel    │──→ [Target] ────→│ Trainer  │  │
 │                    └──────────┘                   └──────────┘  │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### 支持的任务类型
+### Supported Task Types
 
-| 任务类型 | 输入 | 输出 | 用途 |
-|---------|------|------|------|
-| 分类 | 特征 | 标签 (0/1/2...) | 声音分类、异常检测 |
-| 回归 | 音频/特征 | 音频/特征 | 降噪、语音增强 |
-| 自编码 | 音频/特征 | 相同数据 | 特征学习、压缩 |
+| Task Type | Input | Output | Use Case |
+|-----------|-------|--------|----------|
+| Classification | Features | Labels (0/1/2...) | Sound classification, anomaly detection |
+| Regression | Audio/Features | Audio/Features | Denoising, speech enhancement |
+| Autoencoding | Audio/Features | Same data | Feature learning, compression |
 
-## 目录结构
+## Directory Structure
 
 ```
 DT_playground/
-├── main.py                     # 应用入口 (日志配置, Qt初始化, 全局异常处理)
-├── requirements.txt            # 依赖列表
+├── main.py                     # Application entry (logging config, Qt init, global exception handling)
+├── requirements.txt            # Dependency list
 ├── .cursor/
-│   ├── rules.mdc              # Cursor AI 编码规则
-│   └── ARCHITECTURE.md        # 本文件 - 项目架构文档
-├── audio_data/                 # 音频数据目录
-├── workflows/                  # 保存的工作流文件 (JSON)
-├── logs/                       # 运行日志
-├── models/                     # 保存的训练模型
+│   ├── rules.mdc              # Cursor AI coding rules
+│   └── ARCHITECTURE.md        # This file - project architecture documentation
+├── audio_data/                 # Audio data directory
+├── workflows/                  # Saved workflow files (JSON)
+├── logs/                       # Runtime logs
+├── models/                     # Saved trained models
 ├── resources/
 │   └── styles/
-│       └── dark_theme.qss     # QSS样式文件
+│       └── dark_theme.qss     # QSS stylesheet
 ├── tests/
 │   └── __init__.py
-└── src/                        # 源代码
+└── src/                        # Source code
     ├── __init__.py
-    ├── app.py                  # AudioTrainingApp 主应用类
+    ├── app.py                  # AudioTrainingApp main application class
     │
-    ├── core/                   # 核心模块（通用抽象）
+    ├── core/                   # Core module (common abstractions)
     │   ├── __init__.py
-    │   ├── parameter.py        # Parameter 统一参数类（NodeParameter/LayerParameter 的基类）
-    │   ├── event_bus.py        # EventBus 全局事件总线（跨组件通信）
-    │   └── graph_base.py       # GraphNodeBase, GraphBase 图结构基类（文档参考）
+    │   ├── parameter.py        # Parameter unified class (base for NodeParameter/LayerParameter)
+    │   ├── event_bus.py        # EventBus global event bus (cross-component communication)
+    │   └── graph_base.py       # GraphNodeBase, GraphBase graph structure base classes (documentation reference)
     │
-    ├── controllers/            # 控制器层（前后端分离）
+    ├── controllers/            # Controller layer (frontend-backend separation)
     │   ├── __init__.py
-    │   ├── workflow_controller.py   # WorkflowController（管理 Engine 生命周期）
+    │   ├── workflow_controller.py   # WorkflowController (manages Engine lifecycle)
     │   ├── training_controller.py   # TrainingController
-    │   └── navigation_controller.py # NavigationController（视图导航）
+    │   └── navigation_controller.py # NavigationController (view navigation)
     │
-    ├── workflow/               # 工作流引擎
+    ├── workflow/               # Workflow engine
     │   ├── __init__.py
-    │   ├── engine.py           # WorkflowEngine 工作流执行引擎
-    │   ├── node_base.py        # BaseNode 节点基类
-    │   ├── port.py             # Port, DataType 端口与数据类型定义
-    │   ├── connection.py       # Connection 连接定义
-    │   ├── workflow.py         # Workflow 工作流数据模型 (序列化/反序列化)
-    │   └── nodes/              # 节点实现
+    │   ├── engine.py           # WorkflowEngine workflow execution engine
+    │   ├── node_base.py        # BaseNode node base class
+    │   ├── port.py             # Port, DataType port and data type definitions
+    │   ├── connection.py       # Connection definition
+    │   ├── workflow.py         # Workflow data model (serialization/deserialization)
+    │   └── nodes/              # Node implementations
     │       ├── __init__.py
-    │       ├── data_source.py      # 数据源节点 (音频文件夹, 标签文件, 单个音频)
-    │       ├── preprocessing.py    # 预处理节点 (重采样, 裁剪, 归一化, 静音裁剪)
-    │       ├── augmentation.py     # 数据增强节点 (添加噪声, 时间拉伸, 音高偏移)
-    │       ├── feature.py          # 特征提取节点 (Mel, MFCC, STFT, 统计特征)
-    │       ├── training.py         # 训练节点 (训练器, 模型定义, 评估器)
-    │       └── control.py          # 控制节点 (循环, 数据分割)
+    │       ├── data_source.py      # Data source nodes (audio folder, label file, single audio)
+    │       ├── preprocessing.py    # Preprocessing nodes (resample, trim, normalize, silence trim)
+    │       ├── augmentation.py     # Data augmentation nodes (add noise, time stretch, pitch shift)
+    │       ├── feature.py          # Feature extraction nodes (Mel, MFCC, STFT, statistics)
+    │       ├── training.py         # Training nodes (trainer, model definition, evaluator)
+    │       └── control.py          # Control nodes (loop, data split)
     │
-    ├── audio/                  # 音频处理模块
+    ├── audio/                  # Audio processing module
     │   ├── __init__.py
-    │   ├── loader.py           # 音频加载器
-    │   ├── preprocessor.py     # 预处理 (重采样, 裁剪, 填充)
-    │   ├── features.py         # FeatureExtractor (Mel/MFCC/STFT/色度特征)
-    │   └── augmentation.py     # 数据增强 (时间拉伸, 音高偏移, 添加噪声)
+    │   ├── loader.py           # Audio loader
+    │   ├── preprocessor.py     # Preprocessing (resample, trim, pad)
+    │   ├── features.py         # FeatureExtractor (Mel/MFCC/STFT/chroma features)
+    │   └── augmentation.py     # Data augmentation (time stretch, pitch shift, add noise)
     │
-    ├── models/                 # 模型定义（已弃用，使用 model_builder/ 替代）
+    ├── models/                 # Model definitions (deprecated, use model_builder/ instead)
     │   └── __init__.py
     │
-    ├── model_builder/          # 【新增】可视化模型构建器
+    ├── model_builder/          # [NEW] Visual model builder
     │   ├── __init__.py
-    │   ├── layer_base.py       # LayerNode 层节点基类 (含 has_weights, trainable 属性)
-    │   ├── model_graph.py      # ModelGraph 模型图数据结构 (含冻结状态应用)
-    │   ├── keras_parser.py     # KerasModelParser Keras模型逆向解析器
-    │   └── layers/             # 层节点实现
+    │   ├── layer_base.py       # LayerNode layer node base class (with has_weights, trainable attributes)
+    │   ├── model_graph.py      # ModelGraph model graph data structure (with freeze state application)
+    │   ├── keras_parser.py     # KerasModelParser Keras model reverse parser
+    │   └── layers/             # Layer node implementations
     │       ├── __init__.py
-    │       ├── input_layers.py       # 输入层
-    │       ├── core_layers.py        # 核心层 (Dense, Embedding)
-    │       ├── conv_layers.py        # 卷积层 (Conv1D, Conv2D)
-    │       ├── recurrent_layers.py   # 循环层 (LSTM, GRU)
-    │       ├── attention_layers.py   # 注意力层 (Transformer, MultiHeadAttention)
-    │       ├── pooling_layers.py     # 池化层
-    │       ├── normalization_layers.py  # 归一化层
-    │       ├── regularization_layers.py # 正则化层 (Dropout)
-    │       ├── reshape_layers.py     # 形状变换层
-    │       ├── activation_layers.py  # 激活函数层
-    │       └── merge_layers.py       # 合并层
+    │       ├── input_layers.py       # Input layers
+    │       ├── core_layers.py        # Core layers (Dense, Embedding)
+    │       ├── conv_layers.py        # Convolutional layers (Conv1D, Conv2D)
+    │       ├── recurrent_layers.py   # Recurrent layers (LSTM, GRU)
+    │       ├── attention_layers.py   # Attention layers (Transformer, MultiHeadAttention)
+    │       ├── pooling_layers.py     # Pooling layers
+    │       ├── normalization_layers.py  # Normalization layers
+    │       ├── regularization_layers.py # Regularization layers (Dropout)
+    │       ├── reshape_layers.py     # Shape transformation layers
+    │       ├── activation_layers.py  # Activation function layers
+    │       └── merge_layers.py       # Merge layers
     │
-    ├── training/               # 训练模块
+    ├── training/               # Training module
     │   ├── __init__.py
-    │   ├── trainer.py          # TrainerWorker (QThread，使用 callbacks.TrainingCallback)
-    │   ├── callbacks.py        # TrainingCallback, EarlyStoppingWithUI (统一回调类)
+    │   ├── trainer.py          # TrainerWorker (QThread, uses callbacks.TrainingCallback)
+    │   ├── callbacks.py        # TrainingCallback, EarlyStoppingWithUI (unified callback classes)
     │   ├── data_generator.py   # AudioDataGenerator (Keras Sequence)
-    │   └── evaluator.py        # ModelEvaluator (混淆矩阵, 分类报告)
+    │   └── evaluator.py        # ModelEvaluator (confusion matrix, classification report)
     │
-    ├── ui/                     # UI模块
+    ├── ui/                     # UI module
     │   ├── __init__.py
-    │   ├── main_window.py      # MainWindow (多视图切换布局)
-    │   ├── styles.py           # Styles 统一样式管理
+    │   ├── main_window.py      # MainWindow (multi-view switching layout)
+    │   ├── styles.py           # Styles unified style management
     │   │
-    │   ├── views/              # 【新增】视图模块
+    │   ├── views/              # [NEW] View module
     │   │   ├── __init__.py
-    │   │   ├── workflow_view.py       # WorkflowView 节点编辑器视图
-    │   │   ├── model_builder_view.py  # ModelBuilderView 可视化模型搭建视图
-    │   │   ├── preview_view.py        # PreviewView 数据预览视图 (波形/频谱)
-    │   │   └── training_view.py       # TrainingView 训练监控视图
+    │   │   ├── workflow_view.py       # WorkflowView node editor view
+    │   │   ├── model_builder_view.py  # ModelBuilderView visual model building view
+    │   │   ├── preview_view.py        # PreviewView data preview view (waveform/spectrogram)
+    │   │   └── training_view.py       # TrainingView training monitoring view
     │   │
-    │   ├── graph_editor/       # 图编辑器基类（复用模块）
+    │   ├── graph_editor/       # Graph editor base classes (reusable module)
     │   │   ├── __init__.py
     │   │   └── base_items.py       # BasePortItem, BaseConnectionItem, BaseGraphScene, BaseGraphView
     │   │
-    │   ├── node_editor/        # 节点编辑器组件 (工作流)
+    │   ├── node_editor/        # Node editor components (workflow)
     │   │   ├── __init__.py
-    │   │   ├── node_graph.py       # NodeGraphWidget 节点画布（继承 BaseGraphView）
-    │   │   ├── node_palette.py     # NodePalette 节点面板 (可拖拽)
-    │   │   └── property_panel.py   # PropertyPanel 节点属性面板
+    │   │   ├── node_graph.py       # NodeGraphWidget node canvas (inherits BaseGraphView)
+    │   │   ├── node_palette.py     # NodePalette node panel (draggable)
+    │   │   └── property_panel.py   # PropertyPanel node property panel
     │   │
-    │   ├── model_editor/       # 模型编辑器组件
+    │   ├── model_editor/       # Model editor components
     │   │   ├── __init__.py
-    │   │   ├── layer_palette.py      # LayerPalette 层面板 (可拖拽)
-    │   │   ├── model_graph_widget.py # ModelGraphWidget 模型画布（继承 BaseGraphView）
-    │   │   └── layer_property_panel.py # LayerPropertyPanel 层属性面板
+    │   │   ├── layer_palette.py      # LayerPalette layer panel (draggable)
+    │   │   ├── model_graph_widget.py # ModelGraphWidget model canvas (inherits BaseGraphView)
+    │   │   └── layer_property_panel.py # LayerPropertyPanel layer property panel
     │   │
-    │   ├── widgets/            # 自定义控件
+    │   ├── widgets/            # Custom widgets
     │   │   ├── __init__.py
-    │   │   ├── waveform_widget.py      # WaveformWidget (波形显示)
-    │   │   ├── spectrogram_widget.py   # SpectrogramWidget (频谱图显示)
-    │   │   └── audio_player.py         # AudioPlayerWidget (播放控制)
+    │   │   ├── waveform_widget.py      # WaveformWidget (waveform display)
+    │   │   ├── spectrogram_widget.py   # SpectrogramWidget (spectrogram display)
+    │   │   └── audio_player.py         # AudioPlayerWidget (playback control)
     │   │
-    │   └── dialogs/            # 对话框
+    │   └── dialogs/            # Dialogs
     │       ├── __init__.py
     │       ├── settings_dialog.py
     │       ├── about_dialog.py
     │       ├── export_dialog.py
-    │       └── dataset_dialog.py       # 数据集划分对话框
+    │       └── dataset_dialog.py       # Dataset split dialog
     │
-    ├── visualization/          # 可视化模块
+    ├── visualization/          # Visualization module
     │   ├── __init__.py
     │   ├── waveform.py
     │   ├── spectrogram.py
     │   └── metrics.py
     │
-    └── utils/                  # 工具模块
+    └── utils/                  # Utility module
         ├── __init__.py
-        ├── config.py           # ConfigManager 单例配置管理
-        ├── dataset_manager.py  # DatasetManager (数据集划分)
+        ├── config.py           # ConfigManager singleton configuration management
+        ├── dataset_manager.py  # DatasetManager (dataset splitting)
         ├── audio_utils.py
         ├── file_utils.py
         └── pyqtgraph_fix.py
 ```
 
-## 节点系统设计
+## Node System Design
 
-### 多通道音频支持
+### Multi-channel Audio Support
 
-平台原生支持多通道音频处理，数据格式统一为 `(channels, samples)`：
+The platform natively supports multi-channel audio processing, with data format unified to `(channels, samples)`:
 
-| 输入类型 | 原始格式 | 统一格式 | 说明 |
-|---------|---------|---------|------|
-| 单声道音频 | `(N,)` | `(1, N)` | 自动扩展为2D |
-| 立体声音频 | `(2, N)` | `(2, N)` | 保持原样 |
-| 多声道音频 | `(n_ch, N)` | `(n_ch, N)` | 保持原样 |
+| Input Type | Original Format | Unified Format | Description |
+|------------|-----------------|----------------|-------------|
+| Mono audio | `(N,)` | `(1, N)` | Auto-expanded to 2D |
+| Stereo audio | `(2, N)` | `(2, N)` | Unchanged |
+| Multi-channel audio | `(n_ch, N)` | `(n_ch, N)` | Unchanged |
 
-#### AudioData 数据结构
+#### AudioData Data Structure
 
 ```python
 @dataclass
 class AudioData:
-    """音频数据包装 - 统一为 (channels, samples) 格式"""
-    data: np.ndarray        # 音频数据，形状为 (channels, samples)
-    sample_rate: int        # 采样率
-    file_path: str = ""     # 源文件路径
-    duration: float = 0.0   # 时长（秒）
+    """Audio data wrapper - unified to (channels, samples) format"""
+    data: np.ndarray        # Audio data, shape (channels, samples)
+    sample_rate: int        # Sample rate
+    file_path: str = ""     # Source file path
+    duration: float = 0.0   # Duration (seconds)
     
     @property
     def channels(self) -> int:
-        """返回通道数"""
+        """Return number of channels"""
         return self.data.shape[0]
     
     @property
     def samples(self) -> int:
-        """返回样本数"""
+        """Return number of samples"""
         return self.data.shape[1]
     
     @property
     def is_mono(self) -> bool:
-        """是否为单声道"""
+        """Check if mono"""
         return self.channels == 1
     
     def get_channel(self, channel_idx: int) -> np.ndarray:
-        """获取指定通道的数据 (返回 1D 数组)"""
+        """Get data for specified channel (returns 1D array)"""
     
     def to_mono(self, method: str = "mean") -> 'AudioData':
-        """转换为单声道"""
+        """Convert to mono"""
 ```
 
-#### FeatureData 数据结构
+#### FeatureData Data Structure
 
 ```python
 @dataclass
 class FeatureData:
-    """特征数据包装 - 多通道格式"""
-    data: np.ndarray        # 特征数据
-                            # - 时频特征: (channels, features, frames)
-                            # - 统计特征: (channels, features)
-    feature_type: str       # 特征类型
-    sample_rate: int        # 原始采样率
-    hop_length: int         # 帧移
-    source_file: str = ""   # 源文件路径
+    """Feature data wrapper - multi-channel format"""
+    data: np.ndarray        # Feature data
+                            # - Time-frequency features: (channels, features, frames)
+                            # - Statistical features: (channels, features)
+    feature_type: str       # Feature type
+    sample_rate: int        # Original sample rate
+    hop_length: int         # Hop length
+    source_file: str = ""   # Source file path
     
     @property
     def channels(self) -> int:
-        """返回通道数"""
+        """Return number of channels"""
 ```
 
-#### 处理策略
+#### Processing Strategy
 
-所有预处理、数据增强、特征提取节点都采用 **分通道处理** 策略：
+All preprocessing, data augmentation, and feature extraction nodes use a **per-channel processing** strategy:
 
-1. **预处理节点**: 对每个通道分别应用相同的处理（重采样、归一化等）
-2. **数据增强节点**: 对每个通道分别增强，使用相同的随机参数保持一致性
-3. **特征提取节点**: 对每个通道分别提取特征，堆叠为 `(channels, features, frames)`
-4. **静音裁剪**: 使用混合信号检测边界，对所有通道应用相同的裁剪
+1. **Preprocessing nodes**: Apply the same processing to each channel separately (resample, normalize, etc.)
+2. **Data augmentation nodes**: Augment each channel separately, using the same random parameters for consistency
+3. **Feature extraction nodes**: Extract features from each channel separately, stack to `(channels, features, frames)`
+4. **Silence trimming**: Use mixed signal to detect boundaries, apply the same trimming to all channels
 
 ```python
-# 通用的多通道处理函数
+# Generic multi-channel processing function
 def process_channels(data: np.ndarray, channel_func) -> np.ndarray:
     """
-    对每个通道分别应用处理函数
+    Apply processing function to each channel separately
     
     Args:
-        data: 音频数据，形状为 (channels, samples)
-        channel_func: 处理单个通道的函数，接受 1D 数组返回 1D 数组
+        data: Audio data, shape (channels, samples)
+        channel_func: Function to process a single channel, accepts 1D array returns 1D array
     
     Returns:
-        处理后的数据，形状为 (channels, new_samples)
+        Processed data, shape (channels, new_samples)
     """
 ```
 
-### 数据类型 (DataType)
+### Data Types (DataType)
 
 ```python
 class DataType(Enum):
-    """所有数据类型均支持单个或批量（列表）形式，运行时通过 isinstance 判断"""
-    AUDIO = "audio"           # 音频数据 (AudioData 或 List[AudioData])
-    FEATURE_1D = "feature_1d" # 1D特征 (如统计特征)
-    FEATURE_2D = "feature_2d" # 2D特征 (如Mel频谱)
-    FEATURE = "feature"       # 通用特征类型（兼容1D和2D）
-    LABEL = "label"           # 标签数据 (单个或列表)
-    MODEL = "model"           # Keras模型
-    METRICS = "metrics"       # 训练/评估指标
-    ANY = "any"               # 任意类型（用于通用节点）
-    TRIGGER = "trigger"       # 触发信号（用于控制流）
+    """All data types support single or batch (list) form, determined at runtime via isinstance"""
+    AUDIO = "audio"           # Audio data (AudioData or List[AudioData])
+    FEATURE_1D = "feature_1d" # 1D features (e.g., statistical features)
+    FEATURE_2D = "feature_2d" # 2D features (e.g., Mel spectrogram)
+    FEATURE = "feature"       # Generic feature type (compatible with 1D and 2D)
+    LABEL = "label"           # Label data (single or list)
+    MODEL = "model"           # Keras model
+    METRICS = "metrics"       # Training/evaluation metrics
+    ANY = "any"               # Any type (for generic nodes)
+    TRIGGER = "trigger"       # Trigger signal (for control flow)
 ```
 
-> **设计说明**: 
-> - 原有的 `AUDIO_LIST`、`FEATURE_LIST`、`LABEL_LIST` 已合并到对应的基础类型中
-> - 所有类型均支持单个或批量形式，运行时通过 `isinstance(data, list)` 判断
-> - `ANY` 类型双向兼容，允许灵活连接（如透传节点、数据分割节点）
-> - 实际类型验证在节点的 `execute()` 方法中通过 `validate_audio_input()` 进行运行时检查
+> **Design Notes**: 
+> - The former `AUDIO_LIST`, `FEATURE_LIST`, `LABEL_LIST` have been merged into their base types
+> - All types support single or batch form, determined at runtime via `isinstance(data, list)`
+> - `ANY` type is bidirectionally compatible, allowing flexible connections (e.g., passthrough nodes, data split nodes)
+> - Actual type validation is done at runtime in the node's `execute()` method via `validate_audio_input()`
 
-### 节点分类
+### Node Categories
 
-#### 数据源节点 (DataSource)
-| 节点 | 输出端口 | 说明 |
-|------|----------|------|
-| 📂 AudioFolderNode | audio | 加载目录下所有音频 (List[AudioData]) |
-| 📄 LabelFileNode | labels | 加载 CSV/JSON 标签文件 |
-| 🎵 AudioFileNode | audio | 加载单个音频文件 (AudioData) |
+#### Data Source Nodes (DataSource)
+| Node | Output Port | Description |
+|------|-------------|-------------|
+| 📂 AudioFolderNode | audio | Load all audio in directory (List[AudioData]) |
+| 📄 LabelFileNode | labels | Load CSV/JSON label file |
+| 🎵 AudioFileNode | audio | Load single audio file (AudioData) |
 
-#### 预处理节点 (Preprocessing)
-| 节点 | 输入 | 输出 | 参数 |
-|------|------|------|------|
+#### Preprocessing Nodes (Preprocessing)
+| Node | Input | Output | Parameters |
+|------|-------|--------|------------|
 | 📏 ResampleNode | audio | audio | target_sr |
 | ✂️ TrimPadNode | audio | audio | duration, mode |
 | 📊 NormalizeNode | audio | audio | method (peak/rms) |
 | 🎚️ SilenceTrimNode | audio | audio | threshold_db |
 
-#### 数据增强节点 (Augmentation)
-| 节点 | 输入 | 输出 | 参数 |
-|------|------|------|------|
+#### Data Augmentation Nodes (Augmentation)
+| Node | Input | Output | Parameters |
+|------|-------|--------|------------|
 | 🔊 AddNoiseNode | audio | audio | noise_type, snr_db |
 | ⏱️ TimeStretchNode | audio | audio | rate_range |
 | 🎵 PitchShiftNode | audio | audio | semitones_range |
 | 🔀 RandomAugmentNode | audio | audio | augmentations[] |
 
-#### 特征提取节点 (Feature)
-| 节点 | 输入 | 输出 | 参数 |
-|------|------|------|------|
+#### Feature Extraction Nodes (Feature)
+| Node | Input | Output | Parameters |
+|------|-------|--------|------------|
 | 📈 MelSpectrogramNode | audio | feature_2d | n_mels, hop_length |
 | 📊 MFCCNode | audio | feature_2d | n_mfcc, include_delta |
 | 🎼 STFTNode | audio | feature_2d | n_fft, hop_length |
 | 📉 StatisticsNode | audio | feature_1d | features[] |
 
-> **实现说明**: 所有特征提取节点内部统一使用 `src.audio.features.FeatureExtractor` 进行特征计算，避免代码重复。
+> **Implementation Note**: All feature extraction nodes internally use `src.audio.features.FeatureExtractor` for feature computation to avoid code duplication.
 
-#### 训练节点 (Training)
-| 节点 | 输入端口 | 输出端口 | 说明 |
-|------|----------|----------|------|
-| 📥 LoadModelNode | - | model | 加载模型（支持.keras/.h5和.model.json） |
-| 📤 SaveModelNode | model | model_path | 保存模型 |
-| 🏋️ TrainerNode | input, target, model | trained_model | 执行训练 |
-| 📊 EvaluatorNode | model, data | metrics | 评估模型 |
+#### Training Nodes (Training)
+| Node | Input Ports | Output Ports | Description |
+|------|-------------|--------------|-------------|
+| 📥 LoadModelNode | - | model | Load model (supports .keras/.h5 and .model.json) |
+| 📤 SaveModelNode | model | model_path | Save model |
+| 🏋️ TrainerNode | input, target, model | trained_model | Execute training |
+| 📊 EvaluatorNode | model, data | metrics | Evaluate model |
 
-#### 控制节点 (Control)
-| 节点 | 输入 | 输出 | 说明 |
-|------|------|------|------|
-| ◇ PassthroughNode | in | out | 透传节点（紧凑尺寸） |
-| 🔄 LoopNode | data | item | 循环遍历数据集 |
-| ✂️ SplitNode | data | train, val, test | 数据集划分 |
+#### Control Nodes (Control)
+| Node | Input | Output | Description |
+|------|-------|--------|-------------|
+| ◇ PassthroughNode | in | out | Passthrough node (compact size) |
+| 🔄 LoopNode | data | item | Loop over dataset |
+| ✂️ SplitNode | data | train, val, test | Dataset split |
 
-### 统一参数类
+### Unified Parameter Class
 
-工作流节点和模型层节点使用统一的参数定义（`src/core/parameter.py`）：
+Workflow nodes and model layer nodes use unified parameter definitions (`src/core/parameter.py`):
 
 ```python
 class ParamType(Enum):
-    """参数类型"""
+    """Parameter types"""
     INT = "int"
     FLOAT = "float"
     STRING = "string"
     BOOL = "bool"
-    CHOICE = "choice"      # 下拉选择
-    FILE = "file"          # 文件选择
-    FOLDER = "folder"      # 文件夹选择
-    TUPLE = "tuple"        # 元组（如形状）
-    LIST = "list"          # 列表
+    CHOICE = "choice"      # Dropdown selection
+    FILE = "file"          # File selection
+    FOLDER = "folder"      # Folder selection
+    TUPLE = "tuple"        # Tuple (e.g., shape)
+    LIST = "list"          # List
 
 @dataclass
 class Parameter:
-    """统一参数定义"""
+    """Unified parameter definition"""
     name: str
     param_type: ParamType
     default: Any
@@ -372,311 +372,313 @@ class Parameter:
     min_value: Optional[float] = None
     max_value: Optional[float] = None
     choices: Optional[List[Any]] = None
-    default_directory: str = ""  # 用于 FILE/FOLDER 类型
+    default_directory: str = ""  # For FILE/FOLDER types
 
-# 向后兼容别名
-NodeParameter = Parameter   # workflow/node_base.py 使用
-LayerParameter = Parameter  # model_builder/layer_base.py 使用
+# Backward compatibility aliases
+NodeParameter = Parameter   # Used by workflow/node_base.py
+LayerParameter = Parameter  # Used by model_builder/layer_base.py
 ```
 
-### 节点基类
+### Node Base Class
 
 ```python
 class BaseNode:
-    """节点基类"""
-    node_id: str              # 唯一标识
-    node_type: str            # 节点类型
-    display_name: str         # 显示名称
-    category: str             # 分类 (data_source/preprocessing/...)
-    inputs: Dict[str, Port]   # 输入端口
-    outputs: Dict[str, Port]  # 输出端口
-    parameters: Dict          # 节点参数
+    """Node base class"""
+    node_id: str              # Unique identifier
+    node_type: str            # Node type
+    display_name: str         # Display name
+    category: str             # Category (data_source/preprocessing/...)
+    inputs: Dict[str, Port]   # Input ports
+    outputs: Dict[str, Port]  # Output ports
+    parameters: Dict          # Node parameters
     
     def execute(self, inputs: Dict) -> Dict:
-        """执行节点逻辑，返回输出"""
+        """Execute node logic, return outputs"""
         raise NotImplementedError
     
     def validate(self) -> Tuple[bool, str]:
-        """验证节点配置"""
+        """Validate node configuration"""
         return True, ""
 ```
 
-## UI架构
+## UI Architecture
 
-### 多视图布局
+### Multi-View Layout
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│  菜单栏  │  文件  │  编辑  │  视图  │  工作流  │  帮助  │        │
+│  Menu Bar  │  File  │  Edit  │  View  │  Workflow  │  Help  │    │
 ├─────────────────────────────────────────────────────────────────┤
-│  工具栏  │ 新建 │ 打开 │ 保存 │ ─── │ 运行 │ 停止 │ ─── │ 视图切换 │
+│  Toolbar  │ New │ Open │ Save │ ─── │ Run │ Stop │ ─── │ View Switch │
 ├──────────┬──────────────────────────────────────────┬───────────┤
 │          │                                          │           │
-│  节点    │           主视图区域                      │   属性    │
-│  面板    │   (可切换: 工作流 / 模型 / 预览 / 训练)    │   面板    │
-│          │                                          │           │
+│  Node    │           Main View Area                 │  Property │
+│  Panel   │   (Switchable: Workflow/Model/Preview/   │  Panel    │
+│          │    Training)                             │           │
 │ ──────── │                                          │           │
-│ 数据源   │                                          │  节点参数  │
-│ · 音频   │                                          │  配置区   │
-│ · 标签   │                                          │           │
+│ Data     │                                          │  Node     │
+│ Source   │                                          │  Parameter│
+│ · Audio  │                                          │  Config   │
+│ · Labels │                                          │           │
 │ ──────── │                                          │ ───────── │
-│ 预处理   │                                          │           │
-│ · 重采样 │                                          │  预览区   │
-│ · 裁剪   │                                          │ (选中节点  │
-│ ──────── │                                          │  的输出)  │
-│ 增强     │                                          │           │
+│ Preproc  │                                          │           │
+│ · Resamp │                                          │  Preview  │
+│ · Trim   │                                          │ (Selected │
+│ ──────── │                                          │  node     │
+│ Augment  │                                          │  output)  │
 │ ──────── │                                          │           │
-│ 特征     │                                          │           │
+│ Features │                                          │           │
 │ ──────── │                                          │           │
-│ 训练     │                                          │           │
+│ Training │                                          │           │
 │          │                                          │           │
 └──────────┴──────────────────────────────────────────┴───────────┘
 ```
 
-### 视图说明
+### View Descriptions
 
-| 视图 | 组件 | 功能 |
-|------|------|------|
-| WorkflowView | NodeGraph + 节点 | 拖拽编辑数据处理工作流 |
-| ModelBuilderView | ModelGraph + 层节点 | 可视化拖拽搭建神经网络模型 |
-| PreviewView | WaveformWidget + SpectrogramWidget | 预览音频/特征数据 |
-| TrainingView | TrainingPanel + MetricsChart | 训练进度和指标监控 |
+| View | Components | Function |
+|------|------------|----------|
+| WorkflowView | NodeGraph + Nodes | Drag-and-drop workflow editing |
+| ModelBuilderView | ModelGraph + Layer Nodes | Visual drag-and-drop neural network building |
+| PreviewView | WaveformWidget + SpectrogramWidget | Preview audio/feature data |
+| TrainingView | TrainingPanel + MetricsChart | Training progress and metrics monitoring |
 
-### 图编辑器基类
+### Graph Editor Base Classes
 
-工作流编辑器和模型编辑器共享通用的图编辑 UI 基类（`src/ui/graph_editor/base_items.py`）：
+The workflow editor and model editor share common graph editing UI base classes (`src/ui/graph_editor/base_items.py`):
 
-| 基类 | 继承者 | 说明 |
-|------|--------|------|
-| BasePortItem | PortItem, LayerPortItem | 端口图形项（连接点） |
-| BaseNodeItem | NodeItem, LayerItem | 节点图形项（可拖拽） |
-| BaseConnectionItem | ConnectionItem, LayerConnectionItem | 连接线 |
-| BaseGraphScene | NodeGraphScene, ModelGraphScene | 图场景（管理节点和连接） |
-| BaseGraphView | NodeGraphView, ModelGraphView | 图视图（缩放、平移、拖放） |
+| Base Class | Inheritors | Description |
+|------------|------------|-------------|
+| BasePortItem | PortItem, LayerPortItem | Port graphics item (connection point) |
+| BaseNodeItem | NodeItem, LayerItem | Node graphics item (draggable) |
+| BaseConnectionItem | ConnectionItem, LayerConnectionItem | Connection line |
+| BaseGraphScene | NodeGraphScene, ModelGraphScene | Graph scene (manages nodes and connections) |
+| BaseGraphView | NodeGraphView, ModelGraphView | Graph view (zoom, pan, drag-drop) |
 
-**复用功能**:
-- 节点/端口渲染和交互
-- 连接线绘制（贝塞尔曲线）
-- 网格背景绘制
-- 鼠标滚轮缩放
-- 中键平移
-- 拖放支持
-- 选中状态高亮
+**Reusable Features**:
+- Node/port rendering and interaction
+- Connection line drawing (Bezier curves)
+- Grid background drawing
+- Mouse wheel zoom
+- Middle-button pan
+- Drag-drop support
+- Selection highlighting
 
-### 模型构建器
+### Model Builder
 
-模型构建器提供可视化的神经网络搭建功能：
+The model builder provides visual neural network construction:
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│  📐 模型构建器视图                                                │
+│  📐 Model Builder View                                           │
 ├──────────┬──────────────────────────────────────────┬───────────┤
 │          │                                          │           │
-│  层节点  │         模型画布                          │   层属性  │
-│  面板    │   (拖拽层节点，连接构建网络)               │   面板    │
+│  Layer   │         Model Canvas                     │  Layer    │
+│  Node    │   (Drag layer nodes, connect to build    │  Property │
+│  Panel   │    network)                              │  Panel    │
 │          │                                          │           │
 │ ──────── │   ┌──────┐    ┌──────┐    ┌──────┐      │           │
-│ 输入     │   │Input │───→│Conv1D│───→│Dense │      │ 神经元数  │
-│ ──────── │   └──────┘    └──────┘    └──────┘      │ 激活函数  │
-│ 核心层   │                    │                     │ 初始化器  │
+│ Input    │   │Input │───→│Conv1D│───→│Dense │      │ Units     │
+│ ──────── │   └──────┘    └──────┘    └──────┘      │ Activation│
+│ Core     │                    │                     │ Initializer│
 │ · Dense  │               ┌────┴────┐               │           │
 │ ──────── │               │Dropout  │               │           │
-│ 卷积层   │               └────┬────┘               │           │
+│ Conv     │               └────┬────┘               │           │
 │ · Conv1D │               ┌────┴────┐               │           │
 │ · Conv2D │               │ Output  │               │           │
 │ ──────── │               └─────────┘               │           │
-│ 循环层   │                                          │           │
-│ · LSTM   │  [新建] [打开] [保存] [构建模型]         │           │
+│ Recurrent│                                          │           │
+│ · LSTM   │  [New] [Open] [Save] [Build Model]      │           │
 │ · GRU    │                                          │           │
 │ ──────── │                                          │           │
-│ 池化层   │                                          │           │
+│ Pooling  │                                          │           │
 │ ──────── │                                          │           │
 └──────────┴──────────────────────────────────────────┴───────────┘
 ```
 
-#### 层节点分类
+#### Layer Node Categories
 
-| 分类 | 层类型 | 说明 |
-|------|--------|------|
-| 输入 | Input | 定义模型输入形状 |
-| 输出 | Output | 模型输出层，包含编译配置（优化器、损失函数、指标） |
-| 核心层 | Dense, Embedding | 全连接层、嵌入层 |
-| 卷积层 | Conv1D, Conv2D, SeparableConv1D | 一维/二维卷积 |
-| 循环层 | LSTM, GRU, SimpleRNN | 循环神经网络 |
-| 注意力层 | MultiHeadAttention, TransformerEncoder, TransformerDecoder, PositionalEncoding | Transformer架构 |
-| 池化层 | MaxPooling, AveragePooling, GlobalPooling | 池化操作 |
-| 归一化 | BatchNormalization, LayerNormalization | 归一化层 |
-| 正则化 | Dropout, SpatialDropout, GaussianNoise | 防过拟合 |
-| 形状变换 | Flatten, Reshape, Permute, UpSampling | 形状操作 |
-| 激活函数 | Activation, LeakyReLU, PReLU, Softmax | 激活层 |
-| 合并层 | Concatenate, Add, Multiply, Average | 多输入合并 |
+| Category | Layer Types | Description |
+|----------|-------------|-------------|
+| Input | Input | Define model input shape |
+| Output | Output | Model output layer, includes compile config (optimizer, loss, metrics) |
+| Core | Dense, Embedding | Fully connected layers, embedding layers |
+| Convolutional | Conv1D, Conv2D, SeparableConv1D | 1D/2D convolutions |
+| Recurrent | LSTM, GRU, SimpleRNN | Recurrent neural networks |
+| Attention | MultiHeadAttention, TransformerEncoder, TransformerDecoder, PositionalEncoding | Transformer architecture |
+| Pooling | MaxPooling, AveragePooling, GlobalPooling | Pooling operations |
+| Normalization | BatchNormalization, LayerNormalization | Normalization layers |
+| Regularization | Dropout, SpatialDropout, GaussianNoise | Overfitting prevention |
+| Reshape | Flatten, Reshape, Permute, UpSampling | Shape operations |
+| Activation | Activation, LeakyReLU, PReLU, Softmax | Activation layers |
+| Merge | Concatenate, Add, Multiply, Average | Multi-input merge |
 
-#### 使用流程
+#### Usage Flow
 
-1. 在模型视图中拖拽层节点到画布
-2. 连接层节点（从输出端口拖到输入端口）
-3. 在属性面板中配置层参数
-4. 配置模型编译选项（优化器、损失函数、评估指标）
-5. 点击"构建模型"验证并生成Keras模型
-6. 保存模型定义文件 (*.model.json)
-7. 在工作流中使用"加载模型"节点加载（支持 .model.json 文件）
+1. Drag layer nodes to canvas in model view
+2. Connect layer nodes (drag from output port to input port)
+3. Configure layer parameters in property panel
+4. Configure model compile options (optimizer, loss function, evaluation metrics)
+5. Click "Build Model" to validate and generate Keras model
+6. Save model definition file (*.model.json)
+7. Use "Load Model" node in workflow to load (supports .model.json files)
 
-#### 编译配置
+#### Compile Configuration
 
-编译配置现在**集成在 Output 输出层**中，在属性面板中选择 Output 层即可配置：
+Compile configuration is now **integrated in the Output layer**, select the Output layer in property panel to configure:
 
-| 配置项 | 可选值 | 说明 |
-|--------|--------|------|
-| 输出激活函数 | linear, sigmoid, softmax, tanh, relu | 输出层激活函数 |
-| 优化器 | Adam, SGD, RMSprop, AdamW, Nadam | 训练优化器 |
-| 学习率 | 0.000001 ~ 1.0 | 优化器学习率 |
-| 损失函数 | mse, mae, huber, binary_crossentropy, categorical_crossentropy, sparse_categorical_crossentropy | 损失函数 |
-| 评估指标 | 逗号分隔的字符串，如 accuracy,mae | 评估指标列表 |
+| Config Item | Options | Description |
+|-------------|---------|-------------|
+| Output Activation | linear, sigmoid, softmax, tanh, relu | Output layer activation |
+| Optimizer | Adam, SGD, RMSprop, AdamW, Nadam | Training optimizer |
+| Learning Rate | 0.000001 ~ 1.0 | Optimizer learning rate |
+| Loss Function | mse, mae, huber, binary_crossentropy, categorical_crossentropy, sparse_categorical_crossentropy | Loss function |
+| Metrics | Comma-separated string, e.g., accuracy,mae | Evaluation metrics list |
 
-编译配置从 Output 层参数读取，构建模型时自动应用。
+Compile configuration is read from Output layer parameters and automatically applied when building the model.
 
-#### 模型导入与微调
+#### Model Import and Fine-tuning
 
-支持从已训练的 Keras 模型导入架构，用于模型微调和迁移学习：
+Supports importing architecture from trained Keras models for fine-tuning and transfer learning:
 
-1. **导入 Keras 模型**: 点击"📥 导入Keras"按钮，选择 `.keras` 或 `.h5` 文件
-2. **查看层状态**: 每个层显示权重状态（✓ 有权重）和冻结状态（🔒 已冻结）
-3. **冻结/解冻层**: 在属性面板的"训练控制"区域勾选/取消"可训练"复选框
-4. **修改架构**: 可删除、添加层后重新构建
-5. **导出架构**: 保存为 `.model.json` 格式
+1. **Import Keras Model**: Click "📥 Import Keras" button, select `.keras` or `.h5` file
+2. **View Layer Status**: Each layer shows weight status (✓ has weights) and freeze status (🔒 frozen)
+3. **Freeze/Unfreeze Layers**: Check/uncheck "Trainable" checkbox in property panel's "Training Control" area
+4. **Modify Architecture**: Can delete, add layers then rebuild
+5. **Export Architecture**: Save as `.model.json` format
 
-| LayerNode 属性 | 类型 | 说明 |
-|---------------|------|------|
-| `has_weights` | bool | 是否有权重（导入时自动检测）|
-| `trainable` | bool | 是否可训练（False = 冻结）|
+| LayerNode Attribute | Type | Description |
+|---------------------|------|-------------|
+| `has_weights` | bool | Whether has weights (auto-detected on import) |
+| `trainable` | bool | Whether trainable (False = frozen) |
 
-构建模型时，冻结状态会自动应用到对应的 Keras 层。
+Freeze status is automatically applied to corresponding Keras layers when building the model.
 
-### 信号通信与事件总线
+### Signal Communication and Event Bus
 
-#### 通信规范
+#### Communication Conventions
 
-| 场景 | 推荐方式 | 说明 |
-|------|---------|------|
-| 跨组件通信 | EventBus | 不同视图、Controller 与多个 View 之间 |
-| 组件内通信 | pyqtSignal | 父子组件、Widget 内部元素 |
+| Scenario | Recommended Method | Description |
+|----------|-------------------|-------------|
+| Cross-component communication | EventBus | Between different views, Controller and multiple Views |
+| Intra-component communication | pyqtSignal | Parent-child components, internal Widget elements |
 
-#### EventBus 事件分类
+#### EventBus Event Categories
 
-| 分类 | 事件 | 说明 |
-|------|------|------|
-| 工作流 | workflow_started, workflow_finished, workflow_error | 工作流生命周期 |
-| 节点 | node_started, node_finished, node_progress | 节点执行状态 |
-| 断点 | breakpoint_hit, breakpoint_continue | 调试断点 |
-| 训练 | training_started, training_epoch_completed, training_finished | 训练进度 |
-| 状态 | status_message | 状态栏消息 |
+| Category | Events | Description |
+|----------|--------|-------------|
+| Workflow | workflow_started, workflow_finished, workflow_error | Workflow lifecycle |
+| Node | node_started, node_finished, node_progress | Node execution status |
+| Breakpoint | breakpoint_hit, breakpoint_continue | Debug breakpoints |
+| Training | training_started, training_epoch_completed, training_finished | Training progress |
+| Status | status_message | Status bar messages |
 
-#### 信号流向示例
+#### Signal Flow Examples
 
 ```
-组件内通信 (pyqtSignal):
+Intra-component communication (pyqtSignal):
   NodePalette.node_dragged → NodeGraph.add_node
   PropertyPanel.parameter_changed → BaseNode.update_parameter
 
-跨组件通信 (EventBus):
+Cross-component communication (EventBus):
   WorkflowController → EventBus.workflow_started → TrainingView
   WorkflowController → EventBus.node_finished → WorkflowView.update_node_state
 
-前后端分离 (View → Controller → Engine):
+Frontend-backend separation (View → Controller → Engine):
   WorkflowView → WorkflowController.run() → WorkflowEngine.execute()
-  WorkflowEngine (信号) → WorkflowController (转发) → EventBus → Views
+  WorkflowEngine (signals) → WorkflowController (forwards) → EventBus → Views
 ```
 
-### 前后端分离架构
+### Frontend-Backend Separation Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                         UI 层 (Views)                           │
+│                         UI Layer (Views)                         │
 │  WorkflowView │ ModelBuilderView │ PreviewView │ TrainingView   │
 └───────────────────────────┬─────────────────────────────────────┘
-                            │ pyqtSignal (组件内)
+                            │ pyqtSignal (intra-component)
                             ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                     Controller 层                                │
+│                     Controller Layer                             │
 │  WorkflowController │ TrainingController │ NavigationController │
-│  - 管理 Engine 生命周期                                          │
-│  - 转发 Engine 信号到 EventBus                                   │
-│  - 处理业务逻辑                                                   │
+│  - Manage Engine lifecycle                                       │
+│  - Forward Engine signals to EventBus                           │
+│  - Handle business logic                                         │
 └───────────────────────────┬─────────────────────────────────────┘
                             │
                             ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                     Engine/Service 层                            │
+│                     Engine/Service Layer                         │
 │  WorkflowEngine │ FeatureExtractor │ TrainerWorker              │
-│  - 纯业务逻辑，无 UI 依赖                                         │
+│  - Pure business logic, no UI dependency                        │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-**设计原则**:
-- View 层不直接持有或操作 Engine
-- View 通过 Controller 间接访问 Engine
-- Engine 信号由 Controller 转发到 EventBus
-- 跨组件通信统一使用 EventBus
+**Design Principles**:
+- View layer does not directly hold or operate Engine
+- View accesses Engine indirectly through Controller
+- Engine signals are forwarded to EventBus by Controller
+- Cross-component communication uniformly uses EventBus
 
-### 节点执行状态可视化
+### Node Execution State Visualization
 
-工作流执行时，节点会显示不同的状态标记：
+During workflow execution, nodes display different state markers:
 
-| 状态 | 颜色 | 图标 | 说明 |
-|-----|------|-----|------|
-| idle | 无装饰 | - | 未运行 |
-| running | 黄色边框 | ⏳ | 正在执行 |
-| completed | 绿色边框 | ✅ | 执行完成 |
-| error | 红色边框 | ❌ | 执行失败 |
-| waiting | 蓝色边框 | ⏸️ | 断点等待中 |
+| State | Color | Icon | Description |
+|-------|-------|------|-------------|
+| idle | No decoration | - | Not running |
+| running | Yellow border | ⏳ | Currently executing |
+| completed | Green border | ✅ | Execution complete |
+| error | Red border | ❌ | Execution failed |
+| waiting | Blue border | ⏸️ | Waiting at breakpoint |
 
-断点触发时：
-- 保持在工作流视图
-- 高亮断点节点
-- 工具栏显示「🔴 断点暂停中 | ▶️ 继续执行」
+When breakpoint triggers:
+- Stay in workflow view
+- Highlight breakpoint node
+- Toolbar shows "🔴 Breakpoint Paused | ▶️ Continue Execution"
 
-### 节点双击跳转规则
+### Node Double-click Navigation Rules
 
-双击节点时，根据节点类型和运行状态自动跳转到相应视图：
+When double-clicking a node, automatically navigate to corresponding view based on node type and execution state:
 
-| 节点分类 | 节点类型 | 双击行为 |
-|---------|---------|---------|
-| 数据源 | AudioFolderNode, AudioFileNode | ✅已运行→预览(音频) / ❌未运行→提示 |
-| 数据源 | LabelFileNode | 显示标签数量提示 |
-| 预处理 | ResampleNode, TrimPadNode等 | ✅已运行→预览(音频) / ❌未运行→提示 |
-| 数据增强 | AddNoiseNode等 | ✅已运行→预览(音频) / ❌未运行→提示 |
-| 特征提取 | MelSpectrogramNode, MFCCNode等 | ✅已运行→预览(2D图) / ❌未运行→提示 |
-| 特征提取 | StatisticsNode | ✅已运行→预览(1D曲线) / ❌未运行→提示 |
-| 训练 | TrainerNode | 直接跳转训练视图 |
-| 训练 | LoadModelNode | 跳转模型视图 |
-| 训练 | SaveModelNode | 显示保存路径 / 未运行→提示 |
-| 训练 | EvaluatorNode, ShowMetricsNode | ✅已运行→预览(指标) / ❌未运行→提示 |
-| 训练 | ShowHistoryNode | 跳转训练视图 |
-| 控制流 | PassthroughNode, SplitNode | ✅已运行→预览 / ❌未运行→提示 |
-| 控制流 | LoopNode | 显示提示（无法预览）|
+| Node Category | Node Type | Double-click Behavior |
+|---------------|-----------|----------------------|
+| Data Source | AudioFolderNode, AudioFileNode | ✅ Executed → Preview (audio) / ❌ Not executed → Prompt |
+| Data Source | LabelFileNode | Show label count prompt |
+| Preprocessing | ResampleNode, TrimPadNode, etc. | ✅ Executed → Preview (audio) / ❌ Not executed → Prompt |
+| Augmentation | AddNoiseNode, etc. | ✅ Executed → Preview (audio) / ❌ Not executed → Prompt |
+| Feature Extraction | MelSpectrogramNode, MFCCNode, etc. | ✅ Executed → Preview (2D graph) / ❌ Not executed → Prompt |
+| Feature Extraction | StatisticsNode | ✅ Executed → Preview (1D curve) / ❌ Not executed → Prompt |
+| Training | TrainerNode | Navigate directly to training view |
+| Training | LoadModelNode | Navigate to model view |
+| Training | SaveModelNode | Show save path / Not executed → Prompt |
+| Training | EvaluatorNode, ShowMetricsNode | ✅ Executed → Preview (metrics) / ❌ Not executed → Prompt |
+| Training | ShowHistoryNode | Navigate to training view |
+| Control Flow | PassthroughNode, SplitNode | ✅ Executed → Preview / ❌ Not executed → Prompt |
+| Control Flow | LoopNode | Show prompt (cannot preview) |
 
-## 工作流引擎
+## Workflow Engine
 
-### 执行流程
+### Execution Flow
 
 ```
-1. 拓扑排序 - 根据连接关系确定执行顺序
-2. 循环检测 - 识别循环节点并特殊处理
-3. 逐节点执行:
-   a. 收集输入数据 (来自上游节点的输出)
-   b. 调用 node.execute(inputs)
-   c. 缓存输出数据
-   d. 发送进度信号
-4. 处理循环节点 - 重复执行循环体
-5. 完成/错误处理
+1. Topological Sort - Determine execution order based on connections
+2. Cycle Detection - Identify loop nodes and handle specially
+3. Execute nodes sequentially:
+   a. Collect input data (from upstream node outputs)
+   b. Call node.execute(inputs)
+   c. Cache output data
+   d. Emit progress signals
+4. Handle loop nodes - Repeat loop body execution
+5. Completion/error handling
 ```
 
-### 工作流序列化
+### Workflow Serialization
 
 ```json
 {
   "version": "1.0",
-  "name": "降噪模型训练",
+  "name": "Denoising Model Training",
   "nodes": [
     {
       "id": "node_1",
@@ -705,64 +707,64 @@ class BaseNode:
 }
 ```
 
-## 样式系统
+## Style System
 
-使用 `src/ui/styles.py` 统一管理:
+Managed uniformly via `src/ui/styles.py`:
 
 ```python
 from src.ui.styles import Styles
 
-# 颜色定义 (Catppuccin Mocha)
+# Color definitions (Catppuccin Mocha)
 Styles.COLORS['blue']   # #89b4fa
 Styles.COLORS['green']  # #a6e3a1
 Styles.COLORS['red']    # #f38ba8
 
-# 节点颜色 (按分类)
+# Node colors (by category)
 Styles.NODE_COLORS = {
-    'data_source': '#89b4fa',    # 蓝色
-    'preprocessing': '#a6e3a1',  # 绿色
-    'augmentation': '#f9e2af',   # 黄色
-    'feature': '#cba6f7',        # 紫色
-    'training': '#f38ba8',       # 红色
-    'control': '#94e2d5',        # 青色
+    'data_source': '#89b4fa',    # Blue
+    'preprocessing': '#a6e3a1',  # Green
+    'augmentation': '#f9e2af',   # Yellow
+    'feature': '#cba6f7',        # Purple
+    'training': '#f38ba8',       # Red
+    'control': '#94e2d5',        # Cyan
 }
 ```
 
-## 类型验证机制
+## Type Validation Mechanism
 
-### 运行时类型验证
+### Runtime Type Validation
 
-由于 `ANY` 类型双向兼容（允许灵活连接），实际类型验证在节点执行时进行：
+Since `ANY` type is bidirectionally compatible (allows flexible connections), actual type validation is performed at node execution time:
 
 ```python
-# preprocessing.py 中的验证函数
+# Validation function in preprocessing.py
 def validate_audio_input(data, node_name: str) -> Union[AudioData, List[AudioData]]:
-    """验证输入数据是否为有效的音频数据"""
+    """Validate input data is valid audio data"""
     if data is None:
-        raise ValueError(f"{node_name}: 未提供输入音频")
+        raise ValueError(f"{node_name}: No input audio provided")
     
     if isinstance(data, list):
         if not data:
-            raise ValueError(f"{node_name}: 音频列表为空")
+            raise ValueError(f"{node_name}: Audio list is empty")
         if not isinstance(data[0], AudioData):
             raise TypeError(
-                f"{node_name}: 期望 AudioData 类型，"
-                f"但收到 {type(data[0]).__name__}。"
-                f"请检查上游节点的输出类型是否正确。"
+                f"{node_name}: Expected AudioData type, "
+                f"but received {type(data[0]).__name__}. "
+                f"Please check upstream node output type."
             )
     else:
         if not isinstance(data, AudioData):
             raise TypeError(
-                f"{node_name}: 期望 AudioData 类型，"
-                f"但收到 {type(data).__name__}。"
-                f"请检查上游节点的输出类型是否正确。"
+                f"{node_name}: Expected AudioData type, "
+                f"but received {type(data).__name__}. "
+                f"Please check upstream node output type."
             )
     return data
 ```
 
-### 使用方式
+### Usage
 
-在需要特定类型输入的节点的 `execute()` 方法中：
+In the `execute()` method of nodes requiring specific input types:
 
 ```python
 def execute(self) -> bool:
@@ -775,8 +777,8 @@ def execute(self) -> bool:
         self.error_message = str(e)
         return False
     
-    # ... 继续处理
+    # ... continue processing
 ```
 
 ---
-*最后更新: 2026-01-20* (架构重构: 统一参数类、图编辑器基类抽取、前后端分离、EventBus 规范化)
+*Last Updated: 2026-01-21* (Architecture refactoring: unified parameter class, graph editor base class extraction, frontend-backend separation, EventBus standardization)

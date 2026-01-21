@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-核心抽象层
+Core Abstraction Layer
 
-提供通用的图结构基类、参数定义和事件总线。
+Provides common graph structure base classes, parameter definitions, and event bus.
 """
 
 from .parameter import Parameter, ParamType

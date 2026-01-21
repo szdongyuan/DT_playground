@@ -1,5 +1,5 @@
 """
-UI组件模块
+UI Components Module
 """
 
 from src.ui.main_window import MainWindow

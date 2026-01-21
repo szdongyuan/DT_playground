@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-训练视图
+Training View
 
-显示训练进度、指标和结果。
+Displays training progress, metrics, and results.
 """
 
 import logging

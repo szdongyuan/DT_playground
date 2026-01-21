@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-节点面板组件
+Node Palette Component
 
-显示所有可用的工作流节点，支持拖拽到画布。
+Displays all available workflow nodes with drag-and-drop to canvas support.
 """
 
 import logging

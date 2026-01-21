@@ -412,7 +412,16 @@ N_MFCC = 20              # MFCC系数数量
 - UI测试使用pytest-qt
 - 音频处理模块独立测试
 
-## 注释语言
-- 代码注释使用中文
-- docstring使用中文
-- 变量名和函数名使用英文
+## Language Guidelines
+
+### AI Communication & Coding
+- **All communication with AI assistant**: Use English
+- **Code comments**: Use English
+- **Docstrings**: Use English
+- **Variable and function names**: Use English
+- **Commit messages and documentation**: Use English
+
+### Software UI
+- **Default UI language**: Chinese (Simplified)
+- **User-facing strings**: Chinese
+- **UI labels, tooltips, and messages**: Chinese

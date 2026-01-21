@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-输入/输出层节点
+Input/Output Layer Nodes
 """
 
 from typing import Tuple

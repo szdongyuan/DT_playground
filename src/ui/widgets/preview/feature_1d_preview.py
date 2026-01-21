@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-一维特征预览组件
+1D Feature Preview Component
 
-显示一维特征的线图。
+Displays line graphs of 1D features.
 """
 
 import logging

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-归一化层节点
+Normalization Layer Nodes
 """
 
 from ..layer_base import LayerCategory, LayerNode, register_layer

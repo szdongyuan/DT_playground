@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-层面板组件
+Layer Palette Component
 
-显示所有可用的神经网络层，支持拖拽到画布。
+Displays all available neural network layers with drag-and-drop to canvas support.
 """
 
 import logging

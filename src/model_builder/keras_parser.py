@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Keras 模型解析器
+Keras Model Parser
 
-从已训练的 Keras 模型逆向生成 ModelGraph，用于模型微调和架构编辑。
+Generates ModelGraph from trained Keras models for fine-tuning and architecture editing.
 """
 
 import logging

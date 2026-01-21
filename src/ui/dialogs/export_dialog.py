@@ -1,5 +1,5 @@
 """
-模型导出对话框
+Model Export Dialog
 """
 
 import os

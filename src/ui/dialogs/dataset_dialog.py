@@ -1,5 +1,5 @@
 """
-数据集对话框
+Dataset Dialog
 """
 
 from PyQt6.QtCore import Qt, pyqtSignal

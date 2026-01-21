@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-控制器层
+Controller Layer
 
-负责协调视图和业务逻辑之间的交互。
+Responsible for coordinating interactions between views and business logic.
 """
 
 from .workflow_controller import WorkflowController

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-层属性面板
+Layer Property Panel
 
-显示和编辑选中层的参数。
+Displays and edits parameters of the selected layer.
 """
 
 import logging
