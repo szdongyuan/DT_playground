@@ -43,6 +43,8 @@ The platform uses a **node-based workflow** architecture, where users define com
 | Regression | Audio/Features | Audio/Features | Denoising, speech enhancement |
 | Autoencoding | Audio/Features | Same data | Feature learning, compression |
 
+---
+
 ## Directory Structure
 
 ```
@@ -50,8 +52,14 @@ DT_playground/
 ├── main.py                     # Application entry (logging config, Qt init, global exception handling)
 ├── requirements.txt            # Dependency list
 ├── .cursor/
-│   ├── rules.mdc              # Cursor AI coding rules
-│   └── ARCHITECTURE.md        # This file - project architecture documentation
+│   ├── rules.mdc              # Cursor AI rules entry point
+│   ├── rules/                 # Rule documents
+│   │   ├── architecture.md    # This file
+│   │   ├── coding_standards.md # Coding standards
+│   │   └── model_json_spec.md # Model JSON specification
+│   ├── workflows/             # Workflow definitions
+│   │   └── git_workflow.md    # Git workflow
+│   └── skills/                # Skill definitions
 ├── audio_data/                 # Audio data directory
 ├── workflows/                  # Saved workflow files (JSON)
 ├── logs/                       # Runtime logs
@@ -69,7 +77,7 @@ DT_playground/
     │   ├── __init__.py
     │   ├── parameter.py        # Parameter unified class (base for NodeParameter/LayerParameter)
     │   ├── event_bus.py        # EventBus global event bus (cross-component communication)
-    │   └── graph_base.py       # GraphNodeBase, GraphBase graph structure base classes (documentation reference)
+    │   └── graph_base.py       # GraphNodeBase, GraphBase graph structure base classes
     │
     ├── controllers/            # Controller layer (frontend-backend separation)
     │   ├── __init__.py
@@ -86,89 +94,89 @@ DT_playground/
     │   ├── workflow.py         # Workflow data model (serialization/deserialization)
     │   └── nodes/              # Node implementations
     │       ├── __init__.py
-    │       ├── data_source.py      # Data source nodes (audio folder, label file, single audio)
-    │       ├── preprocessing.py    # Preprocessing nodes (resample, trim, normalize, silence trim)
-    │       ├── augmentation.py     # Data augmentation nodes (add noise, time stretch, pitch shift)
-    │       ├── feature.py          # Feature extraction nodes (Mel, MFCC, STFT, statistics)
-    │       ├── training.py         # Training nodes (trainer, model definition, evaluator)
-    │       └── control.py          # Control nodes (loop, data split)
+    │       ├── data_source.py      # Data source nodes
+    │       ├── preprocessing.py    # Preprocessing nodes
+    │       ├── augmentation.py     # Data augmentation nodes
+    │       ├── feature.py          # Feature extraction nodes
+    │       ├── training.py         # Training nodes
+    │       └── control.py          # Control nodes
     │
     ├── audio/                  # Audio processing module
     │   ├── __init__.py
     │   ├── loader.py           # Audio loader
-    │   ├── preprocessor.py     # Preprocessing (resample, trim, pad)
-    │   ├── features.py         # FeatureExtractor (Mel/MFCC/STFT/chroma features)
-    │   └── augmentation.py     # Data augmentation (time stretch, pitch shift, add noise)
+    │   ├── preprocessor.py     # Preprocessing
+    │   ├── features.py         # FeatureExtractor
+    │   └── augmentation.py     # Data augmentation
     │
-    ├── models/                 # Model definitions (deprecated, use model_builder/ instead)
+    ├── models/                 # Model definitions (deprecated, use model_builder/)
     │   └── __init__.py
     │
-    ├── model_builder/          # [NEW] Visual model builder
+    ├── model_builder/          # Visual model builder
     │   ├── __init__.py
-    │   ├── layer_base.py       # LayerNode layer node base class (with has_weights, trainable attributes)
-    │   ├── model_graph.py      # ModelGraph model graph data structure (with freeze state application)
+    │   ├── layer_base.py       # LayerNode layer node base class
+    │   ├── model_graph.py      # ModelGraph model graph data structure
     │   ├── keras_parser.py     # KerasModelParser Keras model reverse parser
     │   └── layers/             # Layer node implementations
     │       ├── __init__.py
-    │       ├── input_layers.py       # Input layers
-    │       ├── core_layers.py        # Core layers (Dense, Embedding)
-    │       ├── conv_layers.py        # Convolutional layers (Conv1D, Conv2D)
-    │       ├── recurrent_layers.py   # Recurrent layers (LSTM, GRU)
-    │       ├── attention_layers.py   # Attention layers (Transformer, MultiHeadAttention)
-    │       ├── pooling_layers.py     # Pooling layers
-    │       ├── normalization_layers.py  # Normalization layers
-    │       ├── regularization_layers.py # Regularization layers (Dropout)
-    │       ├── reshape_layers.py     # Shape transformation layers
-    │       ├── activation_layers.py  # Activation function layers
-    │       └── merge_layers.py       # Merge layers
+    │       ├── input_layers.py
+    │       ├── core_layers.py
+    │       ├── conv_layers.py
+    │       ├── recurrent_layers.py
+    │       ├── attention_layers.py
+    │       ├── pooling_layers.py
+    │       ├── normalization_layers.py
+    │       ├── regularization_layers.py
+    │       ├── reshape_layers.py
+    │       ├── activation_layers.py
+    │       └── merge_layers.py
     │
     ├── training/               # Training module
     │   ├── __init__.py
-    │   ├── trainer.py          # TrainerWorker (QThread, uses callbacks.TrainingCallback)
-    │   ├── callbacks.py        # TrainingCallback, EarlyStoppingWithUI (unified callback classes)
+    │   ├── trainer.py          # TrainerWorker (QThread)
+    │   ├── callbacks.py        # TrainingCallback, EarlyStoppingWithUI
     │   ├── data_generator.py   # AudioDataGenerator (Keras Sequence)
-    │   └── evaluator.py        # ModelEvaluator (confusion matrix, classification report)
+    │   └── evaluator.py        # ModelEvaluator
     │
     ├── ui/                     # UI module
     │   ├── __init__.py
-    │   ├── main_window.py      # MainWindow (multi-view switching layout)
+    │   ├── main_window.py      # MainWindow
     │   ├── styles.py           # Styles unified style management
     │   │
-    │   ├── views/              # [NEW] View module
+    │   ├── views/              # View module
     │   │   ├── __init__.py
-    │   │   ├── workflow_view.py       # WorkflowView node editor view
-    │   │   ├── model_builder_view.py  # ModelBuilderView visual model building view
-    │   │   ├── preview_view.py        # PreviewView data preview view (waveform/spectrogram)
-    │   │   └── training_view.py       # TrainingView training monitoring view
+    │   │   ├── workflow_view.py
+    │   │   ├── model_builder_view.py
+    │   │   ├── preview_view.py
+    │   │   └── training_view.py
     │   │
-    │   ├── graph_editor/       # Graph editor base classes (reusable module)
+    │   ├── graph_editor/       # Graph editor base classes
     │   │   ├── __init__.py
-    │   │   └── base_items.py       # BasePortItem, BaseConnectionItem, BaseGraphScene, BaseGraphView
+    │   │   └── base_items.py
     │   │
-    │   ├── node_editor/        # Node editor components (workflow)
+    │   ├── node_editor/        # Node editor components
     │   │   ├── __init__.py
-    │   │   ├── node_graph.py       # NodeGraphWidget node canvas (inherits BaseGraphView)
-    │   │   ├── node_palette.py     # NodePalette node panel (draggable)
-    │   │   └── property_panel.py   # PropertyPanel node property panel
+    │   │   ├── node_graph.py
+    │   │   ├── node_palette.py
+    │   │   └── property_panel.py
     │   │
     │   ├── model_editor/       # Model editor components
     │   │   ├── __init__.py
-    │   │   ├── layer_palette.py      # LayerPalette layer panel (draggable)
-    │   │   ├── model_graph_widget.py # ModelGraphWidget model canvas (inherits BaseGraphView)
-    │   │   └── layer_property_panel.py # LayerPropertyPanel layer property panel
+    │   │   ├── layer_palette.py
+    │   │   ├── model_graph_widget.py
+    │   │   └── layer_property_panel.py
     │   │
     │   ├── widgets/            # Custom widgets
     │   │   ├── __init__.py
-    │   │   ├── waveform_widget.py      # WaveformWidget (waveform display)
-    │   │   ├── spectrogram_widget.py   # SpectrogramWidget (spectrogram display)
-    │   │   └── audio_player.py         # AudioPlayerWidget (playback control)
+    │   │   ├── waveform_widget.py
+    │   │   ├── spectrogram_widget.py
+    │   │   └── audio_player.py
     │   │
     │   └── dialogs/            # Dialogs
     │       ├── __init__.py
     │       ├── settings_dialog.py
     │       ├── about_dialog.py
     │       ├── export_dialog.py
-    │       └── dataset_dialog.py       # Dataset split dialog
+    │       └── dataset_dialog.py
     │
     ├── visualization/          # Visualization module
     │   ├── __init__.py
@@ -178,12 +186,238 @@ DT_playground/
     │
     └── utils/                  # Utility module
         ├── __init__.py
-        ├── config.py           # ConfigManager singleton configuration management
-        ├── dataset_manager.py  # DatasetManager (dataset splitting)
+        ├── config.py           # ConfigManager singleton
+        ├── dataset_manager.py  # DatasetManager
         ├── audio_utils.py
         ├── file_utils.py
         └── pyqtgraph_fix.py
 ```
+
+---
+
+## Design Patterns
+
+### Overall Architecture (MVC + Controller)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                        View Layer (UI)                       │
+│  src/ui/views/    src/ui/widgets/    src/ui/dialogs/        │
+└─────────────────────────┬───────────────────────────────────┘
+                          │ Signal/Slot
+┌─────────────────────────▼───────────────────────────────────┐
+│                    Controller Layer                          │
+│  src/controllers/workflow_controller.py                      │
+│  src/controllers/training_controller.py                      │
+│  src/controllers/navigation_controller.py                    │
+└─────────────────────────┬───────────────────────────────────┘
+                          │
+┌─────────────────────────▼───────────────────────────────────┐
+│                    Service/Engine Layer                      │
+│  src/workflow/engine.py    src/training/trainer.py          │
+└─────────────────────────┬───────────────────────────────────┘
+                          │
+┌─────────────────────────▼───────────────────────────────────┐
+│                      Model Layer                             │
+│  src/workflow/    src/model_builder/    src/audio/          │
+│  src/core/graph_base.py    src/core/parameter.py            │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Core Design Patterns
+
+#### 1. Factory + Registry Pattern
+
+Used for dynamic creation of nodes and layers, supporting plugin-style extensions.
+
+```python
+# Register using decorator
+@register_node
+class MyNode(BaseNode):
+    node_type = "my_node"
+    ...
+
+# Create via factory
+node = create_node("my_node")
+```
+
+**Application locations**:
+- `src/workflow/node_base.py`: `register_node`, `create_node`
+- `src/model_builder/layer_base.py`: `register_layer`, `create_layer`
+
+#### 2. Observer Pattern (via Signal/Slot)
+
+Use PyQt6 signal-slot mechanism for loosely coupled event notifications.
+
+```python
+class WorkflowEngine(QObject):
+    # Define signals
+    workflow_started = pyqtSignal()
+    node_progress = pyqtSignal(str, float, str)  # node_id, progress, data
+    
+    def _execute_node(self, node):
+        self.node_progress.emit(node.node_id, progress, data)
+```
+
+**Application locations**:
+- `src/workflow/engine.py`: Workflow execution events
+- `src/training/trainer.py`: Training progress events
+- `src/core/event_bus.py`: Global event bus
+
+#### 3. Template Method Pattern
+
+Define algorithm skeleton, subclasses implement specific steps.
+
+```python
+class BaseNode(ABC):
+    def __init__(self):
+        self._setup_ports()        # Hook method - subclass must implement
+        self._setup_parameters()   # Hook method - subclass optional
+    
+    @abstractmethod
+    def execute(self) -> bool:     # Abstract method - subclass must implement
+        pass
+```
+
+**Application locations**:
+- `src/workflow/node_base.py`: BaseNode
+- `src/model_builder/layer_base.py`: LayerNode
+- `src/core/graph_base.py`: GraphNodeBase
+
+#### 4. Strategy Pattern
+
+Different node types implement different execution strategies.
+
+```python
+# Each node has its own execute implementation
+class AudioFolderNode(BaseNode):
+    def execute(self): ...  # Load audio files strategy
+
+class MelSpectrogramNode(BaseNode):
+    def execute(self): ...  # Mel spectrogram extraction strategy
+```
+
+#### 5. Singleton Pattern
+
+Global unique instance for configuration management.
+
+```python
+# src/utils/config.py
+class ConfigManager:
+    _instance = None
+    
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+        return cls._instance
+
+# Get config (recommend using function instead of direct instance access)
+def get_config() -> ConfigManager:
+    return ConfigManager()
+```
+
+#### 6. Composite Pattern
+
+Graph structure manages node collections.
+
+```python
+class Workflow:
+    nodes: Dict[str, BaseNode]           # Node collection
+    connections: List[Connection]        # Connection collection
+    
+    def get_execution_order(self) -> List[str]:  # Topological sort
+        ...
+```
+
+**Application locations**:
+- `src/workflow/workflow.py`: Workflow
+- `src/model_builder/model_graph.py`: ModelGraph
+
+#### 7. Mediator Pattern (via EventBus)
+
+Decouple communication between views.
+
+```python
+# src/core/event_bus.py
+class EventBus(QObject):
+    """Global event bus"""
+    preview_requested = pyqtSignal(str, dict)    # node_id, data
+    training_updated = pyqtSignal(int, dict)     # epoch, metrics
+    
+    @classmethod
+    def instance(cls) -> 'EventBus':
+        ...
+```
+
+#### 8. Dependency Injection
+
+Inject dependencies through constructor for testing and decoupling.
+
+```python
+# ✅ Recommended: Inject dependencies
+class WorkflowController:
+    def __init__(self, engine: WorkflowEngine, event_bus: EventBus):
+        self._engine = engine
+        self._event_bus = event_bus
+
+# ❌ Avoid: Create dependencies directly
+class WorkflowController:
+    def __init__(self):
+        self._engine = WorkflowEngine()  # Tight coupling
+```
+
+### Common Abstraction Layer (src/core/)
+
+To avoid duplicate code between `workflow` and `model_builder`, extract common base classes:
+
+```python
+# src/core/graph_base.py
+class GraphNodeBase(ABC):
+    """Graph node base class - inherited by BaseNode and LayerNode"""
+    node_id: str
+    parameters: Dict[str, Parameter]
+    
+class GraphBase(ABC):
+    """Graph container base class - inherited by Workflow and ModelGraph"""
+    nodes: Dict[str, GraphNodeBase]
+    connections: List[Connection]
+    
+    def get_execution_order(self) -> List[str]:  # Common topological sort
+        ...
+
+# src/core/parameter.py
+class ParamType(Enum):
+    INT = "int"
+    FLOAT = "float"
+    STRING = "str"
+    BOOL = "bool"
+    CHOICE = "choice"
+    FILE = "file"
+    FOLDER = "folder"
+
+@dataclass
+class Parameter:
+    name: str
+    param_type: ParamType
+    default_value: Any
+    ...
+```
+
+### Separation of Concerns Principles
+
+1. **UI properties should not be in data models**
+   - `position` and other UI properties managed by view layer or stored separately
+   
+2. **Controller handles coordination**
+   - View only handles display logic
+   - Controller handles user interaction and business dispatch
+   - Engine/Service handles core business logic
+
+3. **Single Responsibility for each class**
+   - Avoid classes exceeding 300 lines
+   - Split into multiple collaborating classes when functionality grows
+
+---
 
 ## Node System Design
 
@@ -253,25 +487,10 @@ class FeatureData:
 
 All preprocessing, data augmentation, and feature extraction nodes use a **per-channel processing** strategy:
 
-1. **Preprocessing nodes**: Apply the same processing to each channel separately (resample, normalize, etc.)
-2. **Data augmentation nodes**: Augment each channel separately, using the same random parameters for consistency
+1. **Preprocessing nodes**: Apply the same processing to each channel separately
+2. **Data augmentation nodes**: Augment each channel separately, using the same random parameters
 3. **Feature extraction nodes**: Extract features from each channel separately, stack to `(channels, features, frames)`
 4. **Silence trimming**: Use mixed signal to detect boundaries, apply the same trimming to all channels
-
-```python
-# Generic multi-channel processing function
-def process_channels(data: np.ndarray, channel_func) -> np.ndarray:
-    """
-    Apply processing function to each channel separately
-    
-    Args:
-        data: Audio data, shape (channels, samples)
-        channel_func: Function to process a single channel, accepts 1D array returns 1D array
-    
-    Returns:
-        Processed data, shape (channels, new_samples)
-    """
-```
 
 ### Data Types (DataType)
 
@@ -290,10 +509,9 @@ class DataType(Enum):
 ```
 
 > **Design Notes**: 
-> - The former `AUDIO_LIST`, `FEATURE_LIST`, `LABEL_LIST` have been merged into their base types
 > - All types support single or batch form, determined at runtime via `isinstance(data, list)`
-> - `ANY` type is bidirectionally compatible, allowing flexible connections (e.g., passthrough nodes, data split nodes)
-> - Actual type validation is done at runtime in the node's `execute()` method via `validate_audio_input()`
+> - `ANY` type is bidirectionally compatible, allowing flexible connections
+> - Actual type validation is done at runtime in the node's `execute()` method
 
 ### Node Categories
 
@@ -328,12 +546,10 @@ class DataType(Enum):
 | 🎼 STFTNode | audio | feature_2d | n_fft, hop_length |
 | 📉 StatisticsNode | audio | feature_1d | features[] |
 
-> **Implementation Note**: All feature extraction nodes internally use `src.audio.features.FeatureExtractor` for feature computation to avoid code duplication.
-
 #### Training Nodes (Training)
 | Node | Input Ports | Output Ports | Description |
 |------|-------------|--------------|-------------|
-| 📥 LoadModelNode | - | model | Load model (supports .keras/.h5 and .model.json) |
+| 📥 LoadModelNode | - | model | Load model (.keras/.h5 and .model.json) |
 | 📤 SaveModelNode | model | model_path | Save model |
 | 🏋️ TrainerNode | input, target, model | trained_model | Execute training |
 | 📊 EvaluatorNode | model, data | metrics | Evaluate model |
@@ -341,7 +557,7 @@ class DataType(Enum):
 #### Control Nodes (Control)
 | Node | Input | Output | Description |
 |------|-------|--------|-------------|
-| ◇ PassthroughNode | in | out | Passthrough node (compact size) |
+| ◇ PassthroughNode | in | out | Passthrough node |
 | 🔄 LoopNode | data | item | Loop over dataset |
 | ✂️ SplitNode | data | train, val, test | Dataset split |
 
@@ -401,6 +617,8 @@ class BaseNode:
         return True, ""
 ```
 
+---
+
 ## UI Architecture
 
 ### Multi-View Layout
@@ -418,14 +636,10 @@ class BaseNode:
 │ ──────── │                                          │           │
 │ Data     │                                          │  Node     │
 │ Source   │                                          │  Parameter│
-│ · Audio  │                                          │  Config   │
-│ · Labels │                                          │           │
-│ ──────── │                                          │ ───────── │
+│ ──────── │                                          │  Config   │
 │ Preproc  │                                          │           │
-│ · Resamp │                                          │  Preview  │
-│ · Trim   │                                          │ (Selected │
-│ ──────── │                                          │  node     │
-│ Augment  │                                          │  output)  │
+│ ──────── │                                          │ ───────── │
+│ Augment  │                                          │  Preview  │
 │ ──────── │                                          │           │
 │ Features │                                          │           │
 │ ──────── │                                          │           │
@@ -452,7 +666,7 @@ The workflow editor and model editor share common graph editing UI base classes 
 | BasePortItem | PortItem, LayerPortItem | Port graphics item (connection point) |
 | BaseNodeItem | NodeItem, LayerItem | Node graphics item (draggable) |
 | BaseConnectionItem | ConnectionItem, LayerConnectionItem | Connection line |
-| BaseGraphScene | NodeGraphScene, ModelGraphScene | Graph scene (manages nodes and connections) |
+| BaseGraphScene | NodeGraphScene, ModelGraphScene | Graph scene |
 | BaseGraphView | NodeGraphView, ModelGraphView | Graph view (zoom, pan, drag-drop) |
 
 **Reusable Features**:
@@ -480,19 +694,15 @@ The model builder provides visual neural network construction:
 │ ──────── │   ┌──────┐    ┌──────┐    ┌──────┐      │           │
 │ Input    │   │Input │───→│Conv1D│───→│Dense │      │ Units     │
 │ ──────── │   └──────┘    └──────┘    └──────┘      │ Activation│
-│ Core     │                    │                     │ Initializer│
-│ · Dense  │               ┌────┴────┐               │           │
-│ ──────── │               │Dropout  │               │           │
-│ Conv     │               └────┬────┘               │           │
-│ · Conv1D │               ┌────┴────┐               │           │
-│ · Conv2D │               │ Output  │               │           │
-│ ──────── │               └─────────┘               │           │
-│ Recurrent│                                          │           │
-│ · LSTM   │  [New] [Open] [Save] [Build Model]      │           │
-│ · GRU    │                                          │           │
+│ Core     │                    │                     │           │
+│ ──────── │               ┌────┴────┐               │           │
+│ Conv     │               │Dropout  │               │           │
+│ ──────── │               └────┬────┘               │           │
+│ Recurrent│               ┌────┴────┐               │           │
+│ ──────── │               │ Output  │               │           │
+│ Pooling  │               └─────────┘               │           │
 │ ──────── │                                          │           │
-│ Pooling  │                                          │           │
-│ ──────── │                                          │           │
+│          │  [New] [Open] [Save] [Build Model]      │           │
 └──────────┴──────────────────────────────────────────┴───────────┘
 ```
 
@@ -501,69 +711,44 @@ The model builder provides visual neural network construction:
 | Category | Layer Types | Description |
 |----------|-------------|-------------|
 | Input | Input | Define model input shape |
-| Output | Output | Model output layer, includes compile config (optimizer, loss, metrics) |
-| Core | Dense, Embedding | Fully connected layers, embedding layers |
+| Output | Output | Model output layer, includes compile config |
+| Core | Dense, Embedding | Fully connected layers |
 | Convolutional | Conv1D, Conv2D, SeparableConv1D | 1D/2D convolutions |
 | Recurrent | LSTM, GRU, SimpleRNN | Recurrent neural networks |
-| Attention | MultiHeadAttention, TransformerEncoder, TransformerDecoder, PositionalEncoding | Transformer architecture |
-| Pooling | MaxPooling, AveragePooling, GlobalPooling | Pooling operations |
-| Normalization | BatchNormalization, LayerNormalization | Normalization layers |
+| Attention | MultiHeadAttention, TransformerEncoder/Decoder | Transformer |
+| Pooling | MaxPooling, AveragePooling, GlobalPooling | Pooling |
+| Normalization | BatchNormalization, LayerNormalization | Normalization |
 | Regularization | Dropout, SpatialDropout, GaussianNoise | Overfitting prevention |
 | Reshape | Flatten, Reshape, Permute, UpSampling | Shape operations |
 | Activation | Activation, LeakyReLU, PReLU, Softmax | Activation layers |
 | Merge | Concatenate, Add, Multiply, Average | Multi-input merge |
 
-#### Usage Flow
-
-1. Drag layer nodes to canvas in model view
-2. Connect layer nodes (drag from output port to input port)
-3. Configure layer parameters in property panel
-4. Configure model compile options (optimizer, loss function, evaluation metrics)
-5. Click "Build Model" to validate and generate Keras model
-6. Save model definition file (*.model.json)
-7. Use "Load Model" node in workflow to load (supports .model.json files)
-
-#### Compile Configuration
-
-Compile configuration is now **integrated in the Output layer**, select the Output layer in property panel to configure:
-
-| Config Item | Options | Description |
-|-------------|---------|-------------|
-| Output Activation | linear, sigmoid, softmax, tanh, relu | Output layer activation |
-| Optimizer | Adam, SGD, RMSprop, AdamW, Nadam | Training optimizer |
-| Learning Rate | 0.000001 ~ 1.0 | Optimizer learning rate |
-| Loss Function | mse, mae, huber, binary_crossentropy, categorical_crossentropy, sparse_categorical_crossentropy | Loss function |
-| Metrics | Comma-separated string, e.g., accuracy,mae | Evaluation metrics list |
-
-Compile configuration is read from Output layer parameters and automatically applied when building the model.
-
 #### Model Import and Fine-tuning
 
-Supports importing architecture from trained Keras models for fine-tuning and transfer learning:
+Supports importing architecture from trained Keras models for fine-tuning:
 
-1. **Import Keras Model**: Click "📥 Import Keras" button, select `.keras` or `.h5` file
-2. **View Layer Status**: Each layer shows weight status (✓ has weights) and freeze status (🔒 frozen)
-3. **Freeze/Unfreeze Layers**: Check/uncheck "Trainable" checkbox in property panel's "Training Control" area
-4. **Modify Architecture**: Can delete, add layers then rebuild
-5. **Export Architecture**: Save as `.model.json` format
+1. **Import Keras Model**: Select `.keras` or `.h5` file
+2. **View Layer Status**: Each layer shows weight status and freeze status
+3. **Freeze/Unfreeze Layers**: Toggle "Trainable" checkbox in property panel
+4. **Export Architecture**: Save as `.model.json` format
 
 | LayerNode Attribute | Type | Description |
 |---------------------|------|-------------|
-| `has_weights` | bool | Whether has weights (auto-detected on import) |
+| `has_weights` | bool | Whether has weights (auto-detected) |
 | `trainable` | bool | Whether trainable (False = frozen) |
 
-Freeze status is automatically applied to corresponding Keras layers when building the model.
+---
 
-### Signal Communication and Event Bus
+## Signal Communication
 
-#### Communication Conventions
+### Communication Conventions
 
 | Scenario | Recommended Method | Description |
 |----------|-------------------|-------------|
-| Cross-component communication | EventBus | Between different views, Controller and multiple Views |
-| Intra-component communication | pyqtSignal | Parent-child components, internal Widget elements |
+| Cross-component communication | EventBus | Between different views, Controller and Views |
+| Intra-component communication | pyqtSignal | Parent-child components, internal elements |
 
-#### EventBus Event Categories
+### EventBus Event Categories
 
 | Category | Events | Description |
 |----------|--------|-------------|
@@ -573,7 +758,7 @@ Freeze status is automatically applied to corresponding Keras layers when buildi
 | Training | training_started, training_epoch_completed, training_finished | Training progress |
 | Status | status_message | Status bar messages |
 
-#### Signal Flow Examples
+### Signal Flow Examples
 
 ```
 Intra-component communication (pyqtSignal):
@@ -603,7 +788,6 @@ Frontend-backend separation (View → Controller → Engine):
 │  WorkflowController │ TrainingController │ NavigationController │
 │  - Manage Engine lifecycle                                       │
 │  - Forward Engine signals to EventBus                           │
-│  - Handle business logic                                         │
 └───────────────────────────┬─────────────────────────────────────┘
                             │
                             ▼
@@ -620,7 +804,9 @@ Frontend-backend separation (View → Controller → Engine):
 - Engine signals are forwarded to EventBus by Controller
 - Cross-component communication uniformly uses EventBus
 
-### Node Execution State Visualization
+---
+
+## Node Execution State Visualization
 
 During workflow execution, nodes display different state markers:
 
@@ -632,30 +818,7 @@ During workflow execution, nodes display different state markers:
 | error | Red border | ❌ | Execution failed |
 | waiting | Blue border | ⏸️ | Waiting at breakpoint |
 
-When breakpoint triggers:
-- Stay in workflow view
-- Highlight breakpoint node
-- Toolbar shows "🔴 Breakpoint Paused | ▶️ Continue Execution"
-
-### Node Double-click Navigation Rules
-
-When double-clicking a node, automatically navigate to corresponding view based on node type and execution state:
-
-| Node Category | Node Type | Double-click Behavior |
-|---------------|-----------|----------------------|
-| Data Source | AudioFolderNode, AudioFileNode | ✅ Executed → Preview (audio) / ❌ Not executed → Prompt |
-| Data Source | LabelFileNode | Show label count prompt |
-| Preprocessing | ResampleNode, TrimPadNode, etc. | ✅ Executed → Preview (audio) / ❌ Not executed → Prompt |
-| Augmentation | AddNoiseNode, etc. | ✅ Executed → Preview (audio) / ❌ Not executed → Prompt |
-| Feature Extraction | MelSpectrogramNode, MFCCNode, etc. | ✅ Executed → Preview (2D graph) / ❌ Not executed → Prompt |
-| Feature Extraction | StatisticsNode | ✅ Executed → Preview (1D curve) / ❌ Not executed → Prompt |
-| Training | TrainerNode | Navigate directly to training view |
-| Training | LoadModelNode | Navigate to model view |
-| Training | SaveModelNode | Show save path / Not executed → Prompt |
-| Training | EvaluatorNode, ShowMetricsNode | ✅ Executed → Preview (metrics) / ❌ Not executed → Prompt |
-| Training | ShowHistoryNode | Navigate to training view |
-| Control Flow | PassthroughNode, SplitNode | ✅ Executed → Preview / ❌ Not executed → Prompt |
-| Control Flow | LoopNode | Show prompt (cannot preview) |
+---
 
 ## Workflow Engine
 
@@ -687,15 +850,6 @@ When double-clicking a node, automatically navigate to corresponding view based 
       "parameters": {
         "folder_path": "audio_data/clean"
       }
-    },
-    {
-      "id": "node_2",
-      "type": "AddNoiseNode",
-      "position": [300, 50],
-      "parameters": {
-        "noise_type": "gaussian",
-        "snr_db": 10
-      }
     }
   ],
   "connections": [
@@ -706,6 +860,8 @@ When double-clicking a node, automatically navigate to corresponding view based 
   ]
 }
 ```
+
+---
 
 ## Style System
 
@@ -730,14 +886,15 @@ Styles.NODE_COLORS = {
 }
 ```
 
+---
+
 ## Type Validation Mechanism
 
 ### Runtime Type Validation
 
-Since `ANY` type is bidirectionally compatible (allows flexible connections), actual type validation is performed at node execution time:
+Since `ANY` type is bidirectionally compatible, actual type validation is performed at node execution time:
 
 ```python
-# Validation function in preprocessing.py
 def validate_audio_input(data, node_name: str) -> Union[AudioData, List[AudioData]]:
     """Validate input data is valid audio data"""
     if data is None:
@@ -749,15 +906,13 @@ def validate_audio_input(data, node_name: str) -> Union[AudioData, List[AudioDat
         if not isinstance(data[0], AudioData):
             raise TypeError(
                 f"{node_name}: Expected AudioData type, "
-                f"but received {type(data[0]).__name__}. "
-                f"Please check upstream node output type."
+                f"but received {type(data[0]).__name__}."
             )
     else:
         if not isinstance(data, AudioData):
             raise TypeError(
                 f"{node_name}: Expected AudioData type, "
-                f"but received {type(data).__name__}. "
-                f"Please check upstream node output type."
+                f"but received {type(data).__name__}."
             )
     return data
 ```
@@ -781,4 +936,5 @@ def execute(self) -> bool:
 ```
 
 ---
-*Last Updated: 2026-01-21* (Architecture refactoring: unified parameter class, graph editor base class extraction, frontend-backend separation, EventBus standardization)
+
+*Last Updated: 2026-01-24*

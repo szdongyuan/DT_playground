@@ -94,7 +94,7 @@ Before implementing any changes, the AI agent must:
 
 ### Step 4: Implement Changes
 
-Follow the project's coding standards defined in [rules.mdc](./rules.mdc):
+Follow the project's coding standards defined in [coding_standards.md](../rules/coding_standards.md):
 
 - Adhere to PEP 8 style guide
 - Use type hints
@@ -274,6 +274,7 @@ Always confirm with the user before performing any destructive operations.
 
 ## Related Documents
 
-- [rules.mdc](./rules.mdc) - Coding standards and project conventions
-- [ARCHITECTURE.md](./ARCHITECTURE.md) - Project architecture documentation
-- [MODEL_JSON_SPEC.md](./MODEL_JSON_SPEC.md) - Model JSON specification
+- [rules.mdc](../rules.mdc) - Project rules entry point
+- [architecture.md](../rules/architecture.md) - Project architecture documentation
+- [coding_standards.md](../rules/coding_standards.md) - Coding standards
+- [model_json_spec.md](../rules/model_json_spec.md) - Model JSON specification

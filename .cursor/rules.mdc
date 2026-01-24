@@ -4,344 +4,84 @@ alwaysApply: true
 # AI Acoustic Signal Training Platform - Cursor Rules
 
 ## Project Overview
+
 This is a local AI training playground application focused on **acoustic signal processing** machine learning, providing a visual interface for audio data analysis, model building, training, and evaluation.
 
 ## Tech Stack
-- **Python**: 3.10+
-- **Deep Learning Framework**: TensorFlow 2.x / Keras
-- **GUI Framework**: PyQt6
-- **Audio Processing**: Librosa, SoundFile, SciPy
-- **Data Processing**: NumPy, Pandas
-- **Visualization**: Matplotlib, PyQtGraph
 
-## Project Structure
+| Category | Technology |
+|----------|------------|
+| Language | Python 3.10+ |
+| GUI Framework | PyQt6 (Catppuccin dark theme) |
+| Deep Learning | TensorFlow 2.15+ / Keras 3.0+ |
+| Audio Processing | librosa, soundfile, scipy, pydub, sounddevice |
+| Visualization | pyqtgraph, matplotlib |
 
-> **Detailed Architecture Documentation**: See [ARCHITECTURE.md](./ARCHITECTURE.md)
-> 
-> **Maintenance Rules**: Review architecture documentation before modifying code structure, update it after changes
+---
+
+## Document Index
+
+> **Before starting any task, review the relevant documents below.**
+
+### Rules & Standards
+
+| Document | Description | When to Use |
+|----------|-------------|-------------|
+| [architecture.md](./rules/architecture.md) | Project architecture, directory structure, node system, UI design, design patterns | Before modifying code structure |
+| [coding_standards.md](./rules/coding_standards.md) | Import rules, naming conventions, framework-specific standards | When writing code |
+| [model_json_spec.md](./rules/model_json_spec.md) | Model JSON format specification, layer definitions, layout rules | When generating model files |
+
+### Workflows
+
+| Document | Description | When to Use |
+|----------|-------------|-------------|
+| [git_workflow.md](./workflows/git_workflow.md) | Git branching, commit conventions, PR process | Before making code changes |
+
+### Skills
+
+| Directory | Description |
+|-----------|-------------|
+| [skills/](./skills/) | Reusable skill definitions for specific tasks |
+
+---
+
+## Quick Reference
 
 ### Core Directory Overview
+
 ```
 DT_playground/
 ├── main.py                     # Application entry point
 ├── src/
-│   ├── app.py                  # Main application class AudioTrainingApp
-│   │
+│   ├── app.py                  # Main application class
 │   ├── core/                   # Core abstraction layer
-│   │   ├── graph_base.py       # Generic graph structure base class
-│   │   ├── parameter.py        # Unified parameter definitions
-│   │   └── event_bus.py        # Global event bus
-│   │
 │   ├── controllers/            # Controller layer
-│   │   ├── workflow_controller.py   # Workflow execution control
-│   │   ├── training_controller.py   # Training process control
-│   │   └── navigation_controller.py # View navigation control
-│   │
-│   ├── audio/                  # Audio processing (features.py, loader.py, augmentation.py)
-│   ├── model_builder/          # Model graph building (layer_base.py, model_graph.py, layers/)
-│   ├── training/               # Training module (trainer.py, data_generator.py, evaluator.py)
-│   │
-│   ├── workflow/               # Workflow system
-│   │   ├── node_base.py        # Node base class (inherits core.GraphNodeBase)
-│   │   ├── workflow.py         # Workflow management (inherits core.GraphBase)
-│   │   ├── engine.py           # Execution engine
-│   │   └── nodes/              # Node implementations
-│   │
-│   ├── ui/                     # UI module (pure view layer)
-│   │   ├── main_window.py      # Main window layout
-│   │   ├── styles.py           # Unified style management
-│   │   ├── views/              # View components (workflow, model, preview, training)
-│   │   ├── widgets/            # Custom widgets
-│   │   └── dialogs/            # Dialogs
-│   │
-│   ├── visualization/          # Visualization module
-│   └── utils/                  # Utility module (config.py, dataset_manager.py)
-│
-├── audio_data/                 # Audio data (organized by category)
+│   ├── workflow/               # Workflow engine & nodes
+│   ├── audio/                  # Audio processing
+│   ├── model_builder/          # Visual model builder
+│   ├── training/               # Training module
+│   ├── ui/                     # UI module
+│   ├── visualization/          # Visualization
+│   └── utils/                  # Utilities
+├── audio_data/                 # Audio data
 ├── models/                     # Saved models
-├── workflows/                  # Workflow configuration files
+├── workflows/                  # Workflow files
 └── logs/                       # Runtime logs
 ```
 
-## Code Standards
+> **Detailed Structure**: See [architecture.md](./rules/architecture.md)
 
-### Import Standards
-Organize import statements in the following order, with one blank line between groups, **alphabetically sorted within each group**:
-1. **Python standard library** (e.g., os, sys, json)
-2. **Third-party libraries** (e.g., numpy, tensorflow, PyQt6)
-3. **Local modules** (e.g., src.audio, src.ui)
-
-```python
-# Python standard library
-import json
-import os
-import sys
-from pathlib import Path
-
-# Third-party libraries
-import numpy as np
-import tensorflow as tf
-from PyQt6.QtWidgets import QWidget
-
-# Local modules
-from src.audio.features import FeatureExtractor
-from src.ui.styles import Styles
-from src.workflow.engine import WorkflowEngine
-```
-
-### Python Style
-- Follow PEP 8 guidelines
-- Use type annotations (Type Hints)
-- Use docstrings to document functions and classes
-- Use snake_case for variable names
-- Use PascalCase for class names
-- Use UPPER_SNAKE_CASE for constants
-
-### PyQt6 Standards
-- UI component classes end with Widget/Dialog/Window
-- Define signals using pyqtSignal
-- Slot functions start with _on_ or _handle_
-- Use QThread for time-consuming operations to avoid blocking UI
-- **Unified style management**: Use the `Styles` class from `src/ui/styles.py`
-  ```python
-  from src.ui.styles import Styles
-  widget.setStyleSheet(Styles.FORM_CONTROLS)
-  button.setStyleSheet(Styles.BUTTON_PRIMARY)
-  group.setStyleSheet(Styles.group_box(Styles.COLORS['blue']))
-  ```
-
-### TensorFlow Standards
-- Build models using Keras Sequential or Functional API
-- Use custom Callbacks for training process to interact with UI
-- Use tf.data.Dataset for data pipeline processing
-- Save models using SavedModel format
-
-### Audio Processing Standards
-- Use librosa or soundfile uniformly for audio loading
-- Sample rate handling: explicitly specify target sample rate when loading
-- Keep feature extraction parameters consistent (n_fft, hop_length, etc.)
-- Normalize audio data to [-1, 1] range
-
-## Design Patterns and Architecture Standards
-
-### Overall Architecture (MVC + Controller)
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                        View Layer (UI)                       │
-│  src/ui/views/    src/ui/widgets/    src/ui/dialogs/        │
-└─────────────────────────┬───────────────────────────────────┘
-                          │ Signal/Slot
-┌─────────────────────────▼───────────────────────────────────┐
-│                    Controller Layer                          │
-│  src/controllers/workflow_controller.py                      │
-│  src/controllers/training_controller.py                      │
-│  src/controllers/navigation_controller.py                    │
-└─────────────────────────┬───────────────────────────────────┘
-                          │
-┌─────────────────────────▼───────────────────────────────────┐
-│                    Service/Engine Layer                      │
-│  src/workflow/engine.py    src/training/trainer.py          │
-└─────────────────────────┬───────────────────────────────────┘
-                          │
-┌─────────────────────────▼───────────────────────────────────┐
-│                      Model Layer                             │
-│  src/workflow/    src/model_builder/    src/audio/          │
-│  src/core/graph_base.py    src/core/parameter.py            │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### Core Design Patterns
-
-#### 1. Factory + Registry Pattern
-Used for dynamic creation of nodes and layers, supporting plugin-style extensions.
-
-```python
-# Register using decorator
-@register_node
-class MyNode(BaseNode):
-    node_type = "my_node"
-    ...
-
-# Create via factory
-node = create_node("my_node")
-```
-
-**Application locations**:
-- `src/workflow/node_base.py`: `register_node`, `create_node`
-- `src/model_builder/layer_base.py`: `register_layer`, `create_layer`
-
-#### 2. Observer Pattern (via Signal/Slot)
-Use PyQt6 signal-slot mechanism for loosely coupled event notifications.
-
-```python
-class WorkflowEngine(QObject):
-    # Define signals
-    workflow_started = pyqtSignal()
-    node_progress = pyqtSignal(str, float, str)  # node_id, progress, data
-    
-    def _execute_node(self, node):
-        self.node_progress.emit(node.node_id, progress, data)
-```
-
-**Application locations**:
-- `src/workflow/engine.py`: Workflow execution events
-- `src/training/trainer.py`: Training progress events
-- `src/core/event_bus.py`: Global event bus
-
-#### 3. Template Method Pattern
-Define algorithm skeleton, subclasses implement specific steps.
-
-```python
-class BaseNode(ABC):
-    def __init__(self):
-        self._setup_ports()        # Hook method - subclass must implement
-        self._setup_parameters()   # Hook method - subclass optional
-    
-    @abstractmethod
-    def execute(self) -> bool:     # Abstract method - subclass must implement
-        pass
-```
-
-**Application locations**:
-- `src/workflow/node_base.py`: BaseNode
-- `src/model_builder/layer_base.py`: LayerNode
-- `src/core/graph_base.py`: GraphNodeBase
-
-#### 4. Strategy Pattern
-Different node types implement different execution strategies.
-
-```python
-# Each node has its own execute implementation
-class AudioFolderNode(BaseNode):
-    def execute(self): ...  # Load audio files strategy
-
-class MelSpectrogramNode(BaseNode):
-    def execute(self): ...  # Mel spectrogram extraction strategy
-```
-
-#### 5. Singleton Pattern
-Global unique instance for configuration management.
-
-```python
-# src/utils/config.py
-class ConfigManager:
-    _instance = None
-    
-    def __new__(cls):
-        if cls._instance is None:
-            cls._instance = super().__new__(cls)
-        return cls._instance
-
-# Get config (recommend using function instead of direct instance access)
-def get_config() -> ConfigManager:
-    return ConfigManager()
-```
-
-#### 6. Composite Pattern
-Graph structure manages node collections.
-
-```python
-class Workflow:
-    nodes: Dict[str, BaseNode]           # Node collection
-    connections: List[Connection]        # Connection collection
-    
-    def get_execution_order(self) -> List[str]:  # Topological sort
-        ...
-```
-
-**Application locations**:
-- `src/workflow/workflow.py`: Workflow
-- `src/model_builder/model_graph.py`: ModelGraph
-
-#### 7. Mediator Pattern (via EventBus)
-Decouple communication between views.
-
-```python
-# src/core/event_bus.py
-class EventBus(QObject):
-    """Global event bus"""
-    preview_requested = pyqtSignal(str, dict)    # node_id, data
-    training_updated = pyqtSignal(int, dict)     # epoch, metrics
-    
-    @classmethod
-    def instance(cls) -> 'EventBus':
-        ...
-```
-
-#### 8. Dependency Injection
-Inject dependencies through constructor for testing and decoupling.
-
-```python
-# ✅ Recommended: Inject dependencies
-class WorkflowController:
-    def __init__(self, engine: WorkflowEngine, event_bus: EventBus):
-        self._engine = engine
-        self._event_bus = event_bus
-
-# ❌ Avoid: Create dependencies directly
-class WorkflowController:
-    def __init__(self):
-        self._engine = WorkflowEngine()  # Tight coupling
-```
-
-### Common Abstraction Layer (src/core/)
-
-To avoid duplicate code between `workflow` and `model_builder`, extract common base classes:
-
-```python
-# src/core/graph_base.py
-class GraphNodeBase(ABC):
-    """Graph node base class - inherited by BaseNode and LayerNode"""
-    node_id: str
-    parameters: Dict[str, Parameter]
-    
-class GraphBase(ABC):
-    """Graph container base class - inherited by Workflow and ModelGraph"""
-    nodes: Dict[str, GraphNodeBase]
-    connections: List[Connection]
-    
-    def get_execution_order(self) -> List[str]:  # Common topological sort
-        ...
-
-# src/core/parameter.py
-class ParamType(Enum):
-    INT = "int"
-    FLOAT = "float"
-    STRING = "str"
-    BOOL = "bool"
-    CHOICE = "choice"
-    FILE = "file"
-    FOLDER = "folder"
-
-@dataclass
-class Parameter:
-    name: str
-    param_type: ParamType
-    default_value: Any
-    ...
-```
-
-### Separation of Concerns Principles
-
-1. **UI properties should not be in data models**
-   - `position` and other UI properties managed by view layer or stored separately
-   
-2. **Controller handles coordination**
-   - View only handles display logic
-   - Controller handles user interaction and business dispatch
-   - Engine/Service handles core business logic
-
-3. **Single Responsibility for each class**
-   - Avoid classes exceeding 300 lines
-   - Split into multiple collaborating classes when functionality grows
+---
 
 ## UI/UX Design Principles
+
 - Modern flat design style
 - Dark theme as primary, support light theme switching
 - Responsive layout, support window resizing
 - Real-time waveform and spectrogram display
 - Intuitive model layer visualization
+
+---
 
 ## Main Feature Modules
 
@@ -349,19 +89,16 @@ class Parameter:
 - Support multiple audio formats (WAV, MP3, FLAC, OGG, etc.)
 - Audio file import and batch loading
 - Waveform visualization and audio playback
-- Audio trimming and splitting
 
 ### 2. Feature Engineering
-- **Time-domain features**: Waveform, energy, zero-crossing rate
-- **Frequency-domain features**: FFT spectrum, power spectral density
-- **Time-frequency features**: STFT, Mel spectrogram, MFCC
-- Feature visualization comparison
+- Time-domain features: Waveform, energy, zero-crossing rate
+- Frequency-domain features: FFT spectrum, power spectral density
+- Time-frequency features: STFT, Mel spectrogram, MFCC
 
 ### 3. Data Augmentation
 - Time stretching/compression
 - Pitch shifting
 - Adding noise
-- Time shifting
 
 ### 4. Model Building
 - Visual drag-and-drop model construction
@@ -378,39 +115,7 @@ class Parameter:
 - Classification report
 - Audio prediction testing
 
-## Common Acoustic Signal Processing Parameters
-```python
-# Standard audio parameters
-SAMPLE_RATE = 44100      # Sample rate
-DURATION = 3.0           # Audio duration (seconds)
-N_FFT = 2048             # FFT window size
-HOP_LENGTH = 512         # Hop length
-N_MELS = 128             # Number of Mel filters
-N_MFCC = 20              # Number of MFCC coefficients
-```
-
-## Thread Safety
-- Training tasks run in independent QThread
-- Audio processing tasks execute in separate threads
-- Use signals to pass state to UI thread
-- Avoid updating UI components directly from worker threads
-
-## Error Handling
-- Use try-except to catch exceptions
-- Display user-friendly error messages
-- Provide detailed information when audio loading fails
-- Log detailed error logs
-
-## Performance Optimization
-- Use GPU acceleration (if available)
-- Load audio data using generators
-- Cache spectrogram calculations
-- Batch UI updates using timers
-
-## Testing Requirements
-- Write unit tests for core functionality
-- Use pytest-qt for UI testing
-- Test audio processing module independently
+---
 
 ## Language Guidelines
 
@@ -425,3 +130,8 @@ N_MFCC = 20              # Number of MFCC coefficients
 - **Default UI language**: Chinese (Simplified)
 - **User-facing strings**: Chinese
 - **UI labels, tooltips, and messages**: Chinese
+
+---
+
+*For detailed coding standards, see [coding_standards.md](./rules/coding_standards.md)*
+*For architecture details, see [architecture.md](./rules/architecture.md)*
