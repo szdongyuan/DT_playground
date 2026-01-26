@@ -9,8 +9,8 @@ producing a global spectrum representation without time dimension.
 
 import numpy as np
 
-from ....node_base import BaseNode, NodeCategory, register_node
-from ....port import DataType
+from ...node_base import BaseNode, NodeCategory, register_node
+from ...port import DataType
 from ..base import FeatureData, extract_from_audio_or_list, validate_audio_input, AudioData
 
 
@@ -28,7 +28,6 @@ class FFTNode(BaseNode):
     node_type = "fft"
     display_name = "FFT频谱"
     category = NodeCategory.FEATURE
-    subcategory = "一维特征 (1D)"
     description = "提取FFT全局频谱"
     icon = "📶"
     

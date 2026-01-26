@@ -8,8 +8,8 @@ Extracts Short-Time Fourier Transform spectrogram from audio signals.
 import librosa
 import numpy as np
 
-from ....node_base import BaseNode, NodeCategory, register_node
-from ....port import DataType
+from ...node_base import BaseNode, NodeCategory, register_node
+from ...port import DataType
 from ..base import FeatureData, extract_from_audio_or_list, validate_audio_input, AudioData
 
 # Import unified feature extractor
@@ -27,7 +27,6 @@ class STFTNode(BaseNode):
     node_type = "stft"
     display_name = "STFT"
     category = NodeCategory.FEATURE
-    subcategory = "二维特征 (2D)"
     description = "提取STFT频谱"
     icon = "🎼"
     

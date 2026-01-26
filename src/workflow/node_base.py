@@ -87,6 +87,7 @@ class BaseNode(ABC):
     node_type: str = "base_node"          # Node type identifier
     display_name: str = "Base Node"       # Display name
     category: NodeCategory = NodeCategory.DATA_SOURCE
+    subcategory: str = ""                 # Optional subcategory for grouping
     description: str = ""                 # Node description
     icon: str = "📦"                       # Node icon (emoji or icon path)
     

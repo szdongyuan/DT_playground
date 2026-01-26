@@ -158,32 +158,78 @@ class NodePalette(QWidget):
             category_item.setExpanded(True)
             self._tree.addTopLevelItem(category_item)
             
-            # 添加节点
+            # 按子类别分组节点
+            subcategory_map = {}
+            nodes_without_subcategory = []
+            
             for node_class in node_classes:
+                subcategory = getattr(node_class, 'subcategory', '')
+                if subcategory:
+                    if subcategory not in subcategory_map:
+                        subcategory_map[subcategory] = []
+                    subcategory_map[subcategory].append(node_class)
+                else:
+                    nodes_without_subcategory.append(node_class)
+            
+            # 添加无子类别的节点
+            for node_class in nodes_without_subcategory:
                 item = QTreeWidgetItem([f"{node_class.icon} {node_class.display_name}"])
                 item.setData(0, Qt.ItemDataRole.UserRole, node_class.node_type)
                 item.setToolTip(0, node_class.description)
                 category_item.addChild(item)
                 node_count += 1
+            
+            # 添加有子类别的节点
+            for subcategory, nodes in sorted(subcategory_map.items()):
+                # 创建子类别节点
+                subcategory_item = QTreeWidgetItem([f"📁 {subcategory}"])
+                subcategory_item.setForeground(0, Styles.get_color(category.color))
+                subcategory_item.setExpanded(True)
+                category_item.addChild(subcategory_item)
+                
+                # 添加节点到子类别
+                for node_class in nodes:
+                    item = QTreeWidgetItem([f"{node_class.icon} {node_class.display_name}"])
+                    item.setData(0, Qt.ItemDataRole.UserRole, node_class.node_type)
+                    item.setToolTip(0, node_class.description)
+                    subcategory_item.addChild(item)
+                    node_count += 1
         
         logger.info(f"节点面板已加载 {node_count} 个节点")
     
     def _on_search(self, text: str):
-        """搜索过滤"""
+        """搜索过滤（支持三级结构）"""
         text = text.lower()
         
         for i in range(self._tree.topLevelItemCount()):
             category_item = self._tree.topLevelItem(i)
-            visible_children = 0
+            category_visible = 0
             
             for j in range(category_item.childCount()):
                 child = category_item.child(j)
-                match = text in child.text(0).lower()
-                child.setHidden(not match)
-                if match:
-                    visible_children += 1
+                node_type = child.data(0, Qt.ItemDataRole.UserRole)
+                
+                if node_type:
+                    # 这是一个节点项
+                    match = text in child.text(0).lower()
+                    child.setHidden(not match)
+                    if match:
+                        category_visible += 1
+                else:
+                    # 这是一个子类别项
+                    subcategory_visible = 0
+                    for k in range(child.childCount()):
+                        node_item = child.child(k)
+                        match = text in node_item.text(0).lower()
+                        node_item.setHidden(not match)
+                        if match:
+                            subcategory_visible += 1
+                    
+                    child.setHidden(subcategory_visible == 0)
+                    if subcategory_visible > 0:
+                        category_visible += 1
             
-            category_item.setHidden(visible_children == 0)
+            category_item.setHidden(category_visible == 0)
     
     def _on_item_clicked(self, item, column):
         """选中节点"""

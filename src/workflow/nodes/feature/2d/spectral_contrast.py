@@ -9,8 +9,8 @@ in the spectrum, useful for distinguishing different timbres.
 
 import numpy as np
 
-from ....node_base import BaseNode, NodeCategory, register_node
-from ....port import DataType
+from ...node_base import BaseNode, NodeCategory, register_node
+from ...port import DataType
 from ..base import FeatureData, extract_from_audio_or_list, validate_audio_input, AudioData
 
 # Import unified feature extractor
@@ -29,7 +29,6 @@ class SpectralContrastNode(BaseNode):
     node_type = "spectral_contrast"
     display_name = "频谱对比度"
     category = NodeCategory.FEATURE
-    subcategory = "二维特征 (2D)"
     description = "提取频谱对比度特征"
     icon = "📊"
     
