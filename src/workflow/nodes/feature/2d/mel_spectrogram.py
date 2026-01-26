@@ -26,7 +26,6 @@ class MelSpectrogramNode(BaseNode):
     node_type = "mel_spectrogram"
     display_name = "Mel频谱图"
     category = NodeCategory.FEATURE
-    subcategory = "二维特征 (2D)"
     description = "提取Mel频谱图特征"
     icon = "📈"
     

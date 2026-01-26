@@ -8,8 +8,8 @@ Uses the pyin algorithm for robust pitch tracking.
 
 import numpy as np
 
-from ....node_base import BaseNode, NodeCategory, register_node
-from ....port import DataType
+from ...node_base import BaseNode, NodeCategory, register_node
+from ...port import DataType
 from ..base import FeatureData, extract_from_audio_or_list, validate_audio_input, AudioData
 
 # Import unified feature extractor
@@ -28,7 +28,6 @@ class PitchNode(BaseNode):
     node_type = "pitch"
     display_name = "基频/音高"
     category = NodeCategory.FEATURE
-    subcategory = "一维特征 (1D)"
     description = "提取基频(F0)轨迹"
     icon = "🎤"
     

@@ -10,8 +10,8 @@ values close to 0 indicate tonal signals.
 
 import numpy as np
 
-from ....node_base import BaseNode, NodeCategory, register_node
-from ....port import DataType
+from ...node_base import BaseNode, NodeCategory, register_node
+from ...port import DataType
 from ..base import FeatureData, extract_from_audio_or_list, validate_audio_input, AudioData
 
 # Import unified feature extractor
@@ -30,7 +30,6 @@ class SpectralFlatnessNode(BaseNode):
     node_type = "spectral_flatness"
     display_name = "频谱平坦度"
     category = NodeCategory.FEATURE
-    subcategory = "一维特征 (1D)"
     description = "提取频谱平坦度特征"
     icon = "📏"
     

@@ -26,6 +26,7 @@ class MFCCNode(BaseNode):
     node_type = "mfcc"
     display_name = "MFCC"
     category = NodeCategory.FEATURE
+    subcategory = "二维特征 (2D)"
     description = "提取MFCC特征"
     icon = "📊"
     

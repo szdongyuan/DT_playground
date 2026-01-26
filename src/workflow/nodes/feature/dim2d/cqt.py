@@ -29,6 +29,7 @@ class CQTNode(BaseNode):
     node_type = "cqt"
     display_name = "CQT频谱"
     category = NodeCategory.FEATURE
+    subcategory = "二维特征 (2D)"
     description = "提取CQT常数Q变换频谱"
     icon = "🎵"
     

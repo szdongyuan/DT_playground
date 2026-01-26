@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-Mel Spectrogram Feature Extraction Node
+CQT Feature Extraction Node
 
-Extracts Mel spectrogram features from audio signals.
+Extracts Constant-Q Transform spectrogram from audio signals.
+CQT provides logarithmically-spaced frequency resolution, making it
+particularly suitable for music signal analysis.
 """
 
 import numpy as np
 
-from ....node_base import BaseNode, NodeCategory, register_node
-from ....port import DataType
+from ...node_base import BaseNode, NodeCategory, register_node
+from ...port import DataType
 from ..base import FeatureData, extract_from_audio_or_list, validate_audio_input, AudioData
 
 # Import unified feature extractor
@@ -16,34 +18,36 @@ from src.audio.features import FeatureExtractor
 
 
 @register_node
-class MelSpectrogramNode(BaseNode):
+class CQTNode(BaseNode):
     """
-    Mel频谱图节点
+    CQT节点
     
-    提取Mel频谱图特征。
+    提取常数Q变换频谱。CQT的频率分辨率随频率呈对数变化，
+    特别适合音乐信号分析。
     """
     
-    node_type = "mel_spectrogram"
-    display_name = "Mel频谱图"
+    node_type = "cqt"
+    display_name = "CQT频谱"
     category = NodeCategory.FEATURE
-    subcategory = "二维特征 (2D)"
-    description = "提取Mel频谱图特征"
-    icon = "📈"
+    description = "提取CQT常数Q变换频谱"
+    icon = "🎵"
     
     def _setup_ports(self):
         self.add_input("audio", DataType.AUDIO, "音频")
-        self.add_output("feature", DataType.FEATURE, "Mel频谱")
+        self.add_output("feature", DataType.FEATURE, "CQT频谱")
     
     def _setup_parameters(self):
         self.add_parameter(
-            "n_mels", "int", 128,
-            display_name="Mel滤波器数",
-            min_value=20, max_value=256
+            "n_bins", "int", 84,
+            display_name="频带数",
+            min_value=12, max_value=168,
+            description="CQT频带数（默认84，即7个八度×12半音）"
         )
         self.add_parameter(
-            "n_fft", "int", 2048,
-            display_name="FFT窗口大小",
-            min_value=256, max_value=8192
+            "bins_per_octave", "int", 12,
+            display_name="每八度频带数",
+            min_value=6, max_value=48,
+            description="每个八度的频带数（默认12，对应半音）"
         )
         self.add_parameter(
             "hop_length", "int", 512,
@@ -51,19 +55,15 @@ class MelSpectrogramNode(BaseNode):
             min_value=64, max_value=2048
         )
         self.add_parameter(
-            "fmin", "float", 0.0,
+            "fmin", "float", 32.7,
             display_name="最低频率(Hz)",
-            min_value=0.0, max_value=1000.0
+            min_value=10.0, max_value=500.0,
+            description="最低频率（默认C1，约32.7Hz）"
         )
         self.add_parameter(
-            "fmax", "float", 8000.0,
-            display_name="最高频率(Hz)",
-            min_value=1000.0, max_value=22050.0
-        )
-        self.add_parameter(
-            "power_to_db", "bool", True,
+            "to_db", "bool", True,
             display_name="转换为dB",
-            description="将功率谱转换为dB刻度"
+            description="将幅度谱转换为dB刻度"
         )
     
     def execute(self) -> bool:
@@ -76,40 +76,39 @@ class MelSpectrogramNode(BaseNode):
             self.error_message = str(e)
             return False
         
-        n_mels = self.get_parameter("n_mels")
-        n_fft = self.get_parameter("n_fft")
+        n_bins = self.get_parameter("n_bins")
+        bins_per_octave = self.get_parameter("bins_per_octave")
         hop_length = self.get_parameter("hop_length")
         fmin = self.get_parameter("fmin")
-        fmax = self.get_parameter("fmax")
-        power_to_db = self.get_parameter("power_to_db")
+        to_db = self.get_parameter("to_db")
         
-        def extract_mel(audio: AudioData) -> FeatureData:
+        def extract_cqt(audio: AudioData) -> FeatureData:
             # Use unified FeatureExtractor
             extractor = FeatureExtractor(
                 sample_rate=audio.sample_rate,
-                n_fft=n_fft,
                 hop_length=hop_length,
-                n_mels=n_mels
+                n_bins=n_bins,
+                bins_per_octave=bins_per_octave
             )
             
-            # Extract Mel spectrogram for each channel
+            # Extract CQT for each channel
             channel_features = []
             for ch in range(audio.channels):
                 ch_data = audio.get_channel(ch)
-                mel = extractor.extract_mel_spectrogram(ch_data, to_db=power_to_db)
-                channel_features.append(mel)
+                cqt = extractor.extract_cqt(ch_data, to_db=to_db, fmin=fmin)
+                channel_features.append(cqt)
             
-            # Stack as (channels, n_mels, frames)
+            # Stack as (channels, n_bins, frames)
             stacked = np.stack(channel_features, axis=0)
             
             return FeatureData(
                 data=stacked.astype(np.float32),
-                feature_type="mel_spectrogram",
+                feature_type="cqt",
                 sample_rate=audio.sample_rate,
                 hop_length=hop_length,
                 source_file=audio.file_path
             )
         
-        result = extract_from_audio_or_list(audio_input, extract_mel)
+        result = extract_from_audio_or_list(audio_input, extract_cqt)
         self.set_output_data("feature", result)
         return True

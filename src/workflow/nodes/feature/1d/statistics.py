@@ -8,8 +8,8 @@ Extracts spectral statistical features (1D) from audio signals.
 import librosa
 import numpy as np
 
-from ....node_base import BaseNode, NodeCategory, register_node
-from ....port import DataType
+from ...node_base import BaseNode, NodeCategory, register_node
+from ...port import DataType
 from ..base import FeatureData, extract_from_audio_or_list, validate_audio_input, AudioData
 
 
@@ -24,7 +24,6 @@ class StatisticsNode(BaseNode):
     node_type = "statistics"
     display_name = "统计特征"
     category = NodeCategory.FEATURE
-    subcategory = "一维特征 (1D)"
     description = "提取频谱统计特征"
     icon = "📉"
     
