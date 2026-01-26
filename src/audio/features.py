@@ -24,8 +24,10 @@ class FeatureType(Enum):
     SPECTRAL_CENTROID = "spectral_centroid"
     SPECTRAL_BANDWIDTH = "spectral_bandwidth"
     SPECTRAL_ROLLOFF = "spectral_rolloff"
+    SPECTRAL_FLATNESS = "spectral_flatness"  # 频谱平坦度
     ZERO_CROSSING_RATE = "zcr"
     RMS = "rms"
+    PITCH = "pitch"                    # 基频/音高
     RAW = "raw"
     
     @classmethod
@@ -45,8 +47,10 @@ class FeatureType(Enum):
             "spectral_centroid": "频谱质心",
             "spectral_bandwidth": "频谱带宽",
             "spectral_rolloff": "频谱滚降",
+            "spectral_flatness": "频谱平坦度",
             "zcr": "过零率",
             "rms": "均方根能量",
+            "pitch": "基频/音高",
             "raw": "原始波形",
         }
         return display_names.get(feature_type, feature_type)
@@ -61,7 +65,7 @@ class FeatureType(Enum):
     def get_1d_features(cls) -> List[str]:
         """获取1D特征类型（适用于1D CNN或全连接）"""
         return ["fft", "spectral_centroid", "spectral_bandwidth", "spectral_rolloff", 
-                "zcr", "rms", "tonnetz", "raw"]
+                "spectral_flatness", "zcr", "rms", "pitch", "tonnetz", "raw"]
     
     @classmethod
     def get_combinable_2d_features(cls) -> List[str]:
@@ -338,6 +342,58 @@ class FeatureExtractor:
             y=audio, hop_length=self.hop_length
         )
     
+    def extract_spectral_flatness(self, audio: np.ndarray) -> np.ndarray:
+        """
+        提取频谱平坦度
+        
+        频谱平坦度测量频谱的平坦程度，用于区分噪声和调性信号。
+        值接近1表示白噪声（平坦频谱），值接近0表示调性信号。
+        
+        Args:
+            audio: 音频数据
+            
+        Returns:
+            频谱平坦度 (1, time_steps)
+        """
+        import librosa
+        return librosa.feature.spectral_flatness(
+            y=audio, n_fft=self.n_fft, hop_length=self.hop_length
+        )
+    
+    def extract_pitch(self, audio: np.ndarray,
+                      fmin: float = 65.0,
+                      fmax: float = 2093.0,
+                      fill_na: float = 0.0) -> np.ndarray:
+        """
+        提取基频（音高）
+        
+        使用 pyin 算法提取基频轨迹，适用于单音信号。
+        
+        Args:
+            audio: 音频数据
+            fmin: 最低频率 (Hz)，默认 C2 (~65Hz)
+            fmax: 最高频率 (Hz)，默认 C7 (~2093Hz)
+            fill_na: 用于填充无法检测到基频位置的值
+            
+        Returns:
+            基频轨迹 (1, time_steps)，单位 Hz
+        """
+        import librosa
+        
+        # 使用 pyin 算法提取基频
+        f0, voiced_flag, voiced_probs = librosa.pyin(
+            audio,
+            fmin=fmin,
+            fmax=fmax,
+            sr=self.sample_rate,
+            hop_length=self.hop_length
+        )
+        
+        # 将 NaN 值替换为指定值
+        f0 = np.nan_to_num(f0, nan=fill_na)
+        
+        return f0.reshape(1, -1)
+    
     def extract_spectral_features(self, audio: np.ndarray) -> Dict[str, np.ndarray]:
         """
         提取频谱特征集合
@@ -395,6 +451,10 @@ class FeatureExtractor:
             features = self.extract_zero_crossing_rate(audio)
         elif feature_type == "rms":
             features = self.extract_rms(audio)
+        elif feature_type == "spectral_flatness":
+            features = self.extract_spectral_flatness(audio)
+        elif feature_type == "pitch":
+            features = self.extract_pitch(audio)
         elif feature_type == "raw":
             features = audio.reshape(1, -1)  # (1, samples)
         else:
@@ -625,8 +685,8 @@ def get_feature_categories() -> Dict[str, List[str]]:
     return {
         "频谱特征 (2D)": ["mel_spectrogram", "stft", "cqt", "chroma", "spectral_contrast"],
         "MFCC系列 (2D)": ["mfcc", "mfcc_delta", "mfcc_delta2"],
-        "音调特征": ["tonnetz"],
-        "频域特征 (1D)": ["fft"],
+        "音调特征": ["tonnetz", "pitch"],
+        "频域特征 (1D)": ["fft", "spectral_flatness"],
         "统计特征 (1D)": ["spectral_centroid", "spectral_bandwidth", 
                          "spectral_rolloff", "zcr", "rms"],
         "原始数据": ["raw"]
