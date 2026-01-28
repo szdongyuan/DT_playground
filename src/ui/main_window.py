@@ -265,7 +265,7 @@ class MainWindow(QWidget):
     def _update_resource_status(self):
         """更新资源状态"""
         try:
-            import psutil
+            import psutil  # type: ignore[import-not-found]
             memory = psutil.virtual_memory()
             used_gb = memory.used / (1024 ** 3)
             total_gb = memory.total / (1024 ** 3)
