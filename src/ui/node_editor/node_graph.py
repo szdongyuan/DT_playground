@@ -683,15 +683,37 @@ class NodeGraphWidget(QWidget):
         menu.exec(self._view.mapToGlobal(pos))
     
     def _delete_selected(self):
-        """删除所有选中的节点"""
-        # 收集所有选中的节点ID
-        selected = self._scene.selectedItems()
-        node_ids = []
+        """Delete selected items.
+
+        Priority:
+        - Delete selected connection(s) if any
+        - Otherwise delete selected node(s)
+        """
+        selected = list(self._scene.selectedItems())
+
+        # 1) Delete selected connections first
+        conn_items = [item for item in selected if isinstance(item, ConnectionItem)]
+        if conn_items:
+            for conn_item in list(conn_items):
+                if self.workflow:
+                    connection = Connection(
+                        source_node_id=conn_item.source_node.node.node_id,
+                        source_port=conn_item.source_port.port_name,
+                        target_node_id=conn_item.target_node.node.node_id,
+                        target_port=conn_item.target_port.port_name,
+                    )
+                    self.workflow.remove_connection(connection)
+                self._scene.remove_connection_item(conn_item)
+
+            self.workflow_changed.emit()
+            return
+
+        # 2) Delete selected nodes
+        node_ids: List[str] = []
         for item in selected:
             if isinstance(item, NodeItem):
                 node_ids.append(item.node.node_id)
-        
-        # 逐一删除
+
         for node_id in node_ids:
             self.remove_node(node_id)
     

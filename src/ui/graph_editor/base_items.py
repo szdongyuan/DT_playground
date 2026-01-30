@@ -104,11 +104,29 @@ class BaseConnectionItem(QGraphicsPathItem):
         target_port.connections.append(self)
         
         # 样式
-        color = line_color or Styles.COLORS['blue']
-        self.setPen(QPen(QColor(color), 2))
+        self._base_color = line_color or Styles.COLORS['blue']
+        self._selected_color = "#f5e0dc"
+        self._base_width = 2
+        self._selected_width = 3
+
+        self.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsSelectable, True)
+        self._update_pen()
         self.setZValue(-1)  # 在节点下方
         
         self.update_path()
+
+    def _update_pen(self):
+        """Update pen according to selection state."""
+        if self.isSelected():
+            self.setPen(QPen(QColor(self._selected_color), self._selected_width))
+        else:
+            self.setPen(QPen(QColor(self._base_color), self._base_width))
+
+    def itemChange(self, change, value):
+        """React to selection changes."""
+        if change == QGraphicsItem.GraphicsItemChange.ItemSelectedHasChanged:
+            self._update_pen()
+        return super().itemChange(change, value)
     
     def update_path(self):
         """更新贝塞尔曲线路径"""
