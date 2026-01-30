@@ -239,12 +239,15 @@ class WorkflowEngine(QObject):
             for i, node_id in enumerate(execution_order):
                 # Check stop request
                 if self._stop_requested:
-                    return ExecutionResult(
+                    self.state = EngineState.STOPPED
+                    result = ExecutionResult(
                         success=False,
                         message="执行已停止",
                         execution_time=time.time() - start_time,
                         node_results=node_results
                     )
+                    self.workflow_finished.emit(result)
+                    return result
                 
                 # Check pause request
                 while self._pause_requested:
@@ -264,12 +267,14 @@ class WorkflowEngine(QObject):
                 
                 if not success:
                     self.state = EngineState.ERROR
-                    return ExecutionResult(
+                    result = ExecutionResult(
                         success=False,
                         message=f"节点 '{node.display_name}' 执行失败: {node.error_message}",
                         execution_time=time.time() - start_time,
                         node_results=node_results
                     )
+                    self.workflow_finished.emit(result)
+                    return result
                 
                 # Collect results
                 node_results[node_id] = {

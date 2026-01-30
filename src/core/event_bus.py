@@ -84,6 +84,7 @@ class EventBus(QObject):
     training_epoch_completed = pyqtSignal(int, int, dict)       # Epoch completed (current, total, metrics)
     training_finished = pyqtSignal(bool, str)                   # Training finished (success, message)
     training_stopped = pyqtSignal()                             # Training stopped
+    training_stop_with_checkpoint = pyqtSignal(str)             # Request stop + save checkpoint (path)
     
     # ===== Model Events =====
     model_loaded = pyqtSignal(object)                           # Model loaded (model)

@@ -169,9 +169,10 @@ class WorkflowView(QWidget):
         self._run_btn.setStyleSheet(btn_style)
         normal_layout.addWidget(self._run_btn)
         
-        self._stop_btn = QPushButton("⏹️ 停止")
+        self._stop_btn = QPushButton("⏹️ 停止运行")
         self._stop_btn.clicked.connect(self._on_stop_workflow)
         self._stop_btn.setStyleSheet(btn_style)
+        self._stop_btn.setEnabled(False)  # Only enabled while a workflow is running
         normal_layout.addWidget(self._stop_btn)
         
         self._run_control_stack.addWidget(normal_widget)  # index 0
@@ -381,7 +382,23 @@ class WorkflowView(QWidget):
     
     def _on_stop_workflow(self):
         """停止工作流"""
-        if self._engine:
+        from src.core.event_bus import get_event_bus
+
+        # Immediate UI feedback: stopping can take time (e.g., waiting for training batch/epoch end).
+        if hasattr(self, "_stop_btn"):
+            self._stop_btn.setEnabled(False)
+            self._stop_btn.setText("⏳ 正在停止...")
+        if hasattr(self, "_run_btn"):
+            self._run_btn.setEnabled(False)
+
+        event_bus = get_event_bus()
+        event_bus.emit_status("正在停止工作流...（等待当前任务收尾）")
+        event_bus.training_stopped.emit()
+
+        controller = getattr(self, "_workflow_controller", None)
+        if controller is not None:
+            controller.stop()
+        elif self._engine:
             self._engine.stop()
     
     def _on_clear_workflow(self):

@@ -39,11 +39,13 @@ class TrainingView(QWidget):
         pause_requested: 请求暂停训练
         resume_requested: 请求恢复训练
         stop_requested: 请求停止训练
+        stop_and_save_requested: 请求停止训练并保存检查点 (path)
     """
     
     pause_requested = pyqtSignal()
     resume_requested = pyqtSignal()
     stop_requested = pyqtSignal()
+    stop_and_save_requested = pyqtSignal(str)
     
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -210,12 +212,17 @@ class TrainingView(QWidget):
         self._pause_btn.setEnabled(False)
         row1.addWidget(self._pause_btn)
         
-        self._stop_btn = QPushButton("⏹️ 停止")
+        self._stop_btn = QPushButton("⏹️ 停止训练")
         self._stop_btn.clicked.connect(self._on_stop)
         self._stop_btn.setEnabled(False)
         row1.addWidget(self._stop_btn)
+
+        self._stop_and_save_btn = QPushButton("💾 停止并保存检查点")
+        self._stop_and_save_btn.clicked.connect(self._on_stop_and_save)
+        self._stop_and_save_btn.setEnabled(False)
+        row1.addWidget(self._stop_and_save_btn)
         
-        for btn in [self._pause_btn, self._stop_btn]:
+        for btn in [self._pause_btn, self._stop_btn, self._stop_and_save_btn]:
             btn.setStyleSheet(f"""
                 QPushButton {{
                     background: {Styles.COLORS['surface1']};
@@ -282,6 +289,7 @@ class TrainingView(QWidget):
         
         self._pause_btn.setEnabled(True)
         self._stop_btn.setEnabled(True)
+        self._stop_and_save_btn.setEnabled(True)
         
         self._log_text.clear()
         self._log("训练开始...")
@@ -397,6 +405,7 @@ class TrainingView(QWidget):
         
         self._pause_btn.setEnabled(False)
         self._stop_btn.setEnabled(False)
+        self._stop_and_save_btn.setEnabled(False)
     
     def _on_pause_resume(self):
         """暂停/恢复"""
@@ -414,6 +423,25 @@ class TrainingView(QWidget):
     def _on_stop(self):
         """停止"""
         self.stop_requested.emit()
+
+    def _on_stop_and_save(self):
+        """Stop training and save checkpoint to a file chosen by user."""
+        from PyQt6.QtWidgets import QFileDialog
+        from datetime import datetime
+        import os
+
+        default_dir = "models"
+        default_name = f"checkpoint_{datetime.now().strftime('%Y%m%d_%H%M%S')}.keras"
+        default_path = os.path.join(default_dir, default_name)
+
+        path, _ = QFileDialog.getSaveFileName(
+            self,
+            "保存检查点",
+            default_path,
+            "Keras Model (*.keras);;H5 Model (*.h5);;All Files (*)"
+        )
+        if path:
+            self.stop_and_save_requested.emit(path)
     
     def _log(self, message: str):
         """添加日志"""

@@ -118,7 +118,8 @@ class WorkflowController(QObject):
     def stop(self):
         """停止工作流执行"""
         self._engine.stop()
-        self._event_bus.emit_status("工作流已停止")
+        # Stopping can be asynchronous (e.g., training node stops at batch/epoch boundary).
+        self._event_bus.emit_status("已请求停止工作流，正在等待当前任务结束...")
     
     def pause(self):
         """暂停工作流执行"""
