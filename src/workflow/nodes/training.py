@@ -360,6 +360,8 @@ class TrainerNode(BaseNode):
             from tensorflow import keras
             from .data_source import AudioData
             from src.model_builder.model_graph import CompileConfig
+            from src.core.event_bus import get_event_bus
+            import os
             
             model = self.get_input_data("model")
             x_train = self.get_input_data("x_train")
@@ -434,7 +436,43 @@ class TrainerNode(BaseNode):
                 epoch_metrics = logs or {}
                 self.report_progress(progress, f"Epoch {current_epoch}/{total_epochs}", epoch_metrics)
             
-            callbacks.append(TrainingCallback(on_epoch_end=on_epoch_end))
+            class _TrainingStopAndSaveCallback(TrainingCallback):
+                def __init__(self, *args, **kwargs):
+                    super().__init__(*args, **kwargs)
+                    self._checkpoint_path: Optional[str] = None
+
+                def set_checkpoint_path(self, path: str):
+                    self._checkpoint_path = path
+
+                def on_train_end(self, logs=None):
+                    super().on_train_end(logs)
+                    if not self._checkpoint_path:
+                        return
+                    try:
+                        dir_path = os.path.dirname(self._checkpoint_path)
+                        if dir_path:
+                            os.makedirs(dir_path, exist_ok=True)
+                        # Save full model checkpoint (can be large).
+                        self.model.save(self._checkpoint_path)
+                    except Exception:
+                        # Do not raise from callback; training is already stopping.
+                        pass
+
+            training_callback = _TrainingStopAndSaveCallback(on_epoch_end=on_epoch_end)
+            callbacks.append(training_callback)
+
+            event_bus = get_event_bus()
+
+            def _on_training_stopped():
+                training_callback.stop_training()
+
+            def _on_training_stop_with_checkpoint(path: str):
+                if path:
+                    training_callback.set_checkpoint_path(path)
+                training_callback.stop_training()
+
+            event_bus.training_stopped.connect(_on_training_stopped)
+            event_bus.training_stop_with_checkpoint.connect(_on_training_stop_with_checkpoint)
             
             if self.get_parameter("early_stopping"):
                 callbacks.append(keras.callbacks.EarlyStopping(
@@ -445,15 +483,25 @@ class TrainerNode(BaseNode):
             
             # 训练
             self.report_status(f"开始训练: {total_epochs} epochs, batch_size={self.get_parameter('batch_size')}")
-            
-            history = model.fit(
-                X, Y,
-                epochs=total_epochs,
-                batch_size=self.get_parameter("batch_size"),
-                validation_data=validation_data,
-                callbacks=callbacks,
-                verbose=1
-            )
+
+            try:
+                history = model.fit(
+                    X, Y,
+                    epochs=total_epochs,
+                    batch_size=self.get_parameter("batch_size"),
+                    validation_data=validation_data,
+                    callbacks=callbacks,
+                    verbose=1
+                )
+            finally:
+                try:
+                    event_bus.training_stopped.disconnect(_on_training_stopped)
+                except TypeError:
+                    pass
+                try:
+                    event_bus.training_stop_with_checkpoint.disconnect(_on_training_stop_with_checkpoint)
+                except TypeError:
+                    pass
             
             self.set_output_data("trained_model", model)
             self.set_output_data("history", history.history)

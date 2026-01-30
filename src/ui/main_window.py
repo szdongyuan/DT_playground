@@ -293,6 +293,7 @@ class MainWindow(QWidget):
         self._training_view.pause_requested.connect(self._on_pause_training)
         self._training_view.resume_requested.connect(self._on_resume_training)
         self._training_view.stop_requested.connect(self._on_stop_training)
+        self._training_view.stop_and_save_requested.connect(self._on_stop_training_and_save)
         
         # 工作流视图断点继续信号
         self._workflow_view.continue_requested.connect(self._on_continue_from_breakpoint)
@@ -345,14 +346,35 @@ class MainWindow(QWidget):
         """事件总线：工作流开始"""
         self.training_started.emit()
         self._workflow_view.reset_all_node_states()
+        # Ensure workflow run controls are enabled when a run starts.
+        try:
+            self._workflow_view._stop_btn.setEnabled(True)
+            self._workflow_view._stop_btn.setText("⏹️ 停止运行")
+            self._workflow_view._run_btn.setEnabled(False)
+        except Exception:
+            pass
     
     def _on_event_workflow_finished(self, success: bool, message: str):
         """事件总线：工作流完成"""
         if success:
             self.training_completed.emit({})
+        # Restore workflow run controls (stop may take time and temporarily disables buttons).
+        try:
+            self._workflow_view._run_btn.setEnabled(True)
+            self._workflow_view._stop_btn.setEnabled(False)
+            self._workflow_view._stop_btn.setText("⏹️ 停止运行")
+        except Exception:
+            pass
     
     def _on_event_workflow_error(self, error_msg: str):
         """事件总线：工作流错误"""
+        # Restore workflow run controls on error as well.
+        try:
+            self._workflow_view._run_btn.setEnabled(True)
+            self._workflow_view._stop_btn.setEnabled(False)
+            self._workflow_view._stop_btn.setText("⏹️ 停止运行")
+        except Exception:
+            pass
         QMessageBox.critical(self, "执行错误", error_msg)
     
     def _on_event_node_started(self, node_id: str):
@@ -507,6 +529,17 @@ class MainWindow(QWidget):
     
     def _on_stop_training(self):
         """停止训练"""
+        self._workflow_controller.stop()
+        self._training_controller.stop_training()
+
+    def _on_stop_training_and_save(self, checkpoint_path: str):
+        """Stop training and save a checkpoint before exiting training loop."""
+        try:
+            self._event_bus.training_stop_with_checkpoint.emit(checkpoint_path)
+        except Exception:
+            # Avoid breaking stop flow if UI emits a bad path
+            pass
+
         self._workflow_controller.stop()
         self._training_controller.stop_training()
     
