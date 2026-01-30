@@ -513,7 +513,29 @@ class ModelGraphWidget(QWidget):
         menu.exec(self._view.mapToGlobal(pos))
     
     def _delete_selected(self):
-        """删除选中的层（支持多选）"""
+        """Delete selected items.
+
+        Priority:
+        - Delete selected connection(s) if any
+        - Otherwise delete selected layer(s)
+        """
+        selected = list(self._scene.selectedItems())
+
+        # 1) Delete selected connections first
+        conn_items = [item for item in selected if isinstance(item, LayerConnectionItem)]
+        if conn_items:
+            for conn_item in list(conn_items):
+                if self.model_graph:
+                    self.model_graph.disconnect(
+                        conn_item.source_layer.layer.layer_id,
+                        conn_item.target_layer.layer.layer_id,
+                    )
+                self._scene.remove_connection_item(conn_item)
+
+            self.graph_changed.emit()
+            return
+
+        # 2) Delete selected layers (multi-select)
         layer_ids = self.get_selected_layer_ids()
         for layer_id in layer_ids:
             self.remove_layer(layer_id)
