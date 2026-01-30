@@ -1,0 +1,192 @@
+# {{PROJECT_NAME}} Architecture Document
+
+## Overview
+
+{{PROJECT_DESCRIPTION}}
+
+This project adopts the **{{ARCHITECTURE_PATTERN}}** architecture pattern, built with the **{{FRAMEWORK}}** framework.
+
+## System Architecture Diagram
+
+```mermaid
+graph TB
+    subgraph external [External Systems]
+        Client[Client]
+        DB[(Database)]
+        ExtAPI[External API]
+    end
+
+    subgraph app [{{PROJECT_NAME}}]
+        Entry[Entry Layer]
+        Service[Service Layer]
+        Data[Data Layer]
+    end
+
+    Client --> Entry
+    Entry --> Service
+    Service --> Data
+    Data --> DB
+    Service --> ExtAPI
+```
+
+## Directory Structure
+
+```
+{{PROJECT_NAME}}/
+├── src/
+│   └── {{PROJECT_NAME}}/
+{{DIRECTORY_STRUCTURE}}
+├── tests/
+│   ├── __init__.py
+│   ├── conftest.py
+│   └── ...
+├── docs/
+│   ├── architecture.md
+│   └── api.md
+├── .cursor/
+│   └── rules.mdc
+├── pyproject.toml
+├── README.md
+├── ARCHITECTURE.md
+└── CHANGELOG.md
+```
+
+## Module Description
+
+{{MODULES_DESCRIPTION}}
+
+## Data Flow
+
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant E as Entry
+    participant S as Service
+    participant D as Data
+    participant DB as Database
+
+    C->>E: Request
+    E->>E: Validate/Parse
+    E->>S: Call Service
+    S->>S: Business Logic
+    S->>D: Data Operation
+    D->>DB: Query/Update
+    DB-->>D: Result
+    D-->>S: Data Object
+    S-->>E: Response Data
+    E-->>C: Response
+```
+
+## Core Components
+
+### Entry Layer
+
+Handles external requests, including:
+- Request routing
+- Parameter validation
+- Response formatting
+- Error handling
+
+### Service Layer
+
+Implements core business logic:
+- Business rule validation
+- Data transformation and aggregation
+- External service integration
+- Transaction management
+
+### Data Layer
+
+Handles data persistence:
+- Database access
+- Cache management
+- Data model definitions
+
+## Design Principles
+
+### Dependency Inversion
+
+- High-level modules do not depend on low-level module implementations
+- Dependencies are defined through interfaces/protocols
+
+### Single Responsibility
+
+- Each module is responsible for only one functional area
+- Single reason for change
+
+### Open/Closed Principle
+
+- Open for extension
+- Closed for modification
+
+## Error Handling Strategy
+
+```mermaid
+graph LR
+    A[Error Occurs] --> B{Error Type}
+    B -->|Business Error| C[Return Error Response]
+    B -->|System Error| D[Log Error]
+    D --> E[Return Generic Error]
+    B -->|Unknown Error| F[Alert Notification]
+    F --> E
+```
+
+### Error Classification
+
+| Type | Handling | Examples |
+|------|----------|----------|
+| Business Error | Return specific error message | User not found, Invalid parameter |
+| System Error | Log and return generic error | Database connection failure |
+| Unknown Error | Alert + Log + Generic error | Uncaught exceptions |
+
+## Configuration Management
+
+Configuration is loaded by priority:
+
+1. Environment variables
+2. Configuration files (.env / config.yaml)
+3. Default values
+
+```python
+# src/{{PROJECT_NAME}}/core/config.py
+from pydantic_settings import BaseSettings
+
+class Settings(BaseSettings):
+    app_name: str = "{{PROJECT_NAME}}"
+    debug: bool = False
+    database_url: str = ""
+
+    class Config:
+        env_file = ".env"
+```
+
+## Extension Points
+
+{{EXTENSION_POINTS}}
+
+## Deployment Architecture
+
+```mermaid
+graph TB
+    subgraph prod [Production Environment]
+        LB[Load Balancer]
+        App1[App Instance 1]
+        App2[App Instance 2]
+        Cache[(Cache)]
+        DB[(Database)]
+    end
+
+    User[User] --> LB
+    LB --> App1
+    LB --> App2
+    App1 --> Cache
+    App2 --> Cache
+    App1 --> DB
+    App2 --> DB
+```
+
+## Reference Documentation
+
+- Detailed Architecture: [docs/architecture.md](docs/architecture.md)
+- API Documentation: [docs/api.md](docs/api.md)
+- Development Standards: [.cursor/rules.mdc](.cursor/rules.mdc)
