@@ -20,6 +20,7 @@ from ..styles import Styles
 from ...controllers.workflow_controller import WorkflowController
 from ...workflow.engine import WorkflowEngine
 from ...workflow.workflow import Workflow
+from src.utils.config import config
 
 
 logger = logging.getLogger(__name__)
@@ -355,6 +356,12 @@ class WorkflowView(QWidget):
                 workflow._file_path = path  # 保存文件路径
                 self.set_workflow(workflow)
                 self.workflow_changed.emit()
+                # persist last workflow path & recent list
+                try:
+                    config.set('session.last_workflow_path', path)
+                    config.add_recent_file(path)
+                except Exception:
+                    pass
     
     def _on_save_workflow(self):
         """保存工作流"""
@@ -375,6 +382,12 @@ class WorkflowView(QWidget):
             workflow.save(path)
             workflow._file_path = path  # 保存文件路径
             self._update_workflow_name()
+            # persist last workflow path & recent list
+            try:
+                config.set('session.last_workflow_path', path)
+                config.add_recent_file(path)
+            except Exception:
+                pass
     
     def _on_run_workflow(self):
         """运行工作流"""

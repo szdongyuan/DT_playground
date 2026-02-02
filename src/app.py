@@ -156,8 +156,80 @@ class AudioTrainingApp(QMainWindow):
     
     def _load_settings(self):
         """加载设置"""
-        # 从配置加载窗口状态
-        pass
+        # 启动恢复：上次工作流 + 模型编辑器状态
+        import os
+        from src.workflow.workflow import Workflow
+        from src.model_builder.model_graph import ModelGraph
+
+        # ===== 恢复工作流 =====
+        try:
+            last_workflow_path = config.get('session.last_workflow_path')
+            if last_workflow_path and os.path.exists(last_workflow_path):
+                workflow = Workflow.load(last_workflow_path)
+                if workflow:
+                    # 记录文件路径（供 UI 显示文件名）
+                    workflow._file_path = last_workflow_path  # type: ignore[attr-defined]
+                    # 同步 main_window 内部状态 + view + controller
+                    try:
+                        self.main_window._workflow = workflow
+                    except Exception:
+                        pass
+                    self.main_window._workflow_view.set_workflow(workflow)
+                    try:
+                        self.main_window._workflow_controller.set_workflow(workflow)
+                    except Exception:
+                        pass
+                    try:
+                        self.main_window._update_workflow_status()
+                    except Exception:
+                        pass
+                    try:
+                        config.add_recent_file(last_workflow_path)
+                    except Exception:
+                        pass
+        except Exception:
+            # 启动恢复失败不应阻断应用启动
+            pass
+
+        # ===== 恢复模型编辑器 =====
+        try:
+            model_graph = None
+            model_file_path = None
+
+            last_model_path = config.get('session.last_model_path')
+            if last_model_path and os.path.exists(last_model_path):
+                try:
+                    model_graph = ModelGraph.load(last_model_path)
+                    model_file_path = last_model_path
+                except Exception:
+                    model_graph = None
+
+            if model_graph is None:
+                snapshot = config.get('session.last_model_graph_snapshot')
+                if isinstance(snapshot, dict):
+                    try:
+                        model_graph = ModelGraph.from_dict(snapshot)
+                        model_file_path = None
+                    except Exception:
+                        model_graph = None
+
+            if model_graph is not None:
+                try:
+                    self.main_window._model_builder_view.set_model_graph(
+                        model_graph,
+                        file_path=model_file_path
+                    )
+                except Exception:
+                    # 不阻断启动；最差情况保持默认模型
+                    pass
+
+            if model_file_path:
+                try:
+                    config.add_recent_file(model_file_path)
+                except Exception:
+                    pass
+        except Exception:
+            pass
     
     def _center_window(self):
         """将窗口居中显示"""
@@ -222,7 +294,25 @@ class AudioTrainingApp(QMainWindow):
                 from src.workflow.workflow import Workflow
                 workflow = Workflow.load(file_path)
                 if workflow:
+                    workflow._file_path = file_path  # type: ignore[attr-defined]
+                    # 同步 main_window 内部状态 + view + controller
+                    try:
+                        self.main_window._workflow = workflow
+                    except Exception:
+                        pass
                     self.main_window._workflow_view.set_workflow(workflow)
+                    try:
+                        self.main_window._workflow_controller.set_workflow(workflow)
+                    except Exception:
+                        pass
+                    try:
+                        self.main_window._update_workflow_status()
+                    except Exception:
+                        pass
+                    try:
+                        config.set('session.last_workflow_path', file_path)
+                    except Exception:
+                        pass
                     self._switch_view(0)
             elif file_path.endswith(('.h5', '.keras', '.model.json')):
                 # 模型文件

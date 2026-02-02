@@ -63,6 +63,16 @@ class ConfigManager:
             'files': [],
             'projects': [],
             'max_recent': 10
+        },
+
+        # 会话/启动恢复
+        'session': {
+            # 上次打开/保存的工作流文件路径（存在且可读时启动自动加载）
+            'last_workflow_path': None,
+            # 上次打开/保存的模型定义文件路径（.model.json）
+            'last_model_path': None,
+            # 模型编辑器快照（用于无可用 last_model_path 时恢复）
+            'last_model_graph_snapshot': None
         }
     }
     
