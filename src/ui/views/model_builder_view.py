@@ -9,7 +9,7 @@ import logging
 import os
 from typing import Optional
 
-from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtCore import Qt, QTimer, pyqtSignal
 from PyQt6.QtGui import QAction
 from PyQt6.QtWidgets import (
     QDialog, QFileDialog, QFrame, QHBoxLayout, QLabel, QMessageBox,
@@ -21,6 +21,7 @@ from src.ui.model_editor.layer_palette import LayerPalette
 from src.ui.model_editor.layer_property_panel import LayerPropertyPanel
 from src.ui.model_editor.model_graph_widget import ModelGraphWidget
 from src.ui.styles import Styles
+from src.utils.config import config
 
 logger = logging.getLogger(__name__)
 
@@ -42,6 +43,12 @@ class ModelBuilderView(QWidget):
         self._model_graph: Optional[ModelGraph] = None
         self._current_file_path: Optional[str] = None
         self._source_keras_model = None  # 导入的 Keras 模型引用（用于权重迁移）
+
+        # 快照持久化防抖（避免每次拖拽/编辑都写磁盘）
+        self._snapshot_timer = QTimer(self)
+        self._snapshot_timer.setSingleShot(True)
+        self._snapshot_timer.setInterval(800)
+        self._snapshot_timer.timeout.connect(self._persist_model_snapshot)
         
         self._setup_ui()
         self._connect_signals()
@@ -49,6 +56,19 @@ class ModelBuilderView(QWidget):
         
         # 创建默认模型
         self._create_default_model()
+
+    def set_model_graph(self, model_graph: ModelGraph, file_path: Optional[str] = None):
+        """
+        外部注入/恢复模型图（用于启动恢复或外部加载）。
+        """
+        self._model_graph = model_graph
+        self._current_file_path = file_path
+        self._source_keras_model = None
+
+        self._graph_widget.set_model_graph(self._model_graph)
+        self._property_panel.set_layer(None)
+        self._property_panel.set_compile_config(self._model_graph.compile_config)
+        self._update_title()
     
     def _setup_ui(self):
         """初始化UI"""
@@ -248,6 +268,7 @@ class ModelBuilderView(QWidget):
         """模型图变化"""
         self._update_title()
         self.model_changed.emit()
+        self._schedule_persist_snapshot()
     
     def _on_parameter_changed(self, layer_id: str, param_name: str, value):
         """参数变化"""
@@ -255,12 +276,14 @@ class ModelBuilderView(QWidget):
         if self._model_graph:
             self._model_graph.is_dirty = True
             self._update_title()
+        self._schedule_persist_snapshot()
     
     def _on_compile_config_changed(self):
         """编译配置变化"""
         if self._model_graph:
             self._model_graph.is_dirty = True
             self._update_title()
+        self._schedule_persist_snapshot()
     
     def _on_new(self):
         """新建模型"""
@@ -298,6 +321,12 @@ class ModelBuilderView(QWidget):
                 self._property_panel.set_compile_config(self._model_graph.compile_config)
                 self._update_title()
                 logger.info(f"模型已加载: {file_path}")
+
+                try:
+                    config.set('session.last_model_path', file_path)
+                    config.add_recent_file(file_path)
+                except Exception:
+                    pass
             except Exception as e:
                 QMessageBox.critical(self, "错误", f"无法加载模型: {str(e)}")
                 logger.exception("加载模型失败")
@@ -445,6 +474,12 @@ class ModelBuilderView(QWidget):
             self._model_graph.save(file_path)
             self._update_title()
             self.model_saved.emit(file_path)
+
+            try:
+                config.set('session.last_model_path', file_path)
+                config.add_recent_file(file_path)
+            except Exception:
+                pass
             
             QMessageBox.information(self, "保存成功", f"模型已保存到:\n{file_path}")
             logger.info(f"模型已保存: {file_path}")
@@ -525,6 +560,24 @@ class ModelBuilderView(QWidget):
         if self._model_graph:
             dirty_mark = " *" if self._model_graph.is_dirty else ""
             self._model_name_label.setText(f"📐 {self._model_graph.name}{dirty_mark}")
+
+    def _schedule_persist_snapshot(self):
+        """防抖触发模型快照持久化"""
+        if not self._model_graph:
+            return
+        # 重置定时器
+        self._snapshot_timer.start()
+
+    def _persist_model_snapshot(self):
+        """将当前模型图快照写入配置（用于启动恢复）"""
+        if not self._model_graph:
+            return
+        try:
+            snapshot = self._model_graph.to_dict()
+            config.set('session.last_model_graph_snapshot', snapshot)
+        except Exception:
+            # 快照持久化失败不应影响编辑体验
+            pass
     
     def get_model_graph(self) -> Optional[ModelGraph]:
         """获取当前模型图"""
