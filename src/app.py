@@ -13,6 +13,7 @@ from src.ui.dialogs.about_dialog import AboutDialog
 from src.ui.dialogs.export_dialog import ExportModelDialog
 from src.ui.dialogs.settings_dialog import SettingsDialog
 from src.ui.main_window import MainWindow
+from src.utils.restart_manager import RestartManager
 from src.utils.config import config
 
 
@@ -22,6 +23,8 @@ class AudioTrainingApp(QMainWindow):
     def __init__(self):
         super().__init__()
         self.current_model = None
+        self._restart_manager: RestartManager | None = None
+        self._restart_in_progress = False
         self._init_ui()
         self._init_menubar()
         self._init_toolbar()
@@ -100,6 +103,14 @@ class AudioTrainingApp(QMainWindow):
         
         file_menu.addSeparator()
         
+        # 重启应用
+        self.action_restart = QAction("重启应用(&R)", self)
+        self.action_restart.setShortcut(QKeySequence("Ctrl+Shift+R"))
+        self.action_restart.triggered.connect(self._request_restart)
+        file_menu.addAction(self.action_restart)
+
+        file_menu.addSeparator()
+
         # 退出
         self.action_exit = QAction("退出(&X)", self)
         self.action_exit.setShortcut(QKeySequence("Alt+F4"))
@@ -375,6 +386,63 @@ class AudioTrainingApp(QMainWindow):
         """显示关于对话框"""
         dialog = AboutDialog(self)
         dialog.exec()
+
+    def _request_restart(self):
+        """请求重启应用（graceful restart）"""
+        if self._restart_in_progress:
+            return
+
+        # busy 判定：工作流或训练任一在运行都视为 busy
+        workflow_running = False
+        training_running = False
+        try:
+            workflow_running = bool(self.main_window._workflow_controller.is_running())
+        except Exception:
+            workflow_running = False
+        try:
+            training_running = bool(self.main_window._training_controller.is_training)
+        except Exception:
+            training_running = False
+
+        if workflow_running or training_running:
+            resp = QMessageBox.question(
+                self,
+                "确认重启",
+                "检测到工作流/训练正在运行。\n"
+                "重启将先停止当前运行，再启动新实例。\n\n"
+                "是否继续？",
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+                QMessageBox.StandardButton.No,
+            )
+            if resp != QMessageBox.StandardButton.Yes:
+                return
+
+        self._restart_in_progress = True
+        try:
+            self.action_restart.setEnabled(False)
+        except Exception:
+            pass
+
+        self._restart_manager = RestartManager(parent=self, app_window=self)
+        self._restart_manager.restart(
+            stop_timeout_s=10.0,
+            ready_timeout_s=10.0,
+            on_finished=self._on_restart_flow_finished,
+        )
+
+    def _on_restart_flow_finished(self, success: bool, message: str):
+        """重启流程结束回调（失败时恢复 UI）"""
+        self._restart_in_progress = False
+        if not success:
+            try:
+                self.action_restart.setEnabled(True)
+            except Exception:
+                pass
+            QMessageBox.warning(
+                self,
+                "重启失败",
+                message + "\n\n请查看 logs 目录下最新日志。",
+            )
     
     def closeEvent(self, event):
         """窗口关闭事件"""
