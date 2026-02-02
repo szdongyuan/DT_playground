@@ -9,6 +9,8 @@ import sys
 import traceback
 import warnings
 from datetime import datetime
+import argparse
+import json
 
 
 def get_app_root():
@@ -89,6 +91,12 @@ def exception_hook(exc_type, exc_value, exc_tb):
 def main():
     """应用程序主入口"""
     logger.info("应用程序启动")
+
+    # Parse restart handshake args (do not interfere with Qt args)
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument("--restart-token", default=None)
+    parser.add_argument("--restart-ready-file", default=None)
+    restart_args, _unknown = parser.parse_known_args(sys.argv[1:])
     
     # 设置全局异常处理器
     sys.excepthook = exception_hook
@@ -132,6 +140,27 @@ def main():
     logger.info("创建主窗口...")
     window = AudioTrainingApp()
     window.show()
+
+    # If we were started by a restart request, signal readiness after the window is shown.
+    if restart_args.restart_token and restart_args.restart_ready_file:
+        def _write_ready_file():
+            try:
+                ready_path = restart_args.restart_ready_file
+                os.makedirs(os.path.dirname(ready_path), exist_ok=True)
+                payload = {
+                    "token": restart_args.restart_token,
+                    "pid": os.getpid(),
+                    "ts": datetime.now().isoformat(),
+                    "argv": sys.argv,
+                }
+                with open(ready_path, "w", encoding="utf-8") as f:
+                    json.dump(payload, f, ensure_ascii=False)
+            except Exception:
+                # Do not break app startup if handshake fails.
+                pass
+
+        from PyQt6.QtCore import QTimer
+        QTimer.singleShot(0, _write_ready_file)
     
     logger.info("进入主事件循环")
     sys.exit(app.exec())
