@@ -18,6 +18,7 @@ from PyQt6.QtWidgets import (
 )
 
 from src.workflow.port import DataType
+from src.ui.i18n import tr_
 from src.ui.styles import Styles
 
 from .base_preview import BasePreviewWidget, register_preview
@@ -42,7 +43,7 @@ class LabelPreviewWidget(BasePreviewWidget):
     """
     
     supported_types = [DataType.LABEL]
-    display_name = "标签预览"
+    display_name = tr_("Label preview")
     icon = "🏷️"
     
     def __init__(self, parent: Optional[QWidget] = None):
@@ -69,7 +70,7 @@ class LabelPreviewWidget(BasePreviewWidget):
         top_layout.setSpacing(8)
         
         # 统计信息卡片
-        stats_group = QGroupBox("📊 统计信息")
+        stats_group = QGroupBox(tr_("📊 Statistics"))
         stats_group.setStyleSheet(Styles.group_box(Styles.COLORS['teal']))
         stats_layout = QVBoxLayout(stats_group)
         stats_layout.setContentsMargins(12, 12, 12, 12)
@@ -89,7 +90,7 @@ class LabelPreviewWidget(BasePreviewWidget):
         top_layout.addWidget(stats_group, 1)
         
         # 分布柱状图
-        dist_group = QGroupBox("📈 标签分布")
+        dist_group = QGroupBox(tr_("📈 Label distribution"))
         dist_group.setStyleSheet(Styles.group_box(Styles.COLORS['lavender']))
         dist_layout = QVBoxLayout(dist_group)
         dist_layout.setContentsMargins(4, 4, 4, 4)
@@ -98,12 +99,12 @@ class LabelPreviewWidget(BasePreviewWidget):
             self._bar_widget = pg.PlotWidget()
             self._bar_widget.setBackground('#181825')
             self._bar_widget.showGrid(x=False, y=True, alpha=0.3)
-            self._bar_widget.setLabel('left', text='数量')
-            self._bar_widget.setLabel('bottom', text='类别')
+            self._bar_widget.setLabel('left', text=tr_('Count'))
+            self._bar_widget.setLabel('bottom', text=tr_('Class'))
             self._bar_widget.setMinimumHeight(180)
             dist_layout.addWidget(self._bar_widget)
         else:
-            placeholder = QLabel("请安装 pyqtgraph 以显示分布图")
+            placeholder = QLabel(tr_("Please install pyqtgraph to display charts"))
             placeholder.setAlignment(Qt.AlignmentFlag.AlignCenter)
             dist_layout.addWidget(placeholder)
         
@@ -111,14 +112,14 @@ class LabelPreviewWidget(BasePreviewWidget):
         splitter.addWidget(top_widget)
         
         # 下半部分：标签列表表格
-        table_group = QGroupBox("📋 标签列表")
+        table_group = QGroupBox(tr_("📋 Label list"))
         table_group.setStyleSheet(Styles.group_box(Styles.COLORS['blue']))
         table_layout = QVBoxLayout(table_group)
         table_layout.setContentsMargins(4, 4, 4, 4)
         
         self._table = QTableWidget()
         self._table.setColumnCount(2)
-        self._table.setHorizontalHeaderLabels(["类别名", "标签值"])
+        self._table.setHorizontalHeaderLabels([tr_("Class name"), tr_("Label")])
         self._table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         self._table.setAlternatingRowColors(True)
         self._table.setStyleSheet(f"""
@@ -258,17 +259,15 @@ class LabelPreviewWidget(BasePreviewWidget):
             most_common = ("-", 0)
             least_common = ("-", 0)
         
-        stats_text = f"""
-<b>总标签数:</b> {total:,}
-
-<b>类别数:</b> {unique_count}
-
-<b>最多类别:</b> {most_common[0]} ({most_common[1]:,} 个, {most_common[1]/total*100:.1f}%)
-
-<b>最少类别:</b> {least_common[0]} ({least_common[1]:,} 个, {least_common[1]/total*100:.1f}%)
-
-<b>平均每类:</b> {total/unique_count:.1f} 个
-        """
+        stats_text = (
+            f"<b>{tr_('Total labels')}:</b> {total:,}\n\n"
+            f"<b>{tr_('Classes')}:</b> {unique_count}\n\n"
+            f"<b>{tr_('Most common')}:</b> {most_common[0]} "
+            f"({most_common[1]:,} {tr_('items')}, {most_common[1]/total*100:.1f}%)\n\n"
+            f"<b>{tr_('Least common')}:</b> {least_common[0]} "
+            f"({least_common[1]:,} {tr_('items')}, {least_common[1]/total*100:.1f}%)\n\n"
+            f"<b>{tr_('Avg per class')}:</b> {total/unique_count:.1f} {tr_('items')}"
+        )
         
         self._stats_label.setText(stats_text.strip())
     
@@ -342,7 +341,11 @@ class LabelPreviewWidget(BasePreviewWidget):
         # 如果数据被截断，添加提示
         if len(labels) > max_display:
             self._table.setRowCount(display_count + 1)
-            hint_item = QTableWidgetItem(f"... 还有 {len(labels) - max_display} 条数据未显示")
+            hint_item = QTableWidgetItem(
+                tr_("... {count} more item(s) not shown").format(
+                    count=len(labels) - max_display
+                )
+            )
             hint_item.setForeground(Styles.get_color('subtext0'))
             self._table.setItem(display_count, 0, hint_item)
             self._table.setSpan(display_count, 0, 1, 3)

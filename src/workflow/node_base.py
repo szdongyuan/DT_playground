@@ -20,6 +20,8 @@ from typing import Any, Dict, List, Optional, Tuple, Type
 
 from .port import create_input_port, create_output_port, DataType, Port
 
+# i18n (for user-visible strings like category names and validation errors)
+from src.ui.i18n import tr_
 # Import unified parameter class from core module
 from src.core.parameter import Parameter as NodeParameter
 
@@ -41,13 +43,13 @@ class NodeCategory(Enum):
     def display_name(self) -> str:
         """Get display name"""
         names = {
-            NodeCategory.DATA_SOURCE: "数据源",
-            NodeCategory.PREPROCESSING: "预处理",
-            NodeCategory.AUGMENTATION: "数据增强",
-            NodeCategory.FEATURE: "特征提取",
-            NodeCategory.TRAINING: "人工智能",
-            NodeCategory.CONTROL: "控制流",
-            NodeCategory.OUTPUT: "输出",
+            NodeCategory.DATA_SOURCE: tr_("Data source"),
+            NodeCategory.PREPROCESSING: tr_("Preprocessing"),
+            NodeCategory.AUGMENTATION: tr_("Data augmentation"),
+            NodeCategory.FEATURE: tr_("Feature extraction"),
+            NodeCategory.TRAINING: tr_("AI / Training"),
+            NodeCategory.CONTROL: tr_("Control flow"),
+            NodeCategory.OUTPUT: tr_("Output"),
         }
         return names.get(self, self.value)
     
@@ -255,7 +257,9 @@ class BaseNode(ABC):
         # Check required input ports
         for name, port in self.inputs.items():
             if port.required and not port.is_connected and port.default_value is None:
-                return False, f"输入端口 '{port.display_name}' 未连接"
+                return False, tr_("Input port '{name}' is not connected").format(
+                    name=port.display_name
+                )
         
         # Validate parameters
         for name, value in self.parameter_values.items():

@@ -45,6 +45,8 @@ class ConfigManager:
         # 界面设置
         'ui': {
             'theme': '深色',
+            # UI language (gettext locale name). Takes effect after restart.
+            'language': 'zh_CN',
             'waveform_color': '蓝色',
             'spectrogram_cmap': 'viridis',
             'show_grid': True,
@@ -108,7 +110,7 @@ class ConfigManager:
                 # 合并默认配置和加载的配置
                 self.config = self._merge_config(self.DEFAULT_CONFIG, loaded_config)
             except Exception as e:
-                print(f"加载配置失败: {e}")
+                print(f"Failed to load config: {e}")
                 self.config = self.DEFAULT_CONFIG.copy()
         else:
             self.config = self.DEFAULT_CONFIG.copy()
@@ -131,7 +133,7 @@ class ConfigManager:
             with open(self.config_file, 'w', encoding='utf-8') as f:
                 json.dump(self.config, f, indent=2, ensure_ascii=False)
         except Exception as e:
-            print(f"保存配置失败: {e}")
+            print(f"Failed to save config: {e}")
     
     def get(self, key: str, default: Any = None) -> Any:
         """

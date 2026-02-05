@@ -9,7 +9,7 @@ import numpy as np
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 
-
+from src.ui.i18n import tr_
 class MetricsPlotter:
     """训练指标绘制器"""
     
@@ -45,17 +45,17 @@ class MetricsPlotter:
             if metric in history:
                 epochs = range(1, len(history[metric]) + 1)
                 ax.plot(epochs, history[metric], color=colors['train'], 
-                       linewidth=2, label=f'训练 {metric}')
+                       linewidth=2, label=tr_('Train {metric}').format(metric=metric))
             
             val_metric = f'val_{metric}'
             if val_metric in history:
                 epochs = range(1, len(history[val_metric]) + 1)
                 ax.plot(epochs, history[val_metric], color=colors['val'],
-                       linewidth=2, linestyle='--', label=f'验证 {metric}')
+                       linewidth=2, linestyle='--', label=tr_('Val {metric}').format(metric=metric))
             
             ax.set_facecolor('#181825')
             ax.set_title(metric.title(), color='#cdd6f4')
-            ax.set_xlabel('Epoch', color='#cdd6f4')
+            ax.set_xlabel(tr_("Epoch"), color='#cdd6f4')
             ax.set_ylabel(metric.title(), color='#cdd6f4')
             ax.legend(facecolor='#313244', edgecolor='#45475a', labelcolor='#cdd6f4')
             ax.grid(True, alpha=0.3, color='#45475a')
@@ -122,9 +122,9 @@ class MetricsPlotter:
                             ha="center", va="center",
                             color="white" if cm[i, j] > thresh else "black")
         
-        self.ax.set_title('混淆矩阵', color='#cdd6f4')
-        self.ax.set_ylabel('真实标签', color='#cdd6f4')
-        self.ax.set_xlabel('预测标签', color='#cdd6f4')
+        self.ax.set_title(tr_("Confusion matrix"), color='#cdd6f4')
+        self.ax.set_ylabel(tr_("True label"), color='#cdd6f4')
+        self.ax.set_xlabel(tr_("Predicted label"), color='#cdd6f4')
         
         self.fig.patch.set_facecolor('#1e1e2e')
         plt.tight_layout()
@@ -146,16 +146,26 @@ class MetricsPlotter:
         """
         self.fig, self.ax = plt.subplots(figsize=(6, 6), dpi=self.dpi)
         
-        label = f'ROC曲线 (AUC = {auc_score:.3f})' if auc_score else 'ROC曲线'
+        label = (
+            tr_("ROC curve (AUC = {auc:.3f})").format(auc=auc_score)
+            if auc_score
+            else tr_("ROC curve")
+        )
         self.ax.plot(fpr, tpr, color='#89b4fa', linewidth=2, label=label)
-        self.ax.plot([0, 1], [0, 1], color='#6c7086', linestyle='--', label='随机猜测')
+        self.ax.plot(
+            [0, 1],
+            [0, 1],
+            color='#6c7086',
+            linestyle='--',
+            label=tr_("Random guess"),
+        )
         
         self.ax.set_facecolor('#181825')
         self.ax.set_xlim([0.0, 1.0])
         self.ax.set_ylim([0.0, 1.05])
-        self.ax.set_xlabel('假正率 (FPR)', color='#cdd6f4')
-        self.ax.set_ylabel('真正率 (TPR)', color='#cdd6f4')
-        self.ax.set_title('ROC曲线', color='#cdd6f4')
+        self.ax.set_xlabel(tr_("False positive rate (FPR)"), color='#cdd6f4')
+        self.ax.set_ylabel(tr_("True positive rate (TPR)"), color='#cdd6f4')
+        self.ax.set_title(tr_("ROC curve"), color='#cdd6f4')
         self.ax.legend(facecolor='#313244', edgecolor='#45475a', labelcolor='#cdd6f4', loc='lower right')
         self.ax.grid(True, alpha=0.3, color='#45475a')
         self.ax.tick_params(colors='#a6adc8')
@@ -193,9 +203,9 @@ class MetricsPlotter:
                         f'{count}', ha='center', va='bottom', color='#cdd6f4')
         
         self.ax.set_facecolor('#181825')
-        self.ax.set_xlabel('类别', color='#cdd6f4')
-        self.ax.set_ylabel('样本数', color='#cdd6f4')
-        self.ax.set_title('类别分布', color='#cdd6f4')
+        self.ax.set_xlabel(tr_("Class"), color='#cdd6f4')
+        self.ax.set_ylabel(tr_("Count"), color='#cdd6f4')
+        self.ax.set_title(tr_("Class distribution"), color='#cdd6f4')
         self.ax.tick_params(colors='#a6adc8')
         
         plt.setp(self.ax.get_xticklabels(), rotation=45, ha='right')

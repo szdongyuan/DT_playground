@@ -10,7 +10,7 @@ from PyQt6.QtWidgets import (
     QTableWidget, QTableWidgetItem, QVBoxLayout
 )
 
-
+from src.ui.i18n import tr_
 class DatasetSplitDialog(QDialog):
     """数据集划分对话框"""
     
@@ -24,35 +24,35 @@ class DatasetSplitDialog(QDialog):
     
     def _init_ui(self):
         """初始化界面"""
-        self.setWindowTitle("数据集划分")
+        self.setWindowTitle(tr_("Dataset Split"))
         self.setMinimumSize(500, 450)
         self.setModal(True)
         
         layout = QVBoxLayout(self)
         
         # 数据集信息
-        info_group = QGroupBox("数据集信息")
+        info_group = QGroupBox(tr_("Dataset Info"))
         info_layout = QFormLayout(info_group)
         
         self.total_label = QLabel(str(self.total_samples))
         self.total_label.setStyleSheet("font-weight: bold; color: #89b4fa;")
-        info_layout.addRow("总样本数:", self.total_label)
+        info_layout.addRow(tr_("Total samples:"), self.total_label)
         
         self.classes_label = QLabel(str(len(self.labels)))
         self.classes_label.setStyleSheet("font-weight: bold; color: #a6e3a1;")
-        info_layout.addRow("类别数:", self.classes_label)
+        info_layout.addRow(tr_("Classes:"), self.classes_label)
         
         # 显示类别名称
         if self.labels:
             self.class_names_label = QLabel(", ".join(self.labels))
             self.class_names_label.setWordWrap(True)
             self.class_names_label.setStyleSheet("color: #cba6f7;")
-            info_layout.addRow("类别:", self.class_names_label)
+            info_layout.addRow(tr_("Labels:"), self.class_names_label)
         
         layout.addWidget(info_group)
         
         # 划分比例
-        split_group = QGroupBox("划分比例")
+        split_group = QGroupBox(tr_("Split Ratio"))
         split_layout = QFormLayout(split_group)
         
         # 训练集
@@ -64,12 +64,12 @@ class DatasetSplitDialog(QDialog):
         self.train_spin.valueChanged.connect(self._update_splits)
         train_layout.addWidget(self.train_spin)
         
-        self.train_count = QLabel("0 样本")
+        self.train_count = QLabel(tr_("0 samples"))
         self.train_count.setStyleSheet("color: #a6adc8;")
         train_layout.addWidget(self.train_count)
         train_layout.addStretch()
         
-        split_layout.addRow("训练集:", train_layout)
+        split_layout.addRow(tr_("Train:"), train_layout)
         
         # 验证集
         val_layout = QHBoxLayout()
@@ -80,12 +80,12 @@ class DatasetSplitDialog(QDialog):
         self.val_spin.valueChanged.connect(self._update_splits)
         val_layout.addWidget(self.val_spin)
         
-        self.val_count = QLabel("0 样本")
+        self.val_count = QLabel(tr_("0 samples"))
         self.val_count.setStyleSheet("color: #a6adc8;")
         val_layout.addWidget(self.val_count)
         val_layout.addStretch()
         
-        split_layout.addRow("验证集:", val_layout)
+        split_layout.addRow(tr_("Validation:"), val_layout)
         
         # 测试集
         test_layout = QHBoxLayout()
@@ -96,34 +96,34 @@ class DatasetSplitDialog(QDialog):
         self.test_spin.valueChanged.connect(self._update_splits)
         test_layout.addWidget(self.test_spin)
         
-        self.test_count = QLabel("0 样本")
+        self.test_count = QLabel(tr_("0 samples"))
         self.test_count.setStyleSheet("color: #a6adc8;")
         test_layout.addWidget(self.test_count)
         test_layout.addStretch()
         
-        split_layout.addRow("测试集:", test_layout)
+        split_layout.addRow(tr_("Test:"), test_layout)
         
         # 总和提示
-        self.sum_label = QLabel("总计: 100%")
+        self.sum_label = QLabel(tr_("Total: 100%"))
         self.sum_label.setStyleSheet("font-weight: bold;")
         split_layout.addRow("", self.sum_label)
         
         layout.addWidget(split_group)
         
         # 划分选项
-        options_group = QGroupBox("划分选项")
+        options_group = QGroupBox(tr_("Split Options"))
         options_layout = QVBoxLayout(options_group)
         
-        self.stratify_check = QCheckBox("分层抽样 (保持类别比例)")
+        self.stratify_check = QCheckBox(tr_("Stratify (keep class proportions)"))
         self.stratify_check.setChecked(True)
         options_layout.addWidget(self.stratify_check)
         
-        self.shuffle_check = QCheckBox("打乱数据")
+        self.shuffle_check = QCheckBox(tr_("Shuffle data"))
         self.shuffle_check.setChecked(True)
         options_layout.addWidget(self.shuffle_check)
         
         seed_layout = QHBoxLayout()
-        seed_layout.addWidget(QLabel("随机种子:"))
+        seed_layout.addWidget(QLabel(tr_("Random seed:")))
         self.seed_spin = QSpinBox()
         self.seed_spin.setRange(0, 99999)
         self.seed_spin.setValue(42)
@@ -135,12 +135,14 @@ class DatasetSplitDialog(QDialog):
         
         # 类别分布表
         if self.labels:
-            dist_group = QGroupBox("类别分布")
+            dist_group = QGroupBox(tr_("Class Distribution"))
             dist_layout = QVBoxLayout(dist_group)
             
             self.dist_table = QTableWidget()
             self.dist_table.setColumnCount(4)
-            self.dist_table.setHorizontalHeaderLabels(["类别", "总数", "训练", "验证/测试"])
+            self.dist_table.setHorizontalHeaderLabels(
+                [tr_("Class"), tr_("Total"), tr_("Train"), tr_("Val/Test")]
+            )
             self.dist_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
             self.dist_table.setMaximumHeight(150)
             
@@ -153,11 +155,11 @@ class DatasetSplitDialog(QDialog):
         btn_layout = QHBoxLayout()
         btn_layout.addStretch()
         
-        self.cancel_btn = QPushButton("取消")
+        self.cancel_btn = QPushButton(tr_("Cancel"))
         self.cancel_btn.clicked.connect(self.reject)
         btn_layout.addWidget(self.cancel_btn)
         
-        self.confirm_btn = QPushButton("确认划分")
+        self.confirm_btn = QPushButton(tr_("Confirm split"))
         self.confirm_btn.setStyleSheet("""
             QPushButton {
                 background-color: #a6e3a1;
@@ -186,17 +188,19 @@ class DatasetSplitDialog(QDialog):
         val_count = int(self.total_samples * val_pct / 100)
         test_count = int(self.total_samples * test_pct / 100)
         
-        self.train_count.setText(f"{train_count} 样本")
-        self.val_count.setText(f"{val_count} 样本")
-        self.test_count.setText(f"{test_count} 样本")
+        self.train_count.setText(tr_("{count} samples").format(count=train_count))
+        self.val_count.setText(tr_("{count} samples").format(count=val_count))
+        self.test_count.setText(tr_("{count} samples").format(count=test_count))
         
         # 更新总和
         if total_pct == 100:
-            self.sum_label.setText("总计: 100% ✓")
+            self.sum_label.setText(tr_("Total: 100% ✓"))
             self.sum_label.setStyleSheet("font-weight: bold; color: #a6e3a1;")
             self.confirm_btn.setEnabled(True)
         else:
-            self.sum_label.setText(f"总计: {total_pct}% (需要100%)")
+            self.sum_label.setText(
+                tr_("Total: {total}% (must be 100%)").format(total=total_pct)
+            )
             self.sum_label.setStyleSheet("font-weight: bold; color: #f38ba8;")
             self.confirm_btn.setEnabled(False)
     
@@ -207,7 +211,11 @@ class DatasetSplitDialog(QDialog):
         test_pct = self.test_spin.value()
         
         if train_pct + val_pct + test_pct != 100:
-            QMessageBox.warning(self, "警告", "划分比例之和必须为100%")
+            QMessageBox.warning(
+                self,
+                tr_("Warning"),
+                tr_("The split ratios must add up to 100%."),
+            )
             return
         
         config = {

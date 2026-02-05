@@ -12,6 +12,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional, Set, Tuple
 
+from src.ui.i18n import tr_
 from .connection import Connection
 from .node_base import BaseNode, create_node, get_node_class
 from .port import DataType
@@ -23,7 +24,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class WorkflowMetadata:
     """Workflow metadata"""
-    name: str = "未命名工作流"
+    name: str = tr_("Untitled workflow")
     description: str = ""
     author: str = ""
     created_at: str = ""
@@ -38,7 +39,7 @@ class Workflow:
     Manages all nodes and connection relationships in a workflow.
     """
     
-    def __init__(self, name: str = "未命名工作流"):
+    def __init__(self, name: str = tr_("Untitled workflow")):
         self.metadata = WorkflowMetadata(name=name)
         self.nodes: Dict[str, BaseNode] = {}
         self.connections: List[Connection] = []
@@ -147,32 +148,45 @@ class Workflow:
         target_node = self.nodes.get(connection.target_node_id)
         
         if not source_node:
-            return False, f"源节点 {connection.source_node_id} 不存在"
+            return False, tr_("Source node {id} does not exist").format(
+                id=connection.source_node_id
+            )
         if not target_node:
-            return False, f"目标节点 {connection.target_node_id} 不存在"
+            return False, tr_("Target node {id} does not exist").format(
+                id=connection.target_node_id
+            )
         
         # Validate ports exist
         if connection.source_port not in source_node.outputs:
-            return False, f"源端口 {connection.source_port} 不存在"
+            return False, tr_("Source port {name} does not exist").format(
+                name=connection.source_port
+            )
         if connection.target_port not in target_node.inputs:
-            return False, f"目标端口 {connection.target_port} 不存在"
+            return False, tr_("Target port {name} does not exist").format(
+                name=connection.target_port
+            )
         
         # Validate port type compatibility
         source_port = source_node.outputs[connection.source_port]
         target_port = target_node.inputs[connection.target_port]
         
         if not source_port.can_connect_to(target_port):
-            return False, f"端口类型不兼容: {source_port.data_type.value} -> {target_port.data_type.value}"
+            return False, tr_("Incompatible port types: {src} -> {dst}").format(
+                src=source_port.data_type.value,
+                dst=target_port.data_type.value,
+            )
         
         # Check if already exists
         if connection in self.connections:
-            return False, "连接已存在"
+            return False, tr_("Connection already exists")
         
         # Check if target port is already connected (unless multi-connection allowed)
         if not target_port.multi_connection:
             for conn in self.connections:
                 if conn.target_node_id == connection.target_node_id and conn.target_port == connection.target_port:
-                    return False, f"端口 {target_port.display_name} 已连接"
+                    return False, tr_("Port {name} is already connected").format(
+                        name=target_port.display_name
+                    )
         
         # Add connection
         self.connections.append(connection)
@@ -284,21 +298,30 @@ class Workflow:
         errors = []
         
         if not self.nodes:
-            errors.append("工作流为空")
+            errors.append(tr_("Workflow is empty"))
             return False, errors
         
         # Validate each node
         for node in self.nodes.values():
             valid, msg = node.validate()
             if not valid:
-                errors.append(f"节点 '{node.display_name}' ({node.node_id}): {msg}")
+                errors.append(
+                    tr_("Node '{name}' ({id}): {message}").format(
+                        name=node.display_name,
+                        id=node.node_id,
+                        message=msg,
+                    )
+                )
         
         # Check for disconnected required input ports
         for node in self.nodes.values():
             for port_name, port in node.inputs.items():
                 if port.required and not port.is_connected and port.default_value is None:
                     errors.append(
-                        f"节点 '{node.display_name}' 的输入端口 '{port.display_name}' 未连接"
+                        tr_("Node '{node}' input port '{port}' is not connected").format(
+                            node=node.display_name,
+                            port=port.display_name,
+                        )
                     )
         
         return len(errors) == 0, errors
@@ -386,7 +409,7 @@ class Workflow:
         
         # Load metadata
         metadata = data.get("metadata", {})
-        workflow.metadata.name = metadata.get("name", "未命名工作流")
+        workflow.metadata.name = metadata.get("name", tr_("Untitled workflow"))
         workflow.metadata.description = metadata.get("description", "")
         workflow.metadata.author = metadata.get("author", "")
         workflow.metadata.created_at = metadata.get("created_at", "")

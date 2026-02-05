@@ -11,7 +11,7 @@ from typing import Any, Dict, List, Optional, Tuple
 import numpy as np
 from sklearn.model_selection import train_test_split
 
-
+from src.ui.i18n import tr_
 @dataclass
 class DatasetInfo:
     """数据集信息"""
@@ -166,7 +166,7 @@ class DatasetManager:
             各集合的样本数量
         """
         if not self.audio_files:
-            raise ValueError("没有加载数据集")
+            raise ValueError(tr_("No dataset loaded"))
         
         # 转换标签为索引
         label_indices = [self.label_to_idx[label] for label in self.labels]

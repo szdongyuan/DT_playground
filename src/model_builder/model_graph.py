@@ -12,7 +12,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
 
 from .layer_base import LayerNode, create_layer, get_layer_class
-
+from src.ui.i18n import tr_
 logger = logging.getLogger(__name__)
 
 
@@ -39,7 +39,7 @@ class ModelConnection:
 @dataclass
 class ModelMetadata:
     """模型元数据"""
-    name: str = "未命名模型"
+    name: str = tr_("Untitled model")
     description: str = ""
     created_at: str = field(default_factory=lambda: datetime.now().isoformat())
     modified_at: str = field(default_factory=lambda: datetime.now().isoformat())
@@ -220,7 +220,7 @@ class ModelGraph:
     管理神经网络的层和连接关系。
     """
     
-    def __init__(self, name: str = "未命名模型"):
+    def __init__(self, name: str = tr_("Untitled model")):
         self.metadata = ModelMetadata(name=name)
         self.layers: Dict[str, LayerNode] = {}
         self.connections: List[ModelConnection] = []
@@ -265,7 +265,7 @@ class ModelGraph:
         """创建并添加层"""
         layer = create_layer(layer_type)
         if not layer:
-            logger.error(f"无法创建层类型: {layer_type}")
+            logger.error(f"Failed to create layer type: {layer_type}")
             return None
         
         if position:
@@ -278,22 +278,22 @@ class ModelGraph:
         """连接两个层"""
         # 检查层是否存在
         if source_layer_id not in self.layers:
-            return False, f"源层不存在: {source_layer_id}"
+            return False, tr_("Source layer not found: {id}").format(id=source_layer_id)
         if target_layer_id not in self.layers:
-            return False, f"目标层不存在: {target_layer_id}"
+            return False, tr_("Target layer not found: {id}").format(id=target_layer_id)
         
         # 检查是否自连接
         if source_layer_id == target_layer_id:
-            return False, "不能自连接"
+            return False, tr_("Self-connection is not allowed")
         
         # 检查是否已存在连接
         for conn in self.connections:
             if conn.source_layer_id == source_layer_id and conn.target_layer_id == target_layer_id:
-                return False, "连接已存在"
+                return False, tr_("Connection already exists")
         
         # 检查是否会创建循环（简单检测）
         if self._would_create_cycle(source_layer_id, target_layer_id):
-            return False, "不能创建循环连接"
+            return False, tr_("Cyclic connections are not allowed")
         
         # 添加连接
         connection = ModelConnection(
@@ -340,7 +340,7 @@ class ModelGraph:
             self.connections.remove(conn)
         
         self._mark_dirty()
-        logger.debug(f"移除层 {layer_id} 的所有连接: {len(connections_to_remove)} 个")
+        logger.debug(f"Removed all connections of layer {layer_id}: {len(connections_to_remove)}")
         return True
     
     def _would_create_cycle(self, source: str, target: str) -> bool:
@@ -423,28 +423,30 @@ class ModelGraph:
         errors = []
         
         if not self.layers:
-            errors.append("模型没有任何层")
+            errors.append(tr_("Model has no layers"))
         
         # 检查是否有输入层
         input_layers = self.get_input_layers()
         if not input_layers:
-            errors.append("模型没有输入层")
+            errors.append(tr_("Model has no input layer"))
         
         # 检查是否有输出层
         output_layers = self.get_output_layers()
         if not output_layers:
-            errors.append("模型没有输出层")
+            errors.append(tr_("Model has no output layer"))
         
         # 验证每个层
         for layer_id, layer in self.layers.items():
             valid, msg = layer.validate()
             if not valid:
-                errors.append(f"层 {layer.display_name}: {msg}")
+                errors.append(
+                    tr_("Layer {layer}: {message}").format(layer=layer.display_name, message=msg)
+                )
         
         # 检查是否所有层都已连接
         order = self.get_execution_order()
         if len(order) != len(self.layers):
-            errors.append("存在循环连接或断开的层")
+            errors.append(tr_("There are cyclic connections or disconnected layers"))
         
         return len(errors) == 0, errors
     
@@ -464,7 +466,7 @@ class ModelGraph:
         # 获取执行顺序
         order = self.get_execution_order()
         if not order:
-            raise ValueError("无法确定层的执行顺序")
+            raise ValueError(tr_("Cannot determine layer execution order"))
         
         # 存储每层的输出张量
         layer_outputs: Dict[str, Any] = {}
@@ -493,7 +495,11 @@ class ModelGraph:
                         layer_outputs[layer_id] = keras_layer(inp)
                         model_inputs.append(inp)
                     else:
-                        raise ValueError(f"层 {layer.display_name} 需要指定 shape 或 input_shape 参数")
+                        raise ValueError(
+                            tr_("Layer {layer} requires 'shape' or 'input_shape' parameter").format(
+                                layer=layer.display_name
+                            )
+                        )
             elif len(upstream) == 1:
                 # 单输入
                 prev_output = layer_outputs[upstream[0]]
@@ -559,19 +565,21 @@ class ModelGraph:
                     keras_layer = model.get_layer(keras_layer_name)
                     keras_layer.trainable = False
                     frozen_count += 1
-                    logger.debug(f"层已冻结: {keras_layer_name}")
+                    logger.debug(f"Layer frozen: {keras_layer_name}")
                 except ValueError:
                     # 层名不匹配，尝试用 layer_id
                     try:
                         keras_layer = model.get_layer(layer_id)
                         keras_layer.trainable = False
                         frozen_count += 1
-                        logger.debug(f"层已冻结: {layer_id}")
+                        logger.debug(f"Layer frozen: {layer_id}")
                     except ValueError:
-                        logger.warning(f"无法找到层进行冻结: {keras_layer_name} / {layer_id}")
+                        logger.warning(
+                            f"Layer not found for freezing: {keras_layer_name} / {layer_id}"
+                        )
         
         if frozen_count > 0:
-            logger.info(f"已冻结 {frozen_count} 个层")
+            logger.info(f"Frozen {frozen_count} layers")
     
     def _compile_model(self, model):
         """编译模型"""
@@ -595,8 +603,7 @@ class ModelGraph:
             metrics=metrics
         )
         
-        logger.info(f"模型已编译: optimizer={optimizer_name}, "
-                   f"loss={loss}, metrics={metrics}")
+        logger.info(f"Model compiled: optimizer={optimizer_name}, loss={loss}, metrics={metrics}")
     
     def _mark_dirty(self):
         """标记为已修改"""
@@ -619,7 +626,7 @@ class ModelGraph:
     @classmethod
     def from_dict(cls, data: Dict) -> 'ModelGraph':
         """从字典反序列化模型图"""
-        graph = cls(name=data.get("name", "未命名模型"))
+        graph = cls(name=data.get("name", tr_("Untitled model")))
         graph.metadata.description = data.get("description", "")
         graph.metadata.created_at = data.get("created_at", "")
         graph.metadata.modified_at = data.get("modified_at", "")
@@ -637,7 +644,7 @@ class ModelGraph:
                 layer = layer_class.from_dict(layer_data)
                 graph.layers[layer.layer_id] = layer
             else:
-                logger.warning(f"未知层类型: {layer_type}")
+                logger.warning(f"Unknown layer type: {layer_type}")
         
         # 加载连接
         for conn_data in data.get("connections", []):
@@ -651,7 +658,7 @@ class ModelGraph:
         with open(filepath, 'w', encoding='utf-8') as f:
             json.dump(self.to_dict(), f, ensure_ascii=False, indent=2)
         self.is_dirty = False
-        logger.info(f"模型图已保存: {filepath}")
+        logger.info(f"Model graph saved: {filepath}")
     
     @classmethod
     def load(cls, filepath: str) -> 'ModelGraph':
@@ -659,6 +666,6 @@ class ModelGraph:
         with open(filepath, 'r', encoding='utf-8') as f:
             data = json.load(f)
         graph = cls.from_dict(data)
-        logger.info(f"模型图已加载: {filepath}")
+        logger.info(f"Model graph loaded: {filepath}")
         return graph
 

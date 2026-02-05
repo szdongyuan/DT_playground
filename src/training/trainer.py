@@ -20,8 +20,7 @@ from tensorflow import keras
 
 # 从 callbacks 模块导入基础回调
 from .callbacks import TrainingCallback as BaseTrainingCallback
-
-
+from src.ui.i18n import tr_
 class TrainerCallback(BaseTrainingCallback):
     """
     TrainerWorker 专用回调
@@ -110,7 +109,7 @@ class TrainerWorker(QThread):
     def run(self):
         """执行训练"""
         try:
-            self.status_update.emit("正在准备训练...")
+            self.status_update.emit(tr_("Preparing training..."))
             
             # 获取配置
             epochs = self.config.get('epochs', 50)
@@ -132,7 +131,7 @@ class TrainerWorker(QThread):
             optimizer = self._create_optimizer(optimizer_name, learning_rate)
             
             # 编译模型
-            self.status_update.emit("正在编译模型...")
+            self.status_update.emit(tr_("Compiling model..."))
             self.model.compile(
                 optimizer=optimizer,
                 loss=loss_func,
@@ -186,7 +185,7 @@ class TrainerWorker(QThread):
                 )
                 callbacks.append(lr_scheduler)
             
-            self.status_update.emit("开始训练...")
+            self.status_update.emit(tr_("Training started..."))
             
             # 判断数据类型并训练
             if hasattr(self.train_data, '__getitem__'):
@@ -308,11 +307,11 @@ class Trainer(QObject):
     def stop_training(self):
         """停止训练"""
         if self.worker and self.worker.isRunning():
-            self.status_changed.emit("正在停止训练...")
+            self.status_changed.emit(tr_("Stopping training..."))
             self.worker.stop()
             self.worker.wait(5000)  # 等待最多5秒
             self.is_training = False
-            self.status_changed.emit("训练已停止")
+            self.status_changed.emit(tr_("Training stopped"))
     
     def _on_epoch_end(self, epoch, total, loss, acc, val_loss, val_acc):
         """Epoch结束回调"""
@@ -322,13 +321,13 @@ class Trainer(QObject):
         """训练完成回调"""
         self.is_training = False
         self.training_completed.emit(history)
-        self.status_changed.emit("训练完成")
+        self.status_changed.emit(tr_("Training finished"))
     
     def _on_error(self, error_msg):
         """错误回调"""
         self.is_training = False
         self.training_error.emit(error_msg)
-        self.status_changed.emit("训练出错")
+        self.status_changed.emit(tr_("Training error"))
     
     def _on_status(self, status: str):
         """状态更新回调"""
@@ -449,7 +448,7 @@ class TrainingPipeline:
             训练历史
         """
         if self.model is None:
-            raise ValueError("请先构建模型")
+            raise ValueError(tr_("Please build the model first"))
         
         epochs = config.get('epochs', 50)
         learning_rate = config.get('learning_rate', 0.001)
@@ -491,7 +490,7 @@ class TrainingPipeline:
     def evaluate(self, test_data) -> Dict[str, float]:
         """评估模型"""
         if self.model is None:
-            raise ValueError("请先训练模型")
+            raise ValueError(tr_("Please train the model first"))
         
         if hasattr(test_data, '__getitem__'):
             results = self.model.evaluate(test_data, verbose=0)
@@ -507,7 +506,7 @@ class TrainingPipeline:
     def predict(self, audio_data: np.ndarray) -> np.ndarray:
         """预测"""
         if self.model is None:
-            raise ValueError("请先训练模型")
+            raise ValueError(tr_("Please train the model first"))
         
         return self.model.predict(audio_data, verbose=0)
     

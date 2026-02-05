@@ -12,6 +12,7 @@ from PyQt6.QtWidgets import (
 from src.ui.dialogs.about_dialog import AboutDialog
 from src.ui.dialogs.export_dialog import ExportModelDialog
 from src.ui.dialogs.settings_dialog import SettingsDialog
+from src.ui.i18n import tr_
 from src.ui.main_window import MainWindow
 from src.utils.restart_manager import RestartManager
 from src.utils.config import config
@@ -33,7 +34,7 @@ class AudioTrainingApp(QMainWindow):
     
     def _init_ui(self):
         """初始化用户界面"""
-        self.setWindowTitle("AI声学信号训练平台")
+        self.setWindowTitle(tr_("AI Acoustic Signal Training Platform"))
         self.setMinimumSize(1280, 800)
         
         # 设置主窗口内容
@@ -81,16 +82,16 @@ class AudioTrainingApp(QMainWindow):
         """)
         
         # === 文件菜单 ===
-        file_menu = menubar.addMenu("文件(&F)")
+        file_menu = menubar.addMenu(tr_("File(&F)"))
         
         # 加载模型
-        self.action_load_model = QAction("加载模型...", self)
+        self.action_load_model = QAction(tr_("Load model..."), self)
         self.action_load_model.setShortcut(QKeySequence("Ctrl+L"))
         self.action_load_model.triggered.connect(self._load_model)
         file_menu.addAction(self.action_load_model)
         
         # 导出模型
-        self.action_export_model = QAction("导出模型...", self)
+        self.action_export_model = QAction(tr_("Export model..."), self)
         self.action_export_model.setShortcut(QKeySequence("Ctrl+E"))
         self.action_export_model.triggered.connect(self._export_model)
         file_menu.addAction(self.action_export_model)
@@ -98,13 +99,13 @@ class AudioTrainingApp(QMainWindow):
         file_menu.addSeparator()
         
         # 最近文件
-        self.recent_menu = file_menu.addMenu("最近文件")
+        self.recent_menu = file_menu.addMenu(tr_("Recent files"))
         self._update_recent_menu()
         
         file_menu.addSeparator()
         
         # 重启应用
-        self.action_restart = QAction("重启应用(&R)", self)
+        self.action_restart = QAction(tr_("Restart(&R)"), self)
         self.action_restart.setShortcut(QKeySequence("Ctrl+Shift+R"))
         self.action_restart.triggered.connect(self._request_restart)
         file_menu.addAction(self.action_restart)
@@ -112,46 +113,46 @@ class AudioTrainingApp(QMainWindow):
         file_menu.addSeparator()
 
         # 退出
-        self.action_exit = QAction("退出(&X)", self)
+        self.action_exit = QAction(tr_("Exit(&X)"), self)
         self.action_exit.setShortcut(QKeySequence("Alt+F4"))
         self.action_exit.triggered.connect(self.close)
         file_menu.addAction(self.action_exit)
         
         # === 编辑菜单 ===
-        edit_menu = menubar.addMenu("编辑(&E)")
+        edit_menu = menubar.addMenu(tr_("Edit(&E)"))
         
-        self.action_settings = QAction("设置...", self)
+        self.action_settings = QAction(tr_("Settings..."), self)
         self.action_settings.setShortcut(QKeySequence("Ctrl+,"))
         self.action_settings.triggered.connect(self._show_settings)
         edit_menu.addAction(self.action_settings)
         
         # === 视图菜单 ===
-        view_menu = menubar.addMenu("视图(&V)")
+        view_menu = menubar.addMenu(tr_("View(&V)"))
         
-        self.action_view_workflow = QAction("工作流视图", self)
+        self.action_view_workflow = QAction(tr_("Workflow view"), self)
         self.action_view_workflow.setShortcut(QKeySequence("Ctrl+1"))
         self.action_view_workflow.triggered.connect(lambda: self._switch_view(0))
         view_menu.addAction(self.action_view_workflow)
         
-        self.action_view_model = QAction("模型视图", self)
+        self.action_view_model = QAction(tr_("Model view"), self)
         self.action_view_model.setShortcut(QKeySequence("Ctrl+2"))
         self.action_view_model.triggered.connect(lambda: self._switch_view(1))
         view_menu.addAction(self.action_view_model)
         
-        self.action_view_preview = QAction("预览视图", self)
+        self.action_view_preview = QAction(tr_("Preview view"), self)
         self.action_view_preview.setShortcut(QKeySequence("Ctrl+3"))
         self.action_view_preview.triggered.connect(lambda: self._switch_view(2))
         view_menu.addAction(self.action_view_preview)
         
-        self.action_view_training = QAction("训练视图", self)
+        self.action_view_training = QAction(tr_("Training view"), self)
         self.action_view_training.setShortcut(QKeySequence("Ctrl+4"))
         self.action_view_training.triggered.connect(lambda: self._switch_view(3))
         view_menu.addAction(self.action_view_training)
         
         # === 帮助菜单 ===
-        help_menu = menubar.addMenu("帮助(&H)")
+        help_menu = menubar.addMenu(tr_("Help(&H)"))
         
-        self.action_about = QAction("关于...", self)
+        self.action_about = QAction(tr_("About..."), self)
         self.action_about.triggered.connect(self._show_about)
         help_menu.addAction(self.action_about)
     
@@ -256,18 +257,26 @@ class AudioTrainingApp(QMainWindow):
         """加载模型"""
         file_path, _ = QFileDialog.getOpenFileName(
             self,
-            "加载模型",
+            tr_("Load model"),
             "",
-            "Keras模型 (*.h5 *.keras);;模型定义 (*.model.json);;SavedModel (*);;所有文件 (*)"
+            tr_("Keras models (*.h5 *.keras);;Model definition (*.model.json);;SavedModel (*);;All files (*)")
         )
         if file_path:
             try:
                 from tensorflow import keras
                 self.current_model = keras.models.load_model(file_path)
                 self.main_window.set_current_model(self.current_model)
-                QMessageBox.information(self, "成功", f"模型已加载: {file_path}")
+                QMessageBox.information(
+                    self,
+                    tr_("Success"),
+                    tr_("Model loaded: {path}").format(path=file_path),
+                )
             except Exception as e:
-                QMessageBox.critical(self, "错误", f"加载模型失败: {e}")
+                QMessageBox.critical(
+                    self,
+                    tr_("Error"),
+                    tr_("Failed to load model: {error}").format(error=str(e)),
+                )
     
     def _export_model(self):
         """导出模型"""
@@ -280,7 +289,7 @@ class AudioTrainingApp(QMainWindow):
         recent_files = config.get_recent_files()
         
         if not recent_files:
-            action = QAction("(无最近文件)", self)
+            action = QAction(tr_("(No recent files)"), self)
             action.setEnabled(False)
             self.recent_menu.addAction(action)
             return
@@ -291,7 +300,7 @@ class AudioTrainingApp(QMainWindow):
             self.recent_menu.addAction(action)
         
         self.recent_menu.addSeparator()
-        clear_action = QAction("清除最近文件", self)
+        clear_action = QAction(tr_("Clear recent files"), self)
         clear_action.triggered.connect(self._clear_recent_files)
         self.recent_menu.addAction(clear_action)
     
@@ -329,7 +338,11 @@ class AudioTrainingApp(QMainWindow):
                 # 模型文件
                 self._load_model()
         else:
-            QMessageBox.warning(self, "警告", f"文件不存在: {file_path}")
+            QMessageBox.warning(
+                self,
+                tr_("Warning"),
+                tr_("File does not exist: {path}").format(path=file_path),
+            )
     
     def _clear_recent_files(self):
         """清除最近文件"""
@@ -380,7 +393,11 @@ class AudioTrainingApp(QMainWindow):
             config.set(key, value, save_immediately=False)
         config.save()
         
-        QMessageBox.information(self, "提示", "设置已保存，部分设置需要重启生效。")
+        QMessageBox.information(
+            self,
+            tr_("Info"),
+            tr_("Settings saved. Some changes require a restart to take effect."),
+        )
     
     def _show_about(self):
         """显示关于对话框"""
@@ -407,10 +424,12 @@ class AudioTrainingApp(QMainWindow):
         if workflow_running or training_running:
             resp = QMessageBox.question(
                 self,
-                "确认重启",
-                "检测到工作流/训练正在运行。\n"
-                "重启将先停止当前运行，再启动新实例。\n\n"
-                "是否继续？",
+                tr_("Confirm restart"),
+                tr_(
+                    "A workflow/training is currently running.\n"
+                    "Restart will stop the current run and start a new instance.\n\n"
+                    "Continue?"
+                ),
                 QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
                 QMessageBox.StandardButton.No,
             )
@@ -440,8 +459,8 @@ class AudioTrainingApp(QMainWindow):
                 pass
             QMessageBox.warning(
                 self,
-                "重启失败",
-                message + "\n\n请查看 logs 目录下最新日志。",
+                tr_("Restart failed"),
+                message + "\n\n" + tr_("Please check the latest log under the logs directory."),
             )
     
     def closeEvent(self, event):

@@ -1,0 +1,4701 @@
+# Chinese translations for PACKAGE package.
+# Copyright (C) 2026 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Automatically generated, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-05 09:52+0800\n"
+"PO-Revision-Date: 2026-02-04 17:15+0800\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/app.py:37 src/ui/dialogs/about_dialog.py:36
+msgid "AI Acoustic Signal Training Platform"
+msgstr "AI 声学信号训练平台"
+
+#: src/app.py:85
+msgid "File(&F)"
+msgstr "文件(&F)"
+
+#: src/app.py:88
+msgid "Load model..."
+msgstr "加载模型..."
+
+#: src/app.py:94
+msgid "Export model..."
+msgstr "导出模型..."
+
+#: src/app.py:102
+msgid "Recent files"
+msgstr "最近文件"
+
+#: src/app.py:108
+msgid "Restart(&R)"
+msgstr "重启(&R)"
+
+#: src/app.py:116
+msgid "Exit(&X)"
+msgstr "退出(&X)"
+
+#: src/app.py:122
+msgid "Edit(&E)"
+msgstr "编辑(&E)"
+
+#: src/app.py:124
+msgid "Settings..."
+msgstr "设置..."
+
+#: src/app.py:130
+msgid "View(&V)"
+msgstr "视图(&V)"
+
+#: src/app.py:132
+msgid "Workflow view"
+msgstr "工作流视图"
+
+#: src/app.py:137
+msgid "Model view"
+msgstr "模型视图"
+
+#: src/app.py:142
+msgid "Preview view"
+msgstr "预览视图"
+
+#: src/app.py:147
+msgid "Training view"
+msgstr "训练视图"
+
+#: src/app.py:153
+msgid "Help(&H)"
+msgstr "帮助(&H)"
+
+#: src/app.py:155
+msgid "About..."
+msgstr "关于..."
+
+#: src/app.py:260 src/workflow/nodes/training.py:31
+msgid "Load model"
+msgstr "加载模型"
+
+#: src/app.py:262
+msgid ""
+"Keras models (*.h5 *.keras);;Model definition (*.model.json);;SavedModel "
+"(*);;All files (*)"
+msgstr ""
+"Keras 模型 (*.h5 *.keras);;模型定义 (*.model.json);;SavedModel (*);;所有文件 "
+"(*)"
+
+#: src/app.py:271 src/ui/dialogs/export_dialog.py:191
+msgid "Success"
+msgstr "成功"
+
+#: src/app.py:272
+#, python-brace-format
+msgid "Model loaded: {path}"
+msgstr "模型已加载：{path}"
+
+#: src/app.py:277 src/ui/dialogs/export_dialog.py:208
+#: src/ui/views/model_builder_view.py:336
+#: src/ui/views/model_builder_view.py:521
+msgid "Error"
+msgstr "错误"
+
+#: src/app.py:278 src/ui/views/model_builder_view.py:337
+#: src/workflow/nodes/training.py:81
+#, python-brace-format
+msgid "Failed to load model: {error}"
+msgstr "加载模型失败：{error}"
+
+#: src/app.py:292
+msgid "(No recent files)"
+msgstr "（无最近文件）"
+
+#: src/app.py:303
+msgid "Clear recent files"
+msgstr "清除最近文件"
+
+#: src/app.py:343 src/ui/main_window.py:505
+#: src/ui/dialogs/dataset_dialog.py:216 src/ui/dialogs/export_dialog.py:137
+#: src/ui/dialogs/export_dialog.py:141 src/ui/dialogs/export_dialog.py:145
+#: src/ui/views/model_builder_view.py:452
+#: src/ui/views/model_builder_view.py:529
+msgid "Warning"
+msgstr "警告"
+
+#: src/app.py:344 src/audio/loader.py:58 src/workflow/nodes/data_source.py:285
+#: src/workflow/nodes/data_source.py:351
+#, python-brace-format
+msgid "File does not exist: {path}"
+msgstr "文件不存在：{path}"
+
+#: src/app.py:398 src/ui/main_window.py:795 src/ui/main_window.py:848
+msgid "Info"
+msgstr "提示"
+
+#: src/app.py:399
+msgid "Settings saved. Some changes require a restart to take effect."
+msgstr "设置已保存。部分更改需要重启后生效。"
+
+#: src/app.py:427
+msgid "Confirm restart"
+msgstr "确认重启"
+
+#: src/app.py:429
+msgid ""
+"A workflow/training is currently running.\n"
+"Restart will stop the current run and start a new instance.\n"
+"\n"
+"Continue?"
+msgstr ""
+"当前有工作流/训练正在运行。\n"
+"重启将停止当前运行并启动一个新实例。\n"
+"\n"
+"是否继续？"
+
+#: src/app.py:462
+msgid "Restart failed"
+msgstr "重启失败"
+
+#: src/app.py:463
+msgid "Please check the latest log under the logs directory."
+msgstr "请查看 logs 目录下最新的日志。"
+
+#: src/audio/features.py:37 src/ui/widgets/spectrogram_widget.py:53
+#: src/ui/widgets/spectrogram_widget.py:171 src/visualization/spectrogram.py:77
+#: src/visualization/spectrogram.py:241
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:27
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:35
+msgid "Mel spectrogram"
+msgstr "Mel 频谱图"
+
+#: src/audio/features.py:38 src/visualization/spectrogram.py:167
+#: src/visualization/spectrogram.py:247
+msgid "MFCC"
+msgstr "MFCC"
+
+#: src/audio/features.py:39
+msgid "MFCC + Δ"
+msgstr "MFCC + Δ"
+
+#: src/audio/features.py:40
+msgid "MFCC + Δ + ΔΔ"
+msgstr "MFCC + Δ + ΔΔ"
+
+#: src/audio/features.py:41
+msgid "STFT"
+msgstr "STFT"
+
+#: src/audio/features.py:42 src/workflow/nodes/feature/dim1d/fft.py:28
+#: src/workflow/nodes/feature/dim1d/fft.py:36
+msgid "FFT spectrum"
+msgstr "FFT 频谱"
+
+#: src/audio/features.py:43 src/workflow/nodes/feature/dim2d/cqt.py:30
+#: src/workflow/nodes/feature/dim2d/cqt.py:38
+msgid "CQT spectrum"
+msgstr "CQT 频谱"
+
+#: src/audio/features.py:44 src/ui/widgets/spectrogram_widget.py:57
+#: src/ui/widgets/spectrogram_widget.py:198
+#: src/visualization/spectrogram.py:209 src/visualization/spectrogram.py:253
+msgid "Chroma"
+msgstr "色度"
+
+#: src/audio/features.py:45
+#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:30
+#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:38
+msgid "Spectral contrast"
+msgstr "频谱对比度"
+
+#: src/audio/features.py:46
+msgid "Tonnetz"
+msgstr "Tonnetz"
+
+#: src/audio/features.py:47 src/visualization/spectrogram.py:260
+#: src/workflow/nodes/feature/dim1d/statistics.py:37
+msgid "Spectral centroid"
+msgstr "谱质心"
+
+#: src/audio/features.py:48 src/workflow/nodes/feature/dim1d/statistics.py:41
+msgid "Spectral bandwidth"
+msgstr "谱带宽"
+
+#: src/audio/features.py:49 src/workflow/nodes/feature/dim1d/statistics.py:45
+msgid "Spectral rolloff"
+msgstr "谱滚降"
+
+#: src/audio/features.py:50
+#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:31
+#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:39
+msgid "Spectral flatness"
+msgstr "频谱平坦度"
+
+#: src/audio/features.py:51 src/workflow/nodes/feature/dim1d/statistics.py:49
+msgid "Zero-crossing rate"
+msgstr "过零率"
+
+#: src/audio/features.py:52 src/visualization/waveform.py:158
+#: src/workflow/nodes/feature/dim1d/statistics.py:53
+msgid "RMS energy"
+msgstr "RMS 能量"
+
+#: src/audio/features.py:53
+msgid "Pitch"
+msgstr "音高"
+
+#: src/audio/features.py:54
+msgid "Raw waveform"
+msgstr "原始波形"
+
+#: src/audio/features.py:686
+msgid "Spectral features (2D)"
+msgstr "频谱特征（2D）"
+
+#: src/audio/features.py:693
+msgid "MFCC family (2D)"
+msgstr "MFCC 系列（2D）"
+
+#: src/audio/features.py:694
+msgid "Pitch features"
+msgstr "音高特征"
+
+#: src/audio/features.py:695
+msgid "Frequency-domain features (1D)"
+msgstr "频域特征（1D）"
+
+#: src/audio/features.py:696
+msgid "Statistical features (1D)"
+msgstr "统计特征（1D）"
+
+#: src/audio/features.py:703
+msgid "Raw data"
+msgstr "原始数据"
+
+#: src/audio/loader.py:63
+#, python-brace-format
+msgid "Unsupported audio format: {ext}"
+msgstr "不支持的音频格式：{ext}"
+
+#: src/audio/loader.py:89 src/workflow/nodes/data_source.py:301
+#, python-brace-format
+msgid "Failed to load audio: {error}"
+msgstr "加载音频失败：{error}"
+
+#: src/audio/loader.py:139
+#, python-brace-format
+msgid "Failed to get audio info: {error}"
+msgstr "获取音频信息失败：{error}"
+
+#: src/audio/preprocessor.py:58
+#, python-brace-format
+msgid "Unknown normalization method: {method}"
+msgstr "未知的归一化方法：{method}"
+
+#: src/controllers/navigation_controller.py:87 src/ui/main_window.py:181
+#: src/ui/main_window.py:439
+msgid "Workflow"
+msgstr "工作流"
+
+#: src/controllers/navigation_controller.py:87 src/ui/main_window.py:182
+#: src/ui/main_window.py:440 src/ui/main_window.py:893
+#: src/ui/dialogs/settings_dialog.py:40 src/workflow/nodes/training.py:304
+#: src/workflow/nodes/training.py:684 src/workflow/nodes/training.py:1028
+msgid "Model"
+msgstr "模型"
+
+#: src/controllers/navigation_controller.py:87 src/ui/main_window.py:183
+#: src/ui/main_window.py:441
+msgid "Preview"
+msgstr "预览"
+
+#: src/controllers/navigation_controller.py:87 src/ui/main_window.py:184
+#: src/ui/main_window.py:442
+msgid "Training"
+msgstr "训练"
+
+#: src/controllers/navigation_controller.py:89 src/ui/main_window.py:445
+#, python-brace-format
+msgid "Switched to {view} view"
+msgstr "已切换到 {view} 视图"
+
+#: src/controllers/training_controller.py:93
+#, python-brace-format
+msgid "Training started (total {epochs} epochs)"
+msgstr "训练开始（共 {epochs} 轮）"
+
+#: src/controllers/training_controller.py:142
+#, python-brace-format
+msgid "Training finished - final loss: {loss:.4f}, acc: {acc:.4f}"
+msgstr "训练结束 - 最终 loss：{loss:.4f}，acc：{acc:.4f}"
+
+#: src/controllers/training_controller.py:149 src/ui/views/training_view.py:405
+#, python-brace-format
+msgid "Training failed: {message}"
+msgstr "训练失败：{message}"
+
+#: src/controllers/training_controller.py:159 src/training/trainer.py:314
+msgid "Training stopped"
+msgstr "训练已停止"
+
+#: src/controllers/workflow_controller.py:100
+msgid "No workflow to run"
+msgstr "没有可运行的工作流"
+
+#: src/controllers/workflow_controller.py:106
+#, python-brace-format
+msgid ""
+"Workflow validation failed:\n"
+"{errors}"
+msgstr ""
+"工作流验证失败：\n"
+"{errors}"
+
+#: src/controllers/workflow_controller.py:113
+msgid "Starting workflow..."
+msgstr "正在启动工作流..."
+
+#: src/controllers/workflow_controller.py:117
+msgid "Failed to start workflow"
+msgstr "启动工作流失败"
+
+#: src/controllers/workflow_controller.py:126
+msgid "Stop requested. Waiting for current task to finish..."
+msgstr "已请求停止。正在等待当前任务结束..."
+
+#: src/controllers/workflow_controller.py:132
+msgid "Workflow paused"
+msgstr "工作流已暂停"
+
+#: src/controllers/workflow_controller.py:137
+msgid "Workflow resumed"
+msgstr "工作流已恢复"
+
+#: src/controllers/workflow_controller.py:143 src/workflow/engine.py:424
+msgid "Continuing from breakpoint..."
+msgstr "正在从断点继续..."
+
+#: src/controllers/workflow_controller.py:169
+msgid "Workflow running..."
+msgstr "工作流运行中..."
+
+#: src/controllers/workflow_controller.py:178
+#, python-brace-format
+msgid "Workflow finished (elapsed: {seconds:.2f}s)"
+msgstr "工作流结束（耗时：{seconds:.2f}s）"
+
+#: src/controllers/workflow_controller.py:184 src/ui/main_window.py:585
+#: src/ui/main_window.py:605
+#, python-brace-format
+msgid "Execution failed: {message}"
+msgstr "执行失败：{message}"
+
+#: src/controllers/workflow_controller.py:191
+#, python-brace-format
+msgid "Error: {message}"
+msgstr "错误：{message}"
+
+#: src/controllers/workflow_controller.py:202 src/ui/main_window.py:619
+#: src/ui/main_window.py:631 src/workflow/engine.py:267
+#, python-brace-format
+msgid "Running: {name}"
+msgstr "正在运行：{name}"
+
+#: src/controllers/workflow_controller.py:230
+#, python-brace-format
+msgid "🔴 Breakpoint hit: {name}"
+msgstr "🔴 命中断点：{name}"
+
+#: src/core/graph_base.py:189 src/model_builder/layer_base.py:183
+#, python-brace-format
+msgid "Unknown parameter: {name}"
+msgstr "未知参数：{name}"
+
+#: src/core/graph_base.py:320 src/workflow/workflow.py:151
+#, python-brace-format
+msgid "Source node {id} does not exist"
+msgstr "源节点 {id} 不存在"
+
+#: src/core/graph_base.py:322 src/workflow/workflow.py:155
+#, python-brace-format
+msgid "Target node {id} does not exist"
+msgstr "目标节点 {id} 不存在"
+
+#: src/core/graph_base.py:326
+msgid "Cannot self-connect"
+msgstr "不允许自连接"
+
+#: src/core/graph_base.py:330 src/model_builder/model_graph.py:292
+#: src/workflow/workflow.py:181
+msgid "Connection already exists"
+msgstr "连接已存在"
+
+#: src/core/graph_base.py:450
+msgid "Graph is empty"
+msgstr "图为空"
+
+#: src/core/graph_base.py:457 src/workflow/workflow.py:309
+#, python-brace-format
+msgid "Node '{name}' ({id}): {message}"
+msgstr "节点“{name}”（{id}）：{message}"
+
+#: src/core/graph_base.py:467
+msgid "Graph contains cyclic dependencies"
+msgstr "图中存在循环依赖"
+
+#: src/core/parameter.py:66
+#, python-brace-format
+msgid "Parameter '{name}' is required"
+msgstr "参数“{name}”为必填项"
+
+#: src/core/parameter.py:76
+#, python-brace-format
+msgid "Parameter '{name}' must be an integer"
+msgstr "参数“{name}”必须为整数"
+
+#: src/core/parameter.py:80 src/core/parameter.py:96
+#, python-brace-format
+msgid "Parameter '{name}' must be >= {min_value}"
+msgstr "参数“{name}”必须 ≥ {min_value}"
+
+#: src/core/parameter.py:85 src/core/parameter.py:101
+#, python-brace-format
+msgid "Parameter '{name}' must be <= {max_value}"
+msgstr "参数“{name}”必须 ≤ {max_value}"
+
+#: src/core/parameter.py:92
+#, python-brace-format
+msgid "Parameter '{name}' must be a number"
+msgstr "参数“{name}”必须为数字"
+
+#: src/core/parameter.py:108
+#, python-brace-format
+msgid "Parameter '{name}' must be a boolean"
+msgstr "参数“{name}”必须为布尔值"
+
+#: src/core/parameter.py:114
+#, python-brace-format
+msgid "Parameter '{name}' must be one of {choices}"
+msgstr "参数“{name}”必须为 {choices} 之一"
+
+#: src/core/parameter.py:121
+#, python-brace-format
+msgid "Parameter '{name}' must be a string"
+msgstr "参数“{name}”必须为字符串"
+
+#: src/model_builder/layer_base.py:46
+#: src/model_builder/layers/input_layers.py:15
+msgid "Input"
+msgstr "输入"
+
+#: src/model_builder/layer_base.py:47
+msgid "Core"
+msgstr "核心"
+
+#: src/model_builder/layer_base.py:48
+msgid "Convolution"
+msgstr "卷积"
+
+#: src/model_builder/layer_base.py:49
+msgid "Recurrent"
+msgstr "循环"
+
+#: src/model_builder/layer_base.py:50
+msgid "Attention"
+msgstr "注意力"
+
+#: src/model_builder/layer_base.py:51
+msgid "Pooling"
+msgstr "池化"
+
+#: src/model_builder/layer_base.py:52
+msgid "Normalization"
+msgstr "归一化"
+
+#: src/model_builder/layer_base.py:53
+msgid "Regularization"
+msgstr "正则化"
+
+#: src/model_builder/layer_base.py:54
+#: src/model_builder/layers/reshape_layers.py:30
+msgid "Reshape"
+msgstr "形状变换"
+
+#: src/model_builder/layer_base.py:55
+#: src/model_builder/layers/activation_layers.py:12
+#: src/model_builder/layers/activation_layers.py:21
+#: src/model_builder/layers/attention_layers.py:114
+#: src/model_builder/layers/attention_layers.py:273
+#: src/model_builder/layers/conv_layers.py:45
+#: src/model_builder/layers/conv_layers.py:108
+#: src/model_builder/layers/conv_layers.py:171
+#: src/model_builder/layers/conv_layers.py:229
+#: src/model_builder/layers/conv_layers.py:292
+#: src/model_builder/layers/core_layers.py:27
+#: src/model_builder/layers/input_layers.py:109
+#: src/model_builder/layers/recurrent_layers.py:37
+#: src/model_builder/layers/recurrent_layers.py:108
+#: src/model_builder/layers/recurrent_layers.py:167
+msgid "Activation"
+msgstr "激活"
+
+#: src/model_builder/layer_base.py:56 src/workflow/nodes/control.py:274
+msgid "Merge"
+msgstr "合并"
+
+#: src/model_builder/layer_base.py:57
+#: src/model_builder/layers/input_layers.py:99 src/workflow/node_base.py:52
+msgid "Output"
+msgstr "输出"
+
+#: src/model_builder/model_graph.py:42 src/model_builder/model_graph.py:223
+#: src/model_builder/model_graph.py:629
+msgid "Untitled model"
+msgstr "未命名模型"
+
+#: src/model_builder/model_graph.py:281
+#, python-brace-format
+msgid "Source layer not found: {id}"
+msgstr "未找到源层：{id}"
+
+#: src/model_builder/model_graph.py:283
+#, python-brace-format
+msgid "Target layer not found: {id}"
+msgstr "未找到目标层：{id}"
+
+#: src/model_builder/model_graph.py:287
+msgid "Self-connection is not allowed"
+msgstr "不允许自连接"
+
+#: src/model_builder/model_graph.py:296
+msgid "Cyclic connections are not allowed"
+msgstr "不允许循环连接"
+
+#: src/model_builder/model_graph.py:426
+msgid "Model has no layers"
+msgstr "模型没有任何层"
+
+#: src/model_builder/model_graph.py:431
+msgid "Model has no input layer"
+msgstr "模型没有输入层"
+
+#: src/model_builder/model_graph.py:436
+msgid "Model has no output layer"
+msgstr "模型没有输出层"
+
+#: src/model_builder/model_graph.py:443
+#, python-brace-format
+msgid "Layer {layer}: {message}"
+msgstr "层 {layer}：{message}"
+
+#: src/model_builder/model_graph.py:449
+msgid "There are cyclic connections or disconnected layers"
+msgstr "存在循环连接或断开的层"
+
+#: src/model_builder/model_graph.py:469
+msgid "Cannot determine layer execution order"
+msgstr "无法确定层的执行顺序"
+
+#: src/model_builder/model_graph.py:499
+#, python-brace-format
+msgid "Layer {layer} requires 'shape' or 'input_shape' parameter"
+msgstr "层 {layer} 需要参数 'shape' 或 'input_shape'"
+
+#: src/model_builder/layers/activation_layers.py:14
+msgid "Apply activation function"
+msgstr "应用激活函数"
+
+#: src/model_builder/layers/activation_layers.py:44
+msgid "Leaky ReLU activation"
+msgstr "Leaky ReLU 激活"
+
+#: src/model_builder/layers/activation_layers.py:52
+msgid "Negative slope coefficient"
+msgstr "负斜率系数"
+
+#: src/model_builder/layers/activation_layers.py:71
+msgid "Parametric ReLU activation"
+msgstr "参数化 ReLU（PReLU）激活"
+
+#: src/model_builder/layers/activation_layers.py:89
+msgid "Exponential Linear Unit"
+msgstr "指数线性单元（ELU）"
+
+#: src/model_builder/layers/activation_layers.py:115
+msgid "Softmax activation"
+msgstr "Softmax 激活"
+
+#: src/model_builder/layers/activation_layers.py:122
+#: src/model_builder/layers/merge_layers.py:21
+msgid "Axis"
+msgstr "轴"
+
+#: src/model_builder/layers/activation_layers.py:123
+msgid "Axis to apply softmax"
+msgstr "应用 Softmax 的轴"
+
+#: src/model_builder/layers/attention_layers.py:16
+msgid "Multi-head attention layer for sequence modeling"
+msgstr "用于序列建模的多头注意力层"
+
+#: src/model_builder/layers/attention_layers.py:23
+#: src/model_builder/layers/attention_layers.py:88
+#: src/model_builder/layers/attention_layers.py:247
+msgid "Number of heads"
+msgstr "头数"
+
+#: src/model_builder/layers/attention_layers.py:24
+#: src/model_builder/layers/attention_layers.py:89
+#: src/model_builder/layers/attention_layers.py:248
+msgid "Number of attention heads"
+msgstr "注意力头数量"
+
+#: src/model_builder/layers/attention_layers.py:30
+#: src/model_builder/layers/attention_layers.py:95
+#: src/model_builder/layers/attention_layers.py:254
+msgid "Key dimension"
+msgstr "键维度"
+
+#: src/model_builder/layers/attention_layers.py:31
+#: src/model_builder/layers/attention_layers.py:96
+#: src/model_builder/layers/attention_layers.py:255
+msgid "Dimension of query and key for each head"
+msgstr "每个头的 Query/Key 维度"
+
+#: src/model_builder/layers/attention_layers.py:36
+msgid "Value dimension"
+msgstr "值维度"
+
+#: src/model_builder/layers/attention_layers.py:37
+msgid "Value dimension for each head; 0 means same as key_dim"
+msgstr "每个头的 Value 维度；0 表示与 key_dim 相同"
+
+#: src/model_builder/layers/attention_layers.py:43
+#: src/model_builder/layers/attention_layers.py:107
+#: src/model_builder/layers/attention_layers.py:108
+#: src/model_builder/layers/attention_layers.py:266
+#: src/model_builder/layers/attention_layers.py:267
+#: src/model_builder/layers/attention_layers.py:397
+#: src/model_builder/layers/attention_layers.py:496
+#: src/model_builder/layers/attention_layers.py:536
+#: src/model_builder/layers/recurrent_layers.py:49
+#: src/model_builder/layers/recurrent_layers.py:113
+#: src/model_builder/layers/recurrent_layers.py:172
+#: src/model_builder/layers/regularization_layers.py:21
+#: src/model_builder/layers/regularization_layers.py:49
+#: src/model_builder/layers/regularization_layers.py:76
+#: src/model_builder/layers/regularization_layers.py:130
+msgid "Dropout rate"
+msgstr "Dropout 比例"
+
+#: src/model_builder/layers/attention_layers.py:44
+#: src/model_builder/layers/attention_layers.py:497
+#: src/model_builder/layers/attention_layers.py:537
+msgid "Dropout rate for attention weights"
+msgstr "注意力权重的 Dropout 比例"
+
+#: src/model_builder/layers/attention_layers.py:50
+#: src/model_builder/layers/conv_layers.py:51
+#: src/model_builder/layers/conv_layers.py:114
+#: src/model_builder/layers/conv_layers.py:235
+#: src/model_builder/layers/conv_layers.py:298
+#: src/model_builder/layers/core_layers.py:33
+msgid "Use bias"
+msgstr "使用偏置"
+
+#: src/model_builder/layers/attention_layers.py:51
+msgid "Whether to use bias vectors"
+msgstr "是否使用偏置向量"
+
+#: src/model_builder/layers/attention_layers.py:81
+msgid ""
+"Transformer encoder block (self-attention + FFN + residual + normalization)"
+msgstr "Transformer 编码器块（自注意力 + FFN + 残差 + 归一化）"
+
+#: src/model_builder/layers/attention_layers.py:101
+#: src/model_builder/layers/attention_layers.py:260
+msgid "FFN dimension"
+msgstr "FFN 维度"
+
+#: src/model_builder/layers/attention_layers.py:102
+#: src/model_builder/layers/attention_layers.py:261
+msgid "Hidden dimension of the feed-forward network"
+msgstr "前馈网络的隐藏维度"
+
+#: src/model_builder/layers/attention_layers.py:115
+#: src/model_builder/layers/attention_layers.py:274
+msgid "Activation function for the feed-forward network"
+msgstr "前馈网络的激活函数"
+
+#: src/model_builder/layers/attention_layers.py:120
+msgid "Normalization epsilon"
+msgstr "归一化 epsilon"
+
+#: src/model_builder/layers/attention_layers.py:121
+msgid "Epsilon for layer normalization"
+msgstr "层归一化的 epsilon"
+
+#: src/model_builder/layers/attention_layers.py:128
+msgid "Use Pre-Norm; otherwise use Post-Norm"
+msgstr "使用 Pre-Norm；否则使用 Post-Norm"
+
+#: src/model_builder/layers/attention_layers.py:240
+msgid "Transformer decoder block (self-attention + cross-attention + FFN)"
+msgstr "Transformer 解码器块（自注意力 + 交叉注意力 + FFN）"
+
+#: src/model_builder/layers/attention_layers.py:377
+msgid "Positional encoding layer to add position information to sequences"
+msgstr "位置编码层：为序列添加位置信息"
+
+#: src/model_builder/layers/attention_layers.py:384
+msgid "Max sequence length"
+msgstr "最大序列长度"
+
+#: src/model_builder/layers/attention_layers.py:385
+msgid "Maximum supported sequence length"
+msgstr "支持的最大序列长度"
+
+#: src/model_builder/layers/attention_layers.py:391
+msgid "Encoding type"
+msgstr "编码类型"
+
+#: src/model_builder/layers/attention_layers.py:392
+msgid "Type of positional encoding"
+msgstr "位置编码类型"
+
+#: src/model_builder/layers/attention_layers.py:398
+msgid "Dropout rate after adding positional encoding"
+msgstr "添加位置编码后的 Dropout 比例"
+
+#: src/model_builder/layers/attention_layers.py:484
+msgid "Additive attention (Bahdanau-style)"
+msgstr "加性注意力（Bahdanau 风格）"
+
+#: src/model_builder/layers/attention_layers.py:491
+#: src/model_builder/layers/attention_layers.py:525
+msgid "Use scale"
+msgstr "使用缩放"
+
+#: src/model_builder/layers/attention_layers.py:492
+#: src/model_builder/layers/attention_layers.py:526
+msgid "Whether to scale attention scores"
+msgstr "是否对注意力分数进行缩放"
+
+#: src/model_builder/layers/attention_layers.py:518
+msgid "Dot-product attention (Luong-style)"
+msgstr "点积注意力（Luong 风格）"
+
+#: src/model_builder/layers/attention_layers.py:530
+msgid "Score mode"
+msgstr "评分模式"
+
+#: src/model_builder/layers/attention_layers.py:531
+msgid "How to compute attention scores"
+msgstr "注意力分数的计算方式"
+
+#: src/model_builder/layers/conv_layers.py:12
+msgid "Conv1D"
+msgstr "Conv1D"
+
+#: src/model_builder/layers/conv_layers.py:14
+msgid "1D convolution layer for sequence/time-series data"
+msgstr "用于序列/时间序列数据的 1D 卷积层"
+
+#: src/model_builder/layers/conv_layers.py:21
+#: src/model_builder/layers/conv_layers.py:86
+#: src/model_builder/layers/conv_layers.py:151
+#: src/model_builder/layers/conv_layers.py:205
+#: src/model_builder/layers/conv_layers.py:270
+msgid "Number of filters"
+msgstr "滤波器数量"
+
+#: src/model_builder/layers/conv_layers.py:22
+#: src/model_builder/layers/conv_layers.py:87
+#: src/model_builder/layers/conv_layers.py:206
+#: src/model_builder/layers/conv_layers.py:271
+msgid "Dimensionality of the output space (number of convolution filters)"
+msgstr "输出空间维度（卷积滤波器数量）"
+
+#: src/model_builder/layers/conv_layers.py:27
+#: src/model_builder/layers/conv_layers.py:92
+#: src/model_builder/layers/conv_layers.py:156
+#: src/model_builder/layers/conv_layers.py:211
+#: src/model_builder/layers/conv_layers.py:276
+msgid "Kernel size"
+msgstr "卷积核大小"
+
+#: src/model_builder/layers/conv_layers.py:28
+#: src/model_builder/layers/conv_layers.py:212
+msgid "Length of the 1D convolution window"
+msgstr "1D 卷积窗口长度"
+
+#: src/model_builder/layers/conv_layers.py:33
+#: src/model_builder/layers/conv_layers.py:97
+#: src/model_builder/layers/conv_layers.py:161
+#: src/model_builder/layers/conv_layers.py:217
+#: src/model_builder/layers/conv_layers.py:281
+#: src/model_builder/layers/pooling_layers.py:26
+#: src/model_builder/layers/pooling_layers.py:65
+#: src/model_builder/layers/pooling_layers.py:105
+msgid "Stride"
+msgstr "步幅"
+
+#: src/model_builder/layers/conv_layers.py:34
+msgid "Stride length of the convolution"
+msgstr "卷积步幅长度"
+
+#: src/model_builder/layers/conv_layers.py:39
+#: src/model_builder/layers/conv_layers.py:102
+#: src/model_builder/layers/conv_layers.py:166
+#: src/model_builder/layers/conv_layers.py:223
+#: src/model_builder/layers/conv_layers.py:286
+#: src/model_builder/layers/pooling_layers.py:32
+#: src/model_builder/layers/pooling_layers.py:69
+#: src/model_builder/layers/pooling_layers.py:110
+msgid "Padding"
+msgstr "填充"
+
+#: src/model_builder/layers/conv_layers.py:41
+#: src/model_builder/layers/conv_layers.py:104
+#: src/model_builder/layers/conv_layers.py:225
+#: src/model_builder/layers/conv_layers.py:288
+msgid "Padding mode"
+msgstr "填充方式"
+
+#: src/model_builder/layers/conv_layers.py:47
+#: src/model_builder/layers/conv_layers.py:110
+#: src/model_builder/layers/conv_layers.py:231
+#: src/model_builder/layers/conv_layers.py:294
+#: src/model_builder/layers/recurrent_layers.py:39
+msgid "Activation function"
+msgstr "激活函数"
+
+#: src/model_builder/layers/conv_layers.py:52
+#: src/model_builder/layers/conv_layers.py:115
+#: src/model_builder/layers/conv_layers.py:236
+#: src/model_builder/layers/conv_layers.py:299
+#: src/model_builder/layers/core_layers.py:34
+msgid "Whether the layer uses a bias vector"
+msgstr "该层是否使用偏置向量"
+
+#: src/model_builder/layers/conv_layers.py:77
+msgid "Conv2D"
+msgstr "Conv2D"
+
+#: src/model_builder/layers/conv_layers.py:79
+msgid "2D convolution layer for images or spectrograms"
+msgstr "用于图像或频谱图的 2D 卷积层"
+
+#: src/model_builder/layers/conv_layers.py:93
+#: src/model_builder/layers/conv_layers.py:277
+msgid "Height and width of the 2D convolution window"
+msgstr "2D 卷积窗口的高度和宽度"
+
+#: src/model_builder/layers/conv_layers.py:98
+msgid "Stride of the convolution"
+msgstr "卷积步幅"
+
+#: src/model_builder/layers/conv_layers.py:144
+msgid "Depthwise separable 1D convolution"
+msgstr "深度可分离 1D 卷积"
+
+#: src/model_builder/layers/conv_layers.py:196
+msgid "Conv1DTranspose"
+msgstr "Conv1DTranspose"
+
+#: src/model_builder/layers/conv_layers.py:198
+msgid "1D transposed convolution layer for upsampling"
+msgstr "用于上采样的 1D 转置卷积层"
+
+#: src/model_builder/layers/conv_layers.py:218
+msgid "Stride length of the convolution (controls upsampling factor)"
+msgstr "卷积步幅长度（控制上采样倍率）"
+
+#: src/model_builder/layers/conv_layers.py:261
+msgid "Conv2DTranspose"
+msgstr "Conv2DTranspose"
+
+#: src/model_builder/layers/conv_layers.py:263
+msgid "2D transposed convolution layer for upsampling"
+msgstr "用于上采样的 2D 转置卷积层"
+
+#: src/model_builder/layers/conv_layers.py:282
+msgid "Stride of the convolution (controls upsampling factor)"
+msgstr "卷积步幅（控制上采样倍率）"
+
+#: src/model_builder/layers/core_layers.py:12
+msgid "Dense"
+msgstr "Dense"
+
+#: src/model_builder/layers/core_layers.py:14
+msgid "Standard fully-connected neural network layer"
+msgstr "标准全连接神经网络层"
+
+#: src/model_builder/layers/core_layers.py:21
+#: src/model_builder/layers/recurrent_layers.py:21
+#: src/model_builder/layers/recurrent_layers.py:99
+#: src/model_builder/layers/recurrent_layers.py:158
+msgid "Units"
+msgstr "单元数"
+
+#: src/model_builder/layers/core_layers.py:22
+#: src/model_builder/layers/recurrent_layers.py:22
+msgid "Dimensionality of the output space"
+msgstr "输出空间维度"
+
+#: src/model_builder/layers/core_layers.py:29
+msgid "Activation function ('none' means no activation)"
+msgstr "激活函数（'none' 表示不使用激活）"
+
+#: src/model_builder/layers/core_layers.py:38
+msgid "Kernel initializer"
+msgstr "权重初始化器"
+
+#: src/model_builder/layers/core_layers.py:40
+msgid "Initializer for the kernel weights matrix"
+msgstr "权重矩阵的初始化器"
+
+#: src/model_builder/layers/core_layers.py:64
+msgid "Embedding"
+msgstr "Embedding"
+
+#: src/model_builder/layers/core_layers.py:66
+msgid "Turns positive integers (indexes) into dense vectors of fixed size"
+msgstr "将正整数（索引）映射为固定大小的稠密向量"
+
+#: src/model_builder/layers/core_layers.py:73
+msgid "Vocabulary size"
+msgstr "词表大小"
+
+#: src/model_builder/layers/core_layers.py:74
+msgid "Size of the vocabulary"
+msgstr "词表的大小"
+
+#: src/model_builder/layers/core_layers.py:79
+msgid "Embedding dimension"
+msgstr "嵌入维度"
+
+#: src/model_builder/layers/core_layers.py:80
+msgid "Dimension of the dense embedding"
+msgstr "稠密嵌入的维度"
+
+#: src/model_builder/layers/core_layers.py:85
+msgid "Mask zero"
+msgstr "屏蔽 0"
+
+#: src/model_builder/layers/core_layers.py:86
+msgid "Whether to treat input value 0 as a special padding value to be masked"
+msgstr "是否将输入值 0 视为需要屏蔽的特殊填充值"
+
+#: src/model_builder/layers/input_layers.py:17
+msgid "Define the model input shape"
+msgstr "定义模型输入形状"
+
+#: src/model_builder/layers/input_layers.py:24
+#: src/ui/widgets/preview/model_preview.py:275
+msgid "Input shape"
+msgstr "输入形状"
+
+#: src/model_builder/layers/input_layers.py:25
+msgid "Input data shape, e.g. (128,) or (128, 64) or (32, 32, 3)"
+msgstr "输入数据形状，例如 (128,) 或 (128, 64) 或 (32, 32, 3)"
+
+#: src/model_builder/layers/input_layers.py:29
+msgid "Data type"
+msgstr "数据类型"
+
+#: src/model_builder/layers/input_layers.py:31
+msgid "Data type of the input"
+msgstr "输入的数据类型"
+
+#: src/model_builder/layers/input_layers.py:35
+msgid "Layer name"
+msgstr "层名称"
+
+#: src/model_builder/layers/input_layers.py:36
+msgid "Optional layer name"
+msgstr "可选的层名称"
+
+#: src/model_builder/layers/input_layers.py:46
+msgid "Input shape cannot be empty"
+msgstr "输入形状不能为空"
+
+#: src/model_builder/layers/input_layers.py:52
+#, python-brace-format
+msgid "Input shape must be a tuple, got: {type_name}"
+msgstr "输入形状必须为 tuple，当前为：{type_name}"
+
+#: src/model_builder/layers/input_layers.py:56
+msgid "Input shape tuple cannot be empty"
+msgstr "输入形状 tuple 不能为空"
+
+#: src/model_builder/layers/input_layers.py:59
+#, python-brace-format
+msgid "Input shape dimensions must be positive integers or None, got: {dim}"
+msgstr "输入形状的各维必须为正整数或 None，当前为：{dim}"
+
+#: src/model_builder/layers/input_layers.py:63
+#, python-brace-format
+msgid "Invalid input shape format: {error}"
+msgstr "无效的输入形状格式：{error}"
+
+#: src/model_builder/layers/input_layers.py:101
+msgid "Model output layer with compile settings (optimizer, loss, metrics)"
+msgstr "带编译设置（优化器、损失、指标）的模型输出层"
+
+#: src/model_builder/layers/input_layers.py:110
+msgid "Activation function for output layer ('none' means no activation)"
+msgstr "输出层激活函数（'none' 表示不使用激活）"
+
+#: src/model_builder/layers/input_layers.py:117
+#: src/ui/widgets/preview/model_preview.py:290
+msgid "Optimizer"
+msgstr "优化器"
+
+#: src/model_builder/layers/input_layers.py:118
+msgid "Training optimizer"
+msgstr "训练优化器"
+
+#: src/model_builder/layers/input_layers.py:125
+#: src/ui/widgets/preview/model_preview.py:295
+#: src/ui/widgets/preview/model_preview.py:297
+msgid "Learning rate"
+msgstr "学习率"
+
+#: src/model_builder/layers/input_layers.py:126
+msgid "Optimizer learning rate"
+msgstr "优化器学习率"
+
+#: src/model_builder/layers/input_layers.py:134
+#: src/ui/widgets/preview/model_preview.py:300
+msgid "Loss"
+msgstr "损失函数"
+
+#: src/model_builder/layers/input_layers.py:135
+msgid "Training loss function"
+msgstr "训练损失函数"
+
+#: src/model_builder/layers/input_layers.py:142 src/ui/main_window.py:894
+#: src/ui/widgets/preview/metrics_preview.py:44
+#: src/workflow/nodes/training.py:688 src/workflow/nodes/training.py:968
+msgid "Metrics"
+msgstr "指标"
+
+#: src/model_builder/layers/input_layers.py:143
+msgid "Select metrics (multi-select)"
+msgstr "选择指标（可多选）"
+
+#: src/model_builder/layers/merge_layers.py:12
+msgid "Concatenate"
+msgstr "拼接"
+
+#: src/model_builder/layers/merge_layers.py:14
+msgid "Concatenate a list of inputs along a given axis"
+msgstr "沿指定轴拼接一组输入"
+
+#: src/model_builder/layers/merge_layers.py:22
+msgid "Axis to concatenate"
+msgstr "拼接轴"
+
+#: src/model_builder/layers/merge_layers.py:38
+msgid "Add"
+msgstr "相加"
+
+#: src/model_builder/layers/merge_layers.py:40
+msgid "Element-wise addition of a list of inputs"
+msgstr "对一组输入逐元素相加"
+
+#: src/model_builder/layers/merge_layers.py:56
+msgid "Multiply"
+msgstr "相乘"
+
+#: src/model_builder/layers/merge_layers.py:58
+msgid "Element-wise multiplication of a list of inputs"
+msgstr "对一组输入逐元素相乘"
+
+#: src/model_builder/layers/merge_layers.py:74
+msgid "Average"
+msgstr "平均"
+
+#: src/model_builder/layers/merge_layers.py:76
+msgid "Element-wise average of a list of inputs"
+msgstr "对一组输入逐元素求平均"
+
+#: src/model_builder/layers/merge_layers.py:92
+msgid "Maximum"
+msgstr "最大值"
+
+#: src/model_builder/layers/merge_layers.py:94
+msgid "Element-wise maximum of a list of inputs"
+msgstr "对一组输入逐元素取最大值"
+
+#: src/model_builder/layers/merge_layers.py:110
+msgid "Minimum"
+msgstr "最小值"
+
+#: src/model_builder/layers/merge_layers.py:112
+msgid "Element-wise minimum of a list of inputs"
+msgstr "对一组输入逐元素取最小值"
+
+#: src/model_builder/layers/merge_layers.py:128
+msgid "Dot"
+msgstr "点积"
+
+#: src/model_builder/layers/merge_layers.py:130
+msgid "Compute the dot product of two inputs"
+msgstr "计算两个输入的点积"
+
+#: src/model_builder/layers/merge_layers.py:137
+msgid "Axes"
+msgstr "轴"
+
+#: src/model_builder/layers/merge_layers.py:138
+msgid "Axes for dot product"
+msgstr "点积的轴"
+
+#: src/model_builder/layers/merge_layers.py:142
+#: src/workflow/nodes/preprocessing.py:301
+#: src/workflow/nodes/feature/dim1d/fft.py:52
+#: src/workflow/nodes/feature/dim1d/pitch.py:65
+msgid "Normalize"
+msgstr "归一化"
+
+#: src/model_builder/layers/merge_layers.py:143
+msgid "Whether to apply L2 normalization before dot product"
+msgstr "是否在点积前进行 L2 归一化"
+
+#: src/model_builder/layers/normalization_layers.py:14
+msgid "Batch normalization layer"
+msgstr "批归一化层"
+
+#: src/model_builder/layers/normalization_layers.py:21
+msgid "Momentum"
+msgstr "动量"
+
+#: src/model_builder/layers/normalization_layers.py:22
+msgid "Momentum for the moving average"
+msgstr "滑动平均的动量"
+
+#: src/model_builder/layers/normalization_layers.py:29
+msgid "Small float added to variance to avoid division by zero"
+msgstr "为避免除以零而加到方差上的小浮点数"
+
+#: src/model_builder/layers/normalization_layers.py:34
+#: src/model_builder/layers/normalization_layers.py:73
+msgid "Center"
+msgstr "中心化"
+
+#: src/model_builder/layers/normalization_layers.py:35
+msgid "Whether to add beta offset"
+msgstr "是否添加 beta 偏移"
+
+#: src/model_builder/layers/normalization_layers.py:39
+#: src/model_builder/layers/normalization_layers.py:77
+msgid "Scale"
+msgstr "缩放"
+
+#: src/model_builder/layers/normalization_layers.py:40
+msgid "Whether to multiply by gamma"
+msgstr "是否乘以 gamma"
+
+#: src/model_builder/layers/normalization_layers.py:61
+msgid "Layer normalization"
+msgstr "层归一化"
+
+#: src/model_builder/layers/pooling_layers.py:14
+msgid "1D max pooling layer"
+msgstr "1D 最大池化层"
+
+#: src/model_builder/layers/pooling_layers.py:21
+#: src/model_builder/layers/pooling_layers.py:61
+#: src/model_builder/layers/pooling_layers.py:100
+msgid "Pool size"
+msgstr "池化窗口大小"
+
+#: src/model_builder/layers/pooling_layers.py:54
+msgid "2D max pooling layer"
+msgstr "2D 最大池化层"
+
+#: src/model_builder/layers/pooling_layers.py:93
+msgid "1D average pooling layer"
+msgstr "1D 平均池化层"
+
+#: src/model_builder/layers/pooling_layers.py:131
+msgid "Global 1D max pooling layer"
+msgstr "全局 1D 最大池化层"
+
+#: src/model_builder/layers/pooling_layers.py:149
+msgid "Global 1D average pooling layer"
+msgstr "全局 1D 平均池化层"
+
+#: src/model_builder/layers/pooling_layers.py:167
+msgid "Global 2D max pooling layer"
+msgstr "全局 2D 最大池化层"
+
+#: src/model_builder/layers/pooling_layers.py:185
+msgid "Global 2D average pooling layer"
+msgstr "全局 2D 平均池化层"
+
+#: src/model_builder/layers/recurrent_layers.py:14
+msgid "Long Short-Term Memory (LSTM) layer"
+msgstr "长短期记忆（LSTM）层"
+
+#: src/model_builder/layers/recurrent_layers.py:27
+#: src/model_builder/layers/recurrent_layers.py:104
+#: src/model_builder/layers/recurrent_layers.py:163
+msgid "Return sequences"
+msgstr "返回序列"
+
+#: src/model_builder/layers/recurrent_layers.py:28
+msgid "Whether to return the full sequence or only the last output"
+msgstr "是否返回完整序列，还是仅返回最后一个输出"
+
+#: src/model_builder/layers/recurrent_layers.py:32
+msgid "Return state"
+msgstr "返回状态"
+
+#: src/model_builder/layers/recurrent_layers.py:33
+msgid "Whether to return the last state"
+msgstr "是否返回最后一个状态"
+
+#: src/model_builder/layers/recurrent_layers.py:43
+msgid "Recurrent activation"
+msgstr "循环激活函数"
+
+#: src/model_builder/layers/recurrent_layers.py:45
+msgid "Activation function for the recurrent step"
+msgstr "循环步的激活函数"
+
+#: src/model_builder/layers/recurrent_layers.py:50
+msgid "Dropout rate for the input linear transformation"
+msgstr "输入线性变换的 Dropout 比例"
+
+#: src/model_builder/layers/recurrent_layers.py:56
+#: src/model_builder/layers/recurrent_layers.py:119
+msgid "Recurrent dropout rate"
+msgstr "循环 Dropout 比例"
+
+#: src/model_builder/layers/recurrent_layers.py:57
+msgid "Dropout rate for the recurrent state linear transformation"
+msgstr "循环状态线性变换的 Dropout 比例"
+
+#: src/model_builder/layers/recurrent_layers.py:63
+#: src/model_builder/layers/recurrent_layers.py:125
+msgid "Bidirectional"
+msgstr "双向"
+
+#: src/model_builder/layers/recurrent_layers.py:64
+msgid "Whether to use a bidirectional wrapper"
+msgstr "是否使用双向封装"
+
+#: src/model_builder/layers/recurrent_layers.py:92
+msgid "Gated Recurrent Unit (GRU) layer"
+msgstr "门控循环单元（GRU）层"
+
+#: src/model_builder/layers/recurrent_layers.py:151
+msgid "Simple RNN layer"
+msgstr "简单 RNN 层"
+
+#: src/model_builder/layers/regularization_layers.py:14
+msgid "Randomly drops input units to reduce overfitting"
+msgstr "随机丢弃输入单元以减少过拟合"
+
+#: src/model_builder/layers/regularization_layers.py:22
+msgid "Fraction of the input units to drop"
+msgstr "丢弃的输入单元比例"
+
+#: src/model_builder/layers/regularization_layers.py:42
+msgid "Spatial 1D dropout (drops entire feature maps)"
+msgstr "空间 1D Dropout（丢弃整个特征图）"
+
+#: src/model_builder/layers/regularization_layers.py:69
+msgid "Spatial 2D dropout"
+msgstr "空间 2D Dropout"
+
+#: src/model_builder/layers/regularization_layers.py:96
+msgid "Applies additive Gaussian noise"
+msgstr "添加高斯噪声（加性）"
+
+#: src/model_builder/layers/regularization_layers.py:103
+msgid "Standard deviation"
+msgstr "标准差"
+
+#: src/model_builder/layers/regularization_layers.py:104
+msgid "Standard deviation of the noise distribution"
+msgstr "噪声分布的标准差"
+
+#: src/model_builder/layers/regularization_layers.py:123
+msgid "Applies multiplicative Gaussian noise"
+msgstr "添加高斯噪声（乘性）"
+
+#: src/model_builder/layers/reshape_layers.py:12
+msgid "Flatten"
+msgstr "展平"
+
+#: src/model_builder/layers/reshape_layers.py:14
+msgid "Flattens the input to 1D"
+msgstr "将输入展平成 1D"
+
+#: src/model_builder/layers/reshape_layers.py:32
+msgid "Reshapes the input to the given shape"
+msgstr "将输入重塑为指定形状"
+
+#: src/model_builder/layers/reshape_layers.py:39
+msgid "Target shape"
+msgstr "目标形状"
+
+#: src/model_builder/layers/reshape_layers.py:40
+msgid "Target shape (excluding batch dimension)"
+msgstr "目标形状（不含 batch 维度）"
+
+#: src/model_builder/layers/reshape_layers.py:57
+msgid "Permute"
+msgstr "维度置换"
+
+#: src/model_builder/layers/reshape_layers.py:59
+msgid "Permutes the dimensions of the input"
+msgstr "置换输入的维度顺序"
+
+#: src/model_builder/layers/reshape_layers.py:66
+msgid "Dimension order"
+msgstr "维度顺序"
+
+#: src/model_builder/layers/reshape_layers.py:67
+msgid "Permutation pattern (1-based indices)"
+msgstr "置换模式（从 1 开始的索引）"
+
+#: src/model_builder/layers/reshape_layers.py:86
+msgid "Repeats the input n times"
+msgstr "将输入重复 n 次"
+
+#: src/model_builder/layers/reshape_layers.py:93
+msgid "Repeats"
+msgstr "重复次数"
+
+#: src/model_builder/layers/reshape_layers.py:112
+msgid "1D upsampling layer"
+msgstr "1D 上采样层"
+
+#: src/model_builder/layers/reshape_layers.py:119
+#: src/model_builder/layers/reshape_layers.py:145
+msgid "Upsampling factor"
+msgstr "上采样倍率"
+
+#: src/model_builder/layers/reshape_layers.py:138
+msgid "2D upsampling layer"
+msgstr "2D 上采样层"
+
+#: src/training/trainer.py:112
+msgid "Preparing training..."
+msgstr "正在准备训练..."
+
+#: src/training/trainer.py:134
+msgid "Compiling model..."
+msgstr "正在编译模型..."
+
+#: src/training/trainer.py:188 src/ui/views/training_view.py:296
+msgid "Training started..."
+msgstr "训练已开始..."
+
+#: src/training/trainer.py:310
+msgid "Stopping training..."
+msgstr "正在停止训练..."
+
+#: src/training/trainer.py:324
+msgid "Training finished"
+msgstr "训练完成"
+
+#: src/training/trainer.py:330
+msgid "Training error"
+msgstr "训练错误"
+
+#: src/training/trainer.py:451
+msgid "Please build the model first"
+msgstr "请先构建模型"
+
+#: src/training/trainer.py:493 src/training/trainer.py:509
+msgid "Please train the model first"
+msgstr "请先训练模型"
+
+#: src/ui/main_window.py:159
+msgid "🎵 AI Acoustic Training Platform"
+msgstr "🎵 AI 声学信号训练平台"
+
+#: src/ui/main_window.py:214
+msgid "Ready"
+msgstr "就绪"
+
+#: src/ui/main_window.py:217
+msgid "Workflow: Unsaved"
+msgstr "工作流：未保存"
+
+#: src/ui/main_window.py:220
+msgid "GPU: Detecting..."
+msgstr "GPU：检测中..."
+
+#: src/ui/main_window.py:221
+msgid "Memory: --"
+msgstr "内存：--"
+
+#: src/ui/main_window.py:252
+#, python-brace-format
+msgid "GPU: {count} available"
+msgstr "GPU：可用 {count} 个"
+
+#: src/ui/main_window.py:256
+msgid "GPU: CPU only"
+msgstr "GPU：仅 CPU"
+
+#: src/ui/main_window.py:259
+msgid "GPU: Unknown"
+msgstr "GPU：未知"
+
+#: src/ui/main_window.py:276
+#, python-brace-format
+msgid "Memory: {used:.1f}/{total:.1f}GB"
+msgstr "内存：{used:.1f}/{total:.1f}GB"
+
+#: src/ui/main_window.py:359 src/ui/main_window.py:372
+#: src/ui/main_window.py:382 src/ui/views/workflow_view.py:174
+msgid "⏹️ Stop"
+msgstr "⏹️ 停止"
+
+#: src/ui/main_window.py:385 src/ui/main_window.py:592
+msgid "Execution error"
+msgstr "执行错误"
+
+#: src/ui/main_window.py:461
+msgid "Modified"
+msgstr "已修改"
+
+#: src/ui/main_window.py:461 src/ui/views/model_builder_view.py:514
+msgid "Saved"
+msgstr "已保存"
+
+#: src/ui/main_window.py:463
+#, python-brace-format
+msgid "Workflow: {name} ({status})"
+msgstr "工作流：{name}（{status}）"
+
+#: src/ui/main_window.py:468
+msgid "Workflow: None"
+msgstr "工作流：无"
+
+#: src/ui/main_window.py:505
+msgid "No runnable workflow."
+msgstr "没有可运行的工作流。"
+
+#: src/ui/main_window.py:513 src/ui/views/model_builder_view.py:537
+msgid "Validation failed"
+msgstr "验证失败"
+
+#: src/ui/main_window.py:514
+msgid "Workflow validation failed:\n"
+msgstr "工作流验证失败：\n"
+
+#: src/ui/main_window.py:539
+msgid "Startup failed"
+msgstr "启动失败"
+
+#: src/ui/main_window.py:567
+msgid "Running workflow..."
+msgstr "正在运行工作流..."
+
+#: src/ui/main_window.py:577
+#, python-brace-format
+msgid "Time: {seconds:.2f}s"
+msgstr "耗时：{seconds:.2f}s"
+
+#: src/ui/main_window.py:581 src/ui/main_window.py:601
+msgid "Workflow completed"
+msgstr "工作流已完成"
+
+#: src/ui/main_window.py:591
+#, python-brace-format
+msgid "Error: {error}"
+msgstr "错误：{error}"
+
+#: src/ui/main_window.py:719
+#, python-brace-format
+msgid "🔴 Breakpoint paused: {name} - Click to continue"
+msgstr "🔴 断点暂停：{name} - 点击继续"
+
+#: src/ui/main_window.py:784
+msgid "Model save path"
+msgstr "模型保存路径"
+
+#: src/ui/main_window.py:785 src/ui/views/model_builder_view.py:515
+#, python-brace-format
+msgid ""
+"Model saved to:\n"
+"{path}"
+msgstr ""
+"模型已保存至：\n"
+"{path}"
+
+#: src/ui/main_window.py:797
+#, python-brace-format
+msgid ""
+"Loop node [{name}] cannot be previewed.\n"
+"Please preview a specific processing node inside the loop."
+msgstr ""
+"循环节点 [{name}] 无法预览。\n"
+"请在循环内部选择一个具体的处理节点进行预览。"
+
+#: src/ui/main_window.py:811 src/ui/main_window.py:895
+msgid "Label data"
+msgstr "标签数据"
+
+#: src/ui/main_window.py:813
+#, python-brace-format
+msgid ""
+"Loaded {count} label(s).\n"
+"Label data cannot be visualized for preview."
+msgstr ""
+"已加载 {count} 个标签。\n"
+"标签数据无法可视化预览。"
+
+#: src/ui/main_window.py:850
+#, python-brace-format
+msgid ""
+"Node [{name}] has not been run yet.\n"
+"Click \"Run\" to execute the workflow first."
+msgstr ""
+"节点 [{name}] 尚未运行。\n"
+"请先点击“运行”执行工作流。"
+
+#: src/ui/main_window.py:875
+#, python-brace-format
+msgid "Preview {name} - {type}"
+msgstr "预览 {name} - {type}"
+
+#: src/ui/main_window.py:889
+msgid "Audio waveform"
+msgstr "音频波形"
+
+#: src/ui/main_window.py:890
+msgid "1D feature curve"
+msgstr "1D 特征曲线"
+
+#: src/ui/main_window.py:891
+msgid "2D feature map"
+msgstr "2D 特征图"
+
+#: src/ui/main_window.py:892
+msgid "Feature data"
+msgstr "特征数据"
+
+#: src/ui/main_window.py:896 src/ui/main_window.py:899
+#: src/workflow/nodes/control.py:123 src/workflow/nodes/control.py:384
+#: src/workflow/nodes/control.py:385
+msgid "Data"
+msgstr "数据"
+
+#: src/ui/main_window.py:897
+msgid "Trigger"
+msgstr "触发"
+
+#: src/ui/dialogs/about_dialog.py:22
+msgid "About"
+msgstr "关于"
+
+#: src/ui/dialogs/about_dialog.py:46
+msgid "Version 1.0.0"
+msgstr "版本 1.0.0"
+
+#: src/ui/dialogs/about_dialog.py:60
+msgid ""
+"A local training platform for learning AI acoustic signal processing.\n"
+"Supports audio visualization, feature extraction, model building, and "
+"training monitoring."
+msgstr ""
+"用于学习 AI 声学信号处理的本地训练平台。\n"
+"支持音频可视化、特征提取、模型构建与训练监控。"
+
+#: src/ui/dialogs/about_dialog.py:71
+msgid "Tech stack: Python • TensorFlow • PyQt6 • Librosa"
+msgstr "技术栈：Python • TensorFlow • PyQt6 • Librosa"
+
+#: src/ui/dialogs/about_dialog.py:86 src/utils/dialogs.py:110
+msgid "Close"
+msgstr "关闭"
+
+#: src/ui/dialogs/dataset_dialog.py:27
+msgid "Dataset Split"
+msgstr "数据集划分"
+
+#: src/ui/dialogs/dataset_dialog.py:34
+msgid "Dataset Info"
+msgstr "数据集信息"
+
+#: src/ui/dialogs/dataset_dialog.py:39
+msgid "Total samples:"
+msgstr "样本总数："
+
+#: src/ui/dialogs/dataset_dialog.py:43
+msgid "Classes:"
+msgstr "类别数："
+
+#: src/ui/dialogs/dataset_dialog.py:50
+msgid "Labels:"
+msgstr "标签："
+
+#: src/ui/dialogs/dataset_dialog.py:55
+msgid "Split Ratio"
+msgstr "划分比例"
+
+#: src/ui/dialogs/dataset_dialog.py:67 src/ui/dialogs/dataset_dialog.py:83
+#: src/ui/dialogs/dataset_dialog.py:99
+msgid "0 samples"
+msgstr "0 个样本"
+
+#: src/ui/dialogs/dataset_dialog.py:72
+msgid "Train:"
+msgstr "训练："
+
+#: src/ui/dialogs/dataset_dialog.py:88
+msgid "Validation:"
+msgstr "验证："
+
+#: src/ui/dialogs/dataset_dialog.py:104
+msgid "Test:"
+msgstr "测试："
+
+#: src/ui/dialogs/dataset_dialog.py:107
+msgid "Total: 100%"
+msgstr "总计：100%"
+
+#: src/ui/dialogs/dataset_dialog.py:114
+msgid "Split Options"
+msgstr "划分选项"
+
+#: src/ui/dialogs/dataset_dialog.py:117
+msgid "Stratify (keep class proportions)"
+msgstr "分层抽样（保持类别比例）"
+
+#: src/ui/dialogs/dataset_dialog.py:121
+msgid "Shuffle data"
+msgstr "打乱数据"
+
+#: src/ui/dialogs/dataset_dialog.py:126
+msgid "Random seed:"
+msgstr "随机种子："
+
+#: src/ui/dialogs/dataset_dialog.py:138
+msgid "Class Distribution"
+msgstr "类别分布"
+
+#: src/ui/dialogs/dataset_dialog.py:144
+#: src/ui/widgets/preview/label_preview.py:103 src/visualization/metrics.py:206
+msgid "Class"
+msgstr "类别"
+
+#: src/ui/dialogs/dataset_dialog.py:144 src/workflow/nodes/control.py:39
+msgid "Total"
+msgstr "总计"
+
+#: src/ui/dialogs/dataset_dialog.py:144
+msgid "Train"
+msgstr "训练"
+
+#: src/ui/dialogs/dataset_dialog.py:144
+msgid "Val/Test"
+msgstr "验证/测试"
+
+#: src/ui/dialogs/dataset_dialog.py:158 src/ui/dialogs/export_dialog.py:106
+#: src/ui/dialogs/settings_dialog.py:58
+msgid "Cancel"
+msgstr "取消"
+
+#: src/ui/dialogs/dataset_dialog.py:162
+msgid "Confirm split"
+msgstr "确认划分"
+
+#: src/ui/dialogs/dataset_dialog.py:191 src/ui/dialogs/dataset_dialog.py:192
+#: src/ui/dialogs/dataset_dialog.py:193
+#, python-brace-format
+msgid "{count} samples"
+msgstr "{count} 个样本"
+
+#: src/ui/dialogs/dataset_dialog.py:197
+msgid "Total: 100% ✓"
+msgstr "总计：100% ✓"
+
+#: src/ui/dialogs/dataset_dialog.py:202
+#, python-brace-format
+msgid "Total: {total}% (must be 100%)"
+msgstr "总计：{total}%（必须为 100%）"
+
+#: src/ui/dialogs/dataset_dialog.py:217
+msgid "The split ratios must add up to 100%."
+msgstr "划分比例之和必须为 100%。"
+
+#: src/ui/dialogs/export_dialog.py:28
+msgid "Export Model"
+msgstr "导出模型"
+
+#: src/ui/dialogs/export_dialog.py:35
+msgid "Export Location"
+msgstr "导出位置"
+
+#: src/ui/dialogs/export_dialog.py:40
+msgid "Choose an export directory..."
+msgstr "选择导出目录..."
+
+#: src/ui/dialogs/export_dialog.py:43 src/ui/dialogs/settings_dialog.py:184
+msgid "Browse"
+msgstr "浏览"
+
+#: src/ui/dialogs/export_dialog.py:47
+msgid "Directory:"
+msgstr "目录："
+
+#: src/ui/dialogs/export_dialog.py:52
+msgid "Model name:"
+msgstr "模型名称："
+
+#: src/ui/dialogs/export_dialog.py:57
+msgid "Export Format"
+msgstr "导出格式"
+
+#: src/ui/dialogs/export_dialog.py:68
+msgid "Format:"
+msgstr "格式："
+
+#: src/ui/dialogs/export_dialog.py:73
+msgid "Export Options"
+msgstr "导出选项"
+
+#: src/ui/dialogs/export_dialog.py:76
+msgid "Include optimizer state"
+msgstr "包含优化器状态"
+
+#: src/ui/dialogs/export_dialog.py:80
+msgid "Export model config (JSON)"
+msgstr "导出模型配置（JSON）"
+
+#: src/ui/dialogs/export_dialog.py:84
+msgid "Export weights only"
+msgstr "仅导出权重"
+
+#: src/ui/dialogs/export_dialog.py:110
+msgid "Export"
+msgstr "导出"
+
+#: src/ui/dialogs/export_dialog.py:127
+msgid "Select an export directory"
+msgstr "选择导出目录"
+
+#: src/ui/dialogs/export_dialog.py:137
+msgid "Please select an export directory."
+msgstr "请选择导出目录。"
+
+#: src/ui/dialogs/export_dialog.py:141
+msgid "Please enter a model name."
+msgstr "请输入模型名称。"
+
+#: src/ui/dialogs/export_dialog.py:145
+msgid "No model available to export."
+msgstr "没有可导出的模型。"
+
+#: src/ui/dialogs/export_dialog.py:179
+msgid "Exporting model..."
+msgstr "正在导出模型..."
+
+#: src/ui/dialogs/export_dialog.py:186
+msgid "Export succeeded!"
+msgstr "导出成功！"
+
+#: src/ui/dialogs/export_dialog.py:192
+#, python-brace-format
+msgid ""
+"Model exported to:\n"
+"{path}"
+msgstr ""
+"模型已导出到：\n"
+"{path}"
+
+#: src/ui/dialogs/export_dialog.py:201
+#, python-brace-format
+msgid "Export failed: {error}"
+msgstr "导出失败：{error}"
+
+#: src/ui/dialogs/export_dialog.py:209
+#, python-brace-format
+msgid ""
+"Export failed:\n"
+"{error}"
+msgstr ""
+"导出失败：\n"
+"{error}"
+
+#: src/ui/dialogs/export_dialog.py:244
+msgid "Please install tf2onnx: pip install tf2onnx"
+msgstr "请安装 tf2onnx：pip install tf2onnx"
+
+#: src/ui/dialogs/settings_dialog.py:27
+msgid "Settings"
+msgstr "设置"
+
+#: src/ui/dialogs/settings_dialog.py:37 src/workflow/nodes/augmentation.py:37
+#: src/workflow/nodes/augmentation.py:171
+#: src/workflow/nodes/augmentation.py:172
+#: src/workflow/nodes/augmentation.py:250
+#: src/workflow/nodes/augmentation.py:251
+#: src/workflow/nodes/augmentation.py:333
+#: src/workflow/nodes/augmentation.py:334
+#: src/workflow/nodes/augmentation.py:465 src/workflow/nodes/data_source.py:264
+#: src/workflow/nodes/data_source.py:475
+#: src/workflow/nodes/preprocessing.py:124
+#: src/workflow/nodes/preprocessing.py:127
+#: src/workflow/nodes/preprocessing.py:187
+#: src/workflow/nodes/preprocessing.py:188
+#: src/workflow/nodes/preprocessing.py:307
+#: src/workflow/nodes/preprocessing.py:308
+#: src/workflow/nodes/preprocessing.py:387
+#: src/workflow/nodes/preprocessing.py:388
+#: src/workflow/nodes/preprocessing.py:467
+#: src/workflow/nodes/preprocessing.py:833
+#: src/workflow/nodes/preprocessing.py:834
+#: src/workflow/nodes/feature/dim1d/fft.py:35
+#: src/workflow/nodes/feature/dim1d/pitch.py:36
+#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:38
+#: src/workflow/nodes/feature/dim1d/statistics.py:31
+#: src/workflow/nodes/feature/dim2d/cqt.py:37
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:34
+#: src/workflow/nodes/feature/dim2d/mfcc.py:34
+#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:37
+#: src/workflow/nodes/feature/dim2d/stft.py:35
+msgid "Audio"
+msgstr "音频"
+
+#: src/ui/dialogs/settings_dialog.py:43
+msgid "UI"
+msgstr "界面"
+
+#: src/ui/dialogs/settings_dialog.py:46
+msgid "GPU"
+msgstr "GPU"
+
+#: src/ui/dialogs/settings_dialog.py:54
+msgid "Reset to defaults"
+msgstr "恢复默认"
+
+#: src/ui/dialogs/settings_dialog.py:62
+msgid "Save"
+msgstr "保存"
+
+#: src/ui/dialogs/settings_dialog.py:83
+msgid "Sampling"
+msgstr "采样"
+
+#: src/ui/dialogs/settings_dialog.py:89
+msgid "Sample rate (Hz):"
+msgstr "采样率（Hz）："
+
+#: src/ui/dialogs/settings_dialog.py:91
+msgid "Convert to mono"
+msgstr "转换为单声道"
+
+#: src/ui/dialogs/settings_dialog.py:98
+msgid "Spectrum analysis"
+msgstr "频谱分析"
+
+#: src/ui/dialogs/settings_dialog.py:104
+msgid "FFT window size:"
+msgstr "FFT 窗口大小："
+
+#: src/ui/dialogs/settings_dialog.py:110
+msgid "Hop length:"
+msgstr "帧移："
+
+#: src/ui/dialogs/settings_dialog.py:115
+msgid "Mel filters:"
+msgstr "Mel 滤波器数："
+
+#: src/ui/dialogs/settings_dialog.py:120
+msgid "MFCC coefficients:"
+msgstr "MFCC 系数数目："
+
+#: src/ui/dialogs/settings_dialog.py:125 src/workflow/node_base.py:47
+msgid "Preprocessing"
+msgstr "预处理"
+
+#: src/ui/dialogs/settings_dialog.py:128
+msgid "Normalize audio"
+msgstr "音频归一化"
+
+#: src/ui/dialogs/settings_dialog.py:132
+msgid "Remove silence"
+msgstr "移除静音"
+
+#: src/ui/dialogs/settings_dialog.py:140
+msgid "Silence threshold:"
+msgstr "静音阈值："
+
+#: src/ui/dialogs/settings_dialog.py:153
+msgid "Default training parameters"
+msgstr "默认训练参数"
+
+#: src/ui/dialogs/settings_dialog.py:171
+msgid "Learning rate:"
+msgstr "学习率："
+
+#: src/ui/dialogs/settings_dialog.py:176
+msgid "Model saving"
+msgstr "模型保存"
+
+#: src/ui/dialogs/settings_dialog.py:181
+msgid "Choose a model save directory..."
+msgstr "选择模型保存目录..."
+
+#: src/ui/dialogs/settings_dialog.py:188
+msgid "Save path:"
+msgstr "保存路径："
+
+#: src/ui/dialogs/settings_dialog.py:190
+msgid "Auto-save best model"
+msgstr "自动保存最佳模型"
+
+#: src/ui/dialogs/settings_dialog.py:196
+msgid "Save format:"
+msgstr "保存格式："
+
+#: src/ui/dialogs/settings_dialog.py:201 src/workflow/nodes/training.py:353
+msgid "Early stopping"
+msgstr "早停"
+
+#: src/ui/dialogs/settings_dialog.py:204
+msgid "Enable early stopping"
+msgstr "启用早停"
+
+#: src/ui/dialogs/settings_dialog.py:211
+msgid "Patience:"
+msgstr "耐心值："
+
+#: src/ui/dialogs/settings_dialog.py:218
+msgid "Minimum delta:"
+msgstr "最小变化量："
+
+#: src/ui/dialogs/settings_dialog.py:231
+msgid "Theme"
+msgstr "主题"
+
+#: src/ui/dialogs/settings_dialog.py:235
+msgid "Dark"
+msgstr "深色"
+
+#: src/ui/dialogs/settings_dialog.py:235
+msgid "Light"
+msgstr "浅色"
+
+#: src/ui/dialogs/settings_dialog.py:235
+msgid "Follow system"
+msgstr "跟随系统"
+
+#: src/ui/dialogs/settings_dialog.py:236
+msgid "Theme:"
+msgstr "主题："
+
+#: src/ui/dialogs/settings_dialog.py:240
+msgid "Chinese (Simplified)"
+msgstr "简体中文"
+
+#: src/ui/dialogs/settings_dialog.py:241
+msgid "English"
+msgstr "英语"
+
+#: src/ui/dialogs/settings_dialog.py:242
+msgid "Language:"
+msgstr "语言："
+
+#: src/ui/dialogs/settings_dialog.py:247
+msgid "Visualization"
+msgstr "可视化"
+
+#: src/ui/dialogs/settings_dialog.py:251
+msgid "Blue"
+msgstr "蓝色"
+
+#: src/ui/dialogs/settings_dialog.py:251
+msgid "Green"
+msgstr "绿色"
+
+#: src/ui/dialogs/settings_dialog.py:251
+msgid "Purple"
+msgstr "紫色"
+
+#: src/ui/dialogs/settings_dialog.py:251
+msgid "Orange"
+msgstr "橙色"
+
+#: src/ui/dialogs/settings_dialog.py:252
+msgid "Waveform color:"
+msgstr "波形颜色："
+
+#: src/ui/dialogs/settings_dialog.py:256
+msgid "Spectrogram colormap:"
+msgstr "频谱图色图："
+
+#: src/ui/dialogs/settings_dialog.py:258
+msgid "Show grid"
+msgstr "显示网格"
+
+#: src/ui/dialogs/settings_dialog.py:265
+msgid "Update"
+msgstr "更新"
+
+#: src/ui/dialogs/settings_dialog.py:272
+msgid "Chart update interval:"
+msgstr "图表更新间隔："
+
+#: src/ui/dialogs/settings_dialog.py:285
+msgid "GPU settings"
+msgstr "GPU 设置"
+
+#: src/ui/dialogs/settings_dialog.py:288
+msgid "Use GPU acceleration"
+msgstr "使用 GPU 加速"
+
+#: src/ui/dialogs/settings_dialog.py:295
+msgid " % (0=auto)"
+msgstr " %（0=自动）"
+
+#: src/ui/dialogs/settings_dialog.py:296
+msgid "GPU memory limit:"
+msgstr "GPU 内存限制："
+
+#: src/ui/dialogs/settings_dialog.py:298
+msgid "Mixed precision training"
+msgstr "混合精度训练"
+
+#: src/ui/dialogs/settings_dialog.py:305
+msgid "GPU info"
+msgstr "GPU 信息"
+
+#: src/ui/dialogs/settings_dialog.py:308
+msgid "Detecting GPU..."
+msgstr "正在检测 GPU..."
+
+#: src/ui/dialogs/settings_dialog.py:312
+msgid "Re-detect"
+msgstr "重新检测"
+
+#: src/ui/dialogs/settings_dialog.py:330
+#, python-brace-format
+msgid "Detected {count} GPU(s):\n"
+msgstr "检测到 {count} 个 GPU：\n"
+
+#: src/ui/dialogs/settings_dialog.py:337
+msgid "No GPU detected. Training will use CPU."
+msgstr "未检测到 GPU。训练将使用 CPU。"
+
+#: src/ui/dialogs/settings_dialog.py:342
+#, python-brace-format
+msgid "GPU detection error: {error}"
+msgstr "GPU 检测错误：{error}"
+
+#: src/ui/dialogs/settings_dialog.py:348
+msgid "Select a model save directory"
+msgstr "选择模型保存目录"
+
+#: src/ui/model_editor/layer_palette.py:109
+msgid "🧱 Layer Library"
+msgstr "🧱 层库"
+
+#: src/ui/model_editor/layer_palette.py:124
+msgid "🔍 Search layers..."
+msgstr "🔍 搜索层..."
+
+#: src/ui/model_editor/layer_palette.py:136
+msgid "Drag or double-click to add a layer"
+msgstr "拖拽或双击以添加层"
+
+#: src/ui/model_editor/layer_property_panel.py:59
+msgid "⚙️ Properties"
+msgstr "⚙️ 属性"
+
+#: src/ui/model_editor/layer_property_panel.py:79
+#: src/ui/model_editor/layer_property_panel.py:127
+msgid "📦 Layer Properties"
+msgstr "📦 层属性"
+
+#: src/ui/model_editor/layer_property_panel.py:98
+msgid ""
+"Select a layer to edit its properties.\n"
+"\n"
+"Tip: compile config (optimizer, loss, etc.)\n"
+"is set in the Output layer."
+msgstr ""
+"请选择一个层以编辑其属性。\n"
+"\n"
+"提示：编译配置（优化器、损失等）\n"
+"在 Output 输出层中设置。"
+
+#: src/ui/model_editor/layer_property_panel.py:134
+msgid "Layer Info"
+msgstr "层信息"
+
+#: src/ui/model_editor/layer_property_panel.py:139
+msgid "Layer name:"
+msgstr "层名称："
+
+#: src/ui/model_editor/layer_property_panel.py:141
+msgid "Optional, for identifying the layer"
+msgstr "可选，用于标识该层"
+
+#: src/ui/model_editor/layer_property_panel.py:149
+#: src/ui/node_editor/property_panel.py:124
+msgid "Type:"
+msgstr "类型："
+
+#: src/ui/model_editor/layer_property_panel.py:161
+#: src/ui/node_editor/property_panel.py:131
+msgid "Parameters"
+msgstr "参数"
+
+#: src/ui/model_editor/layer_property_panel.py:305
+msgid "Training Control"
+msgstr "训练控制"
+
+#: src/ui/model_editor/layer_property_panel.py:311
+msgid "Weights:"
+msgstr "权重："
+
+#: src/ui/model_editor/layer_property_panel.py:315
+msgid "✅ Loaded"
+msgstr "✅ 已加载"
+
+#: src/ui/model_editor/layer_property_panel.py:318
+msgid "⚪ None"
+msgstr "⚪ 无"
+
+#: src/ui/model_editor/layer_property_panel.py:327
+msgid "Trainable:"
+msgstr "可训练："
+
+#: src/ui/model_editor/layer_property_panel.py:330
+msgid "Enabled"
+msgstr "启用"
+
+#: src/ui/model_editor/layer_property_panel.py:333
+msgid ""
+"Uncheck to freeze this layer so its weights won't be updated during training."
+msgstr "取消勾选以冻结该层，使其权重在训练期间不会更新。"
+
+#: src/ui/model_editor/layer_property_panel.py:344
+msgid "🔒 This layer is frozen; weights will not be updated during training."
+msgstr "🔒 该层已冻结；训练期间权重不会更新。"
+
+#: src/ui/model_editor/model_graph_widget.py:486
+msgid "Add layer"
+msgstr "添加层"
+
+#: src/ui/model_editor/model_graph_widget.py:508
+msgid "Reset selected layer connections"
+msgstr "重置所选层连接"
+
+#: src/ui/model_editor/model_graph_widget.py:511
+msgid "Delete selected layers"
+msgstr "删除所选层"
+
+#: src/ui/node_editor/node_graph.py:660
+msgid "Connection failed"
+msgstr "连接失败"
+
+#: src/ui/node_editor/node_graph.py:677
+msgid "Reset selected node connections"
+msgstr "重置所选节点连接"
+
+#: src/ui/node_editor/node_graph.py:681
+msgid "Delete selected nodes"
+msgstr "删除所选节点"
+
+#: src/ui/node_editor/node_palette.py:109
+msgid "🧩 Node Library"
+msgstr "🧩 节点库"
+
+#: src/ui/node_editor/node_palette.py:124
+msgid "🔍 Search nodes..."
+msgstr "🔍 搜索节点..."
+
+#: src/ui/node_editor/node_palette.py:136
+msgid "Drag or double-click to add a node"
+msgstr "拖拽或双击以添加节点"
+
+#: src/ui/node_editor/property_panel.py:80
+#: src/ui/node_editor/property_panel.py:150
+msgid "Properties"
+msgstr "属性"
+
+#: src/ui/node_editor/property_panel.py:113
+msgid "Node Info"
+msgstr "节点信息"
+
+#: src/ui/node_editor/property_panel.py:123
+msgid "Name:"
+msgstr "名称："
+
+#: src/ui/node_editor/property_panel.py:125
+msgid "Category:"
+msgstr "分类："
+
+#: src/ui/node_editor/property_panel.py:126
+msgid "Description:"
+msgstr "描述："
+
+#: src/ui/node_editor/property_panel.py:137
+msgid "Ports"
+msgstr "端口"
+
+#: src/ui/node_editor/property_panel.py:173
+#, python-brace-format
+msgid "Properties - {name}"
+msgstr "属性 - {name}"
+
+#: src/ui/node_editor/property_panel.py:181
+msgid "No description"
+msgstr "无描述"
+
+#: src/ui/node_editor/property_panel.py:337
+msgid "Select file"
+msgstr "选择文件"
+
+#: src/ui/node_editor/property_panel.py:357
+msgid "Select folder"
+msgstr "选择文件夹"
+
+#: src/ui/node_editor/property_panel.py:379
+msgid "📥 Inputs:"
+msgstr "📥 输入："
+
+#: src/ui/node_editor/property_panel.py:394
+msgid "📤 Outputs:"
+msgstr "📤 输出："
+
+#: src/ui/views/model_builder_view.py:125
+msgid "📐 New model"
+msgstr "📐 新建模型"
+
+#: src/ui/views/model_builder_view.py:150 src/ui/views/workflow_view.py:139
+msgid "📄 New"
+msgstr "📄 新建"
+
+#: src/ui/views/model_builder_view.py:156 src/ui/views/workflow_view.py:145
+msgid "📂 Open"
+msgstr "📂 打开"
+
+#: src/ui/views/model_builder_view.py:162 src/ui/views/workflow_view.py:151
+msgid "💾 Save"
+msgstr "💾 保存"
+
+#: src/ui/views/model_builder_view.py:168
+msgid "📋 Save as"
+msgstr "📋 另存为"
+
+#: src/ui/views/model_builder_view.py:181
+msgid "📥 Import Keras"
+msgstr "📥 导入 Keras"
+
+#: src/ui/views/model_builder_view.py:195
+msgid "Import architecture from a trained .keras/.h5 model file"
+msgstr "从已训练的 .keras/.h5 模型文件导入网络结构"
+
+#: src/ui/views/model_builder_view.py:207
+msgid "🔨 Build model"
+msgstr "🔨 构建模型"
+
+#: src/ui/views/model_builder_view.py:225 src/ui/views/workflow_view.py:226
+msgid "🔍 Fit"
+msgstr "🔍 适应"
+
+#: src/ui/views/model_builder_view.py:231 src/ui/views/workflow_view.py:232
+msgid "🗑️ Clear"
+msgstr "🗑️ 清空"
+
+#: src/ui/views/model_builder_view.py:294
+#: src/ui/views/model_builder_view.py:357
+#: src/ui/views/model_builder_view.py:593 src/ui/views/workflow_view.py:424
+msgid "Confirm"
+msgstr "确认"
+
+#: src/ui/views/model_builder_view.py:295
+msgid "The current model has unsaved changes. Continue?"
+msgstr "当前模型有未保存的更改。是否继续？"
+
+#: src/ui/views/model_builder_view.py:313
+msgid "Open model"
+msgstr "打开模型"
+
+#: src/ui/views/model_builder_view.py:315
+#: src/ui/views/model_builder_view.py:467
+msgid "Model files (*.model.json);;All files (*)"
+msgstr "模型文件 (*.model.json);;所有文件 (*)"
+
+#: src/ui/views/model_builder_view.py:345
+msgid "Import Keras model"
+msgstr "导入 Keras 模型"
+
+#: src/ui/views/model_builder_view.py:347
+msgid "Keras models (*.keras *.h5);;All files (*)"
+msgstr "Keras 模型 (*.keras *.h5);;所有文件 (*)"
+
+#: src/ui/views/model_builder_view.py:358
+msgid "The current model has unsaved changes. Continue importing?"
+msgstr "当前模型有未保存的更改。是否继续导入？"
+
+#: src/ui/views/model_builder_view.py:369
+msgid "📐 Importing..."
+msgstr "📐 正在导入..."
+
+#: src/ui/views/model_builder_view.py:396
+#, python-brace-format
+msgid ""
+"\n"
+"\n"
+"⚠️ The following layer type(s) are not supported and were skipped:\n"
+"{layers}"
+msgstr ""
+"\n"
+"\n"
+"⚠️ 以下层类型不受支持，已跳过：\n"
+"{layers}"
+
+#: src/ui/views/model_builder_view.py:402
+#, python-brace-format
+msgid ""
+"\n"
+"Frozen layers: {count}"
+msgstr ""
+"\n"
+"冻结层：{count}"
+
+#: src/ui/views/model_builder_view.py:409
+msgid "Import succeeded"
+msgstr "导入成功"
+
+#: src/ui/views/model_builder_view.py:411
+msgid ""
+"Model imported: {name}\n"
+"\n"
+"Layers: {layer_count}\n"
+"Total params: {total_params:,}\n"
+"Trainable params: {trainable_params:,}\n"
+"Non-trainable params: {non_trainable_params:,}"
+msgstr ""
+"模型已导入：{name}\n"
+"\n"
+"层数：{layer_count}\n"
+"参数总数：{total_params:,}\n"
+"可训练参数：{trainable_params:,}\n"
+"不可训练参数：{non_trainable_params:,}"
+
+#: src/ui/views/model_builder_view.py:432
+msgid "Import failed"
+msgstr "导入失败"
+
+#: src/ui/views/model_builder_view.py:433
+#, python-brace-format
+msgid ""
+"Failed to import model:\n"
+"{error}"
+msgstr ""
+"导入模型失败：\n"
+"{error}"
+
+#: src/ui/views/model_builder_view.py:452
+msgid "No model to save."
+msgstr "没有可保存的模型。"
+
+#: src/ui/views/model_builder_view.py:465
+msgid "Save model as"
+msgstr "模型另存为"
+
+#: src/ui/views/model_builder_view.py:522 src/workflow/nodes/training.py:283
+#, python-brace-format
+msgid "Failed to save model: {error}"
+msgstr "保存模型失败：{error}"
+
+#: src/ui/views/model_builder_view.py:529
+msgid "No model to build."
+msgstr "没有可构建的模型。"
+
+#: src/ui/views/model_builder_view.py:538
+msgid "Model validation failed:\n"
+msgstr "模型验证失败：\n"
+
+#: src/ui/views/model_builder_view.py:551
+#, python-brace-format
+msgid ""
+"Optimizer: {optimizer} (lr={lr})\n"
+"Loss: {loss}\n"
+"Metrics: {metrics}"
+msgstr ""
+"优化器：{optimizer}（lr={lr}）\n"
+"损失：{loss}\n"
+"指标：{metrics}"
+
+#: src/ui/views/model_builder_view.py:562
+msgid "Using default compile config"
+msgstr "使用默认编译配置"
+
+#: src/ui/views/model_builder_view.py:583
+msgid "Build failed"
+msgstr "构建失败"
+
+#: src/ui/views/model_builder_view.py:584
+#, python-brace-format
+msgid "Model build failed: {error}"
+msgstr "模型构建失败：{error}"
+
+#: src/ui/views/model_builder_view.py:594
+msgid "Clear all layers?"
+msgstr "清空所有层？"
+
+#: src/ui/views/model_builder_view.py:648
+msgid "✅ Model built successfully"
+msgstr "✅ 模型构建成功"
+
+#: src/ui/views/model_builder_view.py:657
+msgid "🎉 Model built and compiled successfully!"
+msgstr "🎉 模型构建并编译成功！"
+
+#: src/ui/views/model_builder_view.py:669
+msgid "Compile config"
+msgstr "编译配置"
+
+#: src/ui/views/model_builder_view.py:693
+msgid "Model architecture"
+msgstr "模型结构"
+
+#: src/ui/views/model_builder_view.py:738
+msgid "OK"
+msgstr "确定"
+
+#: src/ui/views/preview_view.py:77
+msgid "Select a node and run the workflow to preview data"
+msgstr "选择一个节点并运行工作流以预览数据"
+
+#: src/ui/views/preview_view.py:132
+msgid "📊 Data Preview"
+msgstr "📊 数据预览"
+
+#: src/ui/views/preview_view.py:141 src/ui/views/preview_view.py:442
+msgid "No node selected"
+msgstr "未选择节点"
+
+#: src/ui/views/preview_view.py:160
+msgid "Item:"
+msgstr "条目："
+
+#: src/ui/views/preview_view.py:175
+msgid "Output port:"
+msgstr "输出端口："
+
+#: src/ui/views/preview_view.py:186
+msgid "🔄 Refresh"
+msgstr "🔄 刷新"
+
+#: src/ui/views/preview_view.py:215
+#, python-brace-format
+msgid "Node: {name} ({id})"
+msgstr "节点：{name}（{id}）"
+
+#: src/ui/views/preview_view.py:233
+#, python-brace-format
+msgid "Node: {name} (no data - run workflow first)"
+msgstr "节点：{name}（无数据 - 请先运行工作流）"
+
+#: src/ui/views/preview_view.py:342
+#, python-brace-format
+msgid "Total: {total} item(s)"
+msgstr "总计：{total} 项"
+
+#: src/ui/views/preview_view.py:370
+#, python-brace-format
+msgid "Unsupported type: {type}"
+msgstr "不支持的类型：{type}"
+
+#: src/ui/views/preview_view.py:380
+msgid "Failed to set data"
+msgstr "设置数据失败"
+
+#: src/ui/views/training_view.py:87
+msgid "Loss curve"
+msgstr "损失曲线"
+
+#: src/ui/views/training_view.py:99 src/ui/views/training_view.py:116
+msgid "pyqtgraph is required to display charts"
+msgstr "需要安装 pyqtgraph 才能显示图表"
+
+#: src/ui/views/training_view.py:104
+msgid "Accuracy curve"
+msgstr "准确率曲线"
+
+#: src/ui/views/training_view.py:127
+msgid "Current metrics"
+msgstr "当前指标"
+
+#: src/ui/views/training_view.py:133
+#: src/ui/widgets/preview/metrics_preview.py:73
+msgid "Metric"
+msgstr "指标"
+
+#: src/ui/views/training_view.py:133
+#: src/ui/widgets/preview/feature_1d_preview.py:76
+#: src/ui/widgets/preview/metrics_preview.py:72
+msgid "Value"
+msgstr "数值"
+
+#: src/ui/views/training_view.py:153
+msgid "Training log"
+msgstr "训练日志"
+
+#: src/ui/views/training_view.py:191
+msgid "🏋️ Training Monitor"
+msgstr "🏋️ 训练监控"
+
+#: src/ui/views/training_view.py:199 src/ui/views/training_view.py:472
+msgid "Idle"
+msgstr "空闲"
+
+#: src/ui/views/training_view.py:211 src/ui/views/training_view.py:415
+msgid "⏸️ Pause"
+msgstr "⏸️ 暂停"
+
+#: src/ui/views/training_view.py:216
+msgid "⏹️ Stop training"
+msgstr "⏹️ 停止训练"
+
+#: src/ui/views/training_view.py:221
+msgid "💾 Stop and save checkpoint"
+msgstr "💾 停止并保存检查点"
+
+#: src/ui/views/training_view.py:279 src/ui/views/training_view.py:416
+msgid "Training..."
+msgstr "训练中..."
+
+#: src/ui/views/training_view.py:389
+msgid "Completed"
+msgstr "已完成"
+
+#: src/ui/views/training_view.py:396
+#, python-brace-format
+msgid "Training completed! {message}"
+msgstr "训练完成！{message}"
+
+#: src/ui/views/training_view.py:398
+msgid "Failed"
+msgstr "失败"
+
+#: src/ui/views/training_view.py:420
+msgid "▶️ Resume"
+msgstr "▶️ 继续"
+
+#: src/ui/views/training_view.py:421
+msgid "Paused"
+msgstr "已暂停"
+
+#: src/ui/views/training_view.py:440
+msgid "Save checkpoint"
+msgstr "保存检查点"
+
+#: src/ui/views/workflow_view.py:169
+msgid "▶️ Run"
+msgstr "▶️ 运行"
+
+#: src/ui/views/workflow_view.py:189 src/ui/views/workflow_view.py:472
+msgid "🔴 Paused"
+msgstr "🔴 已暂停"
+
+#: src/ui/views/workflow_view.py:201
+msgid "⏵ Continue"
+msgstr "⏵ 继续"
+
+#: src/ui/views/workflow_view.py:350
+msgid "Open workflow"
+msgstr "打开工作流"
+
+#: src/ui/views/workflow_view.py:352 src/ui/views/workflow_view.py:380
+msgid "Workflow files (*.json)"
+msgstr "工作流文件 (*.json)"
+
+#: src/ui/views/workflow_view.py:378
+msgid "Save workflow"
+msgstr "保存工作流"
+
+#: src/ui/views/workflow_view.py:404
+msgid "⏳ Stopping..."
+msgstr "⏳ 正在停止..."
+
+#: src/ui/views/workflow_view.py:409
+msgid "Stopping workflow... (waiting for current task to finish)"
+msgstr "正在停止工作流...（等待当前任务结束）"
+
+#: src/ui/views/workflow_view.py:425
+msgid "Clear the current workflow?"
+msgstr "清空当前工作流？"
+
+#: src/ui/widgets/spectrogram_widget.py:42
+#: src/ui/widgets/preview/audio_preview.py:69
+msgid "Spectrogram"
+msgstr "频谱图"
+
+#: src/ui/widgets/spectrogram_widget.py:52
+msgid "— Time-Frequency —"
+msgstr "— 时频 —"
+
+#: src/ui/widgets/spectrogram_widget.py:118
+msgid "Please install pyqtgraph to display spectrograms"
+msgstr "请安装 pyqtgraph 以显示频谱图"
+
+#: src/ui/widgets/waveform_widget.py:38
+#: src/ui/widgets/preview/audio_preview.py:59
+msgid "Waveform"
+msgstr "波形"
+
+#: src/ui/widgets/waveform_widget.py:57 src/visualization/waveform.py:61
+#: src/visualization/waveform.py:167
+msgid "Amplitude"
+msgstr "幅度"
+
+#: src/ui/widgets/waveform_widget.py:58 src/visualization/spectrogram.py:261
+#: src/visualization/waveform.py:64 src/visualization/waveform.py:114
+#: src/visualization/waveform.py:166
+msgid "Time (s)"
+msgstr "时间（秒）"
+
+#: src/ui/widgets/waveform_widget.py:78
+msgid "Please install pyqtgraph to display waveforms"
+msgstr "请安装 pyqtgraph 以显示波形"
+
+#: src/ui/widgets/waveform_widget.py:181
+msgid "Samples"
+msgstr "采样点"
+
+#: src/ui/widgets/preview/audio_preview.py:40
+msgid "Audio preview"
+msgstr "音频预览"
+
+#: src/ui/widgets/preview/audio_preview.py:79
+msgid "Playback controls"
+msgstr "播放控制"
+
+#: src/ui/widgets/preview/base_preview.py:33
+msgid "Base preview"
+msgstr "基础预览"
+
+#: src/ui/widgets/preview/base_preview.py:69
+msgid "Subclasses must implement set_data()"
+msgstr "子类必须实现 set_data()"
+
+#: src/ui/widgets/preview/base_preview.py:78
+msgid "Subclasses must implement clear()"
+msgstr "子类必须实现 clear()"
+
+#: src/ui/widgets/preview/feature_1d_preview.py:45
+#: src/ui/widgets/preview/feature_1d_preview.py:59
+msgid "1D feature"
+msgstr "1D 特征"
+
+#: src/ui/widgets/preview/feature_1d_preview.py:77
+msgid "Index"
+msgstr "索引"
+
+#: src/ui/widgets/preview/feature_1d_preview.py:87
+#: src/ui/widgets/preview/label_preview.py:107
+#: src/ui/widgets/preview/metrics_preview.py:77
+msgid "Please install pyqtgraph to display charts"
+msgstr "请安装 pyqtgraph 以显示图表"
+
+#: src/ui/widgets/preview/feature_1d_preview.py:101
+#: src/ui/widgets/preview/feature_2d_preview.py:132
+msgid "Statistics"
+msgstr "统计信息"
+
+#: src/ui/widgets/preview/feature_1d_preview.py:186
+#: src/ui/widgets/preview/feature_2d_preview.py:226
+msgid "No data"
+msgstr "无数据"
+
+#: src/ui/widgets/preview/feature_1d_preview.py:190
+msgid "  Length: {length:,}\n"
+msgstr "  长度：{length:,}\n"
+
+#: src/ui/widgets/preview/feature_1d_preview.py:191
+#: src/ui/widgets/preview/feature_2d_preview.py:232
+#, python-brace-format
+msgid "  Min: {value:.6f}\n"
+msgstr "  最小值：{value:.6f}\n"
+
+#: src/ui/widgets/preview/feature_1d_preview.py:192
+#: src/ui/widgets/preview/feature_2d_preview.py:233
+#, python-brace-format
+msgid "  Max: {value:.6f}\n"
+msgstr "  最大值：{value:.6f}\n"
+
+#: src/ui/widgets/preview/feature_1d_preview.py:193
+#: src/ui/widgets/preview/feature_2d_preview.py:234
+#, python-brace-format
+msgid "  Mean: {value:.6f}\n"
+msgstr "  均值：{value:.6f}\n"
+
+#: src/ui/widgets/preview/feature_1d_preview.py:194
+#, python-brace-format
+msgid "  Std: {value:.6f}\n"
+msgstr "  标准差：{value:.6f}\n"
+
+#: src/ui/widgets/preview/feature_1d_preview.py:195
+#, python-brace-format
+msgid "  Median: {value:.6f}"
+msgstr "  中位数：{value:.6f}"
+
+#: src/ui/widgets/preview/feature_2d_preview.py:45
+msgid "2D feature"
+msgstr "2D 特征"
+
+#: src/ui/widgets/preview/feature_2d_preview.py:64
+msgid "2D feature heatmap"
+msgstr "2D 特征热图"
+
+#: src/ui/widgets/preview/feature_2d_preview.py:87
+msgid "Please install pyqtgraph to display heatmaps"
+msgstr "请安装 pyqtgraph 以显示热图"
+
+#: src/ui/widgets/preview/feature_2d_preview.py:101
+msgid "Mean over time"
+msgstr "时间平均"
+
+#: src/ui/widgets/preview/feature_2d_preview.py:116
+msgid "Mean"
+msgstr "均值"
+
+#: src/ui/widgets/preview/feature_2d_preview.py:117
+msgid "Frame"
+msgstr "帧"
+
+#: src/ui/widgets/preview/feature_2d_preview.py:126
+msgid "Please install pyqtgraph"
+msgstr "请安装 pyqtgraph"
+
+#: src/ui/widgets/preview/feature_2d_preview.py:230
+#, python-brace-format
+msgid "  Shape: {h} × {w} (features × frames)\n"
+msgstr "  形状：{h} × {w}（特征 × 帧）\n"
+
+#: src/ui/widgets/preview/feature_2d_preview.py:231
+msgid "  Elements: {n:,}\n"
+msgstr "  元素数：{n:,}\n"
+
+#: src/ui/widgets/preview/feature_2d_preview.py:235
+#, python-brace-format
+msgid "  Std: {value:.6f}"
+msgstr "  标准差：{value:.6f}"
+
+#: src/ui/widgets/preview/label_preview.py:46
+msgid "Label preview"
+msgstr "标签预览"
+
+#: src/ui/widgets/preview/label_preview.py:73
+msgid "📊 Statistics"
+msgstr "📊 统计信息"
+
+#: src/ui/widgets/preview/label_preview.py:93
+msgid "📈 Label distribution"
+msgstr "📈 标签分布"
+
+#: src/ui/widgets/preview/label_preview.py:102 src/visualization/metrics.py:207
+msgid "Count"
+msgstr "数量"
+
+#: src/ui/widgets/preview/label_preview.py:115
+msgid "📋 Label list"
+msgstr "📋 标签列表"
+
+#: src/ui/widgets/preview/label_preview.py:122
+msgid "Class name"
+msgstr "类别名称"
+
+#: src/ui/widgets/preview/label_preview.py:122
+msgid "Label"
+msgstr "标签"
+
+#: src/ui/widgets/preview/label_preview.py:263
+msgid "Total labels"
+msgstr "标签总数"
+
+#: src/ui/widgets/preview/label_preview.py:264
+msgid "Classes"
+msgstr "类别数"
+
+#: src/ui/widgets/preview/label_preview.py:265
+msgid "Most common"
+msgstr "最多"
+
+#: src/ui/widgets/preview/label_preview.py:266
+#: src/ui/widgets/preview/label_preview.py:268
+#: src/ui/widgets/preview/label_preview.py:269
+msgid "items"
+msgstr "项"
+
+#: src/ui/widgets/preview/label_preview.py:267
+msgid "Least common"
+msgstr "最少"
+
+#: src/ui/widgets/preview/label_preview.py:269
+msgid "Avg per class"
+msgstr "每类平均"
+
+#: src/ui/widgets/preview/label_preview.py:345
+#, python-brace-format
+msgid "... {count} more item(s) not shown"
+msgstr "... 还有 {count} 项未显示"
+
+#: src/ui/widgets/preview/metrics_preview.py:63
+msgid "📊 Metrics"
+msgstr "📊 指标"
+
+#: src/ui/widgets/preview/metrics_preview.py:84
+msgid "📋 Details"
+msgstr "📋 详情"
+
+#: src/ui/widgets/preview/model_preview.py:37
+msgid "Model preview"
+msgstr "模型预览"
+
+#: src/ui/widgets/preview/model_preview.py:56
+msgid "🧠 Model summary"
+msgstr "🧠 模型概要"
+
+#: src/ui/widgets/preview/model_preview.py:79
+msgid "📊 Model parameters"
+msgstr "📊 模型参数"
+
+#: src/ui/widgets/preview/model_preview.py:151
+#, python-brace-format
+msgid "Failed to parse model: {error}"
+msgstr "解析模型失败：{error}"
+
+#: src/ui/widgets/preview/model_preview.py:168
+#, python-brace-format
+msgid "Failed to get model summary: {error}"
+msgstr "获取模型概要失败：{error}"
+
+#: src/ui/widgets/preview/model_preview.py:244
+msgid "Model name"
+msgstr "模型名称"
+
+#: src/ui/widgets/preview/model_preview.py:247
+msgid "Layers"
+msgstr "层数"
+
+#: src/ui/widgets/preview/model_preview.py:256
+msgid "Total params"
+msgstr "参数总数"
+
+#: src/ui/widgets/preview/model_preview.py:261
+msgid "Trainable params"
+msgstr "可训练参数"
+
+#: src/ui/widgets/preview/model_preview.py:266
+msgid "Non-trainable params"
+msgstr "不可训练参数"
+
+#: src/ui/widgets/preview/model_preview.py:278
+msgid "Output shape"
+msgstr "输出形状"
+
+#: src/ui/widgets/preview/model_preview.py:286
+msgid "✅ Compiled"
+msgstr "✅ 已编译"
+
+#: src/ui/widgets/preview/model_preview.py:286
+msgid "❌ Not compiled"
+msgstr "❌ 未编译"
+
+#: src/ui/widgets/preview/model_preview.py:287
+msgid "Compile status"
+msgstr "编译状态"
+
+#: src/utils/dataset_manager.py:169
+msgid "No dataset loaded"
+msgstr "未加载数据集"
+
+#: src/utils/dialogs.py:76
+msgid "An error occurred"
+msgstr "发生错误"
+
+#: src/utils/dialogs.py:91 src/utils/dialogs.py:130
+msgid "Details:"
+msgstr "详细信息："
+
+#: src/utils/dialogs.py:104
+msgid "📋 Copy error details"
+msgstr "📋 复制错误详情"
+
+#: src/utils/file_utils.py:190
+#, python-brace-format
+msgid "Delete failed for {path}: {error}"
+msgstr "删除 {path} 失败：{error}"
+
+#: src/utils/restart_manager.py:159
+msgid ""
+"Timed out while stopping current workflow/training. Restart cancelled; the "
+"app will keep running."
+msgstr "停止当前工作流/训练超时。已取消重启；应用将继续运行。"
+
+#: src/utils/restart_manager.py:171
+#, python-brace-format
+msgid "Failed to start new process: {error}"
+msgstr "启动新进程失败：{error}"
+
+#: src/utils/restart_manager.py:207
+msgid ""
+"New process did not become ready in time (no ready signal). Restart "
+"cancelled; the app will keep running."
+msgstr "新进程未能及时就绪（未收到就绪信号）。已取消重启；应用将继续运行。"
+
+#: src/visualization/metrics.py:48
+#, python-brace-format
+msgid "Train {metric}"
+msgstr "训练 {metric}"
+
+#: src/visualization/metrics.py:54
+#, python-brace-format
+msgid "Val {metric}"
+msgstr "验证 {metric}"
+
+#: src/visualization/metrics.py:58
+msgid "Epoch"
+msgstr "轮次"
+
+#: src/visualization/metrics.py:125
+msgid "Confusion matrix"
+msgstr "混淆矩阵"
+
+#: src/visualization/metrics.py:126
+msgid "True label"
+msgstr "真实标签"
+
+#: src/visualization/metrics.py:127
+msgid "Predicted label"
+msgstr "预测标签"
+
+#: src/visualization/metrics.py:150
+#, python-brace-format
+msgid "ROC curve (AUC = {auc:.3f})"
+msgstr "ROC 曲线（AUC = {auc:.3f}）"
+
+#: src/visualization/metrics.py:152 src/visualization/metrics.py:168
+msgid "ROC curve"
+msgstr "ROC 曲线"
+
+#: src/visualization/metrics.py:160
+msgid "Random guess"
+msgstr "随机猜测"
+
+#: src/visualization/metrics.py:166
+msgid "False positive rate (FPR)"
+msgstr "假阳性率（FPR）"
+
+#: src/visualization/metrics.py:167
+msgid "True positive rate (TPR)"
+msgstr "真阳性率（TPR）"
+
+#: src/visualization/metrics.py:208
+msgid "Class distribution"
+msgstr "类别分布"
+
+#: src/visualization/spectrogram.py:120
+#: src/workflow/nodes/feature/dim2d/stft.py:36
+msgid "STFT spectrogram"
+msgstr "STFT 频谱图"
+
+#: src/visualization/spectrogram.py:166
+#: src/workflow/nodes/feature/dim2d/mfcc.py:40
+msgid "MFCC coefficients"
+msgstr "MFCC 系数"
+
+#: src/visualization/waveform.py:102
+msgid "Left"
+msgstr "左"
+
+#: src/visualization/waveform.py:102
+msgid "Right"
+msgstr "右"
+
+#: src/visualization/waveform.py:165
+msgid "Waveform envelope"
+msgstr "波形包络"
+
+#: src/workflow/engine.py:111 src/workflow/engine.py:144
+msgid "Workflow not set"
+msgstr "未设置工作流"
+
+#: src/workflow/engine.py:115
+msgid "Workflow is already running"
+msgstr "工作流已在运行"
+
+#: src/workflow/engine.py:246
+msgid "Execution stopped"
+msgstr "执行已停止"
+
+#: src/workflow/engine.py:277
+#, python-brace-format
+msgid "Node '{name}' failed: {error}"
+msgstr "节点“{name}”失败：{error}"
+
+#: src/workflow/engine.py:296
+msgid "Workflow finished"
+msgstr "工作流已结束"
+
+#: src/workflow/engine.py:306
+#, python-brace-format
+msgid "Execution error: {error}"
+msgstr "执行错误：{error}"
+
+#: src/workflow/engine.py:409
+#, python-brace-format
+msgid "Breakpoint paused: {name} - click Continue to proceed"
+msgstr "断点暂停：{name} - 点击“继续”以继续执行"
+
+#: src/workflow/node_base.py:46
+msgid "Data source"
+msgstr "数据源"
+
+#: src/workflow/node_base.py:48
+msgid "Data augmentation"
+msgstr "数据增强"
+
+#: src/workflow/node_base.py:49
+msgid "Feature extraction"
+msgstr "特征提取"
+
+#: src/workflow/node_base.py:50
+msgid "AI / Training"
+msgstr "AI/训练"
+
+#: src/workflow/node_base.py:51
+msgid "Control flow"
+msgstr "控制流"
+
+#: src/workflow/node_base.py:260
+#, python-brace-format
+msgid "Input port '{name}' is not connected"
+msgstr "输入端口“{name}”未连接"
+
+#: src/workflow/workflow.py:27 src/workflow/workflow.py:42
+#: src/workflow/workflow.py:412
+msgid "Untitled workflow"
+msgstr "未命名工作流"
+
+#: src/workflow/workflow.py:161
+#, python-brace-format
+msgid "Source port {name} does not exist"
+msgstr "源端口 {name} 不存在"
+
+#: src/workflow/workflow.py:165
+#, python-brace-format
+msgid "Target port {name} does not exist"
+msgstr "目标端口 {name} 不存在"
+
+#: src/workflow/workflow.py:174
+#, python-brace-format
+msgid "Incompatible port types: {src} -> {dst}"
+msgstr "端口类型不兼容：{src} -> {dst}"
+
+#: src/workflow/workflow.py:187
+#, python-brace-format
+msgid "Port {name} is already connected"
+msgstr "端口 {name} 已连接"
+
+#: src/workflow/workflow.py:301
+msgid "Workflow is empty"
+msgstr "工作流为空"
+
+#: src/workflow/workflow.py:321
+#, python-brace-format
+msgid "Node '{node}' input port '{port}' is not connected"
+msgstr "节点“{node}”输入端口“{port}”未连接"
+
+#: src/workflow/nodes/augmentation.py:31
+msgid "Add noise"
+msgstr "添加噪声"
+
+#: src/workflow/nodes/augmentation.py:33
+msgid "Add noise to audio"
+msgstr "为音频添加噪声"
+
+#: src/workflow/nodes/augmentation.py:38
+msgid "Noisy audio"
+msgstr "带噪音频"
+
+#: src/workflow/nodes/augmentation.py:42 src/workflow/nodes/augmentation.py:335
+msgid "Original audio"
+msgstr "原始音频"
+
+#: src/workflow/nodes/augmentation.py:43
+msgid "Use as target when training denoising models"
+msgstr "用于训练去噪模型时作为目标"
+
+#: src/workflow/nodes/augmentation.py:49
+msgid "Noise type"
+msgstr "噪声类型"
+
+#: src/workflow/nodes/augmentation.py:54
+msgid "SNR (dB)"
+msgstr "SNR（dB）"
+
+#: src/workflow/nodes/augmentation.py:59
+msgid "Random SNR"
+msgstr "随机 SNR"
+
+#: src/workflow/nodes/augmentation.py:60
+msgid "Randomly choose SNR within the specified range"
+msgstr "在指定范围内随机选择 SNR"
+
+#: src/workflow/nodes/augmentation.py:64
+msgid "Min SNR (dB)"
+msgstr "最小 SNR（dB）"
+
+#: src/workflow/nodes/augmentation.py:69
+msgid "Max SNR (dB)"
+msgstr "最大 SNR（dB）"
+
+#: src/workflow/nodes/augmentation.py:165
+msgid "Time stretch"
+msgstr "时间拉伸"
+
+#: src/workflow/nodes/augmentation.py:167
+msgid "Change speed while preserving pitch"
+msgstr "在保持音高的同时改变速度"
+
+#: src/workflow/nodes/augmentation.py:177
+msgid "Stretch rate"
+msgstr "拉伸倍率"
+
+#: src/workflow/nodes/augmentation.py:178
+msgid "<1 slower, >1 faster"
+msgstr "<1 更慢，>1 更快"
+
+#: src/workflow/nodes/augmentation.py:183
+msgid "Random rate"
+msgstr "随机倍率"
+
+#: src/workflow/nodes/augmentation.py:187
+msgid "Min rate"
+msgstr "最小倍率"
+
+#: src/workflow/nodes/augmentation.py:192
+msgid "Max rate"
+msgstr "最大倍率"
+
+#: src/workflow/nodes/augmentation.py:244
+msgid "Pitch shift"
+msgstr "音高偏移"
+
+#: src/workflow/nodes/augmentation.py:246
+msgid "Change pitch while preserving speed"
+msgstr "在保持速度的同时改变音高"
+
+#: src/workflow/nodes/augmentation.py:256
+msgid "Semitones"
+msgstr "半音数"
+
+#: src/workflow/nodes/augmentation.py:257
+msgid "Positive = higher, negative = lower"
+msgstr "正值=更高，负值=更低"
+
+#: src/workflow/nodes/augmentation.py:262
+msgid "Random shift"
+msgstr "随机偏移"
+
+#: src/workflow/nodes/augmentation.py:266
+msgid "Min shift (semitones)"
+msgstr "最小偏移（半音）"
+
+#: src/workflow/nodes/augmentation.py:271
+msgid "Max shift (semitones)"
+msgstr "最大偏移（半音）"
+
+#: src/workflow/nodes/augmentation.py:327
+msgid "Random augment"
+msgstr "随机增强"
+
+#: src/workflow/nodes/augmentation.py:329
+msgid "Randomly apply multiple augmentation effects"
+msgstr "随机应用多个增强效果"
+
+#: src/workflow/nodes/augmentation.py:340
+msgid "Enable noise"
+msgstr "启用噪声"
+
+#: src/workflow/nodes/augmentation.py:344
+msgid "Enable time stretch"
+msgstr "启用时间拉伸"
+
+#: src/workflow/nodes/augmentation.py:348
+msgid "Enable pitch shift"
+msgstr "启用音高偏移"
+
+#: src/workflow/nodes/augmentation.py:352
+msgid "Enable gain change"
+msgstr "启用增益变化"
+
+#: src/workflow/nodes/augmentation.py:356
+msgid "Apply probability"
+msgstr "应用概率"
+
+#: src/workflow/nodes/augmentation.py:357
+msgid "Probability of applying each effect"
+msgstr "每个效果的应用概率"
+
+#: src/workflow/nodes/augmentation.py:459
+msgid "Audio slicing"
+msgstr "音频切片"
+
+#: src/workflow/nodes/augmentation.py:461
+msgid "Slice audio into multiple short segments to augment data"
+msgstr "将音频切分为多个短片段以增强数据"
+
+#: src/workflow/nodes/augmentation.py:469 src/workflow/nodes/control.py:124
+#: src/workflow/nodes/data_source.py:482
+msgid "Labels"
+msgstr "标签"
+
+#: src/workflow/nodes/augmentation.py:471
+msgid "Optional labels input; will be duplicated along with slices"
+msgstr "可选标签输入；会随切片一同复制"
+
+#: src/workflow/nodes/augmentation.py:473
+msgid "Sliced audio list"
+msgstr "切片音频列表"
+
+#: src/workflow/nodes/augmentation.py:477
+msgid "Sliced label list"
+msgstr "切片标签列表"
+
+#: src/workflow/nodes/augmentation.py:478
+msgid "Labels corresponding to sliced audio items"
+msgstr "与切片音频对应的标签"
+
+#: src/workflow/nodes/augmentation.py:484
+msgid "Slice duration (s)"
+msgstr "切片时长（秒）"
+
+#: src/workflow/nodes/augmentation.py:485
+msgid "Duration of each slice"
+msgstr "每个切片的时长"
+
+#: src/workflow/nodes/augmentation.py:490
+msgid "Slice mode"
+msgstr "切片模式"
+
+#: src/workflow/nodes/augmentation.py:492
+msgid "random: random start; sliding: sliding window"
+msgstr "random：随机起点；sliding：滑动窗口"
+
+#: src/workflow/nodes/augmentation.py:496
+msgid "Multiplier"
+msgstr "倍数"
+
+#: src/workflow/nodes/augmentation.py:497
+msgid "Number of slices to generate in random mode"
+msgstr "随机模式下生成的切片数量"
+
+#: src/workflow/nodes/augmentation.py:502
+msgid "Overlap"
+msgstr "重叠"
+
+#: src/workflow/nodes/augmentation.py:503
+msgid "Overlap ratio in sliding window mode (0-0.9)"
+msgstr "滑动窗口模式下的重叠比例（0-0.9）"
+
+#: src/workflow/nodes/augmentation.py:508
+msgid "Include remainder"
+msgstr "包含余段"
+
+#: src/workflow/nodes/augmentation.py:509
+msgid ""
+"In sliding window mode, include the final remainder shorter than a full slice"
+msgstr "滑动窗口模式下，包含最后一段短于完整切片的余段"
+
+#: src/workflow/nodes/augmentation.py:513
+#: src/workflow/nodes/preprocessing.py:203
+#: src/workflow/nodes/preprocessing.py:673
+msgid "Pad mode"
+msgstr "填充模式"
+
+#: src/workflow/nodes/augmentation.py:515
+msgid "Padding strategy for the remainder segment"
+msgstr "余段的填充策略"
+
+#: src/workflow/nodes/control.py:30
+msgid "Loop"
+msgstr "循环"
+
+#: src/workflow/nodes/control.py:32
+msgid "Iterate over a list and output items one by one"
+msgstr "遍历列表并逐个输出元素"
+
+#: src/workflow/nodes/control.py:36
+msgid "Data list"
+msgstr "数据列表"
+
+#: src/workflow/nodes/control.py:37
+msgid "Current item"
+msgstr "当前项"
+
+#: src/workflow/nodes/control.py:38
+msgid "Current index"
+msgstr "当前索引"
+
+#: src/workflow/nodes/control.py:44
+msgid "Max iterations"
+msgstr "最大迭代次数"
+
+#: src/workflow/nodes/control.py:45
+msgid "0 means no limit"
+msgstr "0 表示不限制"
+
+#: src/workflow/nodes/control.py:57
+msgid "No data list provided"
+msgstr "未提供数据列表"
+
+#: src/workflow/nodes/control.py:83 src/workflow/nodes/control.py:506
+msgid "Data list is empty"
+msgstr "数据列表为空"
+
+#: src/workflow/nodes/control.py:117
+msgid "Split dataset"
+msgstr "划分数据集"
+
+#: src/workflow/nodes/control.py:119
+msgid "Split data into train/val/test sets"
+msgstr "将数据划分为训练/验证/测试集"
+
+#: src/workflow/nodes/control.py:125 src/workflow/nodes/training.py:305
+msgid "Train data"
+msgstr "训练数据"
+
+#: src/workflow/nodes/control.py:126
+msgid "Train labels"
+msgstr "训练标签"
+
+#: src/workflow/nodes/control.py:127 src/workflow/nodes/training.py:307
+msgid "Validation data"
+msgstr "验证数据"
+
+#: src/workflow/nodes/control.py:128
+msgid "Validation labels"
+msgstr "验证标签"
+
+#: src/workflow/nodes/control.py:129 src/workflow/nodes/training.py:685
+msgid "Test data"
+msgstr "测试数据"
+
+#: src/workflow/nodes/control.py:130
+msgid "Test labels"
+msgstr "测试标签"
+
+#: src/workflow/nodes/control.py:135
+msgid "Train ratio"
+msgstr "训练比例"
+
+#: src/workflow/nodes/control.py:140
+msgid "Validation ratio"
+msgstr "验证比例"
+
+#: src/workflow/nodes/control.py:145
+msgid "Test ratio"
+msgstr "测试比例"
+
+#: src/workflow/nodes/control.py:150
+msgid "Shuffle"
+msgstr "打乱"
+
+#: src/workflow/nodes/control.py:154
+msgid "Stratify"
+msgstr "分层抽样"
+
+#: src/workflow/nodes/control.py:155
+msgid "Keep class proportions"
+msgstr "保持类别比例"
+
+#: src/workflow/nodes/control.py:159
+msgid "Random seed"
+msgstr "随机种子"
+
+#: src/workflow/nodes/control.py:168 src/workflow/nodes/control.py:498
+msgid "No data provided"
+msgstr "未提供数据"
+
+#: src/workflow/nodes/control.py:250
+#, python-brace-format
+msgid "Split complete: train={train}, val={val}, test={test}"
+msgstr "划分完成：训练={train}，验证={val}，测试={test}"
+
+#: src/workflow/nodes/control.py:260
+#, python-brace-format
+msgid "Split failed: {error}"
+msgstr "划分失败：{error}"
+
+#: src/workflow/nodes/control.py:276
+msgid "Merge multiple data sources"
+msgstr "合并多个数据源"
+
+#: src/workflow/nodes/control.py:280
+msgid "Data 1"
+msgstr "数据 1"
+
+#: src/workflow/nodes/control.py:281 src/workflow/nodes/control.py:388
+#: src/workflow/nodes/control.py:389
+msgid "Data 2"
+msgstr "数据 2"
+
+#: src/workflow/nodes/control.py:282
+msgid "Data 3"
+msgstr "数据 3"
+
+#: src/workflow/nodes/control.py:283
+msgid "Data 4"
+msgstr "数据 4"
+
+#: src/workflow/nodes/control.py:284
+msgid "Merged data"
+msgstr "合并后的数据"
+
+#: src/workflow/nodes/control.py:289
+msgid "Merge mode"
+msgstr "合并模式"
+
+#: src/workflow/nodes/control.py:309
+msgid "No valid data provided"
+msgstr "未提供有效数据"
+
+#: src/workflow/nodes/control.py:344
+msgid "Passthrough"
+msgstr "透传"
+
+#: src/workflow/nodes/control.py:346
+msgid "Pass data through without modification"
+msgstr "不做修改地透传数据"
+
+#: src/workflow/nodes/control.py:353
+msgid "In"
+msgstr "输入"
+
+#: src/workflow/nodes/control.py:354
+msgid "Out"
+msgstr "输出"
+
+#: src/workflow/nodes/control.py:374
+msgid "Breakpoint"
+msgstr "断点"
+
+#: src/workflow/nodes/control.py:376
+msgid "Pause workflow execution to inspect data"
+msgstr "暂停工作流执行以检查数据"
+
+#: src/workflow/nodes/control.py:394
+msgid "Enable breakpoint"
+msgstr "启用断点"
+
+#: src/workflow/nodes/control.py:395
+msgid "Pause execution at this node"
+msgstr "在此节点暂停执行"
+
+#: src/workflow/nodes/control.py:399
+msgid "Breakpoint description"
+msgstr "断点说明"
+
+#: src/workflow/nodes/control.py:400
+msgid "Describe the purpose of this breakpoint"
+msgstr "描述此断点的用途"
+
+#: src/workflow/nodes/control.py:417
+#, python-brace-format
+msgid "Breakpoint: {desc}"
+msgstr "断点：{desc}"
+
+#: src/workflow/nodes/control.py:419
+msgid "Breakpoint triggered"
+msgstr "断点已触发"
+
+#: src/workflow/nodes/control.py:440
+msgid "Validate shape"
+msgstr "形状校验"
+
+#: src/workflow/nodes/control.py:442
+msgid "Validate shape consistency in a batch"
+msgstr "校验批次内形状一致性"
+
+#: src/workflow/nodes/control.py:446
+msgid "Batch data"
+msgstr "批数据"
+
+#: src/workflow/nodes/control.py:447
+msgid "Validated data"
+msgstr "已校验数据"
+
+#: src/workflow/nodes/control.py:448
+msgid "Is valid"
+msgstr "是否有效"
+
+#: src/workflow/nodes/control.py:449
+msgid "Shape info"
+msgstr "形状信息"
+
+#: src/workflow/nodes/control.py:454
+msgid "Strict mode"
+msgstr "严格模式"
+
+#: src/workflow/nodes/control.py:455
+msgid "Stop workflow on inconsistency (otherwise warn only)"
+msgstr "发现不一致时停止工作流（否则仅警告）"
+
+#: src/workflow/nodes/control.py:459
+msgid "Ignore batch dimension"
+msgstr "忽略 batch 维度"
+
+#: src/workflow/nodes/control.py:460
+msgid "Ignore differences in the first dimension (batch dimension)"
+msgstr "忽略第一维（batch 维度）的差异"
+
+#: src/workflow/nodes/control.py:557
+#, python-brace-format
+msgid "✅ Shape validation passed: {count} items, shape: {shape}"
+msgstr "✅ 形状校验通过：{count} 项，形状：{shape}"
+
+#: src/workflow/nodes/control.py:581
+#, python-brace-format
+msgid "❌ Shape validation failed: {count} inconsistent items"
+msgstr "❌ 形状校验失败：{count} 个不一致项"
+
+#: src/workflow/nodes/control.py:584
+#, python-brace-format
+msgid "   Expected shape: {shape}"
+msgstr "   期望形状：{shape}"
+
+#: src/workflow/nodes/control.py:585
+#, python-brace-format
+msgid "   Shape distribution: {dist}"
+msgstr "   形状分布：{dist}"
+
+#: src/workflow/nodes/control.py:591
+#, python-brace-format
+msgid "   - Index {index}: expected {expected}, got {actual}"
+msgstr "   - 索引 {index}：期望 {expected}，实际 {actual}"
+
+#: src/workflow/nodes/control.py:600
+#, python-brace-format
+msgid "   ... and {count} more"
+msgstr "   ... 以及另外 {count} 项"
+
+#: src/workflow/nodes/control.py:614
+#, python-brace-format
+msgid "Shape inconsistent: {count} inconsistent items"
+msgstr "形状不一致：{count} 个不一致项"
+
+#: src/workflow/nodes/control.py:621
+#, python-brace-format
+msgid "⚠️ Shape validation warning: {count} inconsistent items"
+msgstr "⚠️ 形状校验警告：{count} 个不一致项"
+
+#: src/workflow/nodes/data_source.py:74 src/workflow/nodes/feature/base.py:64
+#, python-brace-format
+msgid "Channel index {idx} out of range (total {channels} channels)"
+msgstr "通道索引 {idx} 超出范围（共 {channels} 个通道）"
+
+#: src/workflow/nodes/data_source.py:117
+msgid "Audio folder"
+msgstr "音频文件夹"
+
+#: src/workflow/nodes/data_source.py:119
+msgid "Load audio files from a folder, optionally auto-label by subfolder"
+msgstr "从文件夹加载音频文件，可选按子文件夹自动打标签"
+
+#: src/workflow/nodes/data_source.py:125
+msgid "Audio list"
+msgstr "音频列表"
+
+#: src/workflow/nodes/data_source.py:126 src/workflow/nodes/data_source.py:320
+msgid "Label list"
+msgstr "标签列表"
+
+#: src/workflow/nodes/data_source.py:127
+msgid "File path list"
+msgstr "文件路径列表"
+
+#: src/workflow/nodes/data_source.py:132
+msgid "Folder path"
+msgstr "文件夹路径"
+
+#: src/workflow/nodes/data_source.py:133
+msgid "Directory containing audio files"
+msgstr "包含音频文件的目录"
+
+#: src/workflow/nodes/data_source.py:138
+msgid "Recursive scan"
+msgstr "递归扫描"
+
+#: src/workflow/nodes/data_source.py:139
+msgid "Scan subfolders"
+msgstr "扫描子文件夹"
+
+#: src/workflow/nodes/data_source.py:143
+msgid "Auto label"
+msgstr "自动标签"
+
+#: src/workflow/nodes/data_source.py:144
+msgid "Auto-generate labels from subfolder names"
+msgstr "根据子文件夹名称自动生成标签"
+
+#: src/workflow/nodes/data_source.py:148 src/workflow/nodes/data_source.py:276
+#: src/workflow/nodes/preprocessing.py:132
+msgid "Target sample rate"
+msgstr "目标采样率"
+
+#: src/workflow/nodes/data_source.py:149
+msgid "Resample to this sample rate when loading"
+msgstr "加载时重采样到该采样率"
+
+#: src/workflow/nodes/data_source.py:154
+msgid "Max files"
+msgstr "最大文件数"
+
+#: src/workflow/nodes/data_source.py:155
+msgid "Maximum number of files to load (0 = no limit)"
+msgstr "最多加载的文件数量（0=不限制）"
+
+#: src/workflow/nodes/data_source.py:162
+#, python-brace-format
+msgid "Directory does not exist: {path}"
+msgstr "目录不存在：{path}"
+
+#: src/workflow/nodes/data_source.py:195
+#, python-brace-format
+msgid "Loading {count} audio files..."
+msgstr "正在加载 {count} 个音频文件..."
+
+#: src/workflow/nodes/data_source.py:231
+msgid "No valid audio files found"
+msgstr "未找到有效的音频文件"
+
+#: src/workflow/nodes/data_source.py:241
+#, python-brace-format
+msgid "Audio loaded: {files} files, {classes} classes"
+msgstr "音频已加载：{files} 个文件，{classes} 个类别"
+
+#: src/workflow/nodes/data_source.py:258
+msgid "Audio file"
+msgstr "音频文件"
+
+#: src/workflow/nodes/data_source.py:260
+msgid "Load a single audio file"
+msgstr "加载单个音频文件"
+
+#: src/workflow/nodes/data_source.py:269 src/workflow/nodes/data_source.py:326
+msgid "File path"
+msgstr "文件路径"
+
+#: src/workflow/nodes/data_source.py:270
+msgid "Audio file path"
+msgstr "音频文件路径"
+
+#: src/workflow/nodes/data_source.py:314
+msgid "Label file"
+msgstr "标签文件"
+
+#: src/workflow/nodes/data_source.py:316
+msgid "Load labels from CSV/JSON/TXT"
+msgstr "从 CSV/JSON/TXT 加载标签"
+
+#: src/workflow/nodes/data_source.py:321
+msgid "Label map"
+msgstr "标签映射"
+
+#: src/workflow/nodes/data_source.py:332
+msgid "File format"
+msgstr "文件格式"
+
+#: src/workflow/nodes/data_source.py:337
+msgid "Filename column"
+msgstr "文件名列"
+
+#: src/workflow/nodes/data_source.py:338
+msgid "Column name for filename in CSV"
+msgstr "CSV 中表示文件名的列名"
+
+#: src/workflow/nodes/data_source.py:342
+msgid "Label column"
+msgstr "标签列"
+
+#: src/workflow/nodes/data_source.py:343
+msgid "Column name for label in CSV"
+msgstr "CSV 中表示标签的列名"
+
+#: src/workflow/nodes/data_source.py:382
+#, python-brace-format
+msgid "Failed to load labels: {error}"
+msgstr "加载标签失败：{error}"
+
+#: src/workflow/nodes/data_source.py:436
+msgid "Unsupported JSON format"
+msgstr "不支持的 JSON 格式"
+
+#: src/workflow/nodes/data_source.py:466
+msgid "Save audio"
+msgstr "保存音频"
+
+#: src/workflow/nodes/data_source.py:468
+msgid "Save audio as WAV files, optionally save labels JSON"
+msgstr "将音频保存为 WAV 文件，可选保存标签 JSON"
+
+#: src/workflow/nodes/data_source.py:477
+msgid "Audio data to save (single item or list)"
+msgstr "要保存的音频数据（单个或列表）"
+
+#: src/workflow/nodes/data_source.py:484
+msgid "Optional labels corresponding to audio items"
+msgstr "可选：与音频对应的标签"
+
+#: src/workflow/nodes/data_source.py:490
+msgid "Output folder"
+msgstr "输出文件夹"
+
+#: src/workflow/nodes/data_source.py:491
+msgid "Target folder to save audio files"
+msgstr "保存音频文件的目标文件夹"
+
+#: src/workflow/nodes/data_source.py:496
+msgid "Filename prefix"
+msgstr "文件名前缀"
+
+#: src/workflow/nodes/data_source.py:497
+msgid "Prefix for output audio filenames"
+msgstr "输出音频文件名的前缀"
+
+#: src/workflow/nodes/data_source.py:501
+msgid "Save labels file"
+msgstr "保存标签文件"
+
+#: src/workflow/nodes/data_source.py:502
+msgid "When labels are provided, save labels.json"
+msgstr "提供标签时，保存 labels.json"
+
+#: src/workflow/nodes/data_source.py:506
+msgid "Overwrite existing files"
+msgstr "覆盖已有文件"
+
+#: src/workflow/nodes/data_source.py:507
+msgid "Overwrite files if they already exist"
+msgstr "若文件已存在则覆盖"
+
+#: src/workflow/nodes/data_source.py:523
+msgid "Please select an output folder"
+msgstr "请选择输出文件夹"
+
+#: src/workflow/nodes/data_source.py:530
+#, python-brace-format
+msgid "Unable to create output folder: {error}"
+msgstr "无法创建输出文件夹：{error}"
+
+#: src/workflow/nodes/data_source.py:537
+msgid "No input audio data"
+msgstr "没有输入音频数据"
+
+#: src/workflow/nodes/data_source.py:545
+#, python-brace-format
+msgid "Unsupported audio data type: {type}"
+msgstr "不支持的音频数据类型：{type}"
+
+#: src/workflow/nodes/data_source.py:562
+#, python-brace-format
+msgid ""
+"Label count ({labels}) does not match audio count ({audio}); items will be "
+"paired in order and extras will be ignored"
+msgstr ""
+"标签数量（{labels}）与音频数量（{audio}）不匹配；将按顺序配对，多余项会被忽略"
+
+#: src/workflow/nodes/data_source.py:567
+#, python-brace-format
+msgid "Saving {count} audio files..."
+msgstr "正在保存 {count} 个音频文件..."
+
+#: src/workflow/nodes/data_source.py:618
+msgid "No audio files were saved successfully"
+msgstr "没有任何音频文件成功保存"
+
+#: src/workflow/nodes/data_source.py:622
+#, python-brace-format
+msgid "Audio saved: {files} files"
+msgstr "音频已保存：{files} 个文件"
+
+#: src/workflow/nodes/data_source.py:624
+#, python-brace-format
+msgid ", labels: {count}"
+msgstr "，标签：{count}"
+
+#: src/workflow/nodes/preprocessing.py:37
+#, python-brace-format
+msgid "{node}: No input audio provided"
+msgstr "{node}：未提供输入音频"
+
+#: src/workflow/nodes/preprocessing.py:41
+#, python-brace-format
+msgid "{node}: Audio list is empty"
+msgstr "{node}：音频列表为空"
+
+#: src/workflow/nodes/preprocessing.py:45
+#: src/workflow/nodes/preprocessing.py:56
+#, python-brace-format
+msgid ""
+"{node}: Expected AudioData, but got {type}. Please check whether the "
+"upstream node output type is correct."
+msgstr ""
+"{node}：期望 AudioData，但得到 {type}。请检查上游节点输出类型是否正确。"
+
+#: src/workflow/nodes/preprocessing.py:115
+msgid "Resample"
+msgstr "重采样"
+
+#: src/workflow/nodes/preprocessing.py:117
+msgid "Resample audio to the target sample rate"
+msgstr "将音频重采样到目标采样率"
+
+#: src/workflow/nodes/preprocessing.py:125
+#: src/workflow/nodes/preprocessing.py:833
+msgid "Audio or audio list"
+msgstr "音频或音频列表"
+
+#: src/workflow/nodes/preprocessing.py:181
+msgid "Trim / pad"
+msgstr "裁剪/填充"
+
+#: src/workflow/nodes/preprocessing.py:183
+msgid "Make audio a fixed duration by trimming and/or padding"
+msgstr "通过裁剪和/或填充将音频调整为固定时长"
+
+#: src/workflow/nodes/preprocessing.py:193
+msgid "Target duration (s)"
+msgstr "目标时长（秒）"
+
+#: src/workflow/nodes/preprocessing.py:198
+msgid "Mode"
+msgstr "模式"
+
+#: src/workflow/nodes/preprocessing.py:208
+msgid "Alignment"
+msgstr "对齐方式"
+
+#: src/workflow/nodes/preprocessing.py:303
+msgid "Normalize audio amplitude"
+msgstr "音频幅度归一化"
+
+#: src/workflow/nodes/preprocessing.py:313
+msgid "Method"
+msgstr "方法"
+
+#: src/workflow/nodes/preprocessing.py:318
+msgid "Target level (dB)"
+msgstr "目标电平（dB）"
+
+#: src/workflow/nodes/preprocessing.py:381
+msgid "Trim silence"
+msgstr "去除静音"
+
+#: src/workflow/nodes/preprocessing.py:383
+msgid "Remove leading and trailing silence"
+msgstr "去除首尾静音"
+
+#: src/workflow/nodes/preprocessing.py:393
+msgid "Threshold (dB)"
+msgstr "阈值（dB）"
+
+#: src/workflow/nodes/preprocessing.py:394
+msgid "Below this threshold is considered silence"
+msgstr "低于该阈值视为静音"
+
+#: src/workflow/nodes/preprocessing.py:399
+msgid "Frame length"
+msgstr "帧长"
+
+#: src/workflow/nodes/preprocessing.py:404
+#: src/workflow/nodes/feature/dim1d/pitch.py:54
+#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:49
+#: src/workflow/nodes/feature/dim2d/cqt.py:55
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:50
+#: src/workflow/nodes/feature/dim2d/mfcc.py:55
+#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:48
+#: src/workflow/nodes/feature/dim2d/stft.py:46
+msgid "Hop length"
+msgstr "帧移"
+
+#: src/workflow/nodes/preprocessing.py:458
+msgid "Channel mapper"
+msgstr "通道映射"
+
+#: src/workflow/nodes/preprocessing.py:460
+msgid "Map selected channels to different outputs"
+msgstr "将选定通道映射到不同输出"
+
+#: src/workflow/nodes/preprocessing.py:468
+msgid "Multichannel audio input"
+msgstr "多通道音频输入"
+
+#: src/workflow/nodes/preprocessing.py:470
+msgid "Output 1"
+msgstr "输出 1"
+
+#: src/workflow/nodes/preprocessing.py:471
+msgid "Output 2"
+msgstr "输出 2"
+
+#: src/workflow/nodes/preprocessing.py:472
+msgid "Output 3"
+msgstr "输出 3"
+
+#: src/workflow/nodes/preprocessing.py:473
+msgid "Output 4"
+msgstr "输出 4"
+
+#: src/workflow/nodes/preprocessing.py:478
+msgid "Output 1 channels"
+msgstr "输出 1 通道"
+
+#: src/workflow/nodes/preprocessing.py:479
+msgid "Channel indices (0-based), comma-separated, e.g. 0 or 0,1,2"
+msgstr "通道索引（从 0 开始），用逗号分隔，例如 0 或 0,1,2"
+
+#: src/workflow/nodes/preprocessing.py:483
+msgid "Output 2 channels"
+msgstr "输出 2 通道"
+
+#: src/workflow/nodes/preprocessing.py:484
+#: src/workflow/nodes/preprocessing.py:489
+#: src/workflow/nodes/preprocessing.py:494
+msgid "Channel indices; leave blank to disable output"
+msgstr "通道索引；留空以禁用该输出"
+
+#: src/workflow/nodes/preprocessing.py:488
+msgid "Output 3 channels"
+msgstr "输出 3 通道"
+
+#: src/workflow/nodes/preprocessing.py:493
+msgid "Output 4 channels"
+msgstr "输出 4 通道"
+
+#: src/workflow/nodes/preprocessing.py:634
+msgid "Channel merge"
+msgstr "通道合并"
+
+#: src/workflow/nodes/preprocessing.py:636
+msgid "Merge channels from multiple audio inputs"
+msgstr "合并多个音频输入的通道"
+
+#: src/workflow/nodes/preprocessing.py:640
+msgid "Input 1"
+msgstr "输入 1"
+
+#: src/workflow/nodes/preprocessing.py:640
+msgid "Audio input 1"
+msgstr "音频输入 1"
+
+#: src/workflow/nodes/preprocessing.py:644
+msgid "Input 2"
+msgstr "输入 2"
+
+#: src/workflow/nodes/preprocessing.py:645
+msgid "Audio input 2 (optional)"
+msgstr "音频输入 2（可选）"
+
+#: src/workflow/nodes/preprocessing.py:651
+msgid "Input 3"
+msgstr "输入 3"
+
+#: src/workflow/nodes/preprocessing.py:652
+msgid "Audio input 3 (optional)"
+msgstr "音频输入 3（可选）"
+
+#: src/workflow/nodes/preprocessing.py:658
+msgid "Input 4"
+msgstr "输入 4"
+
+#: src/workflow/nodes/preprocessing.py:659
+msgid "Audio input 4 (optional)"
+msgstr "音频输入 4（可选）"
+
+#: src/workflow/nodes/preprocessing.py:662
+msgid "Merged audio"
+msgstr "合并后的音频"
+
+#: src/workflow/nodes/preprocessing.py:667
+msgid "Length handling"
+msgstr "长度处理"
+
+#: src/workflow/nodes/preprocessing.py:668
+msgid "How to handle different input lengths"
+msgstr "如何处理不同的输入长度"
+
+#: src/workflow/nodes/preprocessing.py:674
+msgid "Padding strategy for shorter audio when using max length"
+msgstr "使用最大长度时，较短音频的填充策略"
+
+#: src/workflow/nodes/preprocessing.py:689
+msgid "At least one valid audio input is required"
+msgstr "至少需要一个有效的音频输入"
+
+#: src/workflow/nodes/preprocessing.py:703
+msgid "All inputs must be the same type (all single audio or all audio lists)"
+msgstr "所有输入必须为同一类型（全部为单个音频或全部为音频列表）"
+
+#: src/workflow/nodes/preprocessing.py:708
+#, python-brace-format
+msgid "Audio list lengths differ: {lengths}"
+msgstr "音频列表长度不一致：{lengths}"
+
+#: src/workflow/nodes/preprocessing.py:728
+#, python-brace-format
+msgid "Expected AudioData, but got {type}"
+msgstr "期望 AudioData，但得到 {type}"
+
+#: src/workflow/nodes/preprocessing.py:752
+msgid "No audio to merge"
+msgstr "没有可合并的音频"
+
+#: src/workflow/nodes/preprocessing.py:759
+#, python-brace-format
+msgid "Sample rates differ: {rates}. Please resample first."
+msgstr "采样率不一致：{rates}。请先重采样。"
+
+#: src/workflow/nodes/preprocessing.py:827
+msgid "Filter"
+msgstr "滤波"
+
+#: src/workflow/nodes/preprocessing.py:829
+msgid "Apply digital filtering (lowpass/highpass/bandpass/bandstop)"
+msgstr "应用数字滤波（低通/高通/带通/带阻）"
+
+#: src/workflow/nodes/preprocessing.py:839
+msgid "Filter type"
+msgstr "滤波类型"
+
+#: src/workflow/nodes/preprocessing.py:840
+msgid "lowpass, highpass, bandpass, bandstop"
+msgstr "lowpass、highpass、bandpass、bandstop"
+
+#: src/workflow/nodes/preprocessing.py:845
+msgid "Cutoff (Hz)"
+msgstr "截止频率（Hz）"
+
+#: src/workflow/nodes/preprocessing.py:846
+msgid "Used by lowpass/highpass; low bound for bandpass/bandstop"
+msgstr "用于低通/高通；用于带通/带阻的低截止频率"
+
+#: src/workflow/nodes/preprocessing.py:851
+msgid "High cutoff (Hz)"
+msgstr "高截止频率（Hz）"
+
+#: src/workflow/nodes/preprocessing.py:852
+msgid "Only for bandpass/bandstop; ignored for lowpass/highpass"
+msgstr "仅用于带通/带阻；低通/高通忽略"
+
+#: src/workflow/nodes/preprocessing.py:857
+msgid "Filter order"
+msgstr "滤波阶数"
+
+#: src/workflow/nodes/preprocessing.py:858
+msgid "Butterworth order; higher means steeper rolloff"
+msgstr "巴特沃斯阶数；越高滚降越陡"
+
+#: src/workflow/nodes/preprocessing.py:911
+#, python-brace-format
+msgid "Unknown filter type: {type}"
+msgstr "未知的滤波类型：{type}"
+
+#: src/workflow/nodes/preprocessing.py:913
+#, python-brace-format
+msgid "Filter design failed: {error}"
+msgstr "滤波器设计失败：{error}"
+
+#: src/workflow/nodes/preprocessing.py:935
+#, python-brace-format
+msgid "Filtering failed: {error}"
+msgstr "滤波失败：{error}"
+
+#: src/workflow/nodes/training.py:34
+msgid ""
+"Load model files (Keras models or model editor definitions) and use the "
+"model's built-in compile configuration"
+msgstr "加载模型文件（Keras 模型或模型编辑器定义），并使用模型内置的编译配置"
+
+#: src/workflow/nodes/training.py:39
+msgid "Loaded model"
+msgstr "已加载的模型"
+
+#: src/workflow/nodes/training.py:44
+msgid "Model path"
+msgstr "模型路径"
+
+#: src/workflow/nodes/training.py:45
+msgid "Keras model (.h5/.keras) or model definition (.model.json)"
+msgstr "Keras 模型（.h5/.keras）或模型定义（.model.json）"
+
+#: src/workflow/nodes/training.py:51
+msgid "Compile model"
+msgstr "编译模型"
+
+#: src/workflow/nodes/training.py:52
+msgid "Compile using built-in configuration (applies to .model.json only)"
+msgstr "使用内置配置编译（仅适用于 .model.json）"
+
+#: src/workflow/nodes/training.py:59
+#, python-brace-format
+msgid "Model file does not exist: {path}"
+msgstr "模型文件不存在：{path}"
+
+#: src/workflow/nodes/training.py:76
+#, python-brace-format
+msgid "Model loaded: {name}"
+msgstr "模型已加载：{name}"
+
+#: src/workflow/nodes/training.py:111
+#, python-brace-format
+msgid ""
+"Failed to load model {path}.\n"
+"The model file is corrupted or incompatible.\n"
+"Please rebuild and save the model in the model builder."
+msgstr ""
+"无法加载模型 {path}。\n"
+"模型文件已损坏或不兼容。\n"
+"请在模型构建器中重新构建并保存模型。"
+
+#: src/workflow/nodes/training.py:167
+msgid "Save model"
+msgstr "保存模型"
+
+#: src/workflow/nodes/training.py:169
+msgid "Save the trained model to a file"
+msgstr "将训练后的模型保存到文件"
+
+#: src/workflow/nodes/training.py:173
+msgid "Model to save"
+msgstr "待保存模型"
+
+#: src/workflow/nodes/training.py:174
+msgid "Saved path"
+msgstr "保存路径"
+
+#: src/workflow/nodes/training.py:179
+msgid "Save mode"
+msgstr "保存模式"
+
+#: src/workflow/nodes/training.py:181
+msgid ""
+"new_file: choose a directory and filename; overwrite: select an existing file"
+msgstr "new_file：选择目录和文件名；overwrite：选择现有文件覆盖"
+
+#: src/workflow/nodes/training.py:185
+msgid "Save directory"
+msgstr "保存目录"
+
+#: src/workflow/nodes/training.py:186
+msgid "Directory to save the model (new_file mode)"
+msgstr "保存模型的目录（new_file 模式）"
+
+#: src/workflow/nodes/training.py:191
+msgid "Filename"
+msgstr "文件名"
+
+#: src/workflow/nodes/training.py:192
+msgid "Model filename (including .keras/.h5 extension)"
+msgstr "模型文件名（包含 .keras/.h5 扩展名）"
+
+#: src/workflow/nodes/training.py:196
+msgid "File to overwrite"
+msgstr "要覆盖的文件"
+
+#: src/workflow/nodes/training.py:197
+msgid "Select an existing model file (overwrite mode)"
+msgstr "选择一个现有模型文件（overwrite 模式）"
+
+#: src/workflow/nodes/training.py:203
+msgid "Save format"
+msgstr "保存格式"
+
+#: src/workflow/nodes/training.py:205
+msgid "Model save format"
+msgstr "模型保存格式"
+
+#: src/workflow/nodes/training.py:209
+msgid "Overwrite warning"
+msgstr "覆盖警告"
+
+#: src/workflow/nodes/training.py:210
+msgid "Log a warning when overwriting an existing file"
+msgstr "覆盖现有文件时记录警告"
+
+#: src/workflow/nodes/training.py:217 src/workflow/nodes/training.py:377
+#: src/workflow/nodes/training.py:707 src/workflow/nodes/training.py:1065
+msgid "No model provided"
+msgstr "未提供模型"
+
+#: src/workflow/nodes/training.py:229
+msgid "Save directory is not set"
+msgstr "未设置保存目录"
+
+#: src/workflow/nodes/training.py:233
+msgid "Filename is not set"
+msgstr "未设置文件名"
+
+#: src/workflow/nodes/training.py:250
+msgid "No file selected to overwrite"
+msgstr "未选择要覆盖的文件"
+
+#: src/workflow/nodes/training.py:278
+#, python-brace-format
+msgid "Model saved: {name}"
+msgstr "模型已保存：{name}"
+
+#: src/workflow/nodes/training.py:298
+msgid "Trainer"
+msgstr "训练器"
+
+#: src/workflow/nodes/training.py:300
+msgid "Run model training with model config or overridden parameters"
+msgstr "使用模型配置或覆盖参数运行模型训练"
+
+#: src/workflow/nodes/training.py:306
+msgid "Train targets"
+msgstr "训练目标"
+
+#: src/workflow/nodes/training.py:308
+msgid "Validation targets"
+msgstr "验证目标"
+
+#: src/workflow/nodes/training.py:310 src/workflow/nodes/training.py:879
+msgid "Training history"
+msgstr "训练历史"
+
+#: src/workflow/nodes/training.py:311
+msgid "Trained model"
+msgstr "已训练模型"
+
+#: src/workflow/nodes/training.py:318
+msgid "Epochs"
+msgstr "训练轮数"
+
+#: src/workflow/nodes/training.py:323 src/workflow/nodes/training.py:693
+#: src/workflow/nodes/training.py:1043
+msgid "Batch size"
+msgstr "批大小"
+
+#: src/workflow/nodes/training.py:328
+msgid "Use model config"
+msgstr "使用模型配置"
+
+#: src/workflow/nodes/training.py:329
+msgid "True: use model compile config; False: override with parameters below"
+msgstr "True：使用模型编译配置；False：使用下方参数覆盖"
+
+#: src/workflow/nodes/training.py:334
+msgid "Optimizer (override)"
+msgstr "优化器（覆盖）"
+
+#: src/workflow/nodes/training.py:336 src/workflow/nodes/training.py:343
+msgid "Effective only when 'Use model config' is False"
+msgstr "仅当“使用模型配置”为 False 时生效"
+
+#: src/workflow/nodes/training.py:340
+msgid "Learning rate (override)"
+msgstr "学习率（覆盖）"
+
+#: src/workflow/nodes/training.py:347
+msgid "Loss (override)"
+msgstr "损失函数（覆盖）"
+
+#: src/workflow/nodes/training.py:349
+msgid "auto: detect from data; effective only when 'Use model config' is False"
+msgstr "auto：从数据自动检测；仅当“使用模型配置”为 False 时生效"
+
+#: src/workflow/nodes/training.py:357
+msgid "Early stopping patience"
+msgstr "早停耐心值"
+
+#: src/workflow/nodes/training.py:381
+msgid "No training data provided"
+msgstr "未提供训练数据"
+
+#: src/workflow/nodes/training.py:403
+msgid ""
+"Model is not compiled. Ensure it has compile config or disable 'Use model "
+"config'."
+msgstr "模型未编译。请确保其包含编译配置，或关闭“使用模型配置”。"
+
+#: src/workflow/nodes/training.py:411
+#, python-brace-format
+msgid "Using model config: optimizer={opt}, loss={loss}"
+msgstr "使用模型配置：优化器={opt}，损失={loss}"
+
+#: src/workflow/nodes/training.py:435
+#, python-brace-format
+msgid "Using override config: optimizer={opt}, loss={loss}"
+msgstr "使用覆盖配置：优化器={opt}，损失={loss}"
+
+#: src/workflow/nodes/training.py:502
+#, python-brace-format
+msgid "Training started: {epochs} epochs, batch_size={batch_size}"
+msgstr "训练开始：{epochs} 轮，batch_size={batch_size}"
+
+#: src/workflow/nodes/training.py:536
+#, python-brace-format
+msgid "Training finished: loss={loss:.4f}, val_loss={val_loss:.4f}"
+msgstr "训练完成：loss={loss:.4f}，val_loss={val_loss:.4f}"
+
+#: src/workflow/nodes/training.py:543
+#, python-brace-format
+msgid "Training finished: loss={loss:.4f}"
+msgstr "训练完成：loss={loss:.4f}"
+
+#: src/workflow/nodes/training.py:550
+#, python-brace-format
+msgid "Training failed: {error}"
+msgstr "训练失败：{error}"
+
+#: src/workflow/nodes/training.py:678
+msgid "Evaluator"
+msgstr "评估器"
+
+#: src/workflow/nodes/training.py:680
+msgid "Evaluate model performance"
+msgstr "评估模型性能"
+
+#: src/workflow/nodes/training.py:686
+msgid "Test targets"
+msgstr "测试目标"
+
+#: src/workflow/nodes/training.py:711
+msgid "No test data provided"
+msgstr "未提供测试数据"
+
+#: src/workflow/nodes/training.py:739
+#, python-brace-format
+msgid "Evaluation finished: {loss}"
+msgstr "评估完成：{loss}"
+
+#: src/workflow/nodes/training.py:745
+#, python-brace-format
+msgid "Evaluation failed: {error}"
+msgstr "评估失败：{error}"
+
+#: src/workflow/nodes/training.py:873
+msgid "Show training history"
+msgstr "显示训练历史"
+
+#: src/workflow/nodes/training.py:875
+msgid "Visualize training history curves"
+msgstr "可视化训练历史曲线"
+
+#: src/workflow/nodes/training.py:880
+msgid "Training history (passthrough)"
+msgstr "训练历史（透传）"
+
+#: src/workflow/nodes/training.py:885
+msgid "Show loss curve"
+msgstr "显示损失曲线"
+
+#: src/workflow/nodes/training.py:889
+msgid "Show accuracy curve"
+msgstr "显示准确率曲线"
+
+#: src/workflow/nodes/training.py:893
+msgid "Save path"
+msgstr "保存路径"
+
+#: src/workflow/nodes/training.py:894
+msgid "Optional. Save the chart to a file."
+msgstr "可选。将图表保存到文件。"
+
+#: src/workflow/nodes/training.py:901
+msgid "No training history provided"
+msgstr "未提供训练历史"
+
+#: src/workflow/nodes/training.py:951
+#, python-brace-format
+msgid "Failed to show training history: {error}"
+msgstr "显示训练历史失败：{error}"
+
+#: src/workflow/nodes/training.py:962
+msgid "Show metrics"
+msgstr "显示指标"
+
+#: src/workflow/nodes/training.py:964
+msgid "Show model evaluation metrics"
+msgstr "显示模型评估指标"
+
+#: src/workflow/nodes/training.py:969
+msgid "Metrics (passthrough)"
+msgstr "指标（透传）"
+
+#: src/workflow/nodes/training.py:974
+msgid "Verbose logs"
+msgstr "详细日志"
+
+#: src/workflow/nodes/training.py:975
+msgid "Output detailed metrics logs (dialog removed)"
+msgstr "输出详细指标日志（已移除对话框）"
+
+#: src/workflow/nodes/training.py:981
+msgid "No metrics provided"
+msgstr "未提供指标"
+
+#: src/workflow/nodes/training.py:1008
+#, python-brace-format
+msgid "Failed to show metrics: {error}"
+msgstr "显示指标失败：{error}"
+
+#: src/workflow/nodes/training.py:1022
+msgid "Predict"
+msgstr "预测"
+
+#: src/workflow/nodes/training.py:1024
+msgid "Run prediction using a trained model"
+msgstr "使用已训练模型进行预测"
+
+#: src/workflow/nodes/training.py:1029
+msgid "Input data"
+msgstr "输入数据"
+
+#: src/workflow/nodes/training.py:1030
+msgid "Predictions"
+msgstr "预测结果"
+
+#: src/workflow/nodes/training.py:1035
+#: src/workflow/nodes/feature/dim1d/fft.py:47
+#: src/workflow/nodes/feature/dim2d/stft.py:51
+msgid "Output type"
+msgstr "输出类型"
+
+#: src/workflow/nodes/training.py:1038
+msgid ""
+"Type of prediction result: label=class label, audio=audio, feature_1d=1D "
+"feature, feature_2d=2D feature"
+msgstr ""
+"预测结果类型：label=类别标签，audio=音频，feature_1d=1D 特征，feature_2d=2D "
+"特征"
+
+#: src/workflow/nodes/training.py:1045
+msgid "Batch size for prediction"
+msgstr "预测批大小"
+
+#: src/workflow/nodes/training.py:1049
+msgid "Sample rate"
+msgstr "采样率"
+
+#: src/workflow/nodes/training.py:1052
+msgid "Output audio sample rate (only for output_type=audio)"
+msgstr "输出音频采样率（仅适用于 output_type=audio）"
+
+#: src/workflow/nodes/training.py:1069
+msgid "No input data provided"
+msgstr "未提供输入数据"
+
+#: src/workflow/nodes/training.py:1077
+#, python-brace-format
+msgid "Predicting... (batch_size={batch_size})"
+msgstr "正在预测...（batch_size={batch_size}）"
+
+#: src/workflow/nodes/training.py:1090
+#, python-brace-format
+msgid "Prediction finished: {count} samples, output_type={type}"
+msgstr "预测完成：{count} 个样本，output_type={type}"
+
+#: src/workflow/nodes/training.py:1100
+#, python-brace-format
+msgid "Prediction failed: {error}"
+msgstr "预测失败：{error}"
+
+#: src/workflow/nodes/feature/dim1d/fft.py:30
+#: src/workflow/nodes/feature/dim1d/pitch.py:31
+#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:33
+#: src/workflow/nodes/feature/dim1d/statistics.py:26
+msgid "1D features"
+msgstr "1D 特征"
+
+#: src/workflow/nodes/feature/dim1d/fft.py:31
+msgid "Extract global FFT spectrum"
+msgstr "提取全局 FFT 频谱"
+
+#: src/workflow/nodes/feature/dim1d/fft.py:41
+msgid "FFT size"
+msgstr "FFT 大小"
+
+#: src/workflow/nodes/feature/dim1d/fft.py:43
+msgid "auto: use signal length as FFT size"
+msgstr "auto：使用信号长度作为 FFT 大小"
+
+#: src/workflow/nodes/feature/dim1d/fft.py:53
+msgid "Normalize to max value"
+msgstr "归一化到最大值"
+
+#: src/workflow/nodes/feature/dim1d/pitch.py:29
+msgid "Pitch (F0)"
+msgstr "音高（F0）"
+
+#: src/workflow/nodes/feature/dim1d/pitch.py:32
+msgid "Extract pitch (F0) trajectory"
+msgstr "提取音高（F0）轨迹"
+
+#: src/workflow/nodes/feature/dim1d/pitch.py:37
+msgid "Pitch trajectory"
+msgstr "音高轨迹"
+
+#: src/workflow/nodes/feature/dim1d/pitch.py:42
+#: src/workflow/nodes/feature/dim2d/cqt.py:60
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:55
+msgid "Min frequency (Hz)"
+msgstr "最小频率（Hz）"
+
+#: src/workflow/nodes/feature/dim1d/pitch.py:44
+msgid "Lowest detectable frequency (default C2 ~ 65 Hz)"
+msgstr "可检测的最低频率（默认 C2≈65 Hz）"
+
+#: src/workflow/nodes/feature/dim1d/pitch.py:48
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:60
+msgid "Max frequency (Hz)"
+msgstr "最大频率（Hz）"
+
+#: src/workflow/nodes/feature/dim1d/pitch.py:50
+msgid "Highest detectable frequency (default C7 ~ 2093 Hz)"
+msgstr "可检测的最高频率（默认 C7≈2093 Hz）"
+
+#: src/workflow/nodes/feature/dim1d/pitch.py:59
+msgid "Fill value for unvoiced frames"
+msgstr "无声帧填充值"
+
+#: src/workflow/nodes/feature/dim1d/pitch.py:61
+msgid "Use this value for frames where pitch cannot be detected"
+msgstr "在无法检测音高的帧上使用该值"
+
+#: src/workflow/nodes/feature/dim1d/pitch.py:66
+msgid "Normalize pitch values to 0-1 range"
+msgstr "将音高值归一化到 0-1 范围"
+
+#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:34
+msgid "Extract spectral flatness"
+msgstr "提取频谱平坦度"
+
+#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:44
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:45
+#: src/workflow/nodes/feature/dim2d/mfcc.py:50
+#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:43
+#: src/workflow/nodes/feature/dim2d/stft.py:41
+msgid "FFT window size"
+msgstr "FFT 窗口大小"
+
+#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:54
+#: src/workflow/nodes/feature/dim1d/statistics.py:57
+msgid "Aggregation"
+msgstr "聚合方式"
+
+#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:56
+msgid "Aggregate over the time axis"
+msgstr "沿时间轴聚合"
+
+#: src/workflow/nodes/feature/dim1d/statistics.py:24
+#: src/workflow/nodes/feature/dim1d/statistics.py:32
+msgid "Statistical features"
+msgstr "统计特征"
+
+#: src/workflow/nodes/feature/dim1d/statistics.py:27
+msgid "Extract statistical spectral features"
+msgstr "提取统计类频谱特征"
+
+#: src/workflow/nodes/feature/dim2d/cqt.py:32
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:29
+#: src/workflow/nodes/feature/dim2d/mfcc.py:29
+#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:32
+#: src/workflow/nodes/feature/dim2d/stft.py:30
+msgid "2D features"
+msgstr "2D 特征"
+
+#: src/workflow/nodes/feature/dim2d/cqt.py:33
+msgid "Extract Constant-Q Transform (CQT) spectrogram"
+msgstr "提取常数 Q 变换（CQT）频谱图"
+
+#: src/workflow/nodes/feature/dim2d/cqt.py:43
+msgid "Bins"
+msgstr "频带数"
+
+#: src/workflow/nodes/feature/dim2d/cqt.py:45
+msgid "Number of CQT bins (default 84 = 7 octaves × 12 semitones)"
+msgstr "CQT 频带数（默认 84 = 7 个八度 × 12 个半音）"
+
+#: src/workflow/nodes/feature/dim2d/cqt.py:49
+msgid "Bins per octave"
+msgstr "每八度频带数"
+
+#: src/workflow/nodes/feature/dim2d/cqt.py:51
+msgid "Bins per octave (default 12 = semitone resolution)"
+msgstr "每八度频带数（默认 12 = 半音分辨率）"
+
+#: src/workflow/nodes/feature/dim2d/cqt.py:62
+msgid "Minimum frequency (default C1 ~ 32.7 Hz)"
+msgstr "最小频率（默认 C1≈32.7 Hz）"
+
+#: src/workflow/nodes/feature/dim2d/cqt.py:66
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:65
+msgid "Convert to dB"
+msgstr "转换为 dB"
+
+#: src/workflow/nodes/feature/dim2d/cqt.py:67
+msgid "Convert magnitude to dB scale"
+msgstr "将幅度转换为 dB 标度"
+
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:30
+msgid "Extract Mel spectrogram"
+msgstr "提取 Mel 频谱图"
+
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:40
+#: src/workflow/nodes/feature/dim2d/mfcc.py:45
+msgid "Mel filters"
+msgstr "Mel 滤波器数"
+
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:66
+msgid "Convert power spectrogram to dB scale"
+msgstr "将功率谱转换为 dB 标度"
+
+#: src/workflow/nodes/feature/dim2d/mfcc.py:30
+msgid "Extract MFCC features"
+msgstr "提取 MFCC 特征"
+
+#: src/workflow/nodes/feature/dim2d/mfcc.py:60
+msgid "Include delta"
+msgstr "包含 Δ"
+
+#: src/workflow/nodes/feature/dim2d/mfcc.py:64
+msgid "Include delta-delta"
+msgstr "包含 ΔΔ"
+
+#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:33
+msgid "Extract spectral contrast"
+msgstr "提取频谱对比度"
+
+#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:53
+msgid "Bands"
+msgstr "子频带数"
+
+#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:55
+msgid "Number of sub-bands (output dimension is n_bands + 1)"
+msgstr "子频带数量（输出维度为 n_bands + 1）"
+
+#: src/workflow/nodes/feature/dim2d/stft.py:31
+msgid "Extract STFT spectrogram"
+msgstr "提取 STFT 频谱图"

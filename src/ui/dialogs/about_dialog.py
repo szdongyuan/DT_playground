@@ -9,7 +9,7 @@ from PyQt6.QtWidgets import (
     QPushButton, QVBoxLayout
 )
 
-
+from src.ui.i18n import tr_
 class AboutDialog(QDialog):
     """关于对话框"""
     
@@ -19,7 +19,7 @@ class AboutDialog(QDialog):
     
     def _init_ui(self):
         """初始化界面"""
-        self.setWindowTitle("关于")
+        self.setWindowTitle(tr_("About"))
         self.setFixedSize(450, 380)
         self.setModal(True)
         
@@ -33,7 +33,7 @@ class AboutDialog(QDialog):
         layout.addWidget(icon_label)
         
         # 应用名称
-        name_label = QLabel("AI声学信号训练平台")
+        name_label = QLabel(tr_("AI Acoustic Signal Training Platform"))
         name_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         name_font = QFont()
         name_font.setPointSize(18)
@@ -43,7 +43,7 @@ class AboutDialog(QDialog):
         layout.addWidget(name_label)
         
         # 版本号
-        version_label = QLabel("版本 1.0.0")
+        version_label = QLabel(tr_("Version 1.0.0"))
         version_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         version_label.setStyleSheet("color: #a6adc8;")
         layout.addWidget(version_label)
@@ -56,8 +56,10 @@ class AboutDialog(QDialog):
         
         # 描述
         desc_label = QLabel(
-            "一个用于声学信号AI处理学习的本地训练平台。\n"
-            "支持音频可视化、特征提取、模型构建与训练监控。"
+            tr_(
+                "A local training platform for learning AI acoustic signal processing.\n"
+                "Supports audio visualization, feature extraction, model building, and training monitoring."
+            )
         )
         desc_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         desc_label.setWordWrap(True)
@@ -66,7 +68,7 @@ class AboutDialog(QDialog):
         
         # 技术栈
         tech_label = QLabel(
-            "技术栈: Python • TensorFlow • PyQt6 • Librosa"
+            tr_("Tech stack: Python • TensorFlow • PyQt6 • Librosa")
         )
         tech_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         tech_label.setStyleSheet("color: #a6adc8; font-size: 11px;")
@@ -81,7 +83,7 @@ class AboutDialog(QDialog):
         layout.addWidget(copyright_label)
         
         # 关闭按钮
-        close_btn = QPushButton("关闭")
+        close_btn = QPushButton(tr_("Close"))
         close_btn.setFixedWidth(100)
         close_btn.clicked.connect(self.accept)
         

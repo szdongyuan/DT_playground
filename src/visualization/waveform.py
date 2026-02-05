@@ -9,7 +9,7 @@ import numpy as np
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 
-
+from src.ui.i18n import tr_
 class WaveformPlotter:
     """波形绘制器"""
     
@@ -28,7 +28,7 @@ class WaveformPlotter:
     
     def plot(self, audio: np.ndarray, 
              sample_rate: int,
-             title: str = "波形",
+             title: str = "Waveform",
              color: str = '#89b4fa',
              show_time: bool = True) -> Figure:
         """
@@ -58,10 +58,10 @@ class WaveformPlotter:
         self.fig.patch.set_facecolor('#1e1e2e')
         
         self.ax.set_title(title, color='#cdd6f4', fontsize=12)
-        self.ax.set_ylabel('振幅', color='#cdd6f4')
+        self.ax.set_ylabel(tr_("Amplitude"), color='#cdd6f4')
         
         if show_time:
-            self.ax.set_xlabel('时间 (秒)', color='#cdd6f4')
+            self.ax.set_xlabel(tr_("Time (s)"), color='#cdd6f4')
         
         self.ax.set_xlim(0, duration)
         self.ax.set_ylim(-1.1, 1.1)
@@ -79,7 +79,7 @@ class WaveformPlotter:
     
     def plot_stereo(self, audio: np.ndarray,
                     sample_rate: int,
-                    title: str = "立体声波形") -> Figure:
+                    title: str = "Stereo waveform") -> Figure:
         """
         绘制立体声波形
         
@@ -99,7 +99,7 @@ class WaveformPlotter:
         duration = audio.shape[1] / sample_rate
         time = np.linspace(0, duration, audio.shape[1])
         
-        channels = ['左声道', '右声道']
+        channels = [tr_("Left"), tr_("Right")]
         colors = ['#89b4fa', '#a6e3a1']
         
         for i, (ax, channel, color) in enumerate(zip(axes, channels, colors)):
@@ -111,7 +111,7 @@ class WaveformPlotter:
             ax.grid(True, alpha=0.3, color='#45475a')
             ax.tick_params(colors='#a6adc8')
         
-        axes[-1].set_xlabel('时间 (秒)', color='#cdd6f4')
+        axes[-1].set_xlabel(tr_("Time (s)"), color='#cdd6f4')
         
         self.fig.patch.set_facecolor('#1e1e2e')
         self.fig.suptitle(title, color='#cdd6f4', fontsize=12)
@@ -150,15 +150,21 @@ class WaveformPlotter:
         self.ax.plot(time_audio, audio, color='#45475a', linewidth=0.3, alpha=0.5)
         
         # 绘制包络
-        self.ax.plot(time_rms, rms, color='#f38ba8', linewidth=2, label='RMS能量')
+        self.ax.plot(
+            time_rms,
+            rms,
+            color='#f38ba8',
+            linewidth=2,
+            label=tr_("RMS energy"),
+        )
         self.ax.plot(time_rms, -rms, color='#f38ba8', linewidth=2)
         
         self.ax.set_facecolor('#181825')
         self.fig.patch.set_facecolor('#1e1e2e')
         
-        self.ax.set_title('波形包络', color='#cdd6f4')
-        self.ax.set_xlabel('时间 (秒)', color='#cdd6f4')
-        self.ax.set_ylabel('振幅', color='#cdd6f4')
+        self.ax.set_title(tr_("Waveform envelope"), color='#cdd6f4')
+        self.ax.set_xlabel(tr_("Time (s)"), color='#cdd6f4')
+        self.ax.set_ylabel(tr_("Amplitude"), color='#cdd6f4')
         self.ax.legend(facecolor='#313244', edgecolor='#45475a', labelcolor='#cdd6f4')
         
         self.ax.grid(True, alpha=0.3, color='#45475a')

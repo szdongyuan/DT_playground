@@ -19,6 +19,7 @@ from PyQt6.QtWidgets import (
     QPushButton, QStackedWidget, QVBoxLayout, QWidget
 )
 
+from ..i18n import tr_
 from ..styles import Styles
 from ..widgets.preview import (
     BasePreviewWidget,
@@ -73,7 +74,7 @@ class PreviewView(QWidget):
         # 空白占位页面
         self._empty_widget = QWidget()
         empty_layout = QVBoxLayout(self._empty_widget)
-        empty_label = QLabel("请选择节点并运行工作流以预览数据")
+        empty_label = QLabel(tr_("Select a node and run the workflow to preview data"))
         empty_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         empty_label.setStyleSheet(f"""
             color: {Styles.COLORS['subtext0']};
@@ -128,7 +129,7 @@ class PreviewView(QWidget):
         layout.setContentsMargins(8, 4, 8, 4)
         
         # 标题
-        title = QLabel("📊 数据预览")
+        title = QLabel(tr_("📊 Data Preview"))
         title.setStyleSheet(f"""
             font-size: 14px;
             font-weight: bold;
@@ -137,7 +138,7 @@ class PreviewView(QWidget):
         layout.addWidget(title)
         
         # 当前节点信息
-        self._node_info = QLabel("未选中节点")
+        self._node_info = QLabel(tr_("No node selected"))
         self._node_info.setStyleSheet(f"color: {Styles.COLORS['subtext1']};")
         layout.addWidget(self._node_info)
         
@@ -156,7 +157,7 @@ class PreviewView(QWidget):
         layout.addStretch()
         
         # ===== 数据项索引选择 =====
-        self._item_label = QLabel("数据项:")
+        self._item_label = QLabel(tr_("Item:"))
         self._item_label.setStyleSheet(f"color: {Styles.COLORS['subtext1']};")
         layout.addWidget(self._item_label)
         
@@ -171,7 +172,7 @@ class PreviewView(QWidget):
         self._item_combo.hide()
         
         # 输出端口选择
-        port_label = QLabel("输出端口:")
+        port_label = QLabel(tr_("Output port:"))
         port_label.setStyleSheet(f"color: {Styles.COLORS['subtext1']};")
         layout.addWidget(port_label)
         
@@ -182,7 +183,7 @@ class PreviewView(QWidget):
         layout.addWidget(self._port_combo)
         
         # 刷新按钮
-        refresh_btn = QPushButton("🔄 刷新")
+        refresh_btn = QPushButton(tr_("🔄 Refresh"))
         refresh_btn.clicked.connect(self._on_refresh)
         refresh_btn.setStyleSheet(f"""
             QPushButton {{
@@ -210,7 +211,9 @@ class PreviewView(QWidget):
             outputs: 输出端口数据字典 {port_name: data}
         """
         self._current_node_id = node_id
-        self._node_info.setText(f"节点: {node_name} ({node_id})")
+        self._node_info.setText(
+            tr_("Node: {name} ({id})").format(name=node_name, id=node_id)
+        )
         
         # 更新端口下拉框
         self._port_combo.blockSignals(True)
@@ -226,7 +229,9 @@ class PreviewView(QWidget):
         else:
             # 没有数据时显示提示
             self._clear_display()
-            self._node_info.setText(f"节点: {node_name} (无数据 - 请先运行工作流)")
+            self._node_info.setText(
+                tr_("Node: {name} (no data - run workflow first)").format(name=node_name)
+            )
     
     def _on_port_changed(self, index: int):
         """端口选择变化"""
@@ -334,7 +339,7 @@ class PreviewView(QWidget):
         
         # 更新总数显示
         total = len(data_list)
-        self._item_combo.setToolTip(f"共 {total} 项数据")
+        self._item_combo.setToolTip(tr_("Total: {total} item(s)").format(total=total))
     
     def _get_item_label(self, index: int, item: Any) -> str:
         """获取数据项的显示标签"""
@@ -361,7 +366,9 @@ class PreviewView(QWidget):
         if preview_widget is None:
             logger.warning(f"没有找到适合的预览组件: {type(data)}")
             self._stack.setCurrentWidget(self._empty_widget)
-            self._dim_info.setText(f"不支持的类型: {type(data).__name__}")
+            self._dim_info.setText(
+                tr_("Unsupported type: {type}").format(type=type(data).__name__)
+            )
             return
         
         # 设置数据到预览组件
@@ -370,7 +377,7 @@ class PreviewView(QWidget):
             self._dim_info.setText(preview_widget.data_info)
         else:
             self._stack.setCurrentWidget(self._empty_widget)
-            self._dim_info.setText("数据设置失败")
+            self._dim_info.setText(tr_("Failed to set data"))
     
     def _get_preview_widget_for_data(self, data: Any) -> Optional[BasePreviewWidget]:
         """根据数据类型获取合适的预览组件"""
@@ -432,6 +439,6 @@ class PreviewView(QWidget):
         self._current_data = None
         self._current_data_list = []
         self._current_node_id = None
-        self._node_info.setText("未选中节点")
+        self._node_info.setText(tr_("No node selected"))
         self._port_combo.clear()
         self._clear_display()

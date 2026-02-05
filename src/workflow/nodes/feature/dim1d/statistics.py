@@ -11,8 +11,7 @@ import numpy as np
 from ....node_base import BaseNode, NodeCategory, register_node
 from ....port import DataType
 from ..base import FeatureData, extract_from_audio_or_list, validate_audio_input, AudioData
-
-
+from src.ui.i18n import tr_
 @register_node
 class StatisticsNode(BaseNode):
     """
@@ -22,40 +21,40 @@ class StatisticsNode(BaseNode):
     """
     
     node_type = "statistics"
-    display_name = "统计特征"
+    display_name = tr_("Statistical features")
     category = NodeCategory.FEATURE
-    subcategory = "一维特征 (1D)"
-    description = "提取频谱统计特征"
+    subcategory = tr_("1D features")
+    description = tr_("Extract statistical spectral features")
     icon = "📉"
     
     def _setup_ports(self):
-        self.add_input("audio", DataType.AUDIO, "音频")
-        self.add_output("feature", DataType.FEATURE, "统计特征")
+        self.add_input("audio", DataType.AUDIO, tr_("Audio"))
+        self.add_output("feature", DataType.FEATURE, tr_("Statistical features"))
     
     def _setup_parameters(self):
         self.add_parameter(
             "spectral_centroid", "bool", True,
-            display_name="频谱质心"
+            display_name=tr_("Spectral centroid")
         )
         self.add_parameter(
             "spectral_bandwidth", "bool", True,
-            display_name="频谱带宽"
+            display_name=tr_("Spectral bandwidth")
         )
         self.add_parameter(
             "spectral_rolloff", "bool", True,
-            display_name="频谱滚降"
+            display_name=tr_("Spectral rolloff")
         )
         self.add_parameter(
             "zero_crossing_rate", "bool", True,
-            display_name="过零率"
+            display_name=tr_("Zero-crossing rate")
         )
         self.add_parameter(
             "rms", "bool", True,
-            display_name="RMS能量"
+            display_name=tr_("RMS energy")
         )
         self.add_parameter(
             "aggregate", "choice", "mean",
-            display_name="聚合方式",
+            display_name=tr_("Aggregation"),
             choices=["mean", "std", "mean_std", "all"]
         )
     

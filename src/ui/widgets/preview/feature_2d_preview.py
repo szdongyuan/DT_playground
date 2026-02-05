@@ -16,6 +16,7 @@ from PyQt6.QtWidgets import (
 )
 
 from src.workflow.port import DataType
+from src.ui.i18n import tr_
 from src.ui.styles import Styles
 
 from .base_preview import BasePreviewWidget, register_preview
@@ -41,7 +42,7 @@ class Feature2DPreviewWidget(BasePreviewWidget):
     """
     
     supported_types = [DataType.FEATURE_2D, DataType.FEATURE]
-    display_name = "二维特征"
+    display_name = tr_("2D feature")
     icon = "🗺️"
     
     def __init__(self, parent: Optional[QWidget] = None):
@@ -60,7 +61,7 @@ class Feature2DPreviewWidget(BasePreviewWidget):
         layout.addWidget(splitter)
         
         # 热力图
-        heatmap_group = QGroupBox("二维特征热力图")
+        heatmap_group = QGroupBox(tr_("2D feature heatmap"))
         heatmap_group.setStyleSheet(Styles.group_box(Styles.COLORS['purple']))
         heatmap_layout = QVBoxLayout(heatmap_group)
         heatmap_layout.setContentsMargins(4, 4, 4, 4)
@@ -83,7 +84,7 @@ class Feature2DPreviewWidget(BasePreviewWidget):
             self._image_view.setMinimumHeight(300)
             heatmap_layout.addWidget(self._image_view)
         else:
-            placeholder = QLabel("请安装 pyqtgraph 以显示热力图")
+            placeholder = QLabel(tr_("Please install pyqtgraph to display heatmaps"))
             placeholder.setAlignment(Qt.AlignmentFlag.AlignCenter)
             placeholder.setStyleSheet(f"""
                 background-color: {Styles.COLORS['mantle']};
@@ -97,7 +98,7 @@ class Feature2DPreviewWidget(BasePreviewWidget):
         splitter.addWidget(heatmap_group)
         
         # 时间维度均值曲线
-        curve_group = QGroupBox("时间维度均值")
+        curve_group = QGroupBox(tr_("Mean over time"))
         curve_group.setStyleSheet(Styles.group_box(Styles.COLORS['blue']))
         curve_layout = QVBoxLayout(curve_group)
         curve_layout.setContentsMargins(4, 4, 4, 4)
@@ -112,8 +113,8 @@ class Feature2DPreviewWidget(BasePreviewWidget):
                 axis = self._curve_widget.getPlotItem().getAxis(axis_name)
                 axis.setTickFont(font)
             
-            self._curve_widget.setLabel('left', text='均值')
-            self._curve_widget.setLabel('bottom', text='时间帧')
+            self._curve_widget.setLabel('left', text=tr_('Mean'))
+            self._curve_widget.setLabel('bottom', text=tr_('Frame'))
             
             self._mean_curve = self._curve_widget.plot(
                 pen=pg.mkPen(color='#89b4fa', width=2)
@@ -122,13 +123,13 @@ class Feature2DPreviewWidget(BasePreviewWidget):
             self._curve_widget.setMinimumHeight(150)
             curve_layout.addWidget(self._curve_widget)
         else:
-            placeholder = QLabel("请安装 pyqtgraph")
+            placeholder = QLabel(tr_("Please install pyqtgraph"))
             curve_layout.addWidget(placeholder)
         
         splitter.addWidget(curve_group)
         
         # 统计信息
-        stats_group = QGroupBox("统计信息")
+        stats_group = QGroupBox(tr_("Statistics"))
         stats_group.setStyleSheet(Styles.group_box(Styles.COLORS['lavender']))
         stats_layout = QVBoxLayout(stats_group)
         stats_layout.setContentsMargins(8, 8, 8, 8)
@@ -222,16 +223,16 @@ class Feature2DPreviewWidget(BasePreviewWidget):
     def _update_stats(self, array: np.ndarray):
         """更新统计信息"""
         if array.size == 0:
-            self._stats_label.setText("无数据")
+            self._stats_label.setText(tr_("No data"))
             return
         
         stats_text = (
-            f"  形状: {array.shape[0]} × {array.shape[1]} (特征 × 时间帧)\n"
-            f"  总元素: {array.size:,}\n"
-            f"  最小值: {np.min(array):.6f}\n"
-            f"  最大值: {np.max(array):.6f}\n"
-            f"  均值: {np.mean(array):.6f}\n"
-            f"  标准差: {np.std(array):.6f}"
+            tr_("  Shape: {h} × {w} (features × frames)\n").format(h=array.shape[0], w=array.shape[1])
+            + tr_("  Elements: {n:,}\n").format(n=int(array.size))
+            + tr_("  Min: {value:.6f}\n").format(value=float(np.min(array)))
+            + tr_("  Max: {value:.6f}\n").format(value=float(np.max(array)))
+            + tr_("  Mean: {value:.6f}\n").format(value=float(np.mean(array)))
+            + tr_("  Std: {value:.6f}").format(value=float(np.std(array)))
         )
         self._stats_label.setText(stats_text)
     

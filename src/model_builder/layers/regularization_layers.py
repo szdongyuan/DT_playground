@@ -4,23 +4,22 @@ Regularization Layer Nodes (Dropout, etc.)
 """
 
 from ..layer_base import LayerCategory, LayerNode, register_layer
-
-
+from src.ui.i18n import tr_
 @register_layer
 class DropoutLayer(LayerNode):
     """Dropout层"""
     layer_type = "dropout"
     display_name = "Dropout"
     category = LayerCategory.REGULARIZATION
-    description = "随机丢弃输入单元，防止过拟合"
+    description = tr_("Randomly drops input units to reduce overfitting")
     icon = "💧"
     keras_class = "Dropout"
     
     def _setup_parameters(self):
         self.add_parameter(
             "rate", "float", 0.5,
-            display_name="丢弃率",
-            description="丢弃输入单元的比率",
+            display_name=tr_("Dropout rate"),
+            description=tr_("Fraction of the input units to drop"),
             min_value=0.0,
             max_value=1.0
         )
@@ -40,14 +39,14 @@ class SpatialDropout1DLayer(LayerNode):
     layer_type = "spatial_dropout1d"
     display_name = "SpatialDropout1D"
     category = LayerCategory.REGULARIZATION
-    description = "空间一维Dropout，丢弃整个特征图"
+    description = tr_("Spatial 1D dropout (drops entire feature maps)")
     icon = "💦"
     keras_class = "SpatialDropout1D"
     
     def _setup_parameters(self):
         self.add_parameter(
             "rate", "float", 0.5,
-            display_name="丢弃率",
+            display_name=tr_("Dropout rate"),
             min_value=0.0,
             max_value=1.0
         )
@@ -67,14 +66,14 @@ class SpatialDropout2DLayer(LayerNode):
     layer_type = "spatial_dropout2d"
     display_name = "SpatialDropout2D"
     category = LayerCategory.REGULARIZATION
-    description = "空间二维Dropout"
+    description = tr_("Spatial 2D dropout")
     icon = "💦"
     keras_class = "SpatialDropout2D"
     
     def _setup_parameters(self):
         self.add_parameter(
             "rate", "float", 0.5,
-            display_name="丢弃率",
+            display_name=tr_("Dropout rate"),
             min_value=0.0,
             max_value=1.0
         )
@@ -94,15 +93,15 @@ class GaussianNoiseLayer(LayerNode):
     layer_type = "gaussian_noise"
     display_name = "GaussianNoise"
     category = LayerCategory.REGULARIZATION
-    description = "应用加性高斯噪声"
+    description = tr_("Applies additive Gaussian noise")
     icon = "🌫️"
     keras_class = "GaussianNoise"
     
     def _setup_parameters(self):
         self.add_parameter(
             "stddev", "float", 0.1,
-            display_name="标准差",
-            description="噪声分布的标准差",
+            display_name=tr_("Standard deviation"),
+            description=tr_("Standard deviation of the noise distribution"),
             min_value=0.0
         )
     
@@ -121,14 +120,14 @@ class GaussianDropoutLayer(LayerNode):
     layer_type = "gaussian_dropout"
     display_name = "GaussianDropout"
     category = LayerCategory.REGULARIZATION
-    description = "应用乘性高斯噪声"
+    description = tr_("Applies multiplicative Gaussian noise")
     icon = "🌫️"
     keras_class = "GaussianDropout"
     
     def _setup_parameters(self):
         self.add_parameter(
             "rate", "float", 0.5,
-            display_name="丢弃率",
+            display_name=tr_("Dropout rate"),
             min_value=0.0,
             max_value=1.0
         )

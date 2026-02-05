@@ -20,6 +20,7 @@ from src.model_builder.model_graph import ModelGraph
 from src.ui.model_editor.layer_palette import LayerPalette
 from src.ui.model_editor.layer_property_panel import LayerPropertyPanel
 from src.ui.model_editor.model_graph_widget import ModelGraphWidget
+from src.ui.i18n import tr_
 from src.ui.styles import Styles
 from src.utils.config import config
 
@@ -121,7 +122,7 @@ class ModelBuilderView(QWidget):
         toolbar_layout.setSpacing(8)
         
         # 模型名称
-        self._model_name_label = QLabel("📐 新建模型")
+        self._model_name_label = QLabel(tr_("📐 New model"))
         self._model_name_label.setStyleSheet(f"""
             font-size: 14px;
             font-weight: bold;
@@ -146,25 +147,25 @@ class ModelBuilderView(QWidget):
         """
         
         # 新建按钮
-        new_btn = QPushButton("📄 新建")
+        new_btn = QPushButton(tr_("📄 New"))
         new_btn.setStyleSheet(btn_style)
         new_btn.clicked.connect(self._on_new)
         toolbar_layout.addWidget(new_btn)
         
         # 打开按钮
-        open_btn = QPushButton("📂 打开")
+        open_btn = QPushButton(tr_("📂 Open"))
         open_btn.setStyleSheet(btn_style)
         open_btn.clicked.connect(self._on_open)
         toolbar_layout.addWidget(open_btn)
         
         # 保存按钮
-        save_btn = QPushButton("💾 保存")
+        save_btn = QPushButton(tr_("💾 Save"))
         save_btn.setStyleSheet(btn_style)
         save_btn.clicked.connect(self._on_save)
         toolbar_layout.addWidget(save_btn)
         
         # 另存为按钮
-        save_as_btn = QPushButton("📋 另存为")
+        save_as_btn = QPushButton(tr_("📋 Save as"))
         save_as_btn.setStyleSheet(btn_style)
         save_as_btn.clicked.connect(self._on_save_as)
         toolbar_layout.addWidget(save_as_btn)
@@ -177,7 +178,7 @@ class ModelBuilderView(QWidget):
         toolbar_layout.addWidget(separator1)
         
         # 导入Keras按钮
-        import_btn = QPushButton("📥 导入Keras")
+        import_btn = QPushButton(tr_("📥 Import Keras"))
         import_btn.setStyleSheet(f"""
             QPushButton {{
                 background: {Styles.COLORS['peach']};
@@ -191,7 +192,7 @@ class ModelBuilderView(QWidget):
                 background: {Styles.COLORS['yellow']};
             }}
         """)
-        import_btn.setToolTip("从已训练的 .keras/.h5 模型文件导入架构")
+        import_btn.setToolTip(tr_("Import architecture from a trained .keras/.h5 model file"))
         import_btn.clicked.connect(self._on_import_keras)
         toolbar_layout.addWidget(import_btn)
         
@@ -203,7 +204,7 @@ class ModelBuilderView(QWidget):
         toolbar_layout.addWidget(separator2)
         
         # 构建按钮
-        build_btn = QPushButton("🔨 构建模型")
+        build_btn = QPushButton(tr_("🔨 Build model"))
         build_btn.setStyleSheet(f"""
             QPushButton {{
                 background: {Styles.COLORS['green']};
@@ -221,13 +222,13 @@ class ModelBuilderView(QWidget):
         toolbar_layout.addWidget(build_btn)
         
         # 适应视图按钮
-        fit_btn = QPushButton("🔍 适应")
+        fit_btn = QPushButton(tr_("🔍 Fit"))
         fit_btn.setStyleSheet(btn_style)
         fit_btn.clicked.connect(self._graph_widget.fit_to_selection)
         toolbar_layout.addWidget(fit_btn)
         
         # 清空按钮
-        clear_btn = QPushButton("🗑️ 清空")
+        clear_btn = QPushButton(tr_("🗑️ Clear"))
         clear_btn.setStyleSheet(btn_style)
         clear_btn.clicked.connect(self._on_clear)
         toolbar_layout.addWidget(clear_btn)
@@ -289,8 +290,9 @@ class ModelBuilderView(QWidget):
         """新建模型"""
         if self._model_graph and self._model_graph.is_dirty:
             reply = QMessageBox.question(
-                self, "确认",
-                "当前模型有未保存的更改，是否继续？",
+                self,
+                tr_("Confirm"),
+                tr_("The current model has unsaved changes. Continue?"),
                 QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
             )
             if reply == QMessageBox.StandardButton.No:
@@ -307,9 +309,10 @@ class ModelBuilderView(QWidget):
     def _on_open(self):
         """打开模型"""
         file_path, _ = QFileDialog.getOpenFileName(
-            self, "打开模型",
+            self,
+            tr_("Open model"),
             "models",
-            "模型文件 (*.model.json);;所有文件 (*)"
+            tr_("Model files (*.model.json);;All files (*)")
         )
         
         if file_path:
@@ -328,15 +331,20 @@ class ModelBuilderView(QWidget):
                 except Exception:
                     pass
             except Exception as e:
-                QMessageBox.critical(self, "错误", f"无法加载模型: {str(e)}")
+                QMessageBox.critical(
+                    self,
+                    tr_("Error"),
+                    tr_("Failed to load model: {error}").format(error=str(e)),
+                )
                 logger.exception("加载模型失败")
     
     def _on_import_keras(self):
         """从 Keras 模型文件导入架构"""
         file_path, _ = QFileDialog.getOpenFileName(
-            self, "导入 Keras 模型",
+            self,
+            tr_("Import Keras model"),
             "models",
-            "Keras模型 (*.keras *.h5);;所有文件 (*)"
+            tr_("Keras models (*.keras *.h5);;All files (*)")
         )
         
         if not file_path:
@@ -345,8 +353,9 @@ class ModelBuilderView(QWidget):
         # 检查当前是否有未保存的更改
         if self._model_graph and self._model_graph.is_dirty:
             reply = QMessageBox.question(
-                self, "确认",
-                "当前模型有未保存的更改，是否继续导入？",
+                self,
+                tr_("Confirm"),
+                tr_("The current model has unsaved changes. Continue importing?"),
                 QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
             )
             if reply == QMessageBox.StandardButton.No:
@@ -357,7 +366,7 @@ class ModelBuilderView(QWidget):
             from src.model_builder.keras_parser import KerasModelParser
             
             # 显示进度提示
-            self._model_name_label.setText("📐 正在导入...")
+            self._model_name_label.setText(tr_("📐 Importing..."))
             
             # 加载 Keras 模型（不编译）
             keras_model = tf.keras.models.load_model(file_path, compile=False)
@@ -383,28 +392,46 @@ class ModelBuilderView(QWidget):
             unsupported = parser.get_unsupported_layers()
             warning_msg = ""
             if unsupported:
-                warning_msg = f"\n\n⚠️ 以下层类型暂不支持，已跳过:\n{', '.join(unsupported)}"
+                warning_msg = tr_(
+                    "\n\n⚠️ The following layer type(s) are not supported and were skipped:\n{layers}"
+                ).format(layers=", ".join(unsupported))
             
             # 统计冻结层
             frozen_count = sum(1 for layer in self._model_graph.layers.values() if not layer.trainable)
-            frozen_info = f"\n已冻结层: {frozen_count}" if frozen_count > 0 else ""
+            frozen_info = (
+                tr_("\nFrozen layers: {count}").format(count=frozen_count)
+                if frozen_count > 0
+                else ""
+            )
             
             QMessageBox.information(
-                self, "导入成功",
-                f"模型已导入: {summary['name']}\n\n"
-                f"层数: {summary['layer_count']}\n"
-                f"总参数量: {summary['total_params']:,}\n"
-                f"可训练参数: {summary['trainable_params']:,}\n"
-                f"不可训练参数: {summary['non_trainable_params']:,}"
-                f"{frozen_info}"
-                f"{warning_msg}"
+                self,
+                tr_("Import succeeded"),
+                tr_(
+                    "Model imported: {name}\n\n"
+                    "Layers: {layer_count}\n"
+                    "Total params: {total_params:,}\n"
+                    "Trainable params: {trainable_params:,}\n"
+                    "Non-trainable params: {non_trainable_params:,}"
+                ).format(
+                    name=summary["name"],
+                    layer_count=summary["layer_count"],
+                    total_params=summary["total_params"],
+                    trainable_params=summary["trainable_params"],
+                    non_trainable_params=summary["non_trainable_params"],
+                )
+                + f"{frozen_info}{warning_msg}",
             )
             
             logger.info(f"Keras模型已导入: {file_path}")
             
         except Exception as e:
             self._update_title()
-            QMessageBox.critical(self, "导入失败", f"无法导入模型:\n{str(e)}")
+            QMessageBox.critical(
+                self,
+                tr_("Import failed"),
+                tr_("Failed to import model:\n{error}").format(error=str(e)),
+            )
             logger.exception("导入Keras模型失败")
     
     def _on_save(self):
@@ -422,7 +449,7 @@ class ModelBuilderView(QWidget):
     def _on_save_as(self):
         """模型另存为"""
         if not self._model_graph:
-            QMessageBox.warning(self, "警告", "没有可保存的模型")
+            QMessageBox.warning(self, tr_("Warning"), tr_("No model to save."))
             return
         
         # 默认文件名（确保使用英文名称）
@@ -434,9 +461,10 @@ class ModelBuilderView(QWidget):
         default_path = f"models/{default_name}.model.json"
         
         file_path, _ = QFileDialog.getSaveFileName(
-            self, "模型另存为",
+            self,
+            tr_("Save model as"),
             default_path,
-            "模型文件 (*.model.json);;所有文件 (*)"
+            tr_("Model files (*.model.json);;All files (*)")
         )
         
         if not file_path:
@@ -481,24 +509,33 @@ class ModelBuilderView(QWidget):
             except Exception:
                 pass
             
-            QMessageBox.information(self, "保存成功", f"模型已保存到:\n{file_path}")
+            QMessageBox.information(
+                self,
+                tr_("Saved"),
+                tr_("Model saved to:\n{path}").format(path=file_path),
+            )
             logger.info(f"模型已保存: {file_path}")
         except Exception as e:
-            QMessageBox.critical(self, "错误", f"无法保存模型: {str(e)}")
+            QMessageBox.critical(
+                self,
+                tr_("Error"),
+                tr_("Failed to save model: {error}").format(error=str(e)),
+            )
             logger.exception("保存模型失败")
     
     def _on_build(self):
         """构建模型"""
         if not self._model_graph:
-            QMessageBox.warning(self, "警告", "没有可构建的模型")
+            QMessageBox.warning(self, tr_("Warning"), tr_("No model to build."))
             return
         
         # 验证模型
         valid, errors = self._model_graph.validate()
         if not valid:
             QMessageBox.warning(
-                self, "验证失败",
-                "模型验证失败:\n" + "\n".join(errors)
+                self,
+                tr_("Validation failed"),
+                tr_("Model validation failed:\n") + "\n".join(errors),
             )
             return
         
@@ -510,12 +547,19 @@ class ModelBuilderView(QWidget):
             config = self._model_graph.get_compile_config_from_output()
             if config:
                 compile_info = (
-                    f"优化器: {config.get('optimizer', 'Adam')} (lr={config.get('learning_rate', 0.001)})\n"
-                    f"损失函数: {config.get('loss', 'mse')}\n"
-                    f"评估指标: {', '.join(config.get('metrics', ['mae']))}"
+                    tr_(
+                        "Optimizer: {optimizer} (lr={lr})\n"
+                        "Loss: {loss}\n"
+                        "Metrics: {metrics}"
+                    ).format(
+                        optimizer=config.get("optimizer", "Adam"),
+                        lr=config.get("learning_rate", 0.001),
+                        loss=config.get("loss", "mse"),
+                        metrics=", ".join(config.get("metrics", ["mae"])),
+                    )
                 )
             else:
-                compile_info = "使用默认编译配置"
+                compile_info = tr_("Using default compile config")
             
             # 显示模型摘要
             summary_lines = []
@@ -534,15 +578,20 @@ class ModelBuilderView(QWidget):
             self.build_requested.emit()
             
         except Exception as e:
-            QMessageBox.critical(self, "构建失败", f"模型构建失败: {str(e)}")
+            QMessageBox.critical(
+                self,
+                tr_("Build failed"),
+                tr_("Model build failed: {error}").format(error=str(e)),
+            )
             logger.exception("构建模型失败")
     
     def _on_clear(self):
         """清空画布"""
         if self._model_graph and self._model_graph.layers:
             reply = QMessageBox.question(
-                self, "确认",
-                "确定要清空所有层吗？",
+                self,
+                tr_("Confirm"),
+                tr_("Clear all layers?"),
                 QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
             )
             if reply == QMessageBox.StandardButton.No:
@@ -596,7 +645,7 @@ class ModelBuilderView(QWidget):
     def _show_build_success_dialog(self, compile_info: str, summary_text: str):
         """显示构建成功对话框（带滚动条的模型架构显示）"""
         dialog = QDialog(self)
-        dialog.setWindowTitle("✅ 模型构建成功")
+        dialog.setWindowTitle(tr_("✅ Model built successfully"))
         dialog.setMinimumSize(700, 500)
         dialog.resize(800, 600)
         
@@ -605,7 +654,7 @@ class ModelBuilderView(QWidget):
         layout.setSpacing(12)
         
         # 成功提示
-        success_label = QLabel("🎉 模型构建并编译成功！")
+        success_label = QLabel(tr_("🎉 Model built and compiled successfully!"))
         success_label.setStyleSheet(f"""
             QLabel {{
                 font-size: 16px;
@@ -617,7 +666,7 @@ class ModelBuilderView(QWidget):
         layout.addWidget(success_label)
         
         # 编译配置区域
-        compile_label = QLabel("【编译配置】")
+        compile_label = QLabel(tr_("Compile config"))
         compile_label.setStyleSheet(f"""
             QLabel {{
                 font-size: 14px;
@@ -641,7 +690,7 @@ class ModelBuilderView(QWidget):
         layout.addWidget(compile_info_label)
         
         # 模型架构区域
-        arch_label = QLabel("【模型架构】")
+        arch_label = QLabel(tr_("Model architecture"))
         arch_label.setStyleSheet(f"""
             QLabel {{
                 font-size: 14px;
@@ -686,7 +735,7 @@ class ModelBuilderView(QWidget):
         layout.addWidget(summary_text_edit, 1)  # stretch factor = 1
         
         # 确定按钮
-        ok_btn = QPushButton("确定")
+        ok_btn = QPushButton(tr_("OK"))
         ok_btn.setStyleSheet(f"""
             QPushButton {{
                 background: {Styles.COLORS['green']};

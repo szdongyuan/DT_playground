@@ -10,7 +10,7 @@ import numpy as np
 from ....node_base import BaseNode, NodeCategory, register_node
 from ....port import DataType
 from ..base import FeatureData, extract_from_audio_or_list, validate_audio_input, AudioData
-
+from src.ui.i18n import tr_
 # Import unified feature extractor
 from src.audio.features import FeatureExtractor
 
@@ -24,46 +24,46 @@ class MelSpectrogramNode(BaseNode):
     """
     
     node_type = "mel_spectrogram"
-    display_name = "Mel频谱图"
+    display_name = tr_("Mel spectrogram")
     category = NodeCategory.FEATURE
-    subcategory = "二维特征 (2D)"
-    description = "提取Mel频谱图特征"
+    subcategory = tr_("2D features")
+    description = tr_("Extract Mel spectrogram")
     icon = "📈"
     
     def _setup_ports(self):
-        self.add_input("audio", DataType.AUDIO, "音频")
-        self.add_output("feature", DataType.FEATURE, "Mel频谱")
+        self.add_input("audio", DataType.AUDIO, tr_("Audio"))
+        self.add_output("feature", DataType.FEATURE, tr_("Mel spectrogram"))
     
     def _setup_parameters(self):
         self.add_parameter(
             "n_mels", "int", 128,
-            display_name="Mel滤波器数",
+            display_name=tr_("Mel filters"),
             min_value=20, max_value=256
         )
         self.add_parameter(
             "n_fft", "int", 2048,
-            display_name="FFT窗口大小",
+            display_name=tr_("FFT window size"),
             min_value=256, max_value=8192
         )
         self.add_parameter(
             "hop_length", "int", 512,
-            display_name="帧移",
+            display_name=tr_("Hop length"),
             min_value=64, max_value=2048
         )
         self.add_parameter(
             "fmin", "float", 0.0,
-            display_name="最低频率(Hz)",
+            display_name=tr_("Min frequency (Hz)"),
             min_value=0.0, max_value=1000.0
         )
         self.add_parameter(
             "fmax", "float", 8000.0,
-            display_name="最高频率(Hz)",
+            display_name=tr_("Max frequency (Hz)"),
             min_value=1000.0, max_value=22050.0
         )
         self.add_parameter(
             "power_to_db", "bool", True,
-            display_name="转换为dB",
-            description="将功率谱转换为dB刻度"
+            display_name=tr_("Convert to dB"),
+            description=tr_("Convert power spectrogram to dB scale"),
         )
     
     def execute(self) -> bool:

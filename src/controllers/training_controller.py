@@ -11,8 +11,7 @@ from typing import Any, Dict, Optional
 from PyQt6.QtCore import QObject, pyqtSignal
 
 from src.core.event_bus import get_event_bus
-
-
+from src.ui.i18n import tr_
 logger = logging.getLogger(__name__)
 
 
@@ -90,9 +89,11 @@ class TrainingController(QObject):
         
         self.training_started.emit(total_epochs)
         self._event_bus.training_started.emit(total_epochs)
-        self._event_bus.emit_status(f"开始训练 (共 {total_epochs} epochs)")
+        self._event_bus.emit_status(
+            tr_("Training started (total {epochs} epochs)").format(epochs=total_epochs)
+        )
         
-        logger.info(f"训练开始: {total_epochs} epochs")
+        logger.info(f"Training started: {total_epochs} epochs")
     
     def update_epoch(self, current: int, total: int, metrics: Dict[str, Any]):
         """
@@ -138,20 +139,25 @@ class TrainingController(QObject):
             final_loss = self._training_history.get('loss', [0])[-1] if self._training_history.get('loss') else 0
             final_acc = self._training_history.get('accuracy', [0])[-1] if self._training_history.get('accuracy') else 0
             self._event_bus.emit_status(
-                f"训练完成 - 最终 loss: {final_loss:.4f}, acc: {final_acc:.4f}"
+                tr_("Training finished - final loss: {loss:.4f}, acc: {acc:.4f}").format(
+                    loss=final_loss,
+                    acc=final_acc,
+                )
             )
         else:
-            self._event_bus.emit_status(f"训练失败: {message}")
+            self._event_bus.emit_status(
+                tr_("Training failed: {message}").format(message=message)
+            )
         
-        logger.info(f"训练结束: success={success}, message={message}")
+        logger.info(f"Training finished: success={success}, message={message}")
     
     def stop_training(self):
         """停止训练"""
         if self._is_training:
             self._is_training = False
             self._event_bus.training_stopped.emit()
-            self._event_bus.emit_status("训练已停止")
-            logger.info("训练被用户停止")
+            self._event_bus.emit_status(tr_("Training stopped"))
+            logger.info("Training stopped by user")
     
     def get_progress(self) -> float:
         """

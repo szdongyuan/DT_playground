@@ -13,8 +13,7 @@ import numpy as np
 # Re-export validate_audio_input for convenience
 from ..preprocessing import validate_audio_input
 from ..data_source import AudioData
-
-
+from src.ui.i18n import tr_
 @dataclass
 class FeatureData:
     """
@@ -61,7 +60,12 @@ class FeatureData:
     def get_channel(self, channel_idx: int) -> np.ndarray:
         """获取指定通道的特征"""
         if channel_idx >= self.channels:
-            raise ValueError(f"通道索引 {channel_idx} 超出范围 (共 {self.channels} 通道)")
+            raise ValueError(
+                tr_("Channel index {idx} out of range (total {channels} channels)").format(
+                    idx=channel_idx,
+                    channels=self.channels,
+                )
+            )
         return self.data[channel_idx]
 
 

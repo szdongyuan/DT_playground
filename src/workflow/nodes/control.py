@@ -13,8 +13,7 @@ from sklearn.model_selection import train_test_split
 
 from ..node_base import BaseNode, NodeCategory, register_node
 from ..port import DataType
-
-
+from src.ui.i18n import tr_
 logger = logging.getLogger(__name__)
 
 
@@ -28,22 +27,22 @@ class LoopNode(BaseNode):
     """
     
     node_type = "loop"
-    display_name = "循环"
+    display_name = tr_("Loop")
     category = NodeCategory.CONTROL
-    description = "遍历数据列表"
+    description = tr_("Iterate over a list and output items one by one")
     icon = "🔄"
     
     def _setup_ports(self):
-        self.add_input("data_list", DataType.ANY, "数据列表")
-        self.add_output("item", DataType.ANY, "当前项")
-        self.add_output("index", DataType.ANY, "当前索引")
-        self.add_output("total", DataType.ANY, "总数")
+        self.add_input("data_list", DataType.ANY, tr_("Data list"))
+        self.add_output("item", DataType.ANY, tr_("Current item"))
+        self.add_output("index", DataType.ANY, tr_("Current index"))
+        self.add_output("total", DataType.ANY, tr_("Total"))
     
     def _setup_parameters(self):
         self.add_parameter(
             "max_iterations", "int", 0,
-            display_name="最大迭代次数",
-            description="0表示不限制",
+            display_name=tr_("Max iterations"),
+            description=tr_("0 means no limit"),
             min_value=0
         )
     
@@ -55,7 +54,7 @@ class LoopNode(BaseNode):
         data_list = self.get_input_data("data_list")
         
         if data_list is None:
-            self.error_message = "未提供数据列表"
+            self.error_message = tr_("No data list provided")
             return False
         
         if not isinstance(data_list, (list, tuple, np.ndarray)):
@@ -81,7 +80,7 @@ class LoopNode(BaseNode):
             
             return True
         else:
-            self.error_message = "数据列表为空"
+            self.error_message = tr_("Data list is empty")
             return False
     
     def has_more(self) -> bool:
@@ -115,49 +114,49 @@ class SplitNode(BaseNode):
     """
     
     node_type = "split"
-    display_name = "数据分割"
+    display_name = tr_("Split dataset")
     category = NodeCategory.CONTROL
-    description = "分割数据集"
+    description = tr_("Split data into train/val/test sets")
     icon = "✂️"
     
     def _setup_ports(self):
-        self.add_input("data", DataType.ANY, "数据")
-        self.add_input("labels", DataType.LABEL, "标签", required=False)
-        self.add_output("train_data", DataType.ANY, "训练数据")
-        self.add_output("train_labels", DataType.LABEL, "训练标签")
-        self.add_output("val_data", DataType.ANY, "验证数据")
-        self.add_output("val_labels", DataType.LABEL, "验证标签")
-        self.add_output("test_data", DataType.ANY, "测试数据")
-        self.add_output("test_labels", DataType.LABEL, "测试标签")
+        self.add_input("data", DataType.ANY, tr_("Data"))
+        self.add_input("labels", DataType.LABEL, tr_("Labels"), required=False)
+        self.add_output("train_data", DataType.ANY, tr_("Train data"))
+        self.add_output("train_labels", DataType.LABEL, tr_("Train labels"))
+        self.add_output("val_data", DataType.ANY, tr_("Validation data"))
+        self.add_output("val_labels", DataType.LABEL, tr_("Validation labels"))
+        self.add_output("test_data", DataType.ANY, tr_("Test data"))
+        self.add_output("test_labels", DataType.LABEL, tr_("Test labels"))
     
     def _setup_parameters(self):
         self.add_parameter(
             "train_ratio", "float", 0.7,
-            display_name="训练集比例",
+            display_name=tr_("Train ratio"),
             min_value=0.1, max_value=0.9
         )
         self.add_parameter(
             "val_ratio", "float", 0.15,
-            display_name="验证集比例",
+            display_name=tr_("Validation ratio"),
             min_value=0.0, max_value=0.4
         )
         self.add_parameter(
             "test_ratio", "float", 0.15,
-            display_name="测试集比例",
+            display_name=tr_("Test ratio"),
             min_value=0.0, max_value=0.4
         )
         self.add_parameter(
             "shuffle", "bool", True,
-            display_name="随机打乱"
+            display_name=tr_("Shuffle")
         )
         self.add_parameter(
             "stratify", "bool", True,
-            display_name="分层抽样",
-            description="保持各类别比例"
+            display_name=tr_("Stratify"),
+            description=tr_("Keep class proportions")
         )
         self.add_parameter(
             "random_seed", "int", 42,
-            display_name="随机种子",
+            display_name=tr_("Random seed"),
             min_value=0
         )
     
@@ -166,7 +165,7 @@ class SplitNode(BaseNode):
         labels = self.get_input_data("labels")
         
         if data is None:
-            self.error_message = "未提供数据"
+            self.error_message = tr_("No data provided")
             return False
         
         train_ratio = self.get_parameter("train_ratio")
@@ -248,13 +247,17 @@ class SplitNode(BaseNode):
             self.set_output_data("test_data", test_data)
             self.set_output_data("test_labels", test_labels)
             
-            msg = f"数据分割完成: 训练={len(train_data)}, 验证={len(val_data)}, 测试={len(test_data)}"
+            msg = tr_("Split complete: train={train}, val={val}, test={test}").format(
+                train=len(train_data),
+                val=len(val_data),
+                test=len(test_data),
+            )
             self.report_status(msg)
             logger.info(msg)
             return True
             
         except Exception as e:
-            self.error_message = f"分割失败: {str(e)}"
+            self.error_message = tr_("Split failed: {error}").format(error=str(e))
             logger.exception("数据分割异常")
             return False
 
@@ -268,22 +271,22 @@ class MergeNode(BaseNode):
     """
     
     node_type = "merge"
-    display_name = "合并"
+    display_name = tr_("Merge")
     category = NodeCategory.CONTROL
-    description = "合并多个数据源"
+    description = tr_("Merge multiple data sources")
     icon = "🔗"
     
     def _setup_ports(self):
-        self.add_input("data_1", DataType.ANY, "数据1")
-        self.add_input("data_2", DataType.ANY, "数据2")
-        self.add_input("data_3", DataType.ANY, "数据3", required=False)
-        self.add_input("data_4", DataType.ANY, "数据4", required=False)
-        self.add_output("merged", DataType.ANY, "合并数据")
+        self.add_input("data_1", DataType.ANY, tr_("Data 1"))
+        self.add_input("data_2", DataType.ANY, tr_("Data 2"))
+        self.add_input("data_3", DataType.ANY, tr_("Data 3"), required=False)
+        self.add_input("data_4", DataType.ANY, tr_("Data 4"), required=False)
+        self.add_output("merged", DataType.ANY, tr_("Merged data"))
     
     def _setup_parameters(self):
         self.add_parameter(
             "merge_mode", "choice", "concat",
-            display_name="合并模式",
+            display_name=tr_("Merge mode"),
             choices=["concat", "stack", "zip"]
         )
     
@@ -303,7 +306,7 @@ class MergeNode(BaseNode):
                     all_data.append(d)
         
         if not all_data:
-            self.error_message = "未提供有效数据"
+            self.error_message = tr_("No valid data provided")
             return False
         
         merge_mode = self.get_parameter("merge_mode")
@@ -338,17 +341,17 @@ class PassthroughNode(BaseNode):
     """
     
     node_type = "passthrough"
-    display_name = "透传"
+    display_name = tr_("Passthrough")
     category = NodeCategory.CONTROL
-    description = "透传数据，不做处理"
+    description = tr_("Pass data through without modification")
     icon = "◇"
     
     # 紧凑节点标志
     compact_mode = True
     
     def _setup_ports(self):
-        self.add_input("in", DataType.ANY, "入")
-        self.add_output("out", DataType.ANY, "出")
+        self.add_input("in", DataType.ANY, tr_("In"))
+        self.add_output("out", DataType.ANY, tr_("Out"))
     
     def execute(self) -> bool:
         """透传数据"""
@@ -368,9 +371,9 @@ class BreakpointNode(BaseNode):
     """
     
     node_type = "breakpoint"
-    display_name = "断点"
+    display_name = tr_("Breakpoint")
     category = NodeCategory.CONTROL
-    description = "暂停工作流执行，查看数据"
+    description = tr_("Pause workflow execution to inspect data")
     icon = "🔴"
     
     # 标识这是一个断点节点
@@ -378,23 +381,23 @@ class BreakpointNode(BaseNode):
     
     def _setup_ports(self):
         # 通用数据透传端口
-        self.add_input("data", DataType.ANY, "数据")
-        self.add_output("data", DataType.ANY, "数据")
+        self.add_input("data", DataType.ANY, tr_("Data"))
+        self.add_output("data", DataType.ANY, tr_("Data"))
         
         # 可选的辅助端口（用于查看多个数据流）
-        self.add_input("data_2", DataType.ANY, "数据2", required=False)
-        self.add_output("data_2", DataType.ANY, "数据2")
+        self.add_input("data_2", DataType.ANY, tr_("Data 2"), required=False)
+        self.add_output("data_2", DataType.ANY, tr_("Data 2"))
     
     def _setup_parameters(self):
         self.add_parameter(
             "enabled", "bool", True,
-            display_name="启用断点",
-            description="是否在此处暂停"
+            display_name=tr_("Enable breakpoint"),
+            description=tr_("Pause execution at this node")
         )
         self.add_parameter(
             "description", "str", "",
-            display_name="断点描述",
-            description="描述此断点的用途"
+            display_name=tr_("Breakpoint description"),
+            description=tr_("Describe the purpose of this breakpoint")
         )
     
     def execute(self) -> bool:
@@ -411,9 +414,9 @@ class BreakpointNode(BaseNode):
         # 报告状态
         desc = self.get_parameter("description")
         if desc:
-            self.report_status(f"断点: {desc}")
+            self.report_status(tr_("Breakpoint: {desc}").format(desc=desc))
         else:
-            self.report_status("断点已触发")
+            self.report_status(tr_("Breakpoint triggered"))
         
         logger.info(f"断点节点执行完成: {self.node_id}")
         return True
@@ -434,27 +437,27 @@ class ValidateShapeNode(BaseNode):
     """
     
     node_type = "validate_shape"
-    display_name = "校验Shape"
+    display_name = tr_("Validate shape")
     category = NodeCategory.CONTROL
-    description = "校验批量数据的shape一致性"
+    description = tr_("Validate shape consistency in a batch")
     icon = "✅"
     
     def _setup_ports(self):
-        self.add_input("data", DataType.ANY, "数据批次")
-        self.add_output("data", DataType.ANY, "验证通过的数据")
-        self.add_output("is_valid", DataType.ANY, "是否通过")
-        self.add_output("shape_info", DataType.ANY, "Shape信息")
+        self.add_input("data", DataType.ANY, tr_("Batch data"))
+        self.add_output("data", DataType.ANY, tr_("Validated data"))
+        self.add_output("is_valid", DataType.ANY, tr_("Is valid"))
+        self.add_output("shape_info", DataType.ANY, tr_("Shape info"))
     
     def _setup_parameters(self):
         self.add_parameter(
             "strict_mode", "bool", True,
-            display_name="严格模式",
-            description="Shape不一致时是否中断工作流（否则仅警告）"
+            display_name=tr_("Strict mode"),
+            description=tr_("Stop workflow on inconsistency (otherwise warn only)")
         )
         self.add_parameter(
             "ignore_batch_dim", "bool", False,
-            display_name="忽略批次维度",
-            description="是否忽略第一个维度（批次维度）的差异"
+            display_name=tr_("Ignore batch dimension"),
+            description=tr_("Ignore differences in the first dimension (batch dimension)")
         )
     
     def _get_shape(self, item: Any) -> Tuple[int, ...]:
@@ -492,7 +495,7 @@ class ValidateShapeNode(BaseNode):
         data = self.get_input_data("data")
         
         if data is None:
-            self.error_message = "未提供数据"
+            self.error_message = tr_("No data provided")
             return False
         
         # 确保是列表形式
@@ -500,7 +503,7 @@ class ValidateShapeNode(BaseNode):
             data = [data]
         
         if len(data) == 0:
-            self.error_message = "数据列表为空"
+            self.error_message = tr_("Data list is empty")
             return False
         
         strict_mode = self.get_parameter("strict_mode")
@@ -551,7 +554,10 @@ class ValidateShapeNode(BaseNode):
         
         if is_valid:
             # 所有 shape 一致，数据通过
-            msg = f"✅ Shape校验通过: {len(data)} 个数据, 统一shape: {shapes[0]}"
+            msg = tr_("✅ Shape validation passed: {count} items, shape: {shape}").format(
+                count=len(data),
+                shape=shapes[0],
+            )
             logger.info(msg)
             self.report_status(msg)
             
@@ -572,19 +578,29 @@ class ValidateShapeNode(BaseNode):
             
             # 打印详细错误信息
             error_lines = [
-                f"❌ Shape校验失败: 发现 {len(inconsistent_items)} 个不一致项",
-                f"   预期shape: {first_shape}",
-                f"   Shape分布: {shape_counter}"
+                tr_("❌ Shape validation failed: {count} inconsistent items").format(
+                    count=len(inconsistent_items)
+                ),
+                tr_("   Expected shape: {shape}").format(shape=first_shape),
+                tr_("   Shape distribution: {dist}").format(dist=shape_counter),
             ]
             
             # 显示前5个不一致项
             for item in inconsistent_items[:5]:
                 error_lines.append(
-                    f"   - 索引 {item['index']}: 期望 {item['expected']}, 实际 {item['actual']}"
+                    tr_("   - Index {index}: expected {expected}, got {actual}").format(
+                        index=item["index"],
+                        expected=item["expected"],
+                        actual=item["actual"],
+                    )
                 )
             
             if len(inconsistent_items) > 5:
-                error_lines.append(f"   ... 还有 {len(inconsistent_items) - 5} 个不一致项")
+                error_lines.append(
+                    tr_("   ... and {count} more").format(
+                        count=len(inconsistent_items) - 5
+                    )
+                )
             
             error_msg = "\n".join(error_lines)
             logger.error(error_msg)
@@ -595,10 +611,16 @@ class ValidateShapeNode(BaseNode):
             
             if strict_mode:
                 # 严格模式：中断工作流
-                self.error_message = f"Shape不一致: 发现 {len(inconsistent_items)} 个不一致项"
+                self.error_message = tr_("Shape inconsistent: {count} inconsistent items").format(
+                    count=len(inconsistent_items)
+                )
                 return False
             else:
                 # 非严格模式：警告但继续，输出原始数据
-                self.report_status(f"⚠️ Shape校验警告: {len(inconsistent_items)} 个不一致项")
+                self.report_status(
+                    tr_("⚠️ Shape validation warning: {count} inconsistent items").format(
+                        count=len(inconsistent_items)
+                    )
+                )
                 self.set_output_data("data", list(data))
                 return True

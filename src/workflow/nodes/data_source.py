@@ -19,8 +19,7 @@ import soundfile as sf
 
 from ..node_base import BaseNode, NodeCategory, register_node
 from ..port import DataType
-
-
+from src.ui.i18n import tr_
 logger = logging.getLogger(__name__)
 
 
@@ -71,7 +70,12 @@ class AudioData:
     def get_channel(self, channel_idx: int) -> np.ndarray:
         """获取指定通道的数据 (返回 1D 数组)"""
         if channel_idx >= self.channels:
-            raise ValueError(f"通道索引 {channel_idx} 超出范围 (共 {self.channels} 通道)")
+            raise ValueError(
+                tr_("Channel index {idx} out of range (total {channels} channels)").format(
+                    idx=channel_idx,
+                    channels=self.channels,
+                )
+            )
         return self.data[channel_idx]
     
     def to_mono(self, method: str = "mean") -> 'AudioData':
@@ -110,52 +114,54 @@ class AudioFolderNode(BaseNode):
     """
     
     node_type = "audio_folder"
-    display_name = "音频文件夹"
+    display_name = tr_("Audio folder")
     category = NodeCategory.DATA_SOURCE
-    description = "加载文件夹中的音频文件，支持按子目录生成标签"
+    description = tr_("Load audio files from a folder, optionally auto-label by subfolder")
     icon = "📂"
     
     SUPPORTED_FORMATS = {'.wav', '.mp3', '.flac', '.ogg', '.m4a', '.aac'}
     
     def _setup_ports(self):
-        self.add_output("audio", DataType.AUDIO, "音频列表")
-        self.add_output("labels", DataType.LABEL, "标签列表")
-        self.add_output("file_paths", DataType.ANY, "文件路径列表")
+        self.add_output("audio", DataType.AUDIO, tr_("Audio list"))
+        self.add_output("labels", DataType.LABEL, tr_("Label list"))
+        self.add_output("file_paths", DataType.ANY, tr_("File path list"))
     
     def _setup_parameters(self):
         self.add_parameter(
             "folder_path", "folder", "",
-            display_name="文件夹路径",
-            description="包含音频文件的目录",
+            display_name=tr_("Folder path"),
+            description=tr_("Directory containing audio files"),
             default_directory="audio_data"
         )
         self.add_parameter(
             "recursive", "bool", True,
-            display_name="递归扫描",
-            description="是否扫描子目录"
+            display_name=tr_("Recursive scan"),
+            description=tr_("Scan subfolders")
         )
         self.add_parameter(
             "auto_label", "bool", True,
-            display_name="自动标签",
-            description="根据子目录名称自动生成标签"
+            display_name=tr_("Auto label"),
+            description=tr_("Auto-generate labels from subfolder names")
         )
         self.add_parameter(
             "target_sr", "int", 22050,
-            display_name="目标采样率",
-            description="加载时统一的采样率",
+            display_name=tr_("Target sample rate"),
+            description=tr_("Resample to this sample rate when loading"),
             min_value=8000, max_value=48000
         )
         self.add_parameter(
             "max_files", "int", 0,
-            display_name="最大文件数",
-            description="最多加载的文件数，0表示不限制",
+            display_name=tr_("Max files"),
+            description=tr_("Maximum number of files to load (0 = no limit)"),
             min_value=0
         )
     
     def execute(self) -> bool:
         folder_path = self.get_parameter("folder_path")
         if not folder_path or not os.path.isdir(folder_path):
-            self.error_message = f"目录不存在: {folder_path}"
+            self.error_message = tr_("Directory does not exist: {path}").format(
+                path=folder_path
+            )
             return False
         
         recursive = self.get_parameter("recursive")
@@ -186,7 +192,7 @@ class AudioFolderNode(BaseNode):
             audio_files = audio_files[:max_files]
         
         logger.info(f"找到 {len(audio_files)} 个音频文件")
-        self.report_status(f"正在加载 {len(audio_files)} 个音频文件...")
+        self.report_status(tr_("Loading {count} audio files...").format(count=len(audio_files)))
         
         for file_path in audio_files:
             try:
@@ -222,7 +228,7 @@ class AudioFolderNode(BaseNode):
                 continue
         
         if not audio_list:
-            self.error_message = "未找到有效的音频文件"
+            self.error_message = tr_("No valid audio files found")
             return False
         
         # 设置输出
@@ -231,7 +237,12 @@ class AudioFolderNode(BaseNode):
         self.set_output_data("file_paths", file_paths)
         
         logger.info(f"加载完成: {len(audio_list)} 个音频, {len(label_map)} 个类别")
-        self.report_status(f"音频加载完成: {len(audio_list)} 个文件, {len(label_map)} 个类别")
+        self.report_status(
+            tr_("Audio loaded: {files} files, {classes} classes").format(
+                files=len(audio_list),
+                classes=len(label_map),
+            )
+        )
         return True
 
 
@@ -244,25 +255,25 @@ class AudioFileNode(BaseNode):
     """
     
     node_type = "audio_file"
-    display_name = "音频文件"
+    display_name = tr_("Audio file")
     category = NodeCategory.DATA_SOURCE
-    description = "加载单个音频文件"
+    description = tr_("Load a single audio file")
     icon = "🎵"
     
     def _setup_ports(self):
-        self.add_output("audio", DataType.AUDIO, "音频")
+        self.add_output("audio", DataType.AUDIO, tr_("Audio"))
     
     def _setup_parameters(self):
         self.add_parameter(
             "file_path", "file", "",
-            display_name="文件路径",
-            description="音频文件路径",
+            display_name=tr_("File path"),
+            description=tr_("Audio file path"),
             file_filter="Audio Files (*.wav *.mp3 *.flac *.ogg *.m4a)",
             default_directory="audio_data"
         )
         self.add_parameter(
             "target_sr", "int", 22050,
-            display_name="目标采样率",
+            display_name=tr_("Target sample rate"),
             min_value=8000, max_value=48000
         )
     
@@ -271,7 +282,7 @@ class AudioFileNode(BaseNode):
         target_sr = self.get_parameter("target_sr")
         
         if not file_path or not os.path.isfile(file_path):
-            self.error_message = f"文件不存在: {file_path}"
+            self.error_message = tr_("File does not exist: {path}").format(path=file_path)
             return False
         
         try:
@@ -287,7 +298,7 @@ class AudioFileNode(BaseNode):
             self.set_output_data("audio", audio)
             return True
         except Exception as e:
-            self.error_message = f"加载音频失败: {e}"
+            self.error_message = tr_("Failed to load audio: {error}").format(error=str(e))
             return False
 
 
@@ -300,36 +311,36 @@ class LabelFileNode(BaseNode):
     """
     
     node_type = "label_file"
-    display_name = "标签文件"
+    display_name = tr_("Label file")
     category = NodeCategory.DATA_SOURCE
-    description = "从CSV/JSON文件加载标签"
+    description = tr_("Load labels from CSV/JSON/TXT")
     icon = "📄"
     
     def _setup_ports(self):
-        self.add_output("labels", DataType.LABEL, "标签列表")
-        self.add_output("label_map", DataType.ANY, "标签映射")
+        self.add_output("labels", DataType.LABEL, tr_("Label list"))
+        self.add_output("label_map", DataType.ANY, tr_("Label map"))
     
     def _setup_parameters(self):
         self.add_parameter(
             "file_path", "file", "",
-            display_name="文件路径",
+            display_name=tr_("File path"),
             file_filter="Label Files (*.csv *.json *.txt)",
             default_directory="audio_data"
         )
         self.add_parameter(
             "format", "choice", "auto",
-            display_name="文件格式",
+            display_name=tr_("File format"),
             choices=["auto", "csv", "json", "txt"]
         )
         self.add_parameter(
             "filename_column", "str", "filename",
-            display_name="文件名列",
-            description="CSV中文件名所在列名"
+            display_name=tr_("Filename column"),
+            description=tr_("Column name for filename in CSV")
         )
         self.add_parameter(
             "label_column", "str", "label",
-            display_name="标签列",
-            description="CSV中标签所在列名"
+            display_name=tr_("Label column"),
+            description=tr_("Column name for label in CSV")
         )
     
     def execute(self) -> bool:
@@ -337,7 +348,7 @@ class LabelFileNode(BaseNode):
         file_format = self.get_parameter("format")
         
         if not file_path or not os.path.isfile(file_path):
-            self.error_message = f"文件不存在: {file_path}"
+            self.error_message = tr_("File does not exist: {path}").format(path=file_path)
             return False
         
         # 自动检测格式
@@ -368,7 +379,7 @@ class LabelFileNode(BaseNode):
             return True
             
         except Exception as e:
-            self.error_message = f"加载标签失败: {e}"
+            self.error_message = tr_("Failed to load labels: {error}").format(error=str(e))
             return False
     
     def _load_csv(self, file_path: str) -> Tuple[List, Dict]:
@@ -422,7 +433,7 @@ class LabelFileNode(BaseNode):
                 label_map = data
                 labels = list(data.values())
         else:
-            raise ValueError("不支持的JSON格式")
+            raise ValueError(tr_("Unsupported JSON format"))
         
         return labels, label_map
     
@@ -452,38 +463,48 @@ class SaveAudioNode(BaseNode):
     """
     
     node_type = "save_audio"
-    display_name = "保存音频"
+    display_name = tr_("Save audio")
     category = NodeCategory.DATA_SOURCE
-    description = "将音频保存为WAV文件，可选保存标签JSON文件"
+    description = tr_("Save audio as WAV files, optionally save labels JSON")
     icon = "💾"
     
     def _setup_ports(self):
-        self.add_input("audio", DataType.AUDIO, "音频", required=True,
-                      description="要保存的音频数据（单个或列表）")
-        self.add_input("labels", DataType.LABEL, "标签", required=False,
-                      description="可选的标签数据，与音频一一对应")
+        self.add_input(
+            "audio",
+            DataType.AUDIO,
+            tr_("Audio"),
+            required=True,
+            description=tr_("Audio data to save (single item or list)"),
+        )
+        self.add_input(
+            "labels",
+            DataType.LABEL,
+            tr_("Labels"),
+            required=False,
+            description=tr_("Optional labels corresponding to audio items"),
+        )
     
     def _setup_parameters(self):
         self.add_parameter(
             "output_folder", "folder", "",
-            display_name="输出文件夹",
-            description="保存音频文件的目标文件夹",
+            display_name=tr_("Output folder"),
+            description=tr_("Target folder to save audio files"),
             default_directory="audio_data"
         )
         self.add_parameter(
             "filename_prefix", "str", "audio",
-            display_name="文件名前缀",
-            description="保存的音频文件名前缀"
+            display_name=tr_("Filename prefix"),
+            description=tr_("Prefix for output audio filenames")
         )
         self.add_parameter(
             "save_labels", "bool", True,
-            display_name="保存标签文件",
-            description="当有标签输入时，是否保存labels.json文件"
+            display_name=tr_("Save labels file"),
+            description=tr_("When labels are provided, save labels.json")
         )
         self.add_parameter(
             "overwrite", "bool", False,
-            display_name="覆盖已有文件",
-            description="如果文件已存在，是否覆盖"
+            display_name=tr_("Overwrite existing files"),
+            description=tr_("Overwrite files if they already exist")
         )
     
     def execute(self) -> bool:
@@ -499,19 +520,21 @@ class SaveAudioNode(BaseNode):
         
         # 验证输出文件夹
         if not output_folder:
-            self.error_message = "请选择输出文件夹"
+            self.error_message = tr_("Please select an output folder")
             return False
         
         output_path = Path(output_folder)
         try:
             output_path.mkdir(parents=True, exist_ok=True)
         except Exception as e:
-            self.error_message = f"无法创建输出文件夹: {e}"
+            self.error_message = tr_("Unable to create output folder: {error}").format(
+                error=str(e)
+            )
             return False
         
         # 处理音频输入 - 统一为列表
         if audio_input is None:
-            self.error_message = "没有输入音频数据"
+            self.error_message = tr_("No input audio data")
             return False
         
         if isinstance(audio_input, AudioData):
@@ -519,7 +542,9 @@ class SaveAudioNode(BaseNode):
         elif isinstance(audio_input, list):
             audio_list = audio_input
         else:
-            self.error_message = f"不支持的音频数据类型: {type(audio_input)}"
+            self.error_message = tr_("Unsupported audio data type: {type}").format(
+                type=str(type(audio_input))
+            )
             return False
         
         # 处理标签输入 - 统一为列表
@@ -533,11 +558,13 @@ class SaveAudioNode(BaseNode):
             # 验证标签数量匹配
             if len(labels_list) != len(audio_list):
                 logger.warning(
-                    f"标签数量({len(labels_list)})与音频数量({len(audio_list)})不匹配，"
-                    "将按顺序对应，多余的将被忽略"
+                    tr_(
+                        "Label count ({labels}) does not match audio count ({audio}); "
+                        "items will be paired in order and extras will be ignored"
+                    ).format(labels=len(labels_list), audio=len(audio_list))
                 )
         
-        self.report_status(f"正在保存 {len(audio_list)} 个音频文件...")
+        self.report_status(tr_("Saving {count} audio files...").format(count=len(audio_list)))
         
         saved_files = []
         saved_labels = {}
@@ -588,12 +615,12 @@ class SaveAudioNode(BaseNode):
                 logger.error(f"保存标签文件失败: {e}")
         
         if not saved_files:
-            self.error_message = "没有成功保存任何音频文件"
+            self.error_message = tr_("No audio files were saved successfully")
             return False
         
         logger.info(f"保存完成: {len(saved_files)} 个音频文件")
-        self.report_status(
-            f"音频保存完成: {len(saved_files)} 个文件" + 
-            (f", 标签: {len(saved_labels)} 个" if saved_labels else "")
-        )
+        msg = tr_("Audio saved: {files} files").format(files=len(saved_files))
+        if saved_labels:
+            msg += tr_(", labels: {count}").format(count=len(saved_labels))
+        self.report_status(msg)
         return True

@@ -11,7 +11,7 @@ import numpy as np
 from ....node_base import BaseNode, NodeCategory, register_node
 from ....port import DataType
 from ..base import FeatureData, extract_from_audio_or_list, validate_audio_input, AudioData
-
+from src.ui.i18n import tr_
 # Import unified feature extractor
 from src.audio.features import FeatureExtractor
 
@@ -26,44 +26,44 @@ class PitchNode(BaseNode):
     """
     
     node_type = "pitch"
-    display_name = "基频/音高"
+    display_name = tr_("Pitch (F0)")
     category = NodeCategory.FEATURE
-    subcategory = "一维特征 (1D)"
-    description = "提取基频(F0)轨迹"
+    subcategory = tr_("1D features")
+    description = tr_("Extract pitch (F0) trajectory")
     icon = "🎤"
     
     def _setup_ports(self):
-        self.add_input("audio", DataType.AUDIO, "音频")
-        self.add_output("feature", DataType.FEATURE, "基频轨迹")
+        self.add_input("audio", DataType.AUDIO, tr_("Audio"))
+        self.add_output("feature", DataType.FEATURE, tr_("Pitch trajectory"))
     
     def _setup_parameters(self):
         self.add_parameter(
             "fmin", "float", 65.0,
-            display_name="最低频率(Hz)",
+            display_name=tr_("Min frequency (Hz)"),
             min_value=20.0, max_value=500.0,
-            description="最低检测频率（默认C2，约65Hz）"
+            description=tr_("Lowest detectable frequency (default C2 ~ 65 Hz)"),
         )
         self.add_parameter(
             "fmax", "float", 2093.0,
-            display_name="最高频率(Hz)",
+            display_name=tr_("Max frequency (Hz)"),
             min_value=200.0, max_value=8000.0,
-            description="最高检测频率（默认C7，约2093Hz）"
+            description=tr_("Highest detectable frequency (default C7 ~ 2093 Hz)"),
         )
         self.add_parameter(
             "hop_length", "int", 512,
-            display_name="帧移",
+            display_name=tr_("Hop length"),
             min_value=64, max_value=2048
         )
         self.add_parameter(
             "fill_unvoiced", "float", 0.0,
-            display_name="无声帧填充值",
+            display_name=tr_("Fill value for unvoiced frames"),
             min_value=0.0, max_value=1000.0,
-            description="无法检测到基频的帧使用此值填充"
+            description=tr_("Use this value for frames where pitch cannot be detected"),
         )
         self.add_parameter(
             "normalize", "bool", False,
-            display_name="归一化",
-            description="将基频值归一化到0-1范围"
+            display_name=tr_("Normalize"),
+            description=tr_("Normalize pitch values to 0-1 range"),
         )
     
     def execute(self) -> bool:

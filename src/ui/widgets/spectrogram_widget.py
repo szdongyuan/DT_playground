@@ -17,7 +17,7 @@ try:
 except ImportError:
     HAS_PYQTGRAPH = False
 
-
+from ..i18n import tr_
 class SpectrogramWidget(QWidget):
     """频谱图可视化控件"""
     
@@ -39,7 +39,7 @@ class SpectrogramWidget(QWidget):
         # 工具栏
         toolbar = QHBoxLayout()
         
-        title = QLabel("频谱图")
+        title = QLabel(tr_("Spectrogram"))
         title.setStyleSheet("font-weight: bold; color: #a6e3a1;")
         toolbar.addWidget(title)
         
@@ -49,12 +49,12 @@ class SpectrogramWidget(QWidget):
         self.feature_combo = QComboBox()
         # 按领域分组（用不可选的标题项模拟二级结构）
         self._feature_items = [
-            ("— 时频域 —", False),
-            ("Mel频谱图", True),
+            (tr_("— Time-Frequency —"), False),
+            (tr_("Mel spectrogram"), True),
             ("MFCC", True),
             ("STFT", True),
             ("CQT", True),
-            ("色度图", True),
+            (tr_("Chroma"), True),
         ]
         for text, _selectable in self._feature_items:
             self.feature_combo.addItem(text)
@@ -115,7 +115,7 @@ class SpectrogramWidget(QWidget):
             
             layout.addWidget(self.image_view)
         else:
-            self.placeholder = QLabel("请安装 pyqtgraph 以显示频谱图")
+            self.placeholder = QLabel(tr_("Please install pyqtgraph to display spectrograms"))
             self.placeholder.setAlignment(Qt.AlignmentFlag.AlignCenter)
             self.placeholder.setStyleSheet("""
                 background-color: #181825;
@@ -143,7 +143,7 @@ class SpectrogramWidget(QWidget):
                 self._compute_spectrogram()
             
         except Exception as e:
-            print(f"加载音频失败: {e}")
+            print(f"Failed to load audio: {e}")
     
     def _compute_spectrogram(self):
         """计算并显示频谱图"""
@@ -168,7 +168,7 @@ class SpectrogramWidget(QWidget):
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore")
                 
-                if feature_type == "Mel频谱图":
+                if feature_type == tr_("Mel spectrogram"):
                     spec = librosa.feature.melspectrogram(
                         y=self.audio_data, sr=self.sample_rate,
                         n_mels=128, fmax=8000
@@ -195,7 +195,7 @@ class SpectrogramWidget(QWidget):
                     ))
                     spec_db = librosa.amplitude_to_db(spec, ref=np.max)
                     
-                elif feature_type == "色度图":
+                elif feature_type == tr_("Chroma"):
                     spec_db = librosa.feature.chroma_stft(
                         y=self.audio_data, sr=self.sample_rate
                     )
@@ -209,7 +209,7 @@ class SpectrogramWidget(QWidget):
             self.image_view.setImage(spec_db.T, autoRange=True, autoLevels=True)
             
         except Exception as e:
-            print(f"计算频谱图失败: {e}")
+            print(f"Failed to compute spectrogram: {e}")
     
     def _on_feature_changed(self, feature_type: str):
         """特征类型改变时重新计算"""

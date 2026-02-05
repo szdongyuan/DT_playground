@@ -7,34 +7,33 @@ from typing import Tuple
 
 from ..layer_base import LayerCategory, LayerNode, register_layer
 from ..model_graph import CompileConfig
-
-
+from src.ui.i18n import tr_
 @register_layer
 class InputLayer(LayerNode):
     """输入层"""
     layer_type = "input"
-    display_name = "Input 输入层"
+    display_name = tr_("Input")
     category = LayerCategory.INPUT
-    description = "定义模型输入的形状"
+    description = tr_("Define the model input shape")
     icon = "📥"
     keras_class = "Input"
     
     def _setup_parameters(self):
         self.add_parameter(
             "shape", "str", "(128, 1)",
-            display_name="输入形状",
-            description="输入数据的形状，例如 (128,) 或 (128, 64) 或 (32, 32, 3)"
+            display_name=tr_("Input shape"),
+            description=tr_("Input data shape, e.g. (128,) or (128, 64) or (32, 32, 3)")
         )
         self.add_parameter(
             "dtype", "choice", "float32",
-            display_name="数据类型",
+            display_name=tr_("Data type"),
             choices=["float32", "float64", "int32", "int64"],
-            description="输入数据的数据类型"
+            description=tr_("Data type of the input")
         )
         self.add_parameter(
             "name", "str", "",
-            display_name="层名称",
-            description="可选的层名称",
+            display_name=tr_("Layer name"),
+            description=tr_("Optional layer name"),
             required=False
         )
     
@@ -44,20 +43,24 @@ class InputLayer(LayerNode):
         
         # 检查 shape 是否为空
         if not shape_str or not shape_str.strip():
-            return False, "输入形状不能为空"
+            return False, tr_("Input shape cannot be empty")
         
         # 尝试解析 shape
         try:
             shape = eval(shape_str)
             if not isinstance(shape, tuple):
-                return False, f"输入形状必须是元组，当前为: {type(shape).__name__}"
+                return False, tr_("Input shape must be a tuple, got: {type_name}").format(
+                    type_name=type(shape).__name__
+                )
             if len(shape) == 0:
-                return False, "输入形状元组不能为空"
+                return False, tr_("Input shape tuple cannot be empty")
             for dim in shape:
                 if dim is not None and (not isinstance(dim, int) or dim <= 0):
-                    return False, f"输入形状维度必须是正整数或None，当前为: {dim}"
+                    return False, tr_("Input shape dimensions must be positive integers or None, got: {dim}").format(
+                        dim=dim
+                    )
         except Exception as e:
-            return False, f"输入形状格式错误: {e}"
+            return False, tr_("Invalid input shape format: {error}").format(error=str(e))
         
         return True, ""
     
@@ -93,9 +96,9 @@ class OutputLayer(LayerNode):
     编译配置常量统一引用自 CompileConfig。
     """
     layer_type = "output"
-    display_name = "Output 输出层"
+    display_name = tr_("Output")
     category = LayerCategory.OUTPUT
-    description = "模型输出层，包含编译配置（优化器、损失函数、指标）"
+    description = tr_("Model output layer with compile settings (optimizer, loss, metrics)")
     icon = "📤"
     keras_class = "Identity"
     
@@ -103,24 +106,24 @@ class OutputLayer(LayerNode):
         # 激活函数（输出层特有）
         self.add_parameter(
             "activation", "choice", "none",
-            display_name="激活函数",
-            description="输出层的激活函数（none 表示不使用激活函数）",
+            display_name=tr_("Activation"),
+            description=tr_("Activation function for output layer ('none' means no activation)"),
             choices=["none", "linear", "sigmoid", "softmax", "tanh", "relu"]
         )
         
         # 编译配置 - 优化器（使用 CompileConfig 的常量）
         self.add_parameter(
             "optimizer", "choice", "Adam",
-            display_name="优化器",
-            description="训练优化器",
+            display_name=tr_("Optimizer"),
+            description=tr_("Training optimizer"),
             choices=CompileConfig.OPTIMIZERS
         )
         
         # 学习率
         self.add_parameter(
             "learning_rate", "float", 0.001,
-            display_name="学习率",
-            description="优化器学习率",
+            display_name=tr_("Learning rate"),
+            description=tr_("Optimizer learning rate"),
             min_value=0.000001,
             max_value=1.0
         )
@@ -128,16 +131,16 @@ class OutputLayer(LayerNode):
         # 损失函数（使用 CompileConfig 的常量）
         self.add_parameter(
             "loss", "choice", "mse",
-            display_name="损失函数",
-            description="训练损失函数",
+            display_name=tr_("Loss"),
+            description=tr_("Training loss function"),
             choices=CompileConfig.LOSSES
         )
         
         # 评估指标（多选，使用 CompileConfig 的常量）
         self.add_parameter(
             "metrics", "multichoice", ["mae"],
-            display_name="评估指标",
-            description="选择评估指标（可多选）",
+            display_name=tr_("Metrics"),
+            description=tr_("Select metrics (multi-select)"),
             choices=CompileConfig.METRICS
         )
     

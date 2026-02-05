@@ -12,8 +12,7 @@ from PyQt6.QtCore import pyqtSignal
 from PyQt6.QtWidgets import QWidget
 
 from src.workflow.port import DataType
-
-
+from src.ui.i18n import tr_
 logger = logging.getLogger(__name__)
 
 
@@ -31,7 +30,7 @@ class BasePreviewWidget(QWidget):
     supported_types: List[DataType] = []
     
     # 组件显示名称
-    display_name: str = "基础预览"
+    display_name: str = tr_("Base preview")
     
     # 组件图标
     icon: str = "📊"
@@ -67,7 +66,7 @@ class BasePreviewWidget(QWidget):
         Note:
             子类必须实现此方法
         """
-        raise NotImplementedError("子类必须实现 set_data 方法")
+        raise NotImplementedError(tr_("Subclasses must implement set_data()"))
     
     def clear(self):
         """
@@ -76,7 +75,7 @@ class BasePreviewWidget(QWidget):
         Note:
             子类必须实现此方法
         """
-        raise NotImplementedError("子类必须实现 clear 方法")
+        raise NotImplementedError(tr_("Subclasses must implement clear()"))
     
     @classmethod
     def can_display(cls, data: Any) -> bool:

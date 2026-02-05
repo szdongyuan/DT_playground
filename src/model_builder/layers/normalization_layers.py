@@ -4,41 +4,40 @@ Normalization Layer Nodes
 """
 
 from ..layer_base import LayerCategory, LayerNode, register_layer
-
-
+from src.ui.i18n import tr_
 @register_layer
 class BatchNormalizationLayer(LayerNode):
     """批归一化层"""
     layer_type = "batch_norm"
     display_name = "BatchNormalization"
     category = LayerCategory.NORMALIZATION
-    description = "批量归一化层"
+    description = tr_("Batch normalization layer")
     icon = "📐"
     keras_class = "BatchNormalization"
     
     def _setup_parameters(self):
         self.add_parameter(
             "momentum", "float", 0.99,
-            display_name="动量",
-            description="移动平均的动量",
+            display_name=tr_("Momentum"),
+            description=tr_("Momentum for the moving average"),
             min_value=0.0,
             max_value=1.0
         )
         self.add_parameter(
             "epsilon", "float", 0.001,
             display_name="Epsilon",
-            description="添加到方差的小浮点数，避免除零",
+            description=tr_("Small float added to variance to avoid division by zero"),
             min_value=1e-7
         )
         self.add_parameter(
             "center", "bool", True,
-            display_name="中心化",
-            description="是否添加beta偏置"
+            display_name=tr_("Center"),
+            description=tr_("Whether to add beta offset")
         )
         self.add_parameter(
             "scale", "bool", True,
-            display_name="缩放",
-            description="是否乘以gamma"
+            display_name=tr_("Scale"),
+            description=tr_("Whether to multiply by gamma")
         )
     
     def build_keras_layer(self):
@@ -59,7 +58,7 @@ class LayerNormalizationLayer(LayerNode):
     layer_type = "layer_norm"
     display_name = "LayerNormalization"
     category = LayerCategory.NORMALIZATION
-    description = "层归一化"
+    description = tr_("Layer normalization")
     icon = "📏"
     keras_class = "LayerNormalization"
     
@@ -71,11 +70,11 @@ class LayerNormalizationLayer(LayerNode):
         )
         self.add_parameter(
             "center", "bool", True,
-            display_name="中心化"
+            display_name=tr_("Center")
         )
         self.add_parameter(
             "scale", "bool", True,
-            display_name="缩放"
+            display_name=tr_("Scale")
         )
     
     def build_keras_layer(self):

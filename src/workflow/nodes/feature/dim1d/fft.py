@@ -12,8 +12,7 @@ import numpy as np
 from ....node_base import BaseNode, NodeCategory, register_node
 from ....port import DataType
 from ..base import FeatureData, extract_from_audio_or_list, validate_audio_input, AudioData
-
-
+from src.ui.i18n import tr_
 @register_node
 class FFTNode(BaseNode):
     """
@@ -26,32 +25,32 @@ class FFTNode(BaseNode):
     """
     
     node_type = "fft"
-    display_name = "FFT频谱"
+    display_name = tr_("FFT spectrum")
     category = NodeCategory.FEATURE
-    subcategory = "一维特征 (1D)"
-    description = "提取FFT全局频谱"
+    subcategory = tr_("1D features")
+    description = tr_("Extract global FFT spectrum")
     icon = "📶"
     
     def _setup_ports(self):
-        self.add_input("audio", DataType.AUDIO, "音频")
-        self.add_output("feature", DataType.FEATURE, "FFT频谱")
+        self.add_input("audio", DataType.AUDIO, tr_("Audio"))
+        self.add_output("feature", DataType.FEATURE, tr_("FFT spectrum"))
     
     def _setup_parameters(self):
         self.add_parameter(
             "n_fft", "choice", "auto",
-            display_name="FFT点数",
+            display_name=tr_("FFT size"),
             choices=["auto", "512", "1024", "2048", "4096", "8192", "16384"],
-            description="auto: 使用信号长度作为FFT点数"
+            description=tr_("auto: use signal length as FFT size"),
         )
         self.add_parameter(
             "output_type", "choice", "magnitude",
-            display_name="输出类型",
+            display_name=tr_("Output type"),
             choices=["magnitude", "power", "db"]
         )
         self.add_parameter(
             "normalize", "bool", True,
-            display_name="归一化",
-            description="归一化到最大值"
+            display_name=tr_("Normalize"),
+            description=tr_("Normalize to max value"),
         )
     
     def execute(self) -> bool:

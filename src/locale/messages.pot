@@ -1,0 +1,4652 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-05 10:05+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/app.py:37 src/ui/dialogs/about_dialog.py:36
+msgid "AI Acoustic Signal Training Platform"
+msgstr ""
+
+#: src/app.py:85
+msgid "File(&F)"
+msgstr ""
+
+#: src/app.py:88
+msgid "Load model..."
+msgstr ""
+
+#: src/app.py:94
+msgid "Export model..."
+msgstr ""
+
+#: src/app.py:102
+msgid "Recent files"
+msgstr ""
+
+#: src/app.py:108
+msgid "Restart(&R)"
+msgstr ""
+
+#: src/app.py:116
+msgid "Exit(&X)"
+msgstr ""
+
+#: src/app.py:122
+msgid "Edit(&E)"
+msgstr ""
+
+#: src/app.py:124
+msgid "Settings..."
+msgstr ""
+
+#: src/app.py:130
+msgid "View(&V)"
+msgstr ""
+
+#: src/app.py:132
+msgid "Workflow view"
+msgstr ""
+
+#: src/app.py:137
+msgid "Model view"
+msgstr ""
+
+#: src/app.py:142
+msgid "Preview view"
+msgstr ""
+
+#: src/app.py:147
+msgid "Training view"
+msgstr ""
+
+#: src/app.py:153
+msgid "Help(&H)"
+msgstr ""
+
+#: src/app.py:155
+msgid "About..."
+msgstr ""
+
+#: src/app.py:260 src/workflow/nodes/training.py:31
+msgid "Load model"
+msgstr ""
+
+#: src/app.py:262
+msgid ""
+"Keras models (*.h5 *.keras);;Model definition (*.model.json);;SavedModel "
+"(*);;All files (*)"
+msgstr ""
+
+#: src/app.py:271 src/ui/dialogs/export_dialog.py:191
+msgid "Success"
+msgstr ""
+
+#: src/app.py:272
+#, python-brace-format
+msgid "Model loaded: {path}"
+msgstr ""
+
+#: src/app.py:277 src/ui/dialogs/export_dialog.py:208
+#: src/ui/views/model_builder_view.py:336
+#: src/ui/views/model_builder_view.py:521
+msgid "Error"
+msgstr ""
+
+#: src/app.py:278 src/ui/views/model_builder_view.py:337
+#: src/workflow/nodes/training.py:81
+#, python-brace-format
+msgid "Failed to load model: {error}"
+msgstr ""
+
+#: src/app.py:292
+msgid "(No recent files)"
+msgstr ""
+
+#: src/app.py:303
+msgid "Clear recent files"
+msgstr ""
+
+#: src/app.py:343 src/ui/main_window.py:505
+#: src/ui/dialogs/dataset_dialog.py:216 src/ui/dialogs/export_dialog.py:137
+#: src/ui/dialogs/export_dialog.py:141 src/ui/dialogs/export_dialog.py:145
+#: src/ui/views/model_builder_view.py:452
+#: src/ui/views/model_builder_view.py:529
+msgid "Warning"
+msgstr ""
+
+#: src/app.py:344 src/audio/loader.py:58 src/workflow/nodes/data_source.py:285
+#: src/workflow/nodes/data_source.py:351
+#, python-brace-format
+msgid "File does not exist: {path}"
+msgstr ""
+
+#: src/app.py:398 src/ui/main_window.py:795 src/ui/main_window.py:848
+msgid "Info"
+msgstr ""
+
+#: src/app.py:399
+msgid "Settings saved. Some changes require a restart to take effect."
+msgstr ""
+
+#: src/app.py:427
+msgid "Confirm restart"
+msgstr ""
+
+#: src/app.py:429
+msgid ""
+"A workflow/training is currently running.\n"
+"Restart will stop the current run and start a new instance.\n"
+"\n"
+"Continue?"
+msgstr ""
+
+#: src/app.py:462
+msgid "Restart failed"
+msgstr ""
+
+#: src/app.py:463
+msgid "Please check the latest log under the logs directory."
+msgstr ""
+
+#: src/audio/features.py:37 src/ui/widgets/spectrogram_widget.py:53
+#: src/ui/widgets/spectrogram_widget.py:171 src/visualization/spectrogram.py:77
+#: src/visualization/spectrogram.py:241
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:27
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:35
+msgid "Mel spectrogram"
+msgstr ""
+
+#: src/audio/features.py:38 src/visualization/spectrogram.py:167
+#: src/visualization/spectrogram.py:247
+msgid "MFCC"
+msgstr ""
+
+#: src/audio/features.py:39
+msgid "MFCC + Δ"
+msgstr ""
+
+#: src/audio/features.py:40
+msgid "MFCC + Δ + ΔΔ"
+msgstr ""
+
+#: src/audio/features.py:41
+msgid "STFT"
+msgstr ""
+
+#: src/audio/features.py:42 src/workflow/nodes/feature/dim1d/fft.py:28
+#: src/workflow/nodes/feature/dim1d/fft.py:36
+msgid "FFT spectrum"
+msgstr ""
+
+#: src/audio/features.py:43 src/workflow/nodes/feature/dim2d/cqt.py:30
+#: src/workflow/nodes/feature/dim2d/cqt.py:38
+msgid "CQT spectrum"
+msgstr ""
+
+#: src/audio/features.py:44 src/ui/widgets/spectrogram_widget.py:57
+#: src/ui/widgets/spectrogram_widget.py:198
+#: src/visualization/spectrogram.py:209 src/visualization/spectrogram.py:253
+msgid "Chroma"
+msgstr ""
+
+#: src/audio/features.py:45
+#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:30
+#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:38
+msgid "Spectral contrast"
+msgstr ""
+
+#: src/audio/features.py:46
+msgid "Tonnetz"
+msgstr ""
+
+#: src/audio/features.py:47 src/visualization/spectrogram.py:260
+#: src/workflow/nodes/feature/dim1d/statistics.py:37
+msgid "Spectral centroid"
+msgstr ""
+
+#: src/audio/features.py:48 src/workflow/nodes/feature/dim1d/statistics.py:41
+msgid "Spectral bandwidth"
+msgstr ""
+
+#: src/audio/features.py:49 src/workflow/nodes/feature/dim1d/statistics.py:45
+msgid "Spectral rolloff"
+msgstr ""
+
+#: src/audio/features.py:50
+#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:31
+#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:39
+msgid "Spectral flatness"
+msgstr ""
+
+#: src/audio/features.py:51 src/workflow/nodes/feature/dim1d/statistics.py:49
+msgid "Zero-crossing rate"
+msgstr ""
+
+#: src/audio/features.py:52 src/visualization/waveform.py:158
+#: src/workflow/nodes/feature/dim1d/statistics.py:53
+msgid "RMS energy"
+msgstr ""
+
+#: src/audio/features.py:53
+msgid "Pitch"
+msgstr ""
+
+#: src/audio/features.py:54
+msgid "Raw waveform"
+msgstr ""
+
+#: src/audio/features.py:686
+msgid "Spectral features (2D)"
+msgstr ""
+
+#: src/audio/features.py:693
+msgid "MFCC family (2D)"
+msgstr ""
+
+#: src/audio/features.py:694
+msgid "Pitch features"
+msgstr ""
+
+#: src/audio/features.py:695
+msgid "Frequency-domain features (1D)"
+msgstr ""
+
+#: src/audio/features.py:696
+msgid "Statistical features (1D)"
+msgstr ""
+
+#: src/audio/features.py:703
+msgid "Raw data"
+msgstr ""
+
+#: src/audio/loader.py:63
+#, python-brace-format
+msgid "Unsupported audio format: {ext}"
+msgstr ""
+
+#: src/audio/loader.py:89 src/workflow/nodes/data_source.py:301
+#, python-brace-format
+msgid "Failed to load audio: {error}"
+msgstr ""
+
+#: src/audio/loader.py:139
+#, python-brace-format
+msgid "Failed to get audio info: {error}"
+msgstr ""
+
+#: src/audio/preprocessor.py:58
+#, python-brace-format
+msgid "Unknown normalization method: {method}"
+msgstr ""
+
+#: src/controllers/navigation_controller.py:87 src/ui/main_window.py:181
+#: src/ui/main_window.py:439
+msgid "Workflow"
+msgstr ""
+
+#: src/controllers/navigation_controller.py:87 src/ui/main_window.py:182
+#: src/ui/main_window.py:440 src/ui/main_window.py:893
+#: src/ui/dialogs/settings_dialog.py:40 src/workflow/nodes/training.py:304
+#: src/workflow/nodes/training.py:684 src/workflow/nodes/training.py:1028
+msgid "Model"
+msgstr ""
+
+#: src/controllers/navigation_controller.py:87 src/ui/main_window.py:183
+#: src/ui/main_window.py:441
+msgid "Preview"
+msgstr ""
+
+#: src/controllers/navigation_controller.py:87 src/ui/main_window.py:184
+#: src/ui/main_window.py:442
+msgid "Training"
+msgstr ""
+
+#: src/controllers/navigation_controller.py:89 src/ui/main_window.py:445
+#, python-brace-format
+msgid "Switched to {view} view"
+msgstr ""
+
+#: src/controllers/training_controller.py:93
+#, python-brace-format
+msgid "Training started (total {epochs} epochs)"
+msgstr ""
+
+#: src/controllers/training_controller.py:142
+#, python-brace-format
+msgid "Training finished - final loss: {loss:.4f}, acc: {acc:.4f}"
+msgstr ""
+
+#: src/controllers/training_controller.py:149 src/ui/views/training_view.py:405
+#, python-brace-format
+msgid "Training failed: {message}"
+msgstr ""
+
+#: src/controllers/training_controller.py:159 src/training/trainer.py:314
+msgid "Training stopped"
+msgstr ""
+
+#: src/controllers/workflow_controller.py:100
+msgid "No workflow to run"
+msgstr ""
+
+#: src/controllers/workflow_controller.py:106
+#, python-brace-format
+msgid ""
+"Workflow validation failed:\n"
+"{errors}"
+msgstr ""
+
+#: src/controllers/workflow_controller.py:113
+msgid "Starting workflow..."
+msgstr ""
+
+#: src/controllers/workflow_controller.py:117
+msgid "Failed to start workflow"
+msgstr ""
+
+#: src/controllers/workflow_controller.py:126
+msgid "Stop requested. Waiting for current task to finish..."
+msgstr ""
+
+#: src/controllers/workflow_controller.py:132
+msgid "Workflow paused"
+msgstr ""
+
+#: src/controllers/workflow_controller.py:137
+msgid "Workflow resumed"
+msgstr ""
+
+#: src/controllers/workflow_controller.py:143 src/workflow/engine.py:424
+msgid "Continuing from breakpoint..."
+msgstr ""
+
+#: src/controllers/workflow_controller.py:169
+msgid "Workflow running..."
+msgstr ""
+
+#: src/controllers/workflow_controller.py:178
+#, python-brace-format
+msgid "Workflow finished (elapsed: {seconds:.2f}s)"
+msgstr ""
+
+#: src/controllers/workflow_controller.py:184 src/ui/main_window.py:585
+#: src/ui/main_window.py:605
+#, python-brace-format
+msgid "Execution failed: {message}"
+msgstr ""
+
+#: src/controllers/workflow_controller.py:191
+#, python-brace-format
+msgid "Error: {message}"
+msgstr ""
+
+#: src/controllers/workflow_controller.py:202 src/ui/main_window.py:619
+#: src/ui/main_window.py:631 src/workflow/engine.py:267
+#, python-brace-format
+msgid "Running: {name}"
+msgstr ""
+
+#: src/controllers/workflow_controller.py:230
+#, python-brace-format
+msgid "🔴 Breakpoint hit: {name}"
+msgstr ""
+
+#: src/core/graph_base.py:189 src/model_builder/layer_base.py:183
+#, python-brace-format
+msgid "Unknown parameter: {name}"
+msgstr ""
+
+#: src/core/graph_base.py:320 src/workflow/workflow.py:151
+#, python-brace-format
+msgid "Source node {id} does not exist"
+msgstr ""
+
+#: src/core/graph_base.py:322 src/workflow/workflow.py:155
+#, python-brace-format
+msgid "Target node {id} does not exist"
+msgstr ""
+
+#: src/core/graph_base.py:326
+msgid "Cannot self-connect"
+msgstr ""
+
+#: src/core/graph_base.py:330 src/model_builder/model_graph.py:292
+#: src/workflow/workflow.py:181
+msgid "Connection already exists"
+msgstr ""
+
+#: src/core/graph_base.py:450
+msgid "Graph is empty"
+msgstr ""
+
+#: src/core/graph_base.py:457 src/workflow/workflow.py:309
+#, python-brace-format
+msgid "Node '{name}' ({id}): {message}"
+msgstr ""
+
+#: src/core/graph_base.py:467
+msgid "Graph contains cyclic dependencies"
+msgstr ""
+
+#: src/core/parameter.py:66
+#, python-brace-format
+msgid "Parameter '{name}' is required"
+msgstr ""
+
+#: src/core/parameter.py:76
+#, python-brace-format
+msgid "Parameter '{name}' must be an integer"
+msgstr ""
+
+#: src/core/parameter.py:80 src/core/parameter.py:96
+#, python-brace-format
+msgid "Parameter '{name}' must be >= {min_value}"
+msgstr ""
+
+#: src/core/parameter.py:85 src/core/parameter.py:101
+#, python-brace-format
+msgid "Parameter '{name}' must be <= {max_value}"
+msgstr ""
+
+#: src/core/parameter.py:92
+#, python-brace-format
+msgid "Parameter '{name}' must be a number"
+msgstr ""
+
+#: src/core/parameter.py:108
+#, python-brace-format
+msgid "Parameter '{name}' must be a boolean"
+msgstr ""
+
+#: src/core/parameter.py:114
+#, python-brace-format
+msgid "Parameter '{name}' must be one of {choices}"
+msgstr ""
+
+#: src/core/parameter.py:121
+#, python-brace-format
+msgid "Parameter '{name}' must be a string"
+msgstr ""
+
+#: src/model_builder/layer_base.py:46
+#: src/model_builder/layers/input_layers.py:15
+msgid "Input"
+msgstr ""
+
+#: src/model_builder/layer_base.py:47
+msgid "Core"
+msgstr ""
+
+#: src/model_builder/layer_base.py:48
+msgid "Convolution"
+msgstr ""
+
+#: src/model_builder/layer_base.py:49
+msgid "Recurrent"
+msgstr ""
+
+#: src/model_builder/layer_base.py:50
+msgid "Attention"
+msgstr ""
+
+#: src/model_builder/layer_base.py:51
+msgid "Pooling"
+msgstr ""
+
+#: src/model_builder/layer_base.py:52
+msgid "Normalization"
+msgstr ""
+
+#: src/model_builder/layer_base.py:53
+msgid "Regularization"
+msgstr ""
+
+#: src/model_builder/layer_base.py:54
+#: src/model_builder/layers/reshape_layers.py:30
+msgid "Reshape"
+msgstr ""
+
+#: src/model_builder/layer_base.py:55
+#: src/model_builder/layers/activation_layers.py:12
+#: src/model_builder/layers/activation_layers.py:21
+#: src/model_builder/layers/attention_layers.py:114
+#: src/model_builder/layers/attention_layers.py:273
+#: src/model_builder/layers/conv_layers.py:45
+#: src/model_builder/layers/conv_layers.py:108
+#: src/model_builder/layers/conv_layers.py:171
+#: src/model_builder/layers/conv_layers.py:229
+#: src/model_builder/layers/conv_layers.py:292
+#: src/model_builder/layers/core_layers.py:27
+#: src/model_builder/layers/input_layers.py:109
+#: src/model_builder/layers/recurrent_layers.py:37
+#: src/model_builder/layers/recurrent_layers.py:108
+#: src/model_builder/layers/recurrent_layers.py:167
+msgid "Activation"
+msgstr ""
+
+#: src/model_builder/layer_base.py:56 src/workflow/nodes/control.py:274
+msgid "Merge"
+msgstr ""
+
+#: src/model_builder/layer_base.py:57
+#: src/model_builder/layers/input_layers.py:99 src/workflow/node_base.py:52
+msgid "Output"
+msgstr ""
+
+#: src/model_builder/model_graph.py:42 src/model_builder/model_graph.py:223
+#: src/model_builder/model_graph.py:629
+msgid "Untitled model"
+msgstr ""
+
+#: src/model_builder/model_graph.py:281
+#, python-brace-format
+msgid "Source layer not found: {id}"
+msgstr ""
+
+#: src/model_builder/model_graph.py:283
+#, python-brace-format
+msgid "Target layer not found: {id}"
+msgstr ""
+
+#: src/model_builder/model_graph.py:287
+msgid "Self-connection is not allowed"
+msgstr ""
+
+#: src/model_builder/model_graph.py:296
+msgid "Cyclic connections are not allowed"
+msgstr ""
+
+#: src/model_builder/model_graph.py:426
+msgid "Model has no layers"
+msgstr ""
+
+#: src/model_builder/model_graph.py:431
+msgid "Model has no input layer"
+msgstr ""
+
+#: src/model_builder/model_graph.py:436
+msgid "Model has no output layer"
+msgstr ""
+
+#: src/model_builder/model_graph.py:443
+#, python-brace-format
+msgid "Layer {layer}: {message}"
+msgstr ""
+
+#: src/model_builder/model_graph.py:449
+msgid "There are cyclic connections or disconnected layers"
+msgstr ""
+
+#: src/model_builder/model_graph.py:469
+msgid "Cannot determine layer execution order"
+msgstr ""
+
+#: src/model_builder/model_graph.py:499
+#, python-brace-format
+msgid "Layer {layer} requires 'shape' or 'input_shape' parameter"
+msgstr ""
+
+#: src/model_builder/layers/activation_layers.py:14
+msgid "Apply activation function"
+msgstr ""
+
+#: src/model_builder/layers/activation_layers.py:44
+msgid "Leaky ReLU activation"
+msgstr ""
+
+#: src/model_builder/layers/activation_layers.py:52
+msgid "Negative slope coefficient"
+msgstr ""
+
+#: src/model_builder/layers/activation_layers.py:71
+msgid "Parametric ReLU activation"
+msgstr ""
+
+#: src/model_builder/layers/activation_layers.py:89
+msgid "Exponential Linear Unit"
+msgstr ""
+
+#: src/model_builder/layers/activation_layers.py:115
+msgid "Softmax activation"
+msgstr ""
+
+#: src/model_builder/layers/activation_layers.py:122
+#: src/model_builder/layers/merge_layers.py:21
+msgid "Axis"
+msgstr ""
+
+#: src/model_builder/layers/activation_layers.py:123
+msgid "Axis to apply softmax"
+msgstr ""
+
+#: src/model_builder/layers/attention_layers.py:16
+msgid "Multi-head attention layer for sequence modeling"
+msgstr ""
+
+#: src/model_builder/layers/attention_layers.py:23
+#: src/model_builder/layers/attention_layers.py:88
+#: src/model_builder/layers/attention_layers.py:247
+msgid "Number of heads"
+msgstr ""
+
+#: src/model_builder/layers/attention_layers.py:24
+#: src/model_builder/layers/attention_layers.py:89
+#: src/model_builder/layers/attention_layers.py:248
+msgid "Number of attention heads"
+msgstr ""
+
+#: src/model_builder/layers/attention_layers.py:30
+#: src/model_builder/layers/attention_layers.py:95
+#: src/model_builder/layers/attention_layers.py:254
+msgid "Key dimension"
+msgstr ""
+
+#: src/model_builder/layers/attention_layers.py:31
+#: src/model_builder/layers/attention_layers.py:96
+#: src/model_builder/layers/attention_layers.py:255
+msgid "Dimension of query and key for each head"
+msgstr ""
+
+#: src/model_builder/layers/attention_layers.py:36
+msgid "Value dimension"
+msgstr ""
+
+#: src/model_builder/layers/attention_layers.py:37
+msgid "Value dimension for each head; 0 means same as key_dim"
+msgstr ""
+
+#: src/model_builder/layers/attention_layers.py:43
+#: src/model_builder/layers/attention_layers.py:107
+#: src/model_builder/layers/attention_layers.py:108
+#: src/model_builder/layers/attention_layers.py:266
+#: src/model_builder/layers/attention_layers.py:267
+#: src/model_builder/layers/attention_layers.py:397
+#: src/model_builder/layers/attention_layers.py:496
+#: src/model_builder/layers/attention_layers.py:536
+#: src/model_builder/layers/recurrent_layers.py:49
+#: src/model_builder/layers/recurrent_layers.py:113
+#: src/model_builder/layers/recurrent_layers.py:172
+#: src/model_builder/layers/regularization_layers.py:21
+#: src/model_builder/layers/regularization_layers.py:49
+#: src/model_builder/layers/regularization_layers.py:76
+#: src/model_builder/layers/regularization_layers.py:130
+msgid "Dropout rate"
+msgstr ""
+
+#: src/model_builder/layers/attention_layers.py:44
+#: src/model_builder/layers/attention_layers.py:497
+#: src/model_builder/layers/attention_layers.py:537
+msgid "Dropout rate for attention weights"
+msgstr ""
+
+#: src/model_builder/layers/attention_layers.py:50
+#: src/model_builder/layers/conv_layers.py:51
+#: src/model_builder/layers/conv_layers.py:114
+#: src/model_builder/layers/conv_layers.py:235
+#: src/model_builder/layers/conv_layers.py:298
+#: src/model_builder/layers/core_layers.py:33
+msgid "Use bias"
+msgstr ""
+
+#: src/model_builder/layers/attention_layers.py:51
+msgid "Whether to use bias vectors"
+msgstr ""
+
+#: src/model_builder/layers/attention_layers.py:81
+msgid ""
+"Transformer encoder block (self-attention + FFN + residual + normalization)"
+msgstr ""
+
+#: src/model_builder/layers/attention_layers.py:101
+#: src/model_builder/layers/attention_layers.py:260
+msgid "FFN dimension"
+msgstr ""
+
+#: src/model_builder/layers/attention_layers.py:102
+#: src/model_builder/layers/attention_layers.py:261
+msgid "Hidden dimension of the feed-forward network"
+msgstr ""
+
+#: src/model_builder/layers/attention_layers.py:115
+#: src/model_builder/layers/attention_layers.py:274
+msgid "Activation function for the feed-forward network"
+msgstr ""
+
+#: src/model_builder/layers/attention_layers.py:120
+msgid "Normalization epsilon"
+msgstr ""
+
+#: src/model_builder/layers/attention_layers.py:121
+msgid "Epsilon for layer normalization"
+msgstr ""
+
+#: src/model_builder/layers/attention_layers.py:128
+msgid "Use Pre-Norm; otherwise use Post-Norm"
+msgstr ""
+
+#: src/model_builder/layers/attention_layers.py:240
+msgid "Transformer decoder block (self-attention + cross-attention + FFN)"
+msgstr ""
+
+#: src/model_builder/layers/attention_layers.py:377
+msgid "Positional encoding layer to add position information to sequences"
+msgstr ""
+
+#: src/model_builder/layers/attention_layers.py:384
+msgid "Max sequence length"
+msgstr ""
+
+#: src/model_builder/layers/attention_layers.py:385
+msgid "Maximum supported sequence length"
+msgstr ""
+
+#: src/model_builder/layers/attention_layers.py:391
+msgid "Encoding type"
+msgstr ""
+
+#: src/model_builder/layers/attention_layers.py:392
+msgid "Type of positional encoding"
+msgstr ""
+
+#: src/model_builder/layers/attention_layers.py:398
+msgid "Dropout rate after adding positional encoding"
+msgstr ""
+
+#: src/model_builder/layers/attention_layers.py:484
+msgid "Additive attention (Bahdanau-style)"
+msgstr ""
+
+#: src/model_builder/layers/attention_layers.py:491
+#: src/model_builder/layers/attention_layers.py:525
+msgid "Use scale"
+msgstr ""
+
+#: src/model_builder/layers/attention_layers.py:492
+#: src/model_builder/layers/attention_layers.py:526
+msgid "Whether to scale attention scores"
+msgstr ""
+
+#: src/model_builder/layers/attention_layers.py:518
+msgid "Dot-product attention (Luong-style)"
+msgstr ""
+
+#: src/model_builder/layers/attention_layers.py:530
+msgid "Score mode"
+msgstr ""
+
+#: src/model_builder/layers/attention_layers.py:531
+msgid "How to compute attention scores"
+msgstr ""
+
+#: src/model_builder/layers/conv_layers.py:12
+msgid "Conv1D"
+msgstr ""
+
+#: src/model_builder/layers/conv_layers.py:14
+msgid "1D convolution layer for sequence/time-series data"
+msgstr ""
+
+#: src/model_builder/layers/conv_layers.py:21
+#: src/model_builder/layers/conv_layers.py:86
+#: src/model_builder/layers/conv_layers.py:151
+#: src/model_builder/layers/conv_layers.py:205
+#: src/model_builder/layers/conv_layers.py:270
+msgid "Number of filters"
+msgstr ""
+
+#: src/model_builder/layers/conv_layers.py:22
+#: src/model_builder/layers/conv_layers.py:87
+#: src/model_builder/layers/conv_layers.py:206
+#: src/model_builder/layers/conv_layers.py:271
+msgid "Dimensionality of the output space (number of convolution filters)"
+msgstr ""
+
+#: src/model_builder/layers/conv_layers.py:27
+#: src/model_builder/layers/conv_layers.py:92
+#: src/model_builder/layers/conv_layers.py:156
+#: src/model_builder/layers/conv_layers.py:211
+#: src/model_builder/layers/conv_layers.py:276
+msgid "Kernel size"
+msgstr ""
+
+#: src/model_builder/layers/conv_layers.py:28
+#: src/model_builder/layers/conv_layers.py:212
+msgid "Length of the 1D convolution window"
+msgstr ""
+
+#: src/model_builder/layers/conv_layers.py:33
+#: src/model_builder/layers/conv_layers.py:97
+#: src/model_builder/layers/conv_layers.py:161
+#: src/model_builder/layers/conv_layers.py:217
+#: src/model_builder/layers/conv_layers.py:281
+#: src/model_builder/layers/pooling_layers.py:26
+#: src/model_builder/layers/pooling_layers.py:65
+#: src/model_builder/layers/pooling_layers.py:105
+msgid "Stride"
+msgstr ""
+
+#: src/model_builder/layers/conv_layers.py:34
+msgid "Stride length of the convolution"
+msgstr ""
+
+#: src/model_builder/layers/conv_layers.py:39
+#: src/model_builder/layers/conv_layers.py:102
+#: src/model_builder/layers/conv_layers.py:166
+#: src/model_builder/layers/conv_layers.py:223
+#: src/model_builder/layers/conv_layers.py:286
+#: src/model_builder/layers/pooling_layers.py:32
+#: src/model_builder/layers/pooling_layers.py:69
+#: src/model_builder/layers/pooling_layers.py:110
+msgid "Padding"
+msgstr ""
+
+#: src/model_builder/layers/conv_layers.py:41
+#: src/model_builder/layers/conv_layers.py:104
+#: src/model_builder/layers/conv_layers.py:225
+#: src/model_builder/layers/conv_layers.py:288
+msgid "Padding mode"
+msgstr ""
+
+#: src/model_builder/layers/conv_layers.py:47
+#: src/model_builder/layers/conv_layers.py:110
+#: src/model_builder/layers/conv_layers.py:231
+#: src/model_builder/layers/conv_layers.py:294
+#: src/model_builder/layers/recurrent_layers.py:39
+msgid "Activation function"
+msgstr ""
+
+#: src/model_builder/layers/conv_layers.py:52
+#: src/model_builder/layers/conv_layers.py:115
+#: src/model_builder/layers/conv_layers.py:236
+#: src/model_builder/layers/conv_layers.py:299
+#: src/model_builder/layers/core_layers.py:34
+msgid "Whether the layer uses a bias vector"
+msgstr ""
+
+#: src/model_builder/layers/conv_layers.py:77
+msgid "Conv2D"
+msgstr ""
+
+#: src/model_builder/layers/conv_layers.py:79
+msgid "2D convolution layer for images or spectrograms"
+msgstr ""
+
+#: src/model_builder/layers/conv_layers.py:93
+#: src/model_builder/layers/conv_layers.py:277
+msgid "Height and width of the 2D convolution window"
+msgstr ""
+
+#: src/model_builder/layers/conv_layers.py:98
+msgid "Stride of the convolution"
+msgstr ""
+
+#: src/model_builder/layers/conv_layers.py:144
+msgid "Depthwise separable 1D convolution"
+msgstr ""
+
+#: src/model_builder/layers/conv_layers.py:196
+msgid "Conv1DTranspose"
+msgstr ""
+
+#: src/model_builder/layers/conv_layers.py:198
+msgid "1D transposed convolution layer for upsampling"
+msgstr ""
+
+#: src/model_builder/layers/conv_layers.py:218
+msgid "Stride length of the convolution (controls upsampling factor)"
+msgstr ""
+
+#: src/model_builder/layers/conv_layers.py:261
+msgid "Conv2DTranspose"
+msgstr ""
+
+#: src/model_builder/layers/conv_layers.py:263
+msgid "2D transposed convolution layer for upsampling"
+msgstr ""
+
+#: src/model_builder/layers/conv_layers.py:282
+msgid "Stride of the convolution (controls upsampling factor)"
+msgstr ""
+
+#: src/model_builder/layers/core_layers.py:12
+msgid "Dense"
+msgstr ""
+
+#: src/model_builder/layers/core_layers.py:14
+msgid "Standard fully-connected neural network layer"
+msgstr ""
+
+#: src/model_builder/layers/core_layers.py:21
+#: src/model_builder/layers/recurrent_layers.py:21
+#: src/model_builder/layers/recurrent_layers.py:99
+#: src/model_builder/layers/recurrent_layers.py:158
+msgid "Units"
+msgstr ""
+
+#: src/model_builder/layers/core_layers.py:22
+#: src/model_builder/layers/recurrent_layers.py:22
+msgid "Dimensionality of the output space"
+msgstr ""
+
+#: src/model_builder/layers/core_layers.py:29
+msgid "Activation function ('none' means no activation)"
+msgstr ""
+
+#: src/model_builder/layers/core_layers.py:38
+msgid "Kernel initializer"
+msgstr ""
+
+#: src/model_builder/layers/core_layers.py:40
+msgid "Initializer for the kernel weights matrix"
+msgstr ""
+
+#: src/model_builder/layers/core_layers.py:64
+msgid "Embedding"
+msgstr ""
+
+#: src/model_builder/layers/core_layers.py:66
+msgid "Turns positive integers (indexes) into dense vectors of fixed size"
+msgstr ""
+
+#: src/model_builder/layers/core_layers.py:73
+msgid "Vocabulary size"
+msgstr ""
+
+#: src/model_builder/layers/core_layers.py:74
+msgid "Size of the vocabulary"
+msgstr ""
+
+#: src/model_builder/layers/core_layers.py:79
+msgid "Embedding dimension"
+msgstr ""
+
+#: src/model_builder/layers/core_layers.py:80
+msgid "Dimension of the dense embedding"
+msgstr ""
+
+#: src/model_builder/layers/core_layers.py:85
+msgid "Mask zero"
+msgstr ""
+
+#: src/model_builder/layers/core_layers.py:86
+msgid "Whether to treat input value 0 as a special padding value to be masked"
+msgstr ""
+
+#: src/model_builder/layers/input_layers.py:17
+msgid "Define the model input shape"
+msgstr ""
+
+#: src/model_builder/layers/input_layers.py:24
+#: src/ui/widgets/preview/model_preview.py:275
+msgid "Input shape"
+msgstr ""
+
+#: src/model_builder/layers/input_layers.py:25
+msgid "Input data shape, e.g. (128,) or (128, 64) or (32, 32, 3)"
+msgstr ""
+
+#: src/model_builder/layers/input_layers.py:29
+msgid "Data type"
+msgstr ""
+
+#: src/model_builder/layers/input_layers.py:31
+msgid "Data type of the input"
+msgstr ""
+
+#: src/model_builder/layers/input_layers.py:35
+msgid "Layer name"
+msgstr ""
+
+#: src/model_builder/layers/input_layers.py:36
+msgid "Optional layer name"
+msgstr ""
+
+#: src/model_builder/layers/input_layers.py:46
+msgid "Input shape cannot be empty"
+msgstr ""
+
+#: src/model_builder/layers/input_layers.py:52
+#, python-brace-format
+msgid "Input shape must be a tuple, got: {type_name}"
+msgstr ""
+
+#: src/model_builder/layers/input_layers.py:56
+msgid "Input shape tuple cannot be empty"
+msgstr ""
+
+#: src/model_builder/layers/input_layers.py:59
+#, python-brace-format
+msgid "Input shape dimensions must be positive integers or None, got: {dim}"
+msgstr ""
+
+#: src/model_builder/layers/input_layers.py:63
+#, python-brace-format
+msgid "Invalid input shape format: {error}"
+msgstr ""
+
+#: src/model_builder/layers/input_layers.py:101
+msgid "Model output layer with compile settings (optimizer, loss, metrics)"
+msgstr ""
+
+#: src/model_builder/layers/input_layers.py:110
+msgid "Activation function for output layer ('none' means no activation)"
+msgstr ""
+
+#: src/model_builder/layers/input_layers.py:117
+#: src/ui/widgets/preview/model_preview.py:290
+msgid "Optimizer"
+msgstr ""
+
+#: src/model_builder/layers/input_layers.py:118
+msgid "Training optimizer"
+msgstr ""
+
+#: src/model_builder/layers/input_layers.py:125
+#: src/ui/widgets/preview/model_preview.py:295
+#: src/ui/widgets/preview/model_preview.py:297
+msgid "Learning rate"
+msgstr ""
+
+#: src/model_builder/layers/input_layers.py:126
+msgid "Optimizer learning rate"
+msgstr ""
+
+#: src/model_builder/layers/input_layers.py:134
+#: src/ui/widgets/preview/model_preview.py:300
+msgid "Loss"
+msgstr ""
+
+#: src/model_builder/layers/input_layers.py:135
+msgid "Training loss function"
+msgstr ""
+
+#: src/model_builder/layers/input_layers.py:142 src/ui/main_window.py:894
+#: src/ui/widgets/preview/metrics_preview.py:44
+#: src/workflow/nodes/training.py:688 src/workflow/nodes/training.py:968
+msgid "Metrics"
+msgstr ""
+
+#: src/model_builder/layers/input_layers.py:143
+msgid "Select metrics (multi-select)"
+msgstr ""
+
+#: src/model_builder/layers/merge_layers.py:12
+msgid "Concatenate"
+msgstr ""
+
+#: src/model_builder/layers/merge_layers.py:14
+msgid "Concatenate a list of inputs along a given axis"
+msgstr ""
+
+#: src/model_builder/layers/merge_layers.py:22
+msgid "Axis to concatenate"
+msgstr ""
+
+#: src/model_builder/layers/merge_layers.py:38
+msgid "Add"
+msgstr ""
+
+#: src/model_builder/layers/merge_layers.py:40
+msgid "Element-wise addition of a list of inputs"
+msgstr ""
+
+#: src/model_builder/layers/merge_layers.py:56
+msgid "Multiply"
+msgstr ""
+
+#: src/model_builder/layers/merge_layers.py:58
+msgid "Element-wise multiplication of a list of inputs"
+msgstr ""
+
+#: src/model_builder/layers/merge_layers.py:74
+msgid "Average"
+msgstr ""
+
+#: src/model_builder/layers/merge_layers.py:76
+msgid "Element-wise average of a list of inputs"
+msgstr ""
+
+#: src/model_builder/layers/merge_layers.py:92
+msgid "Maximum"
+msgstr ""
+
+#: src/model_builder/layers/merge_layers.py:94
+msgid "Element-wise maximum of a list of inputs"
+msgstr ""
+
+#: src/model_builder/layers/merge_layers.py:110
+msgid "Minimum"
+msgstr ""
+
+#: src/model_builder/layers/merge_layers.py:112
+msgid "Element-wise minimum of a list of inputs"
+msgstr ""
+
+#: src/model_builder/layers/merge_layers.py:128
+msgid "Dot"
+msgstr ""
+
+#: src/model_builder/layers/merge_layers.py:130
+msgid "Compute the dot product of two inputs"
+msgstr ""
+
+#: src/model_builder/layers/merge_layers.py:137
+msgid "Axes"
+msgstr ""
+
+#: src/model_builder/layers/merge_layers.py:138
+msgid "Axes for dot product"
+msgstr ""
+
+#: src/model_builder/layers/merge_layers.py:142
+#: src/workflow/nodes/preprocessing.py:301
+#: src/workflow/nodes/feature/dim1d/fft.py:52
+#: src/workflow/nodes/feature/dim1d/pitch.py:65
+msgid "Normalize"
+msgstr ""
+
+#: src/model_builder/layers/merge_layers.py:143
+msgid "Whether to apply L2 normalization before dot product"
+msgstr ""
+
+#: src/model_builder/layers/normalization_layers.py:14
+msgid "Batch normalization layer"
+msgstr ""
+
+#: src/model_builder/layers/normalization_layers.py:21
+msgid "Momentum"
+msgstr ""
+
+#: src/model_builder/layers/normalization_layers.py:22
+msgid "Momentum for the moving average"
+msgstr ""
+
+#: src/model_builder/layers/normalization_layers.py:29
+msgid "Small float added to variance to avoid division by zero"
+msgstr ""
+
+#: src/model_builder/layers/normalization_layers.py:34
+#: src/model_builder/layers/normalization_layers.py:73
+msgid "Center"
+msgstr ""
+
+#: src/model_builder/layers/normalization_layers.py:35
+msgid "Whether to add beta offset"
+msgstr ""
+
+#: src/model_builder/layers/normalization_layers.py:39
+#: src/model_builder/layers/normalization_layers.py:77
+msgid "Scale"
+msgstr ""
+
+#: src/model_builder/layers/normalization_layers.py:40
+msgid "Whether to multiply by gamma"
+msgstr ""
+
+#: src/model_builder/layers/normalization_layers.py:61
+msgid "Layer normalization"
+msgstr ""
+
+#: src/model_builder/layers/pooling_layers.py:14
+msgid "1D max pooling layer"
+msgstr ""
+
+#: src/model_builder/layers/pooling_layers.py:21
+#: src/model_builder/layers/pooling_layers.py:61
+#: src/model_builder/layers/pooling_layers.py:100
+msgid "Pool size"
+msgstr ""
+
+#: src/model_builder/layers/pooling_layers.py:54
+msgid "2D max pooling layer"
+msgstr ""
+
+#: src/model_builder/layers/pooling_layers.py:93
+msgid "1D average pooling layer"
+msgstr ""
+
+#: src/model_builder/layers/pooling_layers.py:131
+msgid "Global 1D max pooling layer"
+msgstr ""
+
+#: src/model_builder/layers/pooling_layers.py:149
+msgid "Global 1D average pooling layer"
+msgstr ""
+
+#: src/model_builder/layers/pooling_layers.py:167
+msgid "Global 2D max pooling layer"
+msgstr ""
+
+#: src/model_builder/layers/pooling_layers.py:185
+msgid "Global 2D average pooling layer"
+msgstr ""
+
+#: src/model_builder/layers/recurrent_layers.py:14
+msgid "Long Short-Term Memory (LSTM) layer"
+msgstr ""
+
+#: src/model_builder/layers/recurrent_layers.py:27
+#: src/model_builder/layers/recurrent_layers.py:104
+#: src/model_builder/layers/recurrent_layers.py:163
+msgid "Return sequences"
+msgstr ""
+
+#: src/model_builder/layers/recurrent_layers.py:28
+msgid "Whether to return the full sequence or only the last output"
+msgstr ""
+
+#: src/model_builder/layers/recurrent_layers.py:32
+msgid "Return state"
+msgstr ""
+
+#: src/model_builder/layers/recurrent_layers.py:33
+msgid "Whether to return the last state"
+msgstr ""
+
+#: src/model_builder/layers/recurrent_layers.py:43
+msgid "Recurrent activation"
+msgstr ""
+
+#: src/model_builder/layers/recurrent_layers.py:45
+msgid "Activation function for the recurrent step"
+msgstr ""
+
+#: src/model_builder/layers/recurrent_layers.py:50
+msgid "Dropout rate for the input linear transformation"
+msgstr ""
+
+#: src/model_builder/layers/recurrent_layers.py:56
+#: src/model_builder/layers/recurrent_layers.py:119
+msgid "Recurrent dropout rate"
+msgstr ""
+
+#: src/model_builder/layers/recurrent_layers.py:57
+msgid "Dropout rate for the recurrent state linear transformation"
+msgstr ""
+
+#: src/model_builder/layers/recurrent_layers.py:63
+#: src/model_builder/layers/recurrent_layers.py:125
+msgid "Bidirectional"
+msgstr ""
+
+#: src/model_builder/layers/recurrent_layers.py:64
+msgid "Whether to use a bidirectional wrapper"
+msgstr ""
+
+#: src/model_builder/layers/recurrent_layers.py:92
+msgid "Gated Recurrent Unit (GRU) layer"
+msgstr ""
+
+#: src/model_builder/layers/recurrent_layers.py:151
+msgid "Simple RNN layer"
+msgstr ""
+
+#: src/model_builder/layers/regularization_layers.py:14
+msgid "Randomly drops input units to reduce overfitting"
+msgstr ""
+
+#: src/model_builder/layers/regularization_layers.py:22
+msgid "Fraction of the input units to drop"
+msgstr ""
+
+#: src/model_builder/layers/regularization_layers.py:42
+msgid "Spatial 1D dropout (drops entire feature maps)"
+msgstr ""
+
+#: src/model_builder/layers/regularization_layers.py:69
+msgid "Spatial 2D dropout"
+msgstr ""
+
+#: src/model_builder/layers/regularization_layers.py:96
+msgid "Applies additive Gaussian noise"
+msgstr ""
+
+#: src/model_builder/layers/regularization_layers.py:103
+msgid "Standard deviation"
+msgstr ""
+
+#: src/model_builder/layers/regularization_layers.py:104
+msgid "Standard deviation of the noise distribution"
+msgstr ""
+
+#: src/model_builder/layers/regularization_layers.py:123
+msgid "Applies multiplicative Gaussian noise"
+msgstr ""
+
+#: src/model_builder/layers/reshape_layers.py:12
+msgid "Flatten"
+msgstr ""
+
+#: src/model_builder/layers/reshape_layers.py:14
+msgid "Flattens the input to 1D"
+msgstr ""
+
+#: src/model_builder/layers/reshape_layers.py:32
+msgid "Reshapes the input to the given shape"
+msgstr ""
+
+#: src/model_builder/layers/reshape_layers.py:39
+msgid "Target shape"
+msgstr ""
+
+#: src/model_builder/layers/reshape_layers.py:40
+msgid "Target shape (excluding batch dimension)"
+msgstr ""
+
+#: src/model_builder/layers/reshape_layers.py:57
+msgid "Permute"
+msgstr ""
+
+#: src/model_builder/layers/reshape_layers.py:59
+msgid "Permutes the dimensions of the input"
+msgstr ""
+
+#: src/model_builder/layers/reshape_layers.py:66
+msgid "Dimension order"
+msgstr ""
+
+#: src/model_builder/layers/reshape_layers.py:67
+msgid "Permutation pattern (1-based indices)"
+msgstr ""
+
+#: src/model_builder/layers/reshape_layers.py:86
+msgid "Repeats the input n times"
+msgstr ""
+
+#: src/model_builder/layers/reshape_layers.py:93
+msgid "Repeats"
+msgstr ""
+
+#: src/model_builder/layers/reshape_layers.py:112
+msgid "1D upsampling layer"
+msgstr ""
+
+#: src/model_builder/layers/reshape_layers.py:119
+#: src/model_builder/layers/reshape_layers.py:145
+msgid "Upsampling factor"
+msgstr ""
+
+#: src/model_builder/layers/reshape_layers.py:138
+msgid "2D upsampling layer"
+msgstr ""
+
+#: src/training/trainer.py:112
+msgid "Preparing training..."
+msgstr ""
+
+#: src/training/trainer.py:134
+msgid "Compiling model..."
+msgstr ""
+
+#: src/training/trainer.py:188 src/ui/views/training_view.py:296
+msgid "Training started..."
+msgstr ""
+
+#: src/training/trainer.py:310
+msgid "Stopping training..."
+msgstr ""
+
+#: src/training/trainer.py:324
+msgid "Training finished"
+msgstr ""
+
+#: src/training/trainer.py:330
+msgid "Training error"
+msgstr ""
+
+#: src/training/trainer.py:451
+msgid "Please build the model first"
+msgstr ""
+
+#: src/training/trainer.py:493 src/training/trainer.py:509
+msgid "Please train the model first"
+msgstr ""
+
+#: src/ui/main_window.py:159
+msgid "🎵 AI Acoustic Training Platform"
+msgstr ""
+
+#: src/ui/main_window.py:214
+msgid "Ready"
+msgstr ""
+
+#: src/ui/main_window.py:217
+msgid "Workflow: Unsaved"
+msgstr ""
+
+#: src/ui/main_window.py:220
+msgid "GPU: Detecting..."
+msgstr ""
+
+#: src/ui/main_window.py:221
+msgid "Memory: --"
+msgstr ""
+
+#: src/ui/main_window.py:252
+#, python-brace-format
+msgid "GPU: {count} available"
+msgstr ""
+
+#: src/ui/main_window.py:256
+msgid "GPU: CPU only"
+msgstr ""
+
+#: src/ui/main_window.py:259
+msgid "GPU: Unknown"
+msgstr ""
+
+#: src/ui/main_window.py:276
+#, python-brace-format
+msgid "Memory: {used:.1f}/{total:.1f}GB"
+msgstr ""
+
+#: src/ui/main_window.py:359 src/ui/main_window.py:372
+#: src/ui/main_window.py:382 src/ui/views/workflow_view.py:174
+msgid "⏹️ Stop"
+msgstr ""
+
+#: src/ui/main_window.py:385 src/ui/main_window.py:592
+msgid "Execution error"
+msgstr ""
+
+#: src/ui/main_window.py:461
+msgid "Modified"
+msgstr ""
+
+#: src/ui/main_window.py:461 src/ui/views/model_builder_view.py:514
+msgid "Saved"
+msgstr ""
+
+#: src/ui/main_window.py:463
+#, python-brace-format
+msgid "Workflow: {name} ({status})"
+msgstr ""
+
+#: src/ui/main_window.py:468
+msgid "Workflow: None"
+msgstr ""
+
+#: src/ui/main_window.py:505
+msgid "No runnable workflow."
+msgstr ""
+
+#: src/ui/main_window.py:513 src/ui/views/model_builder_view.py:537
+msgid "Validation failed"
+msgstr ""
+
+#: src/ui/main_window.py:514
+msgid "Workflow validation failed:\n"
+msgstr ""
+
+#: src/ui/main_window.py:539
+msgid "Startup failed"
+msgstr ""
+
+#: src/ui/main_window.py:567
+msgid "Running workflow..."
+msgstr ""
+
+#: src/ui/main_window.py:577
+#, python-brace-format
+msgid "Time: {seconds:.2f}s"
+msgstr ""
+
+#: src/ui/main_window.py:581 src/ui/main_window.py:601
+msgid "Workflow completed"
+msgstr ""
+
+#: src/ui/main_window.py:591
+#, python-brace-format
+msgid "Error: {error}"
+msgstr ""
+
+#: src/ui/main_window.py:719
+#, python-brace-format
+msgid "🔴 Breakpoint paused: {name} - Click to continue"
+msgstr ""
+
+#: src/ui/main_window.py:784
+msgid "Model save path"
+msgstr ""
+
+#: src/ui/main_window.py:785 src/ui/views/model_builder_view.py:515
+#, python-brace-format
+msgid ""
+"Model saved to:\n"
+"{path}"
+msgstr ""
+
+#: src/ui/main_window.py:797
+#, python-brace-format
+msgid ""
+"Loop node [{name}] cannot be previewed.\n"
+"Please preview a specific processing node inside the loop."
+msgstr ""
+
+#: src/ui/main_window.py:811 src/ui/main_window.py:895
+msgid "Label data"
+msgstr ""
+
+#: src/ui/main_window.py:813
+#, python-brace-format
+msgid ""
+"Loaded {count} label(s).\n"
+"Label data cannot be visualized for preview."
+msgstr ""
+
+#: src/ui/main_window.py:850
+#, python-brace-format
+msgid ""
+"Node [{name}] has not been run yet.\n"
+"Click \"Run\" to execute the workflow first."
+msgstr ""
+
+#: src/ui/main_window.py:875
+#, python-brace-format
+msgid "Preview {name} - {type}"
+msgstr ""
+
+#: src/ui/main_window.py:889
+msgid "Audio waveform"
+msgstr ""
+
+#: src/ui/main_window.py:890
+msgid "1D feature curve"
+msgstr ""
+
+#: src/ui/main_window.py:891
+msgid "2D feature map"
+msgstr ""
+
+#: src/ui/main_window.py:892
+msgid "Feature data"
+msgstr ""
+
+#: src/ui/main_window.py:896 src/ui/main_window.py:899
+#: src/workflow/nodes/control.py:123 src/workflow/nodes/control.py:384
+#: src/workflow/nodes/control.py:385
+msgid "Data"
+msgstr ""
+
+#: src/ui/main_window.py:897
+msgid "Trigger"
+msgstr ""
+
+#: src/ui/dialogs/about_dialog.py:22
+msgid "About"
+msgstr ""
+
+#: src/ui/dialogs/about_dialog.py:46
+msgid "Version 1.0.0"
+msgstr ""
+
+#: src/ui/dialogs/about_dialog.py:60
+msgid ""
+"A local training platform for learning AI acoustic signal processing.\n"
+"Supports audio visualization, feature extraction, model building, and "
+"training monitoring."
+msgstr ""
+
+#: src/ui/dialogs/about_dialog.py:71
+msgid "Tech stack: Python • TensorFlow • PyQt6 • Librosa"
+msgstr ""
+
+#: src/ui/dialogs/about_dialog.py:86 src/utils/dialogs.py:110
+msgid "Close"
+msgstr ""
+
+#: src/ui/dialogs/dataset_dialog.py:27
+msgid "Dataset Split"
+msgstr ""
+
+#: src/ui/dialogs/dataset_dialog.py:34
+msgid "Dataset Info"
+msgstr ""
+
+#: src/ui/dialogs/dataset_dialog.py:39
+msgid "Total samples:"
+msgstr ""
+
+#: src/ui/dialogs/dataset_dialog.py:43
+msgid "Classes:"
+msgstr ""
+
+#: src/ui/dialogs/dataset_dialog.py:50
+msgid "Labels:"
+msgstr ""
+
+#: src/ui/dialogs/dataset_dialog.py:55
+msgid "Split Ratio"
+msgstr ""
+
+#: src/ui/dialogs/dataset_dialog.py:67 src/ui/dialogs/dataset_dialog.py:83
+#: src/ui/dialogs/dataset_dialog.py:99
+msgid "0 samples"
+msgstr ""
+
+#: src/ui/dialogs/dataset_dialog.py:72
+msgid "Train:"
+msgstr ""
+
+#: src/ui/dialogs/dataset_dialog.py:88
+msgid "Validation:"
+msgstr ""
+
+#: src/ui/dialogs/dataset_dialog.py:104
+msgid "Test:"
+msgstr ""
+
+#: src/ui/dialogs/dataset_dialog.py:107
+msgid "Total: 100%"
+msgstr ""
+
+#: src/ui/dialogs/dataset_dialog.py:114
+msgid "Split Options"
+msgstr ""
+
+#: src/ui/dialogs/dataset_dialog.py:117
+msgid "Stratify (keep class proportions)"
+msgstr ""
+
+#: src/ui/dialogs/dataset_dialog.py:121
+msgid "Shuffle data"
+msgstr ""
+
+#: src/ui/dialogs/dataset_dialog.py:126
+msgid "Random seed:"
+msgstr ""
+
+#: src/ui/dialogs/dataset_dialog.py:138
+msgid "Class Distribution"
+msgstr ""
+
+#: src/ui/dialogs/dataset_dialog.py:144
+#: src/ui/widgets/preview/label_preview.py:103 src/visualization/metrics.py:206
+msgid "Class"
+msgstr ""
+
+#: src/ui/dialogs/dataset_dialog.py:144 src/workflow/nodes/control.py:39
+msgid "Total"
+msgstr ""
+
+#: src/ui/dialogs/dataset_dialog.py:144
+msgid "Train"
+msgstr ""
+
+#: src/ui/dialogs/dataset_dialog.py:144
+msgid "Val/Test"
+msgstr ""
+
+#: src/ui/dialogs/dataset_dialog.py:158 src/ui/dialogs/export_dialog.py:106
+#: src/ui/dialogs/settings_dialog.py:58
+msgid "Cancel"
+msgstr ""
+
+#: src/ui/dialogs/dataset_dialog.py:162
+msgid "Confirm split"
+msgstr ""
+
+#: src/ui/dialogs/dataset_dialog.py:191 src/ui/dialogs/dataset_dialog.py:192
+#: src/ui/dialogs/dataset_dialog.py:193
+#, python-brace-format
+msgid "{count} samples"
+msgstr ""
+
+#: src/ui/dialogs/dataset_dialog.py:197
+msgid "Total: 100% ✓"
+msgstr ""
+
+#: src/ui/dialogs/dataset_dialog.py:202
+#, python-brace-format
+msgid "Total: {total}% (must be 100%)"
+msgstr ""
+
+#: src/ui/dialogs/dataset_dialog.py:217
+msgid "The split ratios must add up to 100%."
+msgstr ""
+
+#: src/ui/dialogs/export_dialog.py:28
+msgid "Export Model"
+msgstr ""
+
+#: src/ui/dialogs/export_dialog.py:35
+msgid "Export Location"
+msgstr ""
+
+#: src/ui/dialogs/export_dialog.py:40
+msgid "Choose an export directory..."
+msgstr ""
+
+#: src/ui/dialogs/export_dialog.py:43 src/ui/dialogs/settings_dialog.py:184
+msgid "Browse"
+msgstr ""
+
+#: src/ui/dialogs/export_dialog.py:47
+msgid "Directory:"
+msgstr ""
+
+#: src/ui/dialogs/export_dialog.py:52
+msgid "Model name:"
+msgstr ""
+
+#: src/ui/dialogs/export_dialog.py:57
+msgid "Export Format"
+msgstr ""
+
+#: src/ui/dialogs/export_dialog.py:68
+msgid "Format:"
+msgstr ""
+
+#: src/ui/dialogs/export_dialog.py:73
+msgid "Export Options"
+msgstr ""
+
+#: src/ui/dialogs/export_dialog.py:76
+msgid "Include optimizer state"
+msgstr ""
+
+#: src/ui/dialogs/export_dialog.py:80
+msgid "Export model config (JSON)"
+msgstr ""
+
+#: src/ui/dialogs/export_dialog.py:84
+msgid "Export weights only"
+msgstr ""
+
+#: src/ui/dialogs/export_dialog.py:110
+msgid "Export"
+msgstr ""
+
+#: src/ui/dialogs/export_dialog.py:127
+msgid "Select an export directory"
+msgstr ""
+
+#: src/ui/dialogs/export_dialog.py:137
+msgid "Please select an export directory."
+msgstr ""
+
+#: src/ui/dialogs/export_dialog.py:141
+msgid "Please enter a model name."
+msgstr ""
+
+#: src/ui/dialogs/export_dialog.py:145
+msgid "No model available to export."
+msgstr ""
+
+#: src/ui/dialogs/export_dialog.py:179
+msgid "Exporting model..."
+msgstr ""
+
+#: src/ui/dialogs/export_dialog.py:186
+msgid "Export succeeded!"
+msgstr ""
+
+#: src/ui/dialogs/export_dialog.py:192
+#, python-brace-format
+msgid ""
+"Model exported to:\n"
+"{path}"
+msgstr ""
+
+#: src/ui/dialogs/export_dialog.py:201
+#, python-brace-format
+msgid "Export failed: {error}"
+msgstr ""
+
+#: src/ui/dialogs/export_dialog.py:209
+#, python-brace-format
+msgid ""
+"Export failed:\n"
+"{error}"
+msgstr ""
+
+#: src/ui/dialogs/export_dialog.py:244
+msgid "Please install tf2onnx: pip install tf2onnx"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:27
+msgid "Settings"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:37 src/workflow/nodes/augmentation.py:37
+#: src/workflow/nodes/augmentation.py:171
+#: src/workflow/nodes/augmentation.py:172
+#: src/workflow/nodes/augmentation.py:250
+#: src/workflow/nodes/augmentation.py:251
+#: src/workflow/nodes/augmentation.py:333
+#: src/workflow/nodes/augmentation.py:334
+#: src/workflow/nodes/augmentation.py:465 src/workflow/nodes/data_source.py:264
+#: src/workflow/nodes/data_source.py:475
+#: src/workflow/nodes/preprocessing.py:124
+#: src/workflow/nodes/preprocessing.py:127
+#: src/workflow/nodes/preprocessing.py:187
+#: src/workflow/nodes/preprocessing.py:188
+#: src/workflow/nodes/preprocessing.py:307
+#: src/workflow/nodes/preprocessing.py:308
+#: src/workflow/nodes/preprocessing.py:387
+#: src/workflow/nodes/preprocessing.py:388
+#: src/workflow/nodes/preprocessing.py:467
+#: src/workflow/nodes/preprocessing.py:833
+#: src/workflow/nodes/preprocessing.py:834
+#: src/workflow/nodes/feature/dim1d/fft.py:35
+#: src/workflow/nodes/feature/dim1d/pitch.py:36
+#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:38
+#: src/workflow/nodes/feature/dim1d/statistics.py:31
+#: src/workflow/nodes/feature/dim2d/cqt.py:37
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:34
+#: src/workflow/nodes/feature/dim2d/mfcc.py:34
+#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:37
+#: src/workflow/nodes/feature/dim2d/stft.py:35
+msgid "Audio"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:43
+msgid "UI"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:46
+msgid "GPU"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:54
+msgid "Reset to defaults"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:62
+msgid "Save"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:83
+msgid "Sampling"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:89
+msgid "Sample rate (Hz):"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:91
+msgid "Convert to mono"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:98
+msgid "Spectrum analysis"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:104
+msgid "FFT window size:"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:110
+msgid "Hop length:"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:115
+msgid "Mel filters:"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:120
+msgid "MFCC coefficients:"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:125 src/workflow/node_base.py:47
+msgid "Preprocessing"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:128
+msgid "Normalize audio"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:132
+msgid "Remove silence"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:140
+msgid "Silence threshold:"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:153
+msgid "Default training parameters"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:171
+msgid "Learning rate:"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:176
+msgid "Model saving"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:181
+msgid "Choose a model save directory..."
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:188
+msgid "Save path:"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:190
+msgid "Auto-save best model"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:196
+msgid "Save format:"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:201 src/workflow/nodes/training.py:353
+msgid "Early stopping"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:204
+msgid "Enable early stopping"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:211
+msgid "Patience:"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:218
+msgid "Minimum delta:"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:231
+msgid "Theme"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:235
+msgid "Dark"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:235
+msgid "Light"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:235
+msgid "Follow system"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:236
+msgid "Theme:"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:240
+msgid "Chinese (Simplified)"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:241
+msgid "English"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:242
+msgid "Language:"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:247
+msgid "Visualization"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:251
+msgid "Blue"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:251
+msgid "Green"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:251
+msgid "Purple"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:251
+msgid "Orange"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:252
+msgid "Waveform color:"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:256
+msgid "Spectrogram colormap:"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:258
+msgid "Show grid"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:265
+msgid "Update"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:272
+msgid "Chart update interval:"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:285
+msgid "GPU settings"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:288
+msgid "Use GPU acceleration"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:295
+msgid " % (0=auto)"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:296
+msgid "GPU memory limit:"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:298
+msgid "Mixed precision training"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:305
+msgid "GPU info"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:308
+msgid "Detecting GPU..."
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:312
+msgid "Re-detect"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:330
+#, python-brace-format
+msgid "Detected {count} GPU(s):\n"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:337
+msgid "No GPU detected. Training will use CPU."
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:342
+#, python-brace-format
+msgid "GPU detection error: {error}"
+msgstr ""
+
+#: src/ui/dialogs/settings_dialog.py:348
+msgid "Select a model save directory"
+msgstr ""
+
+#: src/ui/model_editor/layer_palette.py:109
+msgid "🧱 Layer Library"
+msgstr ""
+
+#: src/ui/model_editor/layer_palette.py:124
+msgid "🔍 Search layers..."
+msgstr ""
+
+#: src/ui/model_editor/layer_palette.py:136
+msgid "Drag or double-click to add a layer"
+msgstr ""
+
+#: src/ui/model_editor/layer_property_panel.py:59
+msgid "⚙️ Properties"
+msgstr ""
+
+#: src/ui/model_editor/layer_property_panel.py:79
+#: src/ui/model_editor/layer_property_panel.py:127
+msgid "📦 Layer Properties"
+msgstr ""
+
+#: src/ui/model_editor/layer_property_panel.py:98
+msgid ""
+"Select a layer to edit its properties.\n"
+"\n"
+"Tip: compile config (optimizer, loss, etc.)\n"
+"is set in the Output layer."
+msgstr ""
+
+#: src/ui/model_editor/layer_property_panel.py:134
+msgid "Layer Info"
+msgstr ""
+
+#: src/ui/model_editor/layer_property_panel.py:139
+msgid "Layer name:"
+msgstr ""
+
+#: src/ui/model_editor/layer_property_panel.py:141
+msgid "Optional, for identifying the layer"
+msgstr ""
+
+#: src/ui/model_editor/layer_property_panel.py:149
+#: src/ui/node_editor/property_panel.py:124
+msgid "Type:"
+msgstr ""
+
+#: src/ui/model_editor/layer_property_panel.py:161
+#: src/ui/node_editor/property_panel.py:131
+msgid "Parameters"
+msgstr ""
+
+#: src/ui/model_editor/layer_property_panel.py:305
+msgid "Training Control"
+msgstr ""
+
+#: src/ui/model_editor/layer_property_panel.py:311
+msgid "Weights:"
+msgstr ""
+
+#: src/ui/model_editor/layer_property_panel.py:315
+msgid "✅ Loaded"
+msgstr ""
+
+#: src/ui/model_editor/layer_property_panel.py:318
+msgid "⚪ None"
+msgstr ""
+
+#: src/ui/model_editor/layer_property_panel.py:327
+msgid "Trainable:"
+msgstr ""
+
+#: src/ui/model_editor/layer_property_panel.py:330
+msgid "Enabled"
+msgstr ""
+
+#: src/ui/model_editor/layer_property_panel.py:333
+msgid ""
+"Uncheck to freeze this layer so its weights won't be updated during training."
+msgstr ""
+
+#: src/ui/model_editor/layer_property_panel.py:344
+msgid "🔒 This layer is frozen; weights will not be updated during training."
+msgstr ""
+
+#: src/ui/model_editor/model_graph_widget.py:486
+msgid "Add layer"
+msgstr ""
+
+#: src/ui/model_editor/model_graph_widget.py:508
+msgid "Reset selected layer connections"
+msgstr ""
+
+#: src/ui/model_editor/model_graph_widget.py:511
+msgid "Delete selected layers"
+msgstr ""
+
+#: src/ui/node_editor/node_graph.py:660
+msgid "Connection failed"
+msgstr ""
+
+#: src/ui/node_editor/node_graph.py:677
+msgid "Reset selected node connections"
+msgstr ""
+
+#: src/ui/node_editor/node_graph.py:681
+msgid "Delete selected nodes"
+msgstr ""
+
+#: src/ui/node_editor/node_palette.py:109
+msgid "🧩 Node Library"
+msgstr ""
+
+#: src/ui/node_editor/node_palette.py:124
+msgid "🔍 Search nodes..."
+msgstr ""
+
+#: src/ui/node_editor/node_palette.py:136
+msgid "Drag or double-click to add a node"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:80
+#: src/ui/node_editor/property_panel.py:150
+msgid "Properties"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:113
+msgid "Node Info"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:123
+msgid "Name:"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:125
+msgid "Category:"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:126
+msgid "Description:"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:137
+msgid "Ports"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:173
+#, python-brace-format
+msgid "Properties - {name}"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:181
+msgid "No description"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:337
+msgid "Select file"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:357
+msgid "Select folder"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:379
+msgid "📥 Inputs:"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:394
+msgid "📤 Outputs:"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:125
+msgid "📐 New model"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:150 src/ui/views/workflow_view.py:139
+msgid "📄 New"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:156 src/ui/views/workflow_view.py:145
+msgid "📂 Open"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:162 src/ui/views/workflow_view.py:151
+msgid "💾 Save"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:168
+msgid "📋 Save as"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:181
+msgid "📥 Import Keras"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:195
+msgid "Import architecture from a trained .keras/.h5 model file"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:207
+msgid "🔨 Build model"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:225 src/ui/views/workflow_view.py:226
+msgid "🔍 Fit"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:231 src/ui/views/workflow_view.py:232
+msgid "🗑️ Clear"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:294
+#: src/ui/views/model_builder_view.py:357
+#: src/ui/views/model_builder_view.py:593 src/ui/views/workflow_view.py:424
+msgid "Confirm"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:295
+msgid "The current model has unsaved changes. Continue?"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:313
+msgid "Open model"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:315
+#: src/ui/views/model_builder_view.py:467
+msgid "Model files (*.model.json);;All files (*)"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:345
+msgid "Import Keras model"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:347
+msgid "Keras models (*.keras *.h5);;All files (*)"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:358
+msgid "The current model has unsaved changes. Continue importing?"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:369
+msgid "📐 Importing..."
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:396
+#, python-brace-format
+msgid ""
+"\n"
+"\n"
+"⚠️ The following layer type(s) are not supported and were skipped:\n"
+"{layers}"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:402
+#, python-brace-format
+msgid ""
+"\n"
+"Frozen layers: {count}"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:409
+msgid "Import succeeded"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:411
+msgid ""
+"Model imported: {name}\n"
+"\n"
+"Layers: {layer_count}\n"
+"Total params: {total_params:,}\n"
+"Trainable params: {trainable_params:,}\n"
+"Non-trainable params: {non_trainable_params:,}"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:432
+msgid "Import failed"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:433
+#, python-brace-format
+msgid ""
+"Failed to import model:\n"
+"{error}"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:452
+msgid "No model to save."
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:465
+msgid "Save model as"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:522 src/workflow/nodes/training.py:283
+#, python-brace-format
+msgid "Failed to save model: {error}"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:529
+msgid "No model to build."
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:538
+msgid "Model validation failed:\n"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:551
+#, python-brace-format
+msgid ""
+"Optimizer: {optimizer} (lr={lr})\n"
+"Loss: {loss}\n"
+"Metrics: {metrics}"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:562
+msgid "Using default compile config"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:583
+msgid "Build failed"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:584
+#, python-brace-format
+msgid "Model build failed: {error}"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:594
+msgid "Clear all layers?"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:648
+msgid "✅ Model built successfully"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:657
+msgid "🎉 Model built and compiled successfully!"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:669
+msgid "Compile config"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:693
+msgid "Model architecture"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:738
+msgid "OK"
+msgstr ""
+
+#: src/ui/views/preview_view.py:77
+msgid "Select a node and run the workflow to preview data"
+msgstr ""
+
+#: src/ui/views/preview_view.py:132
+msgid "📊 Data Preview"
+msgstr ""
+
+#: src/ui/views/preview_view.py:141 src/ui/views/preview_view.py:442
+msgid "No node selected"
+msgstr ""
+
+#: src/ui/views/preview_view.py:160
+msgid "Item:"
+msgstr ""
+
+#: src/ui/views/preview_view.py:175
+msgid "Output port:"
+msgstr ""
+
+#: src/ui/views/preview_view.py:186
+msgid "🔄 Refresh"
+msgstr ""
+
+#: src/ui/views/preview_view.py:215
+#, python-brace-format
+msgid "Node: {name} ({id})"
+msgstr ""
+
+#: src/ui/views/preview_view.py:233
+#, python-brace-format
+msgid "Node: {name} (no data - run workflow first)"
+msgstr ""
+
+#: src/ui/views/preview_view.py:342
+#, python-brace-format
+msgid "Total: {total} item(s)"
+msgstr ""
+
+#: src/ui/views/preview_view.py:370
+#, python-brace-format
+msgid "Unsupported type: {type}"
+msgstr ""
+
+#: src/ui/views/preview_view.py:380
+msgid "Failed to set data"
+msgstr ""
+
+#: src/ui/views/training_view.py:87
+msgid "Loss curve"
+msgstr ""
+
+#: src/ui/views/training_view.py:99 src/ui/views/training_view.py:116
+msgid "pyqtgraph is required to display charts"
+msgstr ""
+
+#: src/ui/views/training_view.py:104
+msgid "Accuracy curve"
+msgstr ""
+
+#: src/ui/views/training_view.py:127
+msgid "Current metrics"
+msgstr ""
+
+#: src/ui/views/training_view.py:133
+#: src/ui/widgets/preview/metrics_preview.py:73
+msgid "Metric"
+msgstr ""
+
+#: src/ui/views/training_view.py:133
+#: src/ui/widgets/preview/feature_1d_preview.py:76
+#: src/ui/widgets/preview/metrics_preview.py:72
+msgid "Value"
+msgstr ""
+
+#: src/ui/views/training_view.py:153
+msgid "Training log"
+msgstr ""
+
+#: src/ui/views/training_view.py:191
+msgid "🏋️ Training Monitor"
+msgstr ""
+
+#: src/ui/views/training_view.py:199 src/ui/views/training_view.py:472
+msgid "Idle"
+msgstr ""
+
+#: src/ui/views/training_view.py:211 src/ui/views/training_view.py:415
+msgid "⏸️ Pause"
+msgstr ""
+
+#: src/ui/views/training_view.py:216
+msgid "⏹️ Stop training"
+msgstr ""
+
+#: src/ui/views/training_view.py:221
+msgid "💾 Stop and save checkpoint"
+msgstr ""
+
+#: src/ui/views/training_view.py:279 src/ui/views/training_view.py:416
+msgid "Training..."
+msgstr ""
+
+#: src/ui/views/training_view.py:389
+msgid "Completed"
+msgstr ""
+
+#: src/ui/views/training_view.py:396
+#, python-brace-format
+msgid "Training completed! {message}"
+msgstr ""
+
+#: src/ui/views/training_view.py:398
+msgid "Failed"
+msgstr ""
+
+#: src/ui/views/training_view.py:420
+msgid "▶️ Resume"
+msgstr ""
+
+#: src/ui/views/training_view.py:421
+msgid "Paused"
+msgstr ""
+
+#: src/ui/views/training_view.py:440
+msgid "Save checkpoint"
+msgstr ""
+
+#: src/ui/views/workflow_view.py:169
+msgid "▶️ Run"
+msgstr ""
+
+#: src/ui/views/workflow_view.py:189 src/ui/views/workflow_view.py:472
+msgid "🔴 Paused"
+msgstr ""
+
+#: src/ui/views/workflow_view.py:201
+msgid "⏵ Continue"
+msgstr ""
+
+#: src/ui/views/workflow_view.py:350
+msgid "Open workflow"
+msgstr ""
+
+#: src/ui/views/workflow_view.py:352 src/ui/views/workflow_view.py:380
+msgid "Workflow files (*.json)"
+msgstr ""
+
+#: src/ui/views/workflow_view.py:378
+msgid "Save workflow"
+msgstr ""
+
+#: src/ui/views/workflow_view.py:404
+msgid "⏳ Stopping..."
+msgstr ""
+
+#: src/ui/views/workflow_view.py:409
+msgid "Stopping workflow... (waiting for current task to finish)"
+msgstr ""
+
+#: src/ui/views/workflow_view.py:425
+msgid "Clear the current workflow?"
+msgstr ""
+
+#: src/ui/widgets/spectrogram_widget.py:42
+#: src/ui/widgets/preview/audio_preview.py:69
+msgid "Spectrogram"
+msgstr ""
+
+#: src/ui/widgets/spectrogram_widget.py:52
+msgid "— Time-Frequency —"
+msgstr ""
+
+#: src/ui/widgets/spectrogram_widget.py:118
+msgid "Please install pyqtgraph to display spectrograms"
+msgstr ""
+
+#: src/ui/widgets/waveform_widget.py:38
+#: src/ui/widgets/preview/audio_preview.py:59
+msgid "Waveform"
+msgstr ""
+
+#: src/ui/widgets/waveform_widget.py:57 src/visualization/waveform.py:61
+#: src/visualization/waveform.py:167
+msgid "Amplitude"
+msgstr ""
+
+#: src/ui/widgets/waveform_widget.py:58 src/visualization/spectrogram.py:261
+#: src/visualization/waveform.py:64 src/visualization/waveform.py:114
+#: src/visualization/waveform.py:166
+msgid "Time (s)"
+msgstr ""
+
+#: src/ui/widgets/waveform_widget.py:78
+msgid "Please install pyqtgraph to display waveforms"
+msgstr ""
+
+#: src/ui/widgets/waveform_widget.py:181
+msgid "Samples"
+msgstr ""
+
+#: src/ui/widgets/preview/audio_preview.py:40
+msgid "Audio preview"
+msgstr ""
+
+#: src/ui/widgets/preview/audio_preview.py:79
+msgid "Playback controls"
+msgstr ""
+
+#: src/ui/widgets/preview/base_preview.py:33
+msgid "Base preview"
+msgstr ""
+
+#: src/ui/widgets/preview/base_preview.py:69
+msgid "Subclasses must implement set_data()"
+msgstr ""
+
+#: src/ui/widgets/preview/base_preview.py:78
+msgid "Subclasses must implement clear()"
+msgstr ""
+
+#: src/ui/widgets/preview/feature_1d_preview.py:45
+#: src/ui/widgets/preview/feature_1d_preview.py:59
+msgid "1D feature"
+msgstr ""
+
+#: src/ui/widgets/preview/feature_1d_preview.py:77
+msgid "Index"
+msgstr ""
+
+#: src/ui/widgets/preview/feature_1d_preview.py:87
+#: src/ui/widgets/preview/label_preview.py:107
+#: src/ui/widgets/preview/metrics_preview.py:77
+msgid "Please install pyqtgraph to display charts"
+msgstr ""
+
+#: src/ui/widgets/preview/feature_1d_preview.py:101
+#: src/ui/widgets/preview/feature_2d_preview.py:132
+msgid "Statistics"
+msgstr ""
+
+#: src/ui/widgets/preview/feature_1d_preview.py:186
+#: src/ui/widgets/preview/feature_2d_preview.py:226
+msgid "No data"
+msgstr ""
+
+#: src/ui/widgets/preview/feature_1d_preview.py:190
+msgid "  Length: {length:,}\n"
+msgstr ""
+
+#: src/ui/widgets/preview/feature_1d_preview.py:191
+#: src/ui/widgets/preview/feature_2d_preview.py:232
+#, python-brace-format
+msgid "  Min: {value:.6f}\n"
+msgstr ""
+
+#: src/ui/widgets/preview/feature_1d_preview.py:192
+#: src/ui/widgets/preview/feature_2d_preview.py:233
+#, python-brace-format
+msgid "  Max: {value:.6f}\n"
+msgstr ""
+
+#: src/ui/widgets/preview/feature_1d_preview.py:193
+#: src/ui/widgets/preview/feature_2d_preview.py:234
+#, python-brace-format
+msgid "  Mean: {value:.6f}\n"
+msgstr ""
+
+#: src/ui/widgets/preview/feature_1d_preview.py:194
+#, python-brace-format
+msgid "  Std: {value:.6f}\n"
+msgstr ""
+
+#: src/ui/widgets/preview/feature_1d_preview.py:195
+#, python-brace-format
+msgid "  Median: {value:.6f}"
+msgstr ""
+
+#: src/ui/widgets/preview/feature_2d_preview.py:45
+msgid "2D feature"
+msgstr ""
+
+#: src/ui/widgets/preview/feature_2d_preview.py:64
+msgid "2D feature heatmap"
+msgstr ""
+
+#: src/ui/widgets/preview/feature_2d_preview.py:87
+msgid "Please install pyqtgraph to display heatmaps"
+msgstr ""
+
+#: src/ui/widgets/preview/feature_2d_preview.py:101
+msgid "Mean over time"
+msgstr ""
+
+#: src/ui/widgets/preview/feature_2d_preview.py:116
+msgid "Mean"
+msgstr ""
+
+#: src/ui/widgets/preview/feature_2d_preview.py:117
+msgid "Frame"
+msgstr ""
+
+#: src/ui/widgets/preview/feature_2d_preview.py:126
+msgid "Please install pyqtgraph"
+msgstr ""
+
+#: src/ui/widgets/preview/feature_2d_preview.py:230
+#, python-brace-format
+msgid "  Shape: {h} × {w} (features × frames)\n"
+msgstr ""
+
+#: src/ui/widgets/preview/feature_2d_preview.py:231
+msgid "  Elements: {n:,}\n"
+msgstr ""
+
+#: src/ui/widgets/preview/feature_2d_preview.py:235
+#, python-brace-format
+msgid "  Std: {value:.6f}"
+msgstr ""
+
+#: src/ui/widgets/preview/label_preview.py:46
+msgid "Label preview"
+msgstr ""
+
+#: src/ui/widgets/preview/label_preview.py:73
+msgid "📊 Statistics"
+msgstr ""
+
+#: src/ui/widgets/preview/label_preview.py:93
+msgid "📈 Label distribution"
+msgstr ""
+
+#: src/ui/widgets/preview/label_preview.py:102 src/visualization/metrics.py:207
+msgid "Count"
+msgstr ""
+
+#: src/ui/widgets/preview/label_preview.py:115
+msgid "📋 Label list"
+msgstr ""
+
+#: src/ui/widgets/preview/label_preview.py:122
+msgid "Class name"
+msgstr ""
+
+#: src/ui/widgets/preview/label_preview.py:122
+msgid "Label"
+msgstr ""
+
+#: src/ui/widgets/preview/label_preview.py:263
+msgid "Total labels"
+msgstr ""
+
+#: src/ui/widgets/preview/label_preview.py:264
+msgid "Classes"
+msgstr ""
+
+#: src/ui/widgets/preview/label_preview.py:265
+msgid "Most common"
+msgstr ""
+
+#: src/ui/widgets/preview/label_preview.py:266
+#: src/ui/widgets/preview/label_preview.py:268
+#: src/ui/widgets/preview/label_preview.py:269
+msgid "items"
+msgstr ""
+
+#: src/ui/widgets/preview/label_preview.py:267
+msgid "Least common"
+msgstr ""
+
+#: src/ui/widgets/preview/label_preview.py:269
+msgid "Avg per class"
+msgstr ""
+
+#: src/ui/widgets/preview/label_preview.py:345
+#, python-brace-format
+msgid "... {count} more item(s) not shown"
+msgstr ""
+
+#: src/ui/widgets/preview/metrics_preview.py:63
+msgid "📊 Metrics"
+msgstr ""
+
+#: src/ui/widgets/preview/metrics_preview.py:84
+msgid "📋 Details"
+msgstr ""
+
+#: src/ui/widgets/preview/model_preview.py:37
+msgid "Model preview"
+msgstr ""
+
+#: src/ui/widgets/preview/model_preview.py:56
+msgid "🧠 Model summary"
+msgstr ""
+
+#: src/ui/widgets/preview/model_preview.py:79
+msgid "📊 Model parameters"
+msgstr ""
+
+#: src/ui/widgets/preview/model_preview.py:151
+#, python-brace-format
+msgid "Failed to parse model: {error}"
+msgstr ""
+
+#: src/ui/widgets/preview/model_preview.py:168
+#, python-brace-format
+msgid "Failed to get model summary: {error}"
+msgstr ""
+
+#: src/ui/widgets/preview/model_preview.py:244
+msgid "Model name"
+msgstr ""
+
+#: src/ui/widgets/preview/model_preview.py:247
+msgid "Layers"
+msgstr ""
+
+#: src/ui/widgets/preview/model_preview.py:256
+msgid "Total params"
+msgstr ""
+
+#: src/ui/widgets/preview/model_preview.py:261
+msgid "Trainable params"
+msgstr ""
+
+#: src/ui/widgets/preview/model_preview.py:266
+msgid "Non-trainable params"
+msgstr ""
+
+#: src/ui/widgets/preview/model_preview.py:278
+msgid "Output shape"
+msgstr ""
+
+#: src/ui/widgets/preview/model_preview.py:286
+msgid "✅ Compiled"
+msgstr ""
+
+#: src/ui/widgets/preview/model_preview.py:286
+msgid "❌ Not compiled"
+msgstr ""
+
+#: src/ui/widgets/preview/model_preview.py:287
+msgid "Compile status"
+msgstr ""
+
+#: src/utils/dataset_manager.py:169
+msgid "No dataset loaded"
+msgstr ""
+
+#: src/utils/dialogs.py:76
+msgid "An error occurred"
+msgstr ""
+
+#: src/utils/dialogs.py:91 src/utils/dialogs.py:130
+msgid "Details:"
+msgstr ""
+
+#: src/utils/dialogs.py:104
+msgid "📋 Copy error details"
+msgstr ""
+
+#: src/utils/file_utils.py:190
+#, python-brace-format
+msgid "Delete failed for {path}: {error}"
+msgstr ""
+
+#: src/utils/restart_manager.py:159
+msgid ""
+"Timed out while stopping current workflow/training. Restart cancelled; the "
+"app will keep running."
+msgstr ""
+
+#: src/utils/restart_manager.py:171
+#, python-brace-format
+msgid "Failed to start new process: {error}"
+msgstr ""
+
+#: src/utils/restart_manager.py:207
+msgid ""
+"New process did not become ready in time (no ready signal). Restart "
+"cancelled; the app will keep running."
+msgstr ""
+
+#: src/visualization/metrics.py:48
+#, python-brace-format
+msgid "Train {metric}"
+msgstr ""
+
+#: src/visualization/metrics.py:54
+#, python-brace-format
+msgid "Val {metric}"
+msgstr ""
+
+#: src/visualization/metrics.py:58
+msgid "Epoch"
+msgstr ""
+
+#: src/visualization/metrics.py:125
+msgid "Confusion matrix"
+msgstr ""
+
+#: src/visualization/metrics.py:126
+msgid "True label"
+msgstr ""
+
+#: src/visualization/metrics.py:127
+msgid "Predicted label"
+msgstr ""
+
+#: src/visualization/metrics.py:150
+#, python-brace-format
+msgid "ROC curve (AUC = {auc:.3f})"
+msgstr ""
+
+#: src/visualization/metrics.py:152 src/visualization/metrics.py:168
+msgid "ROC curve"
+msgstr ""
+
+#: src/visualization/metrics.py:160
+msgid "Random guess"
+msgstr ""
+
+#: src/visualization/metrics.py:166
+msgid "False positive rate (FPR)"
+msgstr ""
+
+#: src/visualization/metrics.py:167
+msgid "True positive rate (TPR)"
+msgstr ""
+
+#: src/visualization/metrics.py:208
+msgid "Class distribution"
+msgstr ""
+
+#: src/visualization/spectrogram.py:120
+#: src/workflow/nodes/feature/dim2d/stft.py:36
+msgid "STFT spectrogram"
+msgstr ""
+
+#: src/visualization/spectrogram.py:166
+#: src/workflow/nodes/feature/dim2d/mfcc.py:40
+msgid "MFCC coefficients"
+msgstr ""
+
+#: src/visualization/waveform.py:102
+msgid "Left"
+msgstr ""
+
+#: src/visualization/waveform.py:102
+msgid "Right"
+msgstr ""
+
+#: src/visualization/waveform.py:165
+msgid "Waveform envelope"
+msgstr ""
+
+#: src/workflow/engine.py:111 src/workflow/engine.py:144
+msgid "Workflow not set"
+msgstr ""
+
+#: src/workflow/engine.py:115
+msgid "Workflow is already running"
+msgstr ""
+
+#: src/workflow/engine.py:246
+msgid "Execution stopped"
+msgstr ""
+
+#: src/workflow/engine.py:277
+#, python-brace-format
+msgid "Node '{name}' failed: {error}"
+msgstr ""
+
+#: src/workflow/engine.py:296
+msgid "Workflow finished"
+msgstr ""
+
+#: src/workflow/engine.py:306
+#, python-brace-format
+msgid "Execution error: {error}"
+msgstr ""
+
+#: src/workflow/engine.py:409
+#, python-brace-format
+msgid "Breakpoint paused: {name} - click Continue to proceed"
+msgstr ""
+
+#: src/workflow/node_base.py:46
+msgid "Data source"
+msgstr ""
+
+#: src/workflow/node_base.py:48
+msgid "Data augmentation"
+msgstr ""
+
+#: src/workflow/node_base.py:49
+msgid "Feature extraction"
+msgstr ""
+
+#: src/workflow/node_base.py:50
+msgid "AI / Training"
+msgstr ""
+
+#: src/workflow/node_base.py:51
+msgid "Control flow"
+msgstr ""
+
+#: src/workflow/node_base.py:260
+#, python-brace-format
+msgid "Input port '{name}' is not connected"
+msgstr ""
+
+#: src/workflow/workflow.py:27 src/workflow/workflow.py:42
+#: src/workflow/workflow.py:412
+msgid "Untitled workflow"
+msgstr ""
+
+#: src/workflow/workflow.py:161
+#, python-brace-format
+msgid "Source port {name} does not exist"
+msgstr ""
+
+#: src/workflow/workflow.py:165
+#, python-brace-format
+msgid "Target port {name} does not exist"
+msgstr ""
+
+#: src/workflow/workflow.py:174
+#, python-brace-format
+msgid "Incompatible port types: {src} -> {dst}"
+msgstr ""
+
+#: src/workflow/workflow.py:187
+#, python-brace-format
+msgid "Port {name} is already connected"
+msgstr ""
+
+#: src/workflow/workflow.py:301
+msgid "Workflow is empty"
+msgstr ""
+
+#: src/workflow/workflow.py:321
+#, python-brace-format
+msgid "Node '{node}' input port '{port}' is not connected"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:31
+msgid "Add noise"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:33
+msgid "Add noise to audio"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:38
+msgid "Noisy audio"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:42 src/workflow/nodes/augmentation.py:335
+msgid "Original audio"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:43
+msgid "Use as target when training denoising models"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:49
+msgid "Noise type"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:54
+msgid "SNR (dB)"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:59
+msgid "Random SNR"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:60
+msgid "Randomly choose SNR within the specified range"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:64
+msgid "Min SNR (dB)"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:69
+msgid "Max SNR (dB)"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:165
+msgid "Time stretch"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:167
+msgid "Change speed while preserving pitch"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:177
+msgid "Stretch rate"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:178
+msgid "<1 slower, >1 faster"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:183
+msgid "Random rate"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:187
+msgid "Min rate"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:192
+msgid "Max rate"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:244
+msgid "Pitch shift"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:246
+msgid "Change pitch while preserving speed"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:256
+msgid "Semitones"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:257
+msgid "Positive = higher, negative = lower"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:262
+msgid "Random shift"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:266
+msgid "Min shift (semitones)"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:271
+msgid "Max shift (semitones)"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:327
+msgid "Random augment"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:329
+msgid "Randomly apply multiple augmentation effects"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:340
+msgid "Enable noise"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:344
+msgid "Enable time stretch"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:348
+msgid "Enable pitch shift"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:352
+msgid "Enable gain change"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:356
+msgid "Apply probability"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:357
+msgid "Probability of applying each effect"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:459
+msgid "Audio slicing"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:461
+msgid "Slice audio into multiple short segments to augment data"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:469 src/workflow/nodes/control.py:124
+#: src/workflow/nodes/data_source.py:482
+msgid "Labels"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:471
+msgid "Optional labels input; will be duplicated along with slices"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:473
+msgid "Sliced audio list"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:477
+msgid "Sliced label list"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:478
+msgid "Labels corresponding to sliced audio items"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:484
+msgid "Slice duration (s)"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:485
+msgid "Duration of each slice"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:490
+msgid "Slice mode"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:492
+msgid "random: random start; sliding: sliding window"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:496
+msgid "Multiplier"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:497
+msgid "Number of slices to generate in random mode"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:502
+msgid "Overlap"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:503
+msgid "Overlap ratio in sliding window mode (0-0.9)"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:508
+msgid "Include remainder"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:509
+msgid ""
+"In sliding window mode, include the final remainder shorter than a full slice"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:513
+#: src/workflow/nodes/preprocessing.py:203
+#: src/workflow/nodes/preprocessing.py:673
+msgid "Pad mode"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:515
+msgid "Padding strategy for the remainder segment"
+msgstr ""
+
+#: src/workflow/nodes/control.py:30
+msgid "Loop"
+msgstr ""
+
+#: src/workflow/nodes/control.py:32
+msgid "Iterate over a list and output items one by one"
+msgstr ""
+
+#: src/workflow/nodes/control.py:36
+msgid "Data list"
+msgstr ""
+
+#: src/workflow/nodes/control.py:37
+msgid "Current item"
+msgstr ""
+
+#: src/workflow/nodes/control.py:38
+msgid "Current index"
+msgstr ""
+
+#: src/workflow/nodes/control.py:44
+msgid "Max iterations"
+msgstr ""
+
+#: src/workflow/nodes/control.py:45
+msgid "0 means no limit"
+msgstr ""
+
+#: src/workflow/nodes/control.py:57
+msgid "No data list provided"
+msgstr ""
+
+#: src/workflow/nodes/control.py:83 src/workflow/nodes/control.py:506
+msgid "Data list is empty"
+msgstr ""
+
+#: src/workflow/nodes/control.py:117
+msgid "Split dataset"
+msgstr ""
+
+#: src/workflow/nodes/control.py:119
+msgid "Split data into train/val/test sets"
+msgstr ""
+
+#: src/workflow/nodes/control.py:125 src/workflow/nodes/training.py:305
+msgid "Train data"
+msgstr ""
+
+#: src/workflow/nodes/control.py:126
+msgid "Train labels"
+msgstr ""
+
+#: src/workflow/nodes/control.py:127 src/workflow/nodes/training.py:307
+msgid "Validation data"
+msgstr ""
+
+#: src/workflow/nodes/control.py:128
+msgid "Validation labels"
+msgstr ""
+
+#: src/workflow/nodes/control.py:129 src/workflow/nodes/training.py:685
+msgid "Test data"
+msgstr ""
+
+#: src/workflow/nodes/control.py:130
+msgid "Test labels"
+msgstr ""
+
+#: src/workflow/nodes/control.py:135
+msgid "Train ratio"
+msgstr ""
+
+#: src/workflow/nodes/control.py:140
+msgid "Validation ratio"
+msgstr ""
+
+#: src/workflow/nodes/control.py:145
+msgid "Test ratio"
+msgstr ""
+
+#: src/workflow/nodes/control.py:150
+msgid "Shuffle"
+msgstr ""
+
+#: src/workflow/nodes/control.py:154
+msgid "Stratify"
+msgstr ""
+
+#: src/workflow/nodes/control.py:155
+msgid "Keep class proportions"
+msgstr ""
+
+#: src/workflow/nodes/control.py:159
+msgid "Random seed"
+msgstr ""
+
+#: src/workflow/nodes/control.py:168 src/workflow/nodes/control.py:498
+msgid "No data provided"
+msgstr ""
+
+#: src/workflow/nodes/control.py:250
+#, python-brace-format
+msgid "Split complete: train={train}, val={val}, test={test}"
+msgstr ""
+
+#: src/workflow/nodes/control.py:260
+#, python-brace-format
+msgid "Split failed: {error}"
+msgstr ""
+
+#: src/workflow/nodes/control.py:276
+msgid "Merge multiple data sources"
+msgstr ""
+
+#: src/workflow/nodes/control.py:280
+msgid "Data 1"
+msgstr ""
+
+#: src/workflow/nodes/control.py:281 src/workflow/nodes/control.py:388
+#: src/workflow/nodes/control.py:389
+msgid "Data 2"
+msgstr ""
+
+#: src/workflow/nodes/control.py:282
+msgid "Data 3"
+msgstr ""
+
+#: src/workflow/nodes/control.py:283
+msgid "Data 4"
+msgstr ""
+
+#: src/workflow/nodes/control.py:284
+msgid "Merged data"
+msgstr ""
+
+#: src/workflow/nodes/control.py:289
+msgid "Merge mode"
+msgstr ""
+
+#: src/workflow/nodes/control.py:309
+msgid "No valid data provided"
+msgstr ""
+
+#: src/workflow/nodes/control.py:344
+msgid "Passthrough"
+msgstr ""
+
+#: src/workflow/nodes/control.py:346
+msgid "Pass data through without modification"
+msgstr ""
+
+#: src/workflow/nodes/control.py:353
+msgid "In"
+msgstr ""
+
+#: src/workflow/nodes/control.py:354
+msgid "Out"
+msgstr ""
+
+#: src/workflow/nodes/control.py:374
+msgid "Breakpoint"
+msgstr ""
+
+#: src/workflow/nodes/control.py:376
+msgid "Pause workflow execution to inspect data"
+msgstr ""
+
+#: src/workflow/nodes/control.py:394
+msgid "Enable breakpoint"
+msgstr ""
+
+#: src/workflow/nodes/control.py:395
+msgid "Pause execution at this node"
+msgstr ""
+
+#: src/workflow/nodes/control.py:399
+msgid "Breakpoint description"
+msgstr ""
+
+#: src/workflow/nodes/control.py:400
+msgid "Describe the purpose of this breakpoint"
+msgstr ""
+
+#: src/workflow/nodes/control.py:417
+#, python-brace-format
+msgid "Breakpoint: {desc}"
+msgstr ""
+
+#: src/workflow/nodes/control.py:419
+msgid "Breakpoint triggered"
+msgstr ""
+
+#: src/workflow/nodes/control.py:440
+msgid "Validate shape"
+msgstr ""
+
+#: src/workflow/nodes/control.py:442
+msgid "Validate shape consistency in a batch"
+msgstr ""
+
+#: src/workflow/nodes/control.py:446
+msgid "Batch data"
+msgstr ""
+
+#: src/workflow/nodes/control.py:447
+msgid "Validated data"
+msgstr ""
+
+#: src/workflow/nodes/control.py:448
+msgid "Is valid"
+msgstr ""
+
+#: src/workflow/nodes/control.py:449
+msgid "Shape info"
+msgstr ""
+
+#: src/workflow/nodes/control.py:454
+msgid "Strict mode"
+msgstr ""
+
+#: src/workflow/nodes/control.py:455
+msgid "Stop workflow on inconsistency (otherwise warn only)"
+msgstr ""
+
+#: src/workflow/nodes/control.py:459
+msgid "Ignore batch dimension"
+msgstr ""
+
+#: src/workflow/nodes/control.py:460
+msgid "Ignore differences in the first dimension (batch dimension)"
+msgstr ""
+
+#: src/workflow/nodes/control.py:557
+#, python-brace-format
+msgid "✅ Shape validation passed: {count} items, shape: {shape}"
+msgstr ""
+
+#: src/workflow/nodes/control.py:581
+#, python-brace-format
+msgid "❌ Shape validation failed: {count} inconsistent items"
+msgstr ""
+
+#: src/workflow/nodes/control.py:584
+#, python-brace-format
+msgid "   Expected shape: {shape}"
+msgstr ""
+
+#: src/workflow/nodes/control.py:585
+#, python-brace-format
+msgid "   Shape distribution: {dist}"
+msgstr ""
+
+#: src/workflow/nodes/control.py:591
+#, python-brace-format
+msgid "   - Index {index}: expected {expected}, got {actual}"
+msgstr ""
+
+#: src/workflow/nodes/control.py:600
+#, python-brace-format
+msgid "   ... and {count} more"
+msgstr ""
+
+#: src/workflow/nodes/control.py:614
+#, python-brace-format
+msgid "Shape inconsistent: {count} inconsistent items"
+msgstr ""
+
+#: src/workflow/nodes/control.py:621
+#, python-brace-format
+msgid "⚠️ Shape validation warning: {count} inconsistent items"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:74 src/workflow/nodes/feature/base.py:64
+#, python-brace-format
+msgid "Channel index {idx} out of range (total {channels} channels)"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:117
+msgid "Audio folder"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:119
+msgid "Load audio files from a folder, optionally auto-label by subfolder"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:125
+msgid "Audio list"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:126 src/workflow/nodes/data_source.py:320
+msgid "Label list"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:127
+msgid "File path list"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:132
+msgid "Folder path"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:133
+msgid "Directory containing audio files"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:138
+msgid "Recursive scan"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:139
+msgid "Scan subfolders"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:143
+msgid "Auto label"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:144
+msgid "Auto-generate labels from subfolder names"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:148 src/workflow/nodes/data_source.py:276
+#: src/workflow/nodes/preprocessing.py:132
+msgid "Target sample rate"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:149
+msgid "Resample to this sample rate when loading"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:154
+msgid "Max files"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:155
+msgid "Maximum number of files to load (0 = no limit)"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:162
+#, python-brace-format
+msgid "Directory does not exist: {path}"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:195
+#, python-brace-format
+msgid "Loading {count} audio files..."
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:231
+msgid "No valid audio files found"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:241
+#, python-brace-format
+msgid "Audio loaded: {files} files, {classes} classes"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:258
+msgid "Audio file"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:260
+msgid "Load a single audio file"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:269 src/workflow/nodes/data_source.py:326
+msgid "File path"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:270
+msgid "Audio file path"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:314
+msgid "Label file"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:316
+msgid "Load labels from CSV/JSON/TXT"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:321
+msgid "Label map"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:332
+msgid "File format"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:337
+msgid "Filename column"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:338
+msgid "Column name for filename in CSV"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:342
+msgid "Label column"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:343
+msgid "Column name for label in CSV"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:382
+#, python-brace-format
+msgid "Failed to load labels: {error}"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:436
+msgid "Unsupported JSON format"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:466
+msgid "Save audio"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:468
+msgid "Save audio as WAV files, optionally save labels JSON"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:477
+msgid "Audio data to save (single item or list)"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:484
+msgid "Optional labels corresponding to audio items"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:490
+msgid "Output folder"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:491
+msgid "Target folder to save audio files"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:496
+msgid "Filename prefix"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:497
+msgid "Prefix for output audio filenames"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:501
+msgid "Save labels file"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:502
+msgid "When labels are provided, save labels.json"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:506
+msgid "Overwrite existing files"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:507
+msgid "Overwrite files if they already exist"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:523
+msgid "Please select an output folder"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:530
+#, python-brace-format
+msgid "Unable to create output folder: {error}"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:537
+msgid "No input audio data"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:545
+#, python-brace-format
+msgid "Unsupported audio data type: {type}"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:562
+#, python-brace-format
+msgid ""
+"Label count ({labels}) does not match audio count ({audio}); items will be "
+"paired in order and extras will be ignored"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:567
+#, python-brace-format
+msgid "Saving {count} audio files..."
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:618
+msgid "No audio files were saved successfully"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:622
+#, python-brace-format
+msgid "Audio saved: {files} files"
+msgstr ""
+
+#: src/workflow/nodes/data_source.py:624
+#, python-brace-format
+msgid ", labels: {count}"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:37
+#, python-brace-format
+msgid "{node}: No input audio provided"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:41
+#, python-brace-format
+msgid "{node}: Audio list is empty"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:45
+#: src/workflow/nodes/preprocessing.py:56
+#, python-brace-format
+msgid ""
+"{node}: Expected AudioData, but got {type}. Please check whether the "
+"upstream node output type is correct."
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:115
+msgid "Resample"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:117
+msgid "Resample audio to the target sample rate"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:125
+#: src/workflow/nodes/preprocessing.py:833
+msgid "Audio or audio list"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:181
+msgid "Trim / pad"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:183
+msgid "Make audio a fixed duration by trimming and/or padding"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:193
+msgid "Target duration (s)"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:198
+msgid "Mode"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:208
+msgid "Alignment"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:303
+msgid "Normalize audio amplitude"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:313
+msgid "Method"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:318
+msgid "Target level (dB)"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:381
+msgid "Trim silence"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:383
+msgid "Remove leading and trailing silence"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:393
+msgid "Threshold (dB)"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:394
+msgid "Below this threshold is considered silence"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:399
+msgid "Frame length"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:404
+#: src/workflow/nodes/feature/dim1d/pitch.py:54
+#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:49
+#: src/workflow/nodes/feature/dim2d/cqt.py:55
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:50
+#: src/workflow/nodes/feature/dim2d/mfcc.py:55
+#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:48
+#: src/workflow/nodes/feature/dim2d/stft.py:46
+msgid "Hop length"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:458
+msgid "Channel mapper"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:460
+msgid "Map selected channels to different outputs"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:468
+msgid "Multichannel audio input"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:470
+msgid "Output 1"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:471
+msgid "Output 2"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:472
+msgid "Output 3"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:473
+msgid "Output 4"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:478
+msgid "Output 1 channels"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:479
+msgid "Channel indices (0-based), comma-separated, e.g. 0 or 0,1,2"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:483
+msgid "Output 2 channels"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:484
+#: src/workflow/nodes/preprocessing.py:489
+#: src/workflow/nodes/preprocessing.py:494
+msgid "Channel indices; leave blank to disable output"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:488
+msgid "Output 3 channels"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:493
+msgid "Output 4 channels"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:634
+msgid "Channel merge"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:636
+msgid "Merge channels from multiple audio inputs"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:640
+msgid "Input 1"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:640
+msgid "Audio input 1"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:644
+msgid "Input 2"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:645
+msgid "Audio input 2 (optional)"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:651
+msgid "Input 3"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:652
+msgid "Audio input 3 (optional)"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:658
+msgid "Input 4"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:659
+msgid "Audio input 4 (optional)"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:662
+msgid "Merged audio"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:667
+msgid "Length handling"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:668
+msgid "How to handle different input lengths"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:674
+msgid "Padding strategy for shorter audio when using max length"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:689
+msgid "At least one valid audio input is required"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:703
+msgid "All inputs must be the same type (all single audio or all audio lists)"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:708
+#, python-brace-format
+msgid "Audio list lengths differ: {lengths}"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:728
+#, python-brace-format
+msgid "Expected AudioData, but got {type}"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:752
+msgid "No audio to merge"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:759
+#, python-brace-format
+msgid "Sample rates differ: {rates}. Please resample first."
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:827
+msgid "Filter"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:829
+msgid "Apply digital filtering (lowpass/highpass/bandpass/bandstop)"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:839
+msgid "Filter type"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:840
+msgid "lowpass, highpass, bandpass, bandstop"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:845
+msgid "Cutoff (Hz)"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:846
+msgid "Used by lowpass/highpass; low bound for bandpass/bandstop"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:851
+msgid "High cutoff (Hz)"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:852
+msgid "Only for bandpass/bandstop; ignored for lowpass/highpass"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:857
+msgid "Filter order"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:858
+msgid "Butterworth order; higher means steeper rolloff"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:911
+#, python-brace-format
+msgid "Unknown filter type: {type}"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:913
+#, python-brace-format
+msgid "Filter design failed: {error}"
+msgstr ""
+
+#: src/workflow/nodes/preprocessing.py:935
+#, python-brace-format
+msgid "Filtering failed: {error}"
+msgstr ""
+
+#: src/workflow/nodes/training.py:34
+msgid ""
+"Load model files (Keras models or model editor definitions) and use the "
+"model's built-in compile configuration"
+msgstr ""
+
+#: src/workflow/nodes/training.py:39
+msgid "Loaded model"
+msgstr ""
+
+#: src/workflow/nodes/training.py:44
+msgid "Model path"
+msgstr ""
+
+#: src/workflow/nodes/training.py:45
+msgid "Keras model (.h5/.keras) or model definition (.model.json)"
+msgstr ""
+
+#: src/workflow/nodes/training.py:51
+msgid "Compile model"
+msgstr ""
+
+#: src/workflow/nodes/training.py:52
+msgid "Compile using built-in configuration (applies to .model.json only)"
+msgstr ""
+
+#: src/workflow/nodes/training.py:59
+#, python-brace-format
+msgid "Model file does not exist: {path}"
+msgstr ""
+
+#: src/workflow/nodes/training.py:76
+#, python-brace-format
+msgid "Model loaded: {name}"
+msgstr ""
+
+#: src/workflow/nodes/training.py:111
+#, python-brace-format
+msgid ""
+"Failed to load model {path}.\n"
+"The model file is corrupted or incompatible.\n"
+"Please rebuild and save the model in the model builder."
+msgstr ""
+
+#: src/workflow/nodes/training.py:167
+msgid "Save model"
+msgstr ""
+
+#: src/workflow/nodes/training.py:169
+msgid "Save the trained model to a file"
+msgstr ""
+
+#: src/workflow/nodes/training.py:173
+msgid "Model to save"
+msgstr ""
+
+#: src/workflow/nodes/training.py:174
+msgid "Saved path"
+msgstr ""
+
+#: src/workflow/nodes/training.py:179
+msgid "Save mode"
+msgstr ""
+
+#: src/workflow/nodes/training.py:181
+msgid ""
+"new_file: choose a directory and filename; overwrite: select an existing file"
+msgstr ""
+
+#: src/workflow/nodes/training.py:185
+msgid "Save directory"
+msgstr ""
+
+#: src/workflow/nodes/training.py:186
+msgid "Directory to save the model (new_file mode)"
+msgstr ""
+
+#: src/workflow/nodes/training.py:191
+msgid "Filename"
+msgstr ""
+
+#: src/workflow/nodes/training.py:192
+msgid "Model filename (including .keras/.h5 extension)"
+msgstr ""
+
+#: src/workflow/nodes/training.py:196
+msgid "File to overwrite"
+msgstr ""
+
+#: src/workflow/nodes/training.py:197
+msgid "Select an existing model file (overwrite mode)"
+msgstr ""
+
+#: src/workflow/nodes/training.py:203
+msgid "Save format"
+msgstr ""
+
+#: src/workflow/nodes/training.py:205
+msgid "Model save format"
+msgstr ""
+
+#: src/workflow/nodes/training.py:209
+msgid "Overwrite warning"
+msgstr ""
+
+#: src/workflow/nodes/training.py:210
+msgid "Log a warning when overwriting an existing file"
+msgstr ""
+
+#: src/workflow/nodes/training.py:217 src/workflow/nodes/training.py:377
+#: src/workflow/nodes/training.py:707 src/workflow/nodes/training.py:1065
+msgid "No model provided"
+msgstr ""
+
+#: src/workflow/nodes/training.py:229
+msgid "Save directory is not set"
+msgstr ""
+
+#: src/workflow/nodes/training.py:233
+msgid "Filename is not set"
+msgstr ""
+
+#: src/workflow/nodes/training.py:250
+msgid "No file selected to overwrite"
+msgstr ""
+
+#: src/workflow/nodes/training.py:278
+#, python-brace-format
+msgid "Model saved: {name}"
+msgstr ""
+
+#: src/workflow/nodes/training.py:298
+msgid "Trainer"
+msgstr ""
+
+#: src/workflow/nodes/training.py:300
+msgid "Run model training with model config or overridden parameters"
+msgstr ""
+
+#: src/workflow/nodes/training.py:306
+msgid "Train targets"
+msgstr ""
+
+#: src/workflow/nodes/training.py:308
+msgid "Validation targets"
+msgstr ""
+
+#: src/workflow/nodes/training.py:310 src/workflow/nodes/training.py:879
+msgid "Training history"
+msgstr ""
+
+#: src/workflow/nodes/training.py:311
+msgid "Trained model"
+msgstr ""
+
+#: src/workflow/nodes/training.py:318
+msgid "Epochs"
+msgstr ""
+
+#: src/workflow/nodes/training.py:323 src/workflow/nodes/training.py:693
+#: src/workflow/nodes/training.py:1043
+msgid "Batch size"
+msgstr ""
+
+#: src/workflow/nodes/training.py:328
+msgid "Use model config"
+msgstr ""
+
+#: src/workflow/nodes/training.py:329
+msgid "True: use model compile config; False: override with parameters below"
+msgstr ""
+
+#: src/workflow/nodes/training.py:334
+msgid "Optimizer (override)"
+msgstr ""
+
+#: src/workflow/nodes/training.py:336 src/workflow/nodes/training.py:343
+msgid "Effective only when 'Use model config' is False"
+msgstr ""
+
+#: src/workflow/nodes/training.py:340
+msgid "Learning rate (override)"
+msgstr ""
+
+#: src/workflow/nodes/training.py:347
+msgid "Loss (override)"
+msgstr ""
+
+#: src/workflow/nodes/training.py:349
+msgid "auto: detect from data; effective only when 'Use model config' is False"
+msgstr ""
+
+#: src/workflow/nodes/training.py:357
+msgid "Early stopping patience"
+msgstr ""
+
+#: src/workflow/nodes/training.py:381
+msgid "No training data provided"
+msgstr ""
+
+#: src/workflow/nodes/training.py:403
+msgid ""
+"Model is not compiled. Ensure it has compile config or disable 'Use model "
+"config'."
+msgstr ""
+
+#: src/workflow/nodes/training.py:411
+#, python-brace-format
+msgid "Using model config: optimizer={opt}, loss={loss}"
+msgstr ""
+
+#: src/workflow/nodes/training.py:435
+#, python-brace-format
+msgid "Using override config: optimizer={opt}, loss={loss}"
+msgstr ""
+
+#: src/workflow/nodes/training.py:502
+#, python-brace-format
+msgid "Training started: {epochs} epochs, batch_size={batch_size}"
+msgstr ""
+
+#: src/workflow/nodes/training.py:536
+#, python-brace-format
+msgid "Training finished: loss={loss:.4f}, val_loss={val_loss:.4f}"
+msgstr ""
+
+#: src/workflow/nodes/training.py:543
+#, python-brace-format
+msgid "Training finished: loss={loss:.4f}"
+msgstr ""
+
+#: src/workflow/nodes/training.py:550
+#, python-brace-format
+msgid "Training failed: {error}"
+msgstr ""
+
+#: src/workflow/nodes/training.py:678
+msgid "Evaluator"
+msgstr ""
+
+#: src/workflow/nodes/training.py:680
+msgid "Evaluate model performance"
+msgstr ""
+
+#: src/workflow/nodes/training.py:686
+msgid "Test targets"
+msgstr ""
+
+#: src/workflow/nodes/training.py:711
+msgid "No test data provided"
+msgstr ""
+
+#: src/workflow/nodes/training.py:739
+#, python-brace-format
+msgid "Evaluation finished: {loss}"
+msgstr ""
+
+#: src/workflow/nodes/training.py:745
+#, python-brace-format
+msgid "Evaluation failed: {error}"
+msgstr ""
+
+#: src/workflow/nodes/training.py:873
+msgid "Show training history"
+msgstr ""
+
+#: src/workflow/nodes/training.py:875
+msgid "Visualize training history curves"
+msgstr ""
+
+#: src/workflow/nodes/training.py:880
+msgid "Training history (passthrough)"
+msgstr ""
+
+#: src/workflow/nodes/training.py:885
+msgid "Show loss curve"
+msgstr ""
+
+#: src/workflow/nodes/training.py:889
+msgid "Show accuracy curve"
+msgstr ""
+
+#: src/workflow/nodes/training.py:893
+msgid "Save path"
+msgstr ""
+
+#: src/workflow/nodes/training.py:894
+msgid "Optional. Save the chart to a file."
+msgstr ""
+
+#: src/workflow/nodes/training.py:901
+msgid "No training history provided"
+msgstr ""
+
+#: src/workflow/nodes/training.py:951
+#, python-brace-format
+msgid "Failed to show training history: {error}"
+msgstr ""
+
+#: src/workflow/nodes/training.py:962
+msgid "Show metrics"
+msgstr ""
+
+#: src/workflow/nodes/training.py:964
+msgid "Show model evaluation metrics"
+msgstr ""
+
+#: src/workflow/nodes/training.py:969
+msgid "Metrics (passthrough)"
+msgstr ""
+
+#: src/workflow/nodes/training.py:974
+msgid "Verbose logs"
+msgstr ""
+
+#: src/workflow/nodes/training.py:975
+msgid "Output detailed metrics logs (dialog removed)"
+msgstr ""
+
+#: src/workflow/nodes/training.py:981
+msgid "No metrics provided"
+msgstr ""
+
+#: src/workflow/nodes/training.py:1008
+#, python-brace-format
+msgid "Failed to show metrics: {error}"
+msgstr ""
+
+#: src/workflow/nodes/training.py:1022
+msgid "Predict"
+msgstr ""
+
+#: src/workflow/nodes/training.py:1024
+msgid "Run prediction using a trained model"
+msgstr ""
+
+#: src/workflow/nodes/training.py:1029
+msgid "Input data"
+msgstr ""
+
+#: src/workflow/nodes/training.py:1030
+msgid "Predictions"
+msgstr ""
+
+#: src/workflow/nodes/training.py:1035
+#: src/workflow/nodes/feature/dim1d/fft.py:47
+#: src/workflow/nodes/feature/dim2d/stft.py:51
+msgid "Output type"
+msgstr ""
+
+#: src/workflow/nodes/training.py:1038
+msgid ""
+"Type of prediction result: label=class label, audio=audio, feature_1d=1D "
+"feature, feature_2d=2D feature"
+msgstr ""
+
+#: src/workflow/nodes/training.py:1045
+msgid "Batch size for prediction"
+msgstr ""
+
+#: src/workflow/nodes/training.py:1049
+msgid "Sample rate"
+msgstr ""
+
+#: src/workflow/nodes/training.py:1052
+msgid "Output audio sample rate (only for output_type=audio)"
+msgstr ""
+
+#: src/workflow/nodes/training.py:1069
+msgid "No input data provided"
+msgstr ""
+
+#: src/workflow/nodes/training.py:1077
+#, python-brace-format
+msgid "Predicting... (batch_size={batch_size})"
+msgstr ""
+
+#: src/workflow/nodes/training.py:1090
+#, python-brace-format
+msgid "Prediction finished: {count} samples, output_type={type}"
+msgstr ""
+
+#: src/workflow/nodes/training.py:1100
+#, python-brace-format
+msgid "Prediction failed: {error}"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim1d/fft.py:30
+#: src/workflow/nodes/feature/dim1d/pitch.py:31
+#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:33
+#: src/workflow/nodes/feature/dim1d/statistics.py:26
+msgid "1D features"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim1d/fft.py:31
+msgid "Extract global FFT spectrum"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim1d/fft.py:41
+msgid "FFT size"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim1d/fft.py:43
+msgid "auto: use signal length as FFT size"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim1d/fft.py:53
+msgid "Normalize to max value"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim1d/pitch.py:29
+msgid "Pitch (F0)"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim1d/pitch.py:32
+msgid "Extract pitch (F0) trajectory"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim1d/pitch.py:37
+msgid "Pitch trajectory"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim1d/pitch.py:42
+#: src/workflow/nodes/feature/dim2d/cqt.py:60
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:55
+msgid "Min frequency (Hz)"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim1d/pitch.py:44
+msgid "Lowest detectable frequency (default C2 ~ 65 Hz)"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim1d/pitch.py:48
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:60
+msgid "Max frequency (Hz)"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim1d/pitch.py:50
+msgid "Highest detectable frequency (default C7 ~ 2093 Hz)"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim1d/pitch.py:59
+msgid "Fill value for unvoiced frames"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim1d/pitch.py:61
+msgid "Use this value for frames where pitch cannot be detected"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim1d/pitch.py:66
+msgid "Normalize pitch values to 0-1 range"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:34
+msgid "Extract spectral flatness"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:44
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:45
+#: src/workflow/nodes/feature/dim2d/mfcc.py:50
+#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:43
+#: src/workflow/nodes/feature/dim2d/stft.py:41
+msgid "FFT window size"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:54
+#: src/workflow/nodes/feature/dim1d/statistics.py:57
+msgid "Aggregation"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:56
+msgid "Aggregate over the time axis"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim1d/statistics.py:24
+#: src/workflow/nodes/feature/dim1d/statistics.py:32
+msgid "Statistical features"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim1d/statistics.py:27
+msgid "Extract statistical spectral features"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim2d/cqt.py:32
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:29
+#: src/workflow/nodes/feature/dim2d/mfcc.py:29
+#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:32
+#: src/workflow/nodes/feature/dim2d/stft.py:30
+msgid "2D features"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim2d/cqt.py:33
+msgid "Extract Constant-Q Transform (CQT) spectrogram"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim2d/cqt.py:43
+msgid "Bins"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim2d/cqt.py:45
+msgid "Number of CQT bins (default 84 = 7 octaves × 12 semitones)"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim2d/cqt.py:49
+msgid "Bins per octave"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim2d/cqt.py:51
+msgid "Bins per octave (default 12 = semitone resolution)"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim2d/cqt.py:62
+msgid "Minimum frequency (default C1 ~ 32.7 Hz)"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim2d/cqt.py:66
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:65
+msgid "Convert to dB"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim2d/cqt.py:67
+msgid "Convert magnitude to dB scale"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:30
+msgid "Extract Mel spectrogram"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:40
+#: src/workflow/nodes/feature/dim2d/mfcc.py:45
+msgid "Mel filters"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:66
+msgid "Convert power spectrogram to dB scale"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim2d/mfcc.py:30
+msgid "Extract MFCC features"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim2d/mfcc.py:60
+msgid "Include delta"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim2d/mfcc.py:64
+msgid "Include delta-delta"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:33
+msgid "Extract spectral contrast"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:53
+msgid "Bands"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:55
+msgid "Number of sub-bands (output dimension is n_bands + 1)"
+msgstr ""
+
+#: src/workflow/nodes/feature/dim2d/stft.py:31
+msgid "Extract STFT spectrogram"
+msgstr ""

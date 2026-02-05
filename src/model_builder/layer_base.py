@@ -20,7 +20,7 @@ from typing import Any, Dict, List, Optional, Tuple, Type, Union
 
 # 从核心模块导入统一的参数类
 from src.core.parameter import Parameter as LayerParameter
-
+from src.ui.i18n import tr_
 logger = logging.getLogger(__name__)
 
 
@@ -43,18 +43,18 @@ class LayerCategory(Enum):
     def display_name(self) -> str:
         """获取显示名称"""
         names = {
-            LayerCategory.INPUT: "输入",
-            LayerCategory.CORE: "核心层",
-            LayerCategory.CONV: "卷积层",
-            LayerCategory.RECURRENT: "循环层",
-            LayerCategory.ATTENTION: "注意力层",
-            LayerCategory.POOLING: "池化层",
-            LayerCategory.NORMALIZATION: "归一化",
-            LayerCategory.REGULARIZATION: "正则化",
-            LayerCategory.RESHAPE: "形状变换",
-            LayerCategory.ACTIVATION: "激活函数",
-            LayerCategory.MERGE: "合并层",
-            LayerCategory.OUTPUT: "输出",
+            LayerCategory.INPUT: tr_("Input"),
+            LayerCategory.CORE: tr_("Core"),
+            LayerCategory.CONV: tr_("Convolution"),
+            LayerCategory.RECURRENT: tr_("Recurrent"),
+            LayerCategory.ATTENTION: tr_("Attention"),
+            LayerCategory.POOLING: tr_("Pooling"),
+            LayerCategory.NORMALIZATION: tr_("Normalization"),
+            LayerCategory.REGULARIZATION: tr_("Regularization"),
+            LayerCategory.RESHAPE: tr_("Reshape"),
+            LayerCategory.ACTIVATION: tr_("Activation"),
+            LayerCategory.MERGE: tr_("Merge"),
+            LayerCategory.OUTPUT: tr_("Output"),
         }
         return names.get(self, self.value)
     
@@ -180,7 +180,7 @@ class LayerNode(ABC):
     def set_parameter(self, name: str, value: Any) -> Tuple[bool, str]:
         """设置参数值"""
         if name not in self.parameters:
-            return False, f"未知参数: {name}"
+            return False, tr_("Unknown parameter: {name}").format(name=name)
         
         param = self.parameters[name]
         valid, msg = param.validate(value)
@@ -273,7 +273,7 @@ def register_layer(layer_class: Type[LayerNode]) -> Type[LayerNode]:
             ...
     """
     _layer_registry[layer_class.layer_type] = layer_class
-    logger.debug(f"注册层: {layer_class.layer_type} -> {layer_class.__name__}")
+    logger.debug(f"Register layer: {layer_class.layer_type} -> {layer_class.__name__}")
     return layer_class
 
 

@@ -16,6 +16,7 @@ from PyQt6.QtWidgets import (
 )
 
 from src.workflow.port import DataType
+from src.ui.i18n import tr_
 from src.ui.styles import Styles
 
 from .base_preview import BasePreviewWidget, register_preview
@@ -33,7 +34,7 @@ class ModelPreviewWidget(BasePreviewWidget):
     """
     
     supported_types = [DataType.MODEL]
-    display_name = "模型预览"
+    display_name = tr_("Model preview")
     icon = "🧠"
     
     def __init__(self, parent: Optional[QWidget] = None):
@@ -52,7 +53,7 @@ class ModelPreviewWidget(BasePreviewWidget):
         layout.addWidget(splitter)
         
         # 左侧：模型 Summary
-        summary_group = QGroupBox("🧠 模型结构 (Summary)")
+        summary_group = QGroupBox(tr_("🧠 Model summary"))
         summary_group.setStyleSheet(Styles.group_box(Styles.COLORS['mauve']))
         summary_layout = QVBoxLayout(summary_group)
         summary_layout.setContentsMargins(8, 8, 8, 8)
@@ -75,7 +76,7 @@ class ModelPreviewWidget(BasePreviewWidget):
         splitter.addWidget(summary_group)
         
         # 右侧：参数统计
-        stats_group = QGroupBox("📊 模型参数")
+        stats_group = QGroupBox(tr_("📊 Model parameters"))
         stats_group.setStyleSheet(Styles.group_box(Styles.COLORS['teal']))
         stats_layout = QVBoxLayout(stats_group)
         stats_layout.setContentsMargins(12, 12, 12, 12)
@@ -146,7 +147,9 @@ class ModelPreviewWidget(BasePreviewWidget):
             
         except Exception as e:
             logger.error(f"设置模型数据失败: {e}")
-            self._summary_text.setPlainText(f"无法解析模型: {str(e)}")
+            self._summary_text.setPlainText(
+                tr_("Failed to parse model: {error}").format(error=str(e))
+            )
             return False
     
     def _get_model_summary(self, model) -> str:
@@ -162,7 +165,7 @@ class ModelPreviewWidget(BasePreviewWidget):
             return stream.getvalue()
         except Exception as e:
             logger.warning(f"获取模型 summary 失败: {e}")
-            return f"无法获取模型 summary: {str(e)}"
+            return tr_("Failed to get model summary: {error}").format(error=str(e))
     
     def _get_model_stats(self, model) -> dict:
         """获取模型参数统计信息"""
@@ -238,10 +241,10 @@ class ModelPreviewWidget(BasePreviewWidget):
         
         # 基本信息
         if 'name' in stats:
-            lines.append(f"  <b>模型名称:</b>  {stats['name']}")
+            lines.append(f"  <b>{tr_('Model name')}:</b>  {stats['name']}")
         
         if 'num_layers' in stats:
-            lines.append(f"  <b>层数:</b>  {stats['num_layers']}")
+            lines.append(f"  <b>{tr_('Layers')}:</b>  {stats['num_layers']}")
         
         lines.append("")
         lines.append("─" * 35)
@@ -249,13 +252,19 @@ class ModelPreviewWidget(BasePreviewWidget):
         
         # 参数统计
         if 'total_params' in stats:
-            lines.append(f"  <b>总参数量:</b>  {self._format_params(stats['total_params'])}")
+            lines.append(
+                f"  <b>{tr_('Total params')}:</b>  {self._format_params(stats['total_params'])}"
+            )
         
         if 'trainable_params' in stats:
-            lines.append(f"  <b>可训练参数:</b>  {self._format_params(stats['trainable_params'])}")
+            lines.append(
+                f"  <b>{tr_('Trainable params')}:</b>  {self._format_params(stats['trainable_params'])}"
+            )
         
         if 'non_trainable_params' in stats:
-            lines.append(f"  <b>不可训练参数:</b>  {self._format_params(stats['non_trainable_params'])}")
+            lines.append(
+                f"  <b>{tr_('Non-trainable params')}:</b>  {self._format_params(stats['non_trainable_params'])}"
+            )
         
         lines.append("")
         lines.append("─" * 35)
@@ -263,10 +272,10 @@ class ModelPreviewWidget(BasePreviewWidget):
         
         # 形状信息
         if 'input_shape' in stats:
-            lines.append(f"  <b>输入形状:</b>  {stats['input_shape']}")
+            lines.append(f"  <b>{tr_('Input shape')}:</b>  {stats['input_shape']}")
         
         if 'output_shape' in stats:
-            lines.append(f"  <b>输出形状:</b>  {stats['output_shape']}")
+            lines.append(f"  <b>{tr_('Output shape')}:</b>  {stats['output_shape']}")
         
         lines.append("")
         lines.append("─" * 35)
@@ -274,21 +283,21 @@ class ModelPreviewWidget(BasePreviewWidget):
         
         # 编译信息
         if 'compiled' in stats:
-            status = "✅ 已编译" if stats['compiled'] else "❌ 未编译"
-            lines.append(f"  <b>编译状态:</b>  {status}")
+            status = tr_("✅ Compiled") if stats['compiled'] else tr_("❌ Not compiled")
+            lines.append(f"  <b>{tr_('Compile status')}:</b>  {status}")
         
         if 'optimizer' in stats:
-            lines.append(f"  <b>优化器:</b>  {stats['optimizer']}")
+            lines.append(f"  <b>{tr_('Optimizer')}:</b>  {stats['optimizer']}")
         
         if 'learning_rate' in stats:
             lr = stats['learning_rate']
             if isinstance(lr, float):
-                lines.append(f"  <b>学习率:</b>  {lr:.6f}")
+                lines.append(f"  <b>{tr_('Learning rate')}:</b>  {lr:.6f}")
             else:
-                lines.append(f"  <b>学习率:</b>  {lr}")
+                lines.append(f"  <b>{tr_('Learning rate')}:</b>  {lr}")
         
         if 'loss' in stats:
-            lines.append(f"  <b>损失函数:</b>  {stats['loss']}")
+            lines.append(f"  <b>{tr_('Loss')}:</b>  {stats['loss']}")
         
         lines.append("")
         lines.append("═" * 35)
@@ -309,7 +318,7 @@ class ModelPreviewWidget(BasePreviewWidget):
     def _log_summary(self, model_name: str, summary: str, stats: dict):
         """打印模型 summary 到日志"""
         logger.info("=" * 60)
-        logger.info(f"🧠 模型 Summary: {model_name}")
+        logger.info(f"🧠 Model summary: {model_name}")
         logger.info("=" * 60)
         
         # 打印 summary
@@ -318,14 +327,14 @@ class ModelPreviewWidget(BasePreviewWidget):
                 logger.info(line)
         
         logger.info("-" * 60)
-        logger.info("📊 参数统计:")
+        logger.info("📊 Parameter stats:")
         
         if 'total_params' in stats:
-            logger.info(f"  总参数量: {self._format_params(stats['total_params'])}")
+            logger.info(f"  Total params: {self._format_params(stats['total_params'])}")
         if 'trainable_params' in stats:
-            logger.info(f"  可训练参数: {self._format_params(stats['trainable_params'])}")
+            logger.info(f"  Trainable params: {self._format_params(stats['trainable_params'])}")
         if 'non_trainable_params' in stats:
-            logger.info(f"  不可训练参数: {self._format_params(stats['non_trainable_params'])}")
+            logger.info(f"  Non-trainable params: {self._format_params(stats['non_trainable_params'])}")
         
         logger.info("=" * 60)
     

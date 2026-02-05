@@ -12,6 +12,7 @@ from PyQt6.QtWidgets import (
     QPushButton, QTextEdit, QVBoxLayout
 )
 
+from src.ui.i18n import tr_
 from src.ui.styles import Styles
 
 logger = logging.getLogger('AudioTrainingApp')
@@ -72,7 +73,7 @@ class ErrorDialog(QDialog):
         icon_label.setStyleSheet(f"font-size: 32px; color: {Styles.COLORS['red']};")
         header.addWidget(icon_label)
         
-        title_label = QLabel("发生错误")
+        title_label = QLabel(tr_("An error occurred"))
         title_label.setStyleSheet(f"font-size: 16px; font-weight: bold; color: {Styles.COLORS['red']};")
         header.addWidget(title_label)
         header.addStretch()
@@ -87,7 +88,7 @@ class ErrorDialog(QDialog):
         
         # 详细信息（可选）
         if details:
-            details_label = QLabel("详细信息:")
+            details_label = QLabel(tr_("Details:"))
             details_label.setStyleSheet(f"color: {Styles.COLORS['subtext']}; font-size: 11px;")
             layout.addWidget(details_label)
             
@@ -100,13 +101,13 @@ class ErrorDialog(QDialog):
         # 按钮
         btn_layout = QHBoxLayout()
         
-        copy_btn = QPushButton("📋 复制错误信息")
+        copy_btn = QPushButton(tr_("📋 Copy error details"))
         copy_btn.clicked.connect(lambda: self._copy_to_clipboard(message, details))
         btn_layout.addWidget(copy_btn)
         
         btn_layout.addStretch()
         
-        close_btn = QPushButton("关闭")
+        close_btn = QPushButton(tr_("Close"))
         close_btn.setStyleSheet(f"""
             QPushButton {{
                 background-color: {Styles.COLORS['red']};
@@ -126,7 +127,7 @@ class ErrorDialog(QDialog):
         """复制到剪贴板"""
         text = message
         if details:
-            text += f"\n\n详细信息:\n{details}"
+            text += "\n\n" + tr_("Details:") + "\n" + details
         
         clipboard = QApplication.clipboard()
         clipboard.setText(text)

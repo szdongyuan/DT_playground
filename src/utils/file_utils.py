@@ -9,7 +9,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-
+from src.ui.i18n import tr_
 def ensure_dir(path: str) -> str:
     """
     确保目录存在
@@ -186,7 +186,12 @@ def delete_files(file_paths: List[str], to_trash: bool = True) -> int:
                     os.remove(file_path)
                 deleted += 1
         except Exception as e:
-            print(f"删除失败 {file_path}: {e}")
+            print(
+                tr_("Delete failed for {path}: {error}").format(
+                    path=file_path,
+                    error=str(e),
+                )
+            )
     
     return deleted
 

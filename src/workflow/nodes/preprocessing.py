@@ -14,12 +14,11 @@ import numpy as np
 from ..node_base import BaseNode, NodeCategory, register_node
 from ..port import DataType
 from .data_source import AudioData
-
-
+from src.ui.i18n import tr_
 logger = logging.getLogger(__name__)
 
 
-def validate_audio_input(data, node_name: str = "节点") -> Union[AudioData, List[AudioData]]:
+def validate_audio_input(data, node_name: str = "Node") -> Union[AudioData, List[AudioData]]:
     """
     验证输入数据是否为有效的音频数据
     
@@ -35,23 +34,31 @@ def validate_audio_input(data, node_name: str = "节点") -> Union[AudioData, Li
         TypeError: 数据类型不匹配
     """
     if data is None:
-        raise ValueError(f"{node_name}: 未提供输入音频")
+        raise ValueError(tr_("{node}: No input audio provided").format(node=node_name))
     
     if isinstance(data, list):
         if not data:
-            raise ValueError(f"{node_name}: 音频列表为空")
+            raise ValueError(tr_("{node}: Audio list is empty").format(node=node_name))
         if not isinstance(data[0], AudioData):
             raise TypeError(
-                f"{node_name}: 期望 AudioData 类型，"
-                f"但收到 {type(data[0]).__name__}。"
-                f"请检查上游节点的输出类型是否正确。"
+                tr_(
+                    "{node}: Expected AudioData, but got {type}. "
+                    "Please check whether the upstream node output type is correct."
+                ).format(
+                    node=node_name,
+                    type=type(data[0]).__name__,
+                )
             )
     else:
         if not isinstance(data, AudioData):
             raise TypeError(
-                f"{node_name}: 期望 AudioData 类型，"
-                f"但收到 {type(data).__name__}。"
-                f"请检查上游节点的输出类型是否正确。"
+                tr_(
+                    "{node}: Expected AudioData, but got {type}. "
+                    "Please check whether the upstream node output type is correct."
+                ).format(
+                    node=node_name,
+                    type=type(data).__name__,
+                )
             )
     return data
 
@@ -105,19 +112,24 @@ class ResampleNode(BaseNode):
     """
     
     node_type = "resample"
-    display_name = "重采样"
+    display_name = tr_("Resample")
     category = NodeCategory.PREPROCESSING
-    description = "将音频重采样到指定采样率"
+    description = tr_("Resample audio to the target sample rate")
     icon = "📏"
     
     def _setup_ports(self):
-        self.add_input("audio", DataType.AUDIO, "音频", description="音频或音频列表")
-        self.add_output("audio", DataType.AUDIO, "音频")
+        self.add_input(
+            "audio",
+            DataType.AUDIO,
+            tr_("Audio"),
+            description=tr_("Audio or audio list"),
+        )
+        self.add_output("audio", DataType.AUDIO, tr_("Audio"))
     
     def _setup_parameters(self):
         self.add_parameter(
             "target_sr", "int", 22050,
-            display_name="目标采样率",
+            display_name=tr_("Target sample rate"),
             min_value=8000, max_value=48000
         )
     
@@ -166,34 +178,34 @@ class TrimPadNode(BaseNode):
     """
     
     node_type = "trim_pad"
-    display_name = "裁剪/填充"
+    display_name = tr_("Trim / pad")
     category = NodeCategory.PREPROCESSING
-    description = "将音频统一到指定长度"
+    description = tr_("Make audio a fixed duration by trimming and/or padding")
     icon = "✂️"
     
     def _setup_ports(self):
-        self.add_input("audio", DataType.AUDIO, "音频")
-        self.add_output("audio", DataType.AUDIO, "音频")
+        self.add_input("audio", DataType.AUDIO, tr_("Audio"))
+        self.add_output("audio", DataType.AUDIO, tr_("Audio"))
     
     def _setup_parameters(self):
         self.add_parameter(
             "duration", "float", 3.0,
-            display_name="目标时长(秒)",
+            display_name=tr_("Target duration (s)"),
             min_value=0.1, max_value=60.0
         )
         self.add_parameter(
             "mode", "choice", "pad_trim",
-            display_name="处理模式",
+            display_name=tr_("Mode"),
             choices=["pad_trim", "pad_only", "trim_only", "loop"]
         )
         self.add_parameter(
             "pad_mode", "choice", "constant",
-            display_name="填充模式",
+            display_name=tr_("Pad mode"),
             choices=["constant", "edge", "reflect", "wrap"]
         )
         self.add_parameter(
             "position", "choice", "center",
-            display_name="对齐位置",
+            display_name=tr_("Alignment"),
             choices=["start", "center", "end"]
         )
     
@@ -286,24 +298,24 @@ class NormalizeNode(BaseNode):
     """
     
     node_type = "normalize"
-    display_name = "归一化"
+    display_name = tr_("Normalize")
     category = NodeCategory.PREPROCESSING
-    description = "对音频进行振幅归一化"
+    description = tr_("Normalize audio amplitude")
     icon = "📊"
     
     def _setup_ports(self):
-        self.add_input("audio", DataType.AUDIO, "音频")
-        self.add_output("audio", DataType.AUDIO, "音频")
+        self.add_input("audio", DataType.AUDIO, tr_("Audio"))
+        self.add_output("audio", DataType.AUDIO, tr_("Audio"))
     
     def _setup_parameters(self):
         self.add_parameter(
             "method", "choice", "peak",
-            display_name="归一化方法",
+            display_name=tr_("Method"),
             choices=["peak", "rms", "lufs"]
         )
         self.add_parameter(
             "target_level", "float", -3.0,
-            display_name="目标电平(dB)",
+            display_name=tr_("Target level (dB)"),
             min_value=-60.0, max_value=0.0
         )
     
@@ -366,30 +378,30 @@ class SilenceTrimNode(BaseNode):
     """
     
     node_type = "silence_trim"
-    display_name = "静音裁剪"
+    display_name = tr_("Trim silence")
     category = NodeCategory.PREPROCESSING
-    description = "去除音频首尾的静音"
+    description = tr_("Remove leading and trailing silence")
     icon = "🎚️"
     
     def _setup_ports(self):
-        self.add_input("audio", DataType.AUDIO, "音频")
-        self.add_output("audio", DataType.AUDIO, "音频")
+        self.add_input("audio", DataType.AUDIO, tr_("Audio"))
+        self.add_output("audio", DataType.AUDIO, tr_("Audio"))
     
     def _setup_parameters(self):
         self.add_parameter(
             "top_db", "int", 30,
-            display_name="阈值(dB)",
-            description="低于此阈值视为静音",
+            display_name=tr_("Threshold (dB)"),
+            description=tr_("Below this threshold is considered silence"),
             min_value=10, max_value=80
         )
         self.add_parameter(
             "frame_length", "int", 2048,
-            display_name="帧长度",
+            display_name=tr_("Frame length"),
             min_value=256, max_value=8192
         )
         self.add_parameter(
             "hop_length", "int", 512,
-            display_name="跳跃长度",
+            display_name=tr_("Hop length"),
             min_value=64, max_value=2048
         )
     
@@ -443,38 +455,43 @@ class ChannelMapperNode(BaseNode):
     """
     
     node_type = "channel_mapper"
-    display_name = "通道映射"
+    display_name = tr_("Channel mapper")
     category = NodeCategory.PREPROCESSING
-    description = "将指定通道映射到不同输出"
+    description = tr_("Map selected channels to different outputs")
     icon = "🔀"
     
     def _setup_ports(self):
-        self.add_input("audio", DataType.AUDIO, "音频", description="多通道音频输入")
-        self.add_output("out1", DataType.AUDIO, "输出1")
-        self.add_output("out2", DataType.AUDIO, "输出2")
-        self.add_output("out3", DataType.AUDIO, "输出3")
-        self.add_output("out4", DataType.AUDIO, "输出4")
+        self.add_input(
+            "audio",
+            DataType.AUDIO,
+            tr_("Audio"),
+            description=tr_("Multichannel audio input"),
+        )
+        self.add_output("out1", DataType.AUDIO, tr_("Output 1"))
+        self.add_output("out2", DataType.AUDIO, tr_("Output 2"))
+        self.add_output("out3", DataType.AUDIO, tr_("Output 3"))
+        self.add_output("out4", DataType.AUDIO, tr_("Output 4"))
     
     def _setup_parameters(self):
         self.add_parameter(
             "map1", "str", "0",
-            display_name="输出1通道",
-            description="通道索引(从0开始)，多个用逗号分隔，如: 0 或 0,1,2"
+            display_name=tr_("Output 1 channels"),
+            description=tr_("Channel indices (0-based), comma-separated, e.g. 0 or 0,1,2"),
         )
         self.add_parameter(
             "map2", "str", "1",
-            display_name="输出2通道",
-            description="通道索引，留空则不输出"
+            display_name=tr_("Output 2 channels"),
+            description=tr_("Channel indices; leave blank to disable output"),
         )
         self.add_parameter(
             "map3", "str", "",
-            display_name="输出3通道",
-            description="通道索引，留空则不输出"
+            display_name=tr_("Output 3 channels"),
+            description=tr_("Channel indices; leave blank to disable output"),
         )
         self.add_parameter(
             "map4", "str", "",
-            display_name="输出4通道",
-            description="通道索引，留空则不输出"
+            display_name=tr_("Output 4 channels"),
+            description=tr_("Channel indices; leave blank to disable output"),
         )
     
     def _parse_channel_indices(self, map_str: str, max_channels: int) -> List[int]:
@@ -614,29 +631,47 @@ class ChannelMergeNode(BaseNode):
     """
     
     node_type = "channel_merge"
-    display_name = "通道合并"
+    display_name = tr_("Channel merge")
     category = NodeCategory.PREPROCESSING
-    description = "合并多个音频的通道"
+    description = tr_("Merge channels from multiple audio inputs")
     icon = "🔗"
     
     def _setup_ports(self):
-        self.add_input("in1", DataType.AUDIO, "输入1", description="音频输入1")
-        self.add_input("in2", DataType.AUDIO, "输入2", description="音频输入2（可选）", required=False)
-        self.add_input("in3", DataType.AUDIO, "输入3", description="音频输入3（可选）", required=False)
-        self.add_input("in4", DataType.AUDIO, "输入4", description="音频输入4（可选）", required=False)
-        self.add_output("audio", DataType.AUDIO, "合并音频")
+        self.add_input("in1", DataType.AUDIO, tr_("Input 1"), description=tr_("Audio input 1"))
+        self.add_input(
+            "in2",
+            DataType.AUDIO,
+            tr_("Input 2"),
+            description=tr_("Audio input 2 (optional)"),
+            required=False,
+        )
+        self.add_input(
+            "in3",
+            DataType.AUDIO,
+            tr_("Input 3"),
+            description=tr_("Audio input 3 (optional)"),
+            required=False,
+        )
+        self.add_input(
+            "in4",
+            DataType.AUDIO,
+            tr_("Input 4"),
+            description=tr_("Audio input 4 (optional)"),
+            required=False,
+        )
+        self.add_output("audio", DataType.AUDIO, tr_("Merged audio"))
     
     def _setup_parameters(self):
         self.add_parameter(
             "length_mode", "choice", "min",
-            display_name="长度处理",
-            description="当输入长度不一致时的处理方式",
+            display_name=tr_("Length handling"),
+            description=tr_("How to handle different input lengths"),
             choices=["min", "max", "first"]
         )
         self.add_parameter(
             "pad_mode", "choice", "constant",
-            display_name="填充模式",
-            description="当使用max长度时，短音频的填充方式",
+            display_name=tr_("Pad mode"),
+            description=tr_("Padding strategy for shorter audio when using max length"),
             choices=["constant", "edge", "reflect", "wrap"]
         )
     
@@ -651,7 +686,7 @@ class ChannelMergeNode(BaseNode):
                 inputs.append(data)
         
         if not inputs:
-            self.error_message = "至少需要一个有效的音频输入"
+            self.error_message = tr_("At least one valid audio input is required")
             return False
         
         # 检查是否是列表输入
@@ -664,11 +699,15 @@ class ChannelMergeNode(BaseNode):
                 if isinstance(inp, list):
                     list_lengths.append(len(inp))
                 else:
-                    self.error_message = "所有输入必须是相同类型（都是单个音频或都是音频列表）"
+                    self.error_message = tr_(
+                        "All inputs must be the same type (all single audio or all audio lists)"
+                    )
                     return False
             
             if len(set(list_lengths)) > 1:
-                self.error_message = f"音频列表长度不一致: {list_lengths}"
+                self.error_message = tr_("Audio list lengths differ: {lengths}").format(
+                    lengths=list_lengths
+                )
                 return False
             
             # 逐个处理列表中的音频
@@ -686,7 +725,9 @@ class ChannelMergeNode(BaseNode):
             # 验证所有输入都是 AudioData
             for inp in inputs:
                 if not isinstance(inp, AudioData):
-                    self.error_message = f"期望 AudioData 类型，但收到 {type(inp).__name__}"
+                    self.error_message = tr_("Expected AudioData, but got {type}").format(
+                        type=type(inp).__name__
+                    )
                     return False
             
             merged = self._merge_audios(inputs)
@@ -708,13 +749,15 @@ class ChannelMergeNode(BaseNode):
             合并后的 AudioData
         """
         if not audios:
-            self.error_message = "没有要合并的音频"
+            self.error_message = tr_("No audio to merge")
             return None
         
         # 检查采样率是否一致
         sample_rates = [a.sample_rate for a in audios]
         if len(set(sample_rates)) > 1:
-            self.error_message = f"采样率不一致: {sample_rates}，请先使用重采样节点统一采样率"
+            self.error_message = tr_(
+                "Sample rates differ: {rates}. Please resample first."
+            ).format(rates=sample_rates)
             return None
         
         sample_rate = sample_rates[0]
@@ -781,38 +824,38 @@ class FilterNode(BaseNode):
     """
     
     node_type = "filter"
-    display_name = "滤波器"
+    display_name = tr_("Filter")
     category = NodeCategory.PREPROCESSING
-    description = "对音频应用数字滤波（低通/高通/带通/带阻）"
+    description = tr_("Apply digital filtering (lowpass/highpass/bandpass/bandstop)")
     icon = "🎛️"
     
     def _setup_ports(self):
-        self.add_input("audio", DataType.AUDIO, "音频", description="音频或音频列表")
-        self.add_output("audio", DataType.AUDIO, "音频")
+        self.add_input("audio", DataType.AUDIO, tr_("Audio"), description=tr_("Audio or audio list"))
+        self.add_output("audio", DataType.AUDIO, tr_("Audio"))
     
     def _setup_parameters(self):
         self.add_parameter(
             "filter_type", "choice", "lowpass",
-            display_name="滤波类型",
-            description="lowpass=低通, highpass=高通, bandpass=带通, bandstop=带阻",
+            display_name=tr_("Filter type"),
+            description=tr_("lowpass, highpass, bandpass, bandstop"),
             choices=["lowpass", "highpass", "bandpass", "bandstop"]
         )
         self.add_parameter(
             "cutoff", "float", 1000.0,
-            display_name="截止频率(Hz)",
-            description="低通/高通使用此值；带通/带阻时为低频边界",
+            display_name=tr_("Cutoff (Hz)"),
+            description=tr_("Used by lowpass/highpass; low bound for bandpass/bandstop"),
             min_value=1.0, max_value=22000.0
         )
         self.add_parameter(
             "cutoff_high", "float", 5000.0,
-            display_name="高频截止(Hz)",
-            description="仅带通/带阻使用，设置高频边界（低通/高通时忽略）",
+            display_name=tr_("High cutoff (Hz)"),
+            description=tr_("Only for bandpass/bandstop; ignored for lowpass/highpass"),
             min_value=1.0, max_value=22000.0
         )
         self.add_parameter(
             "order", "int", 4,
-            display_name="滤波器阶数",
-            description="Butterworth滤波器阶数，越高衰减越陡峭",
+            display_name=tr_("Filter order"),
+            description=tr_("Butterworth order; higher means steeper rolloff"),
             min_value=1, max_value=10
         )
     
@@ -865,9 +908,9 @@ class FilterNode(BaseNode):
                         low_norm, high_norm = high_norm, low_norm
                     b, a = butter(order, [low_norm, high_norm], btype='bandstop')
                 else:
-                    raise ValueError(f"未知的滤波类型: {filter_type}")
+                    raise ValueError(tr_("Unknown filter type: {type}").format(type=filter_type))
             except Exception as e:
-                raise ValueError(f"滤波器设计失败: {e}")
+                raise ValueError(tr_("Filter design failed: {error}").format(error=str(e)))
             
             # 对每个通道应用滤波
             def filter_channel(ch_data: np.ndarray) -> np.ndarray:
@@ -889,7 +932,7 @@ class FilterNode(BaseNode):
         try:
             result = process_audio_or_list(audio_input, apply_filter)
         except Exception as e:
-            self.error_message = f"滤波处理失败: {e}"
+            self.error_message = tr_("Filtering failed: {error}").format(error=str(e))
             return False
         
         self.set_output_data("audio", result)

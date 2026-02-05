@@ -4,15 +4,14 @@ Shape Transformation Layer Nodes
 """
 
 from ..layer_base import LayerCategory, LayerNode, register_layer
-
-
+from src.ui.i18n import tr_
 @register_layer
 class FlattenLayer(LayerNode):
     """展平层"""
     layer_type = "flatten"
-    display_name = "Flatten 展平"
+    display_name = tr_("Flatten")
     category = LayerCategory.RESHAPE
-    description = "将输入展平为一维"
+    description = tr_("Flattens the input to 1D")
     icon = "📋"
     keras_class = "Flatten"
     
@@ -28,17 +27,17 @@ class FlattenLayer(LayerNode):
 class ReshapeLayer(LayerNode):
     """重塑层"""
     layer_type = "reshape"
-    display_name = "Reshape 重塑"
+    display_name = tr_("Reshape")
     category = LayerCategory.RESHAPE
-    description = "将输入重塑为指定形状"
+    description = tr_("Reshapes the input to the given shape")
     icon = "🔄"
     keras_class = "Reshape"
     
     def _setup_parameters(self):
         self.add_parameter(
             "target_shape", "str", "(64, 1)",
-            display_name="目标形状",
-            description="目标形状（不包含批次维度）"
+            display_name=tr_("Target shape"),
+            description=tr_("Target shape (excluding batch dimension)")
         )
     
     def build_keras_layer(self):
@@ -55,17 +54,17 @@ class ReshapeLayer(LayerNode):
 class PermuteLayer(LayerNode):
     """置换层"""
     layer_type = "permute"
-    display_name = "Permute 置换"
+    display_name = tr_("Permute")
     category = LayerCategory.RESHAPE
-    description = "置换输入的维度"
+    description = tr_("Permutes the dimensions of the input")
     icon = "🔀"
     keras_class = "Permute"
     
     def _setup_parameters(self):
         self.add_parameter(
             "dims", "str", "(2, 1)",
-            display_name="维度顺序",
-            description="置换模式，1-based索引"
+            display_name=tr_("Dimension order"),
+            description=tr_("Permutation pattern (1-based indices)")
         )
     
     def build_keras_layer(self):
@@ -84,14 +83,14 @@ class RepeatVectorLayer(LayerNode):
     layer_type = "repeat_vector"
     display_name = "RepeatVector"
     category = LayerCategory.RESHAPE
-    description = "将输入重复n次"
+    description = tr_("Repeats the input n times")
     icon = "🔁"
     keras_class = "RepeatVector"
     
     def _setup_parameters(self):
         self.add_parameter(
             "n", "int", 1,
-            display_name="重复次数",
+            display_name=tr_("Repeats"),
             min_value=1
         )
     
@@ -110,14 +109,14 @@ class UpSampling1DLayer(LayerNode):
     layer_type = "upsampling1d"
     display_name = "UpSampling1D"
     category = LayerCategory.RESHAPE
-    description = "一维上采样层"
+    description = tr_("1D upsampling layer")
     icon = "⬆️"
     keras_class = "UpSampling1D"
     
     def _setup_parameters(self):
         self.add_parameter(
             "size", "int", 2,
-            display_name="上采样因子",
+            display_name=tr_("Upsampling factor"),
             min_value=1
         )
     
@@ -136,14 +135,14 @@ class UpSampling2DLayer(LayerNode):
     layer_type = "upsampling2d"
     display_name = "UpSampling2D"
     category = LayerCategory.RESHAPE
-    description = "二维上采样层"
+    description = tr_("2D upsampling layer")
     icon = "⬆️"
     keras_class = "UpSampling2D"
     
     def _setup_parameters(self):
         self.add_parameter(
             "size", "str", "(2, 2)",
-            display_name="上采样因子"
+            display_name=tr_("Upsampling factor")
         )
     
     def build_keras_layer(self):

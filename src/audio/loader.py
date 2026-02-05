@@ -8,7 +8,7 @@ from typing import List, Optional, Tuple
 
 import numpy as np
 
-
+from src.ui.i18n import tr_
 @dataclass
 class AudioData:
     """音频数据类"""
@@ -55,12 +55,12 @@ class AudioLoader:
             
             # 检查文件是否存在
             if not os.path.exists(file_path):
-                raise FileNotFoundError(f"文件不存在: {file_path}")
+                raise FileNotFoundError(tr_("File does not exist: {path}").format(path=file_path))
             
             # 检查格式是否支持
             ext = os.path.splitext(file_path)[1].lower()
             if ext not in self.SUPPORTED_FORMATS:
-                raise ValueError(f"不支持的音频格式: {ext}")
+                raise ValueError(tr_("Unsupported audio format: {ext}").format(ext=ext))
             
             # 加载音频
             data, sr = librosa.load(
@@ -86,7 +86,7 @@ class AudioLoader:
             )
             
         except Exception as e:
-            raise RuntimeError(f"加载音频失败: {e}")
+            raise RuntimeError(tr_("Failed to load audio: {error}").format(error=str(e)))
     
     def load_batch(self, file_paths: List[str], 
                    max_duration: Optional[float] = None) -> List[AudioData]:
@@ -106,7 +106,7 @@ class AudioLoader:
                 audio = self.load(path, duration=max_duration)
                 results.append(audio)
             except Exception as e:
-                print(f"跳过文件 {path}: {e}")
+                print(f"Skipped file {path}: {e}")
         return results
     
     def get_info(self, file_path: str) -> dict:
@@ -136,7 +136,7 @@ class AudioLoader:
             }
             
         except Exception as e:
-            raise RuntimeError(f"获取音频信息失败: {e}")
+            raise RuntimeError(tr_("Failed to get audio info: {error}").format(error=str(e)))
     
     @staticmethod
     def is_supported(file_path: str) -> bool:

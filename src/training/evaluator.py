@@ -10,7 +10,6 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 
-
 @dataclass
 class EvaluationResult:
     """评估结果"""
@@ -126,14 +125,14 @@ class ModelEvaluator:
     def _print_results(self, result: EvaluationResult):
         """打印评估结果"""
         print("\n" + "=" * 50)
-        print("模型评估结果")
+        print("Model evaluation results")
         print("=" * 50)
         print(f"Loss: {result.loss:.4f}")
         print(f"Accuracy: {result.accuracy:.4f}")
         print(f"Precision: {result.precision:.4f}")
         print(f"Recall: {result.recall:.4f}")
         print(f"F1 Score: {result.f1_score:.4f}")
-        print("\n混淆矩阵:")
+        print("\nConfusion matrix:")
         print(result.confusion_matrix)
         print("=" * 50)
     
@@ -269,7 +268,7 @@ class ModelEvaluator:
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(export_data, f, indent=2, ensure_ascii=False)
         
-        print(f"评估结果已导出到: {output_path}")
+        print(f"Evaluation results exported to: {output_path}")
 
 
 def quick_evaluate(model: keras.Model, 

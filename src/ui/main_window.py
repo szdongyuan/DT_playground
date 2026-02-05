@@ -20,6 +20,7 @@ from src.controllers.navigation_controller import NavigationController, ViewType
 from src.controllers.training_controller import TrainingController
 from src.controllers.workflow_controller import WorkflowController
 from src.core.event_bus import get_event_bus
+from src.ui.i18n import tr_
 from src.ui.styles import Styles
 from src.ui.views.model_builder_view import ModelBuilderView
 from src.ui.views.preview_view import PreviewView
@@ -155,7 +156,7 @@ class MainWindow(QWidget):
         switcher_layout.setSpacing(4)
         
         # Logo/标题
-        title = QLabel("🎵 AI声学训练平台")
+        title = QLabel(tr_("🎵 AI Acoustic Training Platform"))
         title.setStyleSheet(f"""
             font-size: 15px;
             font-weight: bold;
@@ -177,10 +178,10 @@ class MainWindow(QWidget):
         self._view_buttons = QButtonGroup(self)
         self._view_buttons.setExclusive(True)
         
-        self._workflow_btn = ViewButton("工作流", "🔧")
-        self._model_btn = ViewButton("模型", "📐")
-        self._preview_btn = ViewButton("预览", "📊")
-        self._training_btn = ViewButton("训练", "🏋️")
+        self._workflow_btn = ViewButton(tr_("Workflow"), "🔧")
+        self._model_btn = ViewButton(tr_("Model"), "📐")
+        self._preview_btn = ViewButton(tr_("Preview"), "📊")
+        self._training_btn = ViewButton(tr_("Training"), "🏋️")
         
         self._workflow_btn.setChecked(True)
         
@@ -210,14 +211,14 @@ class MainWindow(QWidget):
         status_layout = QHBoxLayout(status_frame)
         status_layout.setContentsMargins(12, 2, 12, 2)
         
-        self.status_label = QLabel("就绪")
+        self.status_label = QLabel(tr_("Ready"))
         self.status_label.setStyleSheet(f"color: {Styles.COLORS['subtext1']};")
         
-        self.workflow_status = QLabel("工作流: 未保存")
+        self.workflow_status = QLabel(tr_("Workflow: Unsaved"))
         self.workflow_status.setStyleSheet(f"color: {Styles.COLORS['subtext0']};")
         
-        self.gpu_status = QLabel("GPU: 检测中...")
-        self.memory_status = QLabel("内存: --")
+        self.gpu_status = QLabel(tr_("GPU: Detecting..."))
+        self.memory_status = QLabel(tr_("Memory: --"))
         
         for label in [self.gpu_status, self.memory_status]:
             label.setStyleSheet(f"color: {Styles.COLORS['subtext0']};")
@@ -247,13 +248,15 @@ class MainWindow(QWidget):
             import tensorflow as tf
             gpus = tf.config.list_physical_devices('GPU')
             if gpus:
-                self.gpu_status.setText(f"GPU: {len(gpus)}个可用")
+                self.gpu_status.setText(
+                    tr_("GPU: {count} available").format(count=len(gpus))
+                )
                 self.gpu_status.setStyleSheet(f"color: {Styles.COLORS['green']};")
             else:
-                self.gpu_status.setText("GPU: 仅CPU")
+                self.gpu_status.setText(tr_("GPU: CPU only"))
                 self.gpu_status.setStyleSheet(f"color: {Styles.COLORS['yellow']};")
         except Exception:
-            self.gpu_status.setText("GPU: 未知")
+            self.gpu_status.setText(tr_("GPU: Unknown"))
             self.gpu_status.setStyleSheet(f"color: {Styles.COLORS['overlay0']};")
     
     def _start_resource_monitor(self):
@@ -269,7 +272,11 @@ class MainWindow(QWidget):
             memory = psutil.virtual_memory()
             used_gb = memory.used / (1024 ** 3)
             total_gb = memory.total / (1024 ** 3)
-            self.memory_status.setText(f"内存: {used_gb:.1f}/{total_gb:.1f}GB")
+            self.memory_status.setText(
+                tr_("Memory: {used:.1f}/{total:.1f}GB").format(
+                    used=used_gb, total=total_gb
+                )
+            )
         except ImportError:
             pass
     
@@ -349,7 +356,7 @@ class MainWindow(QWidget):
         # Ensure workflow run controls are enabled when a run starts.
         try:
             self._workflow_view._stop_btn.setEnabled(True)
-            self._workflow_view._stop_btn.setText("⏹️ 停止运行")
+            self._workflow_view._stop_btn.setText(tr_("⏹️ Stop"))
             self._workflow_view._run_btn.setEnabled(False)
         except Exception:
             pass
@@ -362,7 +369,7 @@ class MainWindow(QWidget):
         try:
             self._workflow_view._run_btn.setEnabled(True)
             self._workflow_view._stop_btn.setEnabled(False)
-            self._workflow_view._stop_btn.setText("⏹️ 停止运行")
+            self._workflow_view._stop_btn.setText(tr_("⏹️ Stop"))
         except Exception:
             pass
     
@@ -372,10 +379,10 @@ class MainWindow(QWidget):
         try:
             self._workflow_view._run_btn.setEnabled(True)
             self._workflow_view._stop_btn.setEnabled(False)
-            self._workflow_view._stop_btn.setText("⏹️ 停止运行")
+            self._workflow_view._stop_btn.setText(tr_("⏹️ Stop"))
         except Exception:
             pass
-        QMessageBox.critical(self, "执行错误", error_msg)
+        QMessageBox.critical(self, tr_("Execution error"), error_msg)
     
     def _on_event_node_started(self, node_id: str):
         """事件总线：节点开始执行"""
@@ -428,8 +435,15 @@ class MainWindow(QWidget):
         # 同步导航控制器状态，确保双击节点切换视图时状态一致
         self._navigation_controller.sync_current_view(index)
         
-        view_names = ["工作流", "模型", "预览", "训练"]
-        self.status_label.setText(f"切换到{view_names[index]}视图")
+        view_names = [
+            tr_("Workflow"),
+            tr_("Model"),
+            tr_("Preview"),
+            tr_("Training"),
+        ]
+        self.status_label.setText(
+            tr_("Switched to {view} view").format(view=view_names[index])
+        )
         
         # 如果切换到预览视图，尝试更新当前选中节点的预览
         if index == 2 and self._selected_node_id:  # 索引2是预览视图
@@ -444,10 +458,14 @@ class MainWindow(QWidget):
         """更新工作流状态显示"""
         workflow = self._workflow_view.get_workflow()
         if workflow:
-            status = "已修改" if workflow.is_dirty else "已保存"
-            self.workflow_status.setText(f"工作流: {workflow.name} ({status})")
+            status = tr_("Modified") if workflow.is_dirty else tr_("Saved")
+            self.workflow_status.setText(
+                tr_("Workflow: {name} ({status})").format(
+                    name=workflow.name, status=status
+                )
+            )
         else:
-            self.workflow_status.setText("工作流: 无")
+            self.workflow_status.setText(tr_("Workflow: None"))
     
     def _on_node_selected(self, node_id: str):
         """节点选中"""
@@ -484,15 +502,16 @@ class MainWindow(QWidget):
         """运行工作流"""
         workflow = self._workflow_view.get_workflow()
         if not workflow:
-            QMessageBox.warning(self, "警告", "没有可运行的工作流")
+            QMessageBox.warning(self, tr_("Warning"), tr_("No runnable workflow."))
             return
         
         # 验证工作流
         valid, errors = workflow.validate()
         if not valid:
             QMessageBox.warning(
-                self, "验证失败",
-                "工作流验证失败:\n" + "\n".join(errors)
+                self,
+                tr_("Validation failed"),
+                tr_("Workflow validation failed:\n") + "\n".join(errors),
             )
             return
         
@@ -517,7 +536,7 @@ class MainWindow(QWidget):
         # 通过控制器执行工作流
         success = self._workflow_controller.run()
         if not success:
-            self._training_controller.finish_training(False, "启动失败")
+            self._training_controller.finish_training(False, tr_("Startup failed"))
     
     def _on_pause_training(self):
         """暂停训练"""
@@ -545,7 +564,7 @@ class MainWindow(QWidget):
     
     def _on_engine_started(self):
         """引擎开始执行"""
-        self.status_label.setText("工作流执行中...")
+        self.status_label.setText(tr_("Running workflow..."))
         self.training_started.emit()
         
         # 重置所有节点的可视化状态
@@ -555,20 +574,22 @@ class MainWindow(QWidget):
         """引擎执行完成"""
         self._training_view.finish_training(
             result.success,
-            f"耗时: {result.execution_time:.2f}秒"
+            tr_("Time: {seconds:.2f}s").format(seconds=result.execution_time)
         )
         
         if result.success:
-            self.status_label.setText("工作流执行完成")
+            self.status_label.setText(tr_("Workflow completed"))
             self.training_completed.emit(result.node_results)
         else:
-            self.status_label.setText(f"执行失败: {result.message}")
+            self.status_label.setText(
+                tr_("Execution failed: {message}").format(message=result.message)
+            )
     
     def _on_engine_error(self, error_msg: str):
         """引擎执行错误"""
         self._training_view.finish_training(False, error_msg)
-        self.status_label.setText(f"错误: {error_msg}")
-        QMessageBox.critical(self, "执行错误", error_msg)
+        self.status_label.setText(tr_("Error: {error}").format(error=error_msg))
+        QMessageBox.critical(self, tr_("Execution error"), error_msg)
     
     # ===== Controller 信号处理 =====
     
@@ -577,10 +598,12 @@ class MainWindow(QWidget):
         self._training_view.finish_training(success, message)
         
         if success:
-            self.status_label.setText("工作流执行完成")
+            self.status_label.setText(tr_("Workflow completed"))
             self.training_completed.emit({})
         else:
-            self.status_label.setText(f"执行失败: {message}")
+            self.status_label.setText(
+                tr_("Execution failed: {message}").format(message=message)
+            )
     
     def _on_controller_node_state_changed(self, node_id: str, state: str):
         """控制器：节点状态变化"""
@@ -592,7 +615,9 @@ class MainWindow(QWidget):
             if workflow:
                 node = workflow.get_node(node_id)
                 if node:
-                    self.status_label.setText(f"执行: {node.display_name}")
+                    self.status_label.setText(
+                        tr_("Running: {name}").format(name=node.display_name)
+                    )
     
     # ===== Engine 直接信号处理 (旧代码兼容，将逐步迁移) =====
     
@@ -602,7 +627,9 @@ class MainWindow(QWidget):
         if workflow:
             node = workflow.get_node(node_id)
             if node:
-                self.status_label.setText(f"执行: {node.display_name}")
+                self.status_label.setText(
+                    tr_("Running: {name}").format(name=node.display_name)
+                )
         
         # 更新节点可视化状态
         self._workflow_view.update_node_state(node_id, 'running')
@@ -688,7 +715,11 @@ class MainWindow(QWidget):
             node = workflow.get_node(node_id)
             if node:
                 node_name = node.display_name
-                self.status_label.setText(f"🔴 断点暂停: {node.display_name} - 点击继续执行")
+                self.status_label.setText(
+                    tr_("🔴 Breakpoint paused: {name} - Click to continue").format(
+                        name=node.display_name
+                    )
+                )
         
         # 在工作流视图显示断点模式
         self._workflow_view.show_breakpoint_mode(True, node_name)
@@ -749,8 +780,9 @@ class MainWindow(QWidget):
                 model_path_port = node.outputs.get("model_path")
                 if model_path_port and model_path_port.data:
                     QMessageBox.information(
-                        self, "模型保存路径",
-                        f"模型已保存到:\n{model_path_port.data}"
+                        self,
+                        tr_("Model save path"),
+                        tr_("Model saved to:\n{path}").format(path=model_path_port.data),
                     )
                     return
             self._show_not_run_tip(node)
@@ -759,9 +791,12 @@ class MainWindow(QWidget):
         # 控制流节点
         if category == NodeCategory.CONTROL and node_type == "loop":
             QMessageBox.information(
-                self, "提示",
-                f"循环节点 [{node.display_name}] 无法预览\n"
-                "请预览循环内部的具体处理节点"
+                self,
+                tr_("Info"),
+                tr_(
+                    "Loop node [{name}] cannot be previewed.\n"
+                    "Please preview a specific processing node inside the loop."
+                ).format(name=node.display_name),
             )
             return
         
@@ -772,9 +807,12 @@ class MainWindow(QWidget):
                 if labels_port and labels_port.data:
                     label_count = len(labels_port.data) if isinstance(labels_port.data, (list, dict)) else 1
                     QMessageBox.information(
-                        self, "标签数据",
-                        f"已加载 {label_count} 个标签\n"
-                        "标签数据无法可视化预览"
+                        self,
+                        tr_("Label data"),
+                        tr_(
+                            "Loaded {count} label(s).\n"
+                            "Label data cannot be visualized for preview."
+                        ).format(count=label_count),
                     )
                     return
             self._show_not_run_tip(node)
@@ -806,9 +844,12 @@ class MainWindow(QWidget):
     def _show_not_run_tip(self, node):
         """显示节点未运行提示"""
         QMessageBox.information(
-            self, "提示",
-            f"节点 [{node.display_name}] 尚未运行\n"
-            "请先点击「运行」按钮执行工作流"
+            self,
+            tr_("Info"),
+            tr_(
+                "Node [{name}] has not been run yet.\n"
+                "Click \"Run\" to execute the workflow first."
+            ).format(name=node.display_name),
         )
     
     def _switch_to_preview_for_node(self, node_id: str, node):
@@ -830,7 +871,11 @@ class MainWindow(QWidget):
         if primary_port:
             data_type = primary_port.data_type
             type_desc = self._get_data_type_description(data_type)
-            self.status_label.setText(f"预览 {node.display_name} - {type_desc}")
+            self.status_label.setText(
+                tr_("Preview {name} - {type}").format(
+                    name=node.display_name, type=type_desc
+                )
+            )
         
         # 更新预览
         self._selected_node_id = node_id
@@ -841,17 +886,17 @@ class MainWindow(QWidget):
         from src.workflow.port import DataType
         
         descriptions = {
-            DataType.AUDIO: "音频波形",
-            DataType.FEATURE_1D: "1D特征曲线",
-            DataType.FEATURE_2D: "2D特征图",
-            DataType.FEATURE: "特征数据",
-            DataType.MODEL: "模型",
-            DataType.METRICS: "评估指标",
-            DataType.LABEL: "标签数据",
-            DataType.ANY: "数据",
-            DataType.TRIGGER: "触发信号",
+            DataType.AUDIO: tr_("Audio waveform"),
+            DataType.FEATURE_1D: tr_("1D feature curve"),
+            DataType.FEATURE_2D: tr_("2D feature map"),
+            DataType.FEATURE: tr_("Feature data"),
+            DataType.MODEL: tr_("Model"),
+            DataType.METRICS: tr_("Metrics"),
+            DataType.LABEL: tr_("Label data"),
+            DataType.ANY: tr_("Data"),
+            DataType.TRIGGER: tr_("Trigger"),
         }
-        return descriptions.get(data_type, "数据")
+        return descriptions.get(data_type, tr_("Data"))
     
     # ===== 兼容旧接口 =====
     

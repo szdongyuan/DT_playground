@@ -15,6 +15,7 @@ from PyQt6.QtWidgets import (
     QTreeWidgetItem, QVBoxLayout, QWidget
 )
 
+from src.ui.i18n import tr_
 from src.ui.styles import Styles
 from src.workflow.node_base import (
     NodeCategory, get_all_node_types, get_nodes_by_category
@@ -105,7 +106,7 @@ class NodePalette(QWidget):
         header_layout = QVBoxLayout(header)
         header_layout.setContentsMargins(12, 8, 12, 8)
         
-        title = QLabel("🧩 节点库")
+        title = QLabel(tr_("🧩 Node Library"))
         title.setStyleSheet(f"""
             font-size: 14px;
             font-weight: bold;
@@ -120,7 +121,7 @@ class NodePalette(QWidget):
         search_layout.setContentsMargins(8, 4, 8, 8)
         
         self._search_input = QLineEdit()
-        self._search_input.setPlaceholderText("🔍 搜索节点...")
+        self._search_input.setPlaceholderText(tr_("🔍 Search nodes..."))
         self._search_input.textChanged.connect(self._on_search)
         search_layout.addWidget(self._search_input)
         layout.addWidget(search_frame)
@@ -132,7 +133,7 @@ class NodePalette(QWidget):
         layout.addWidget(self._tree)
         
         # 提示
-        hint = QLabel("拖拽或双击添加节点")
+        hint = QLabel(tr_("Drag or double-click to add a node"))
         hint.setAlignment(Qt.AlignmentFlag.AlignCenter)
         hint.setStyleSheet(f"""
             color: {Styles.COLORS['subtext0']};
@@ -173,25 +174,25 @@ class NodePalette(QWidget):
             
             # 添加无子类别的节点
             for node_class in nodes_without_subcategory:
-                item = QTreeWidgetItem([f"{node_class.icon} {node_class.display_name}"])
+                item = QTreeWidgetItem([f"{node_class.icon} {tr_(node_class.display_name)}"])
                 item.setData(0, Qt.ItemDataRole.UserRole, node_class.node_type)
-                item.setToolTip(0, node_class.description)
+                item.setToolTip(0, tr_(node_class.description) if node_class.description else "")
                 category_item.addChild(item)
                 node_count += 1
             
             # 添加有子类别的节点
             for subcategory, nodes in sorted(subcategory_map.items()):
                 # 创建子类别节点
-                subcategory_item = QTreeWidgetItem([f"📁 {subcategory}"])
+                subcategory_item = QTreeWidgetItem([f"📁 {tr_(subcategory)}"])
                 subcategory_item.setForeground(0, Styles.get_color(category.color))
                 subcategory_item.setExpanded(True)
                 category_item.addChild(subcategory_item)
                 
                 # 添加节点到子类别
                 for node_class in nodes:
-                    item = QTreeWidgetItem([f"{node_class.icon} {node_class.display_name}"])
+                    item = QTreeWidgetItem([f"{node_class.icon} {tr_(node_class.display_name)}"])
                     item.setData(0, Qt.ItemDataRole.UserRole, node_class.node_type)
-                    item.setToolTip(0, node_class.description)
+                    item.setToolTip(0, tr_(node_class.description) if node_class.description else "")
                     subcategory_item.addChild(item)
                     node_count += 1
         

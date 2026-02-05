@@ -4,23 +4,22 @@ Merge Layer Nodes
 """
 
 from ..layer_base import LayerCategory, LayerNode, register_layer
-
-
+from src.ui.i18n import tr_
 @register_layer
 class ConcatenateLayer(LayerNode):
     """连接层"""
     layer_type = "concatenate"
-    display_name = "Concatenate 连接"
+    display_name = tr_("Concatenate")
     category = LayerCategory.MERGE
-    description = "沿指定轴连接输入列表"
+    description = tr_("Concatenate a list of inputs along a given axis")
     icon = "🔗"
     keras_class = "Concatenate"
     
     def _setup_parameters(self):
         self.add_parameter(
             "axis", "int", -1,
-            display_name="连接轴",
-            description="连接的轴"
+            display_name=tr_("Axis"),
+            description=tr_("Axis to concatenate")
         )
     
     def build_keras_layer(self):
@@ -36,9 +35,9 @@ class ConcatenateLayer(LayerNode):
 class AddLayer(LayerNode):
     """加法层"""
     layer_type = "add"
-    display_name = "Add 加法"
+    display_name = tr_("Add")
     category = LayerCategory.MERGE
-    description = "对输入列表进行逐元素加法"
+    description = tr_("Element-wise addition of a list of inputs")
     icon = "➕"
     keras_class = "Add"
     
@@ -54,9 +53,9 @@ class AddLayer(LayerNode):
 class MultiplyLayer(LayerNode):
     """乘法层"""
     layer_type = "multiply"
-    display_name = "Multiply 乘法"
+    display_name = tr_("Multiply")
     category = LayerCategory.MERGE
-    description = "对输入列表进行逐元素乘法"
+    description = tr_("Element-wise multiplication of a list of inputs")
     icon = "✖️"
     keras_class = "Multiply"
     
@@ -72,9 +71,9 @@ class MultiplyLayer(LayerNode):
 class AverageLayer(LayerNode):
     """平均层"""
     layer_type = "average"
-    display_name = "Average 平均"
+    display_name = tr_("Average")
     category = LayerCategory.MERGE
-    description = "对输入列表进行逐元素平均"
+    description = tr_("Element-wise average of a list of inputs")
     icon = "📊"
     keras_class = "Average"
     
@@ -90,9 +89,9 @@ class AverageLayer(LayerNode):
 class MaximumLayer(LayerNode):
     """最大值层"""
     layer_type = "maximum"
-    display_name = "Maximum 最大值"
+    display_name = tr_("Maximum")
     category = LayerCategory.MERGE
-    description = "对输入列表进行逐元素取最大值"
+    description = tr_("Element-wise maximum of a list of inputs")
     icon = "📈"
     keras_class = "Maximum"
     
@@ -108,9 +107,9 @@ class MaximumLayer(LayerNode):
 class MinimumLayer(LayerNode):
     """最小值层"""
     layer_type = "minimum"
-    display_name = "Minimum 最小值"
+    display_name = tr_("Minimum")
     category = LayerCategory.MERGE
-    description = "对输入列表进行逐元素取最小值"
+    description = tr_("Element-wise minimum of a list of inputs")
     icon = "📉"
     keras_class = "Minimum"
     
@@ -126,22 +125,22 @@ class MinimumLayer(LayerNode):
 class DotLayer(LayerNode):
     """点积层"""
     layer_type = "dot"
-    display_name = "Dot 点积"
+    display_name = tr_("Dot")
     category = LayerCategory.MERGE
-    description = "计算两个张量的点积"
+    description = tr_("Compute the dot product of two inputs")
     icon = "⚫"
     keras_class = "Dot"
     
     def _setup_parameters(self):
         self.add_parameter(
             "axes", "int", -1,
-            display_name="点积轴",
-            description="进行点积的轴"
+            display_name=tr_("Axes"),
+            description=tr_("Axes for dot product")
         )
         self.add_parameter(
             "normalize", "bool", False,
-            display_name="归一化",
-            description="是否在点积前L2归一化"
+            display_name=tr_("Normalize"),
+            description=tr_("Whether to apply L2 normalization before dot product")
         )
     
     def build_keras_layer(self):
