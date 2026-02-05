@@ -150,7 +150,7 @@ class KerasModelParser:
                 layer_node.position = info.position
                 layer_node.layer_id = info.name  # 使用 Keras 层名作为 ID
                 graph.layers[layer_node.layer_id] = layer_node
-                logger.debug(f"添加层: {info.name} ({info.layer_type})")
+                logger.debug(f"Add layer: {info.name} ({info.layer_type})")
         
         # 添加连接（优先使用 inbound_nodes，否则使用顺序推断）
         connections_added = set()
@@ -164,7 +164,7 @@ class KerasModelParser:
         
         # 如果没有通过 inbound_nodes 获取到连接，使用顺序推断（适用于 Sequential 模型）
         if not connections_added and len(layer_infos) > 1:
-            logger.debug("使用顺序推断连接（Sequential 模型）")
+            logger.debug("Infer connections by sequence (Sequential model)")
             valid_layers = [info for info in layer_infos if info.name in graph.layers]
             for i in range(len(valid_layers) - 1):
                 source_name = valid_layers[i].name
@@ -174,7 +174,7 @@ class KerasModelParser:
         # 记录不支持的层
         if self._unsupported_layers:
             unique_unsupported = list(set(self._unsupported_layers))
-            logger.warning(f"以下层类型暂不支持，已跳过: {unique_unsupported}")
+            logger.warning(f"Unsupported layer types skipped: {unique_unsupported}")
         
         graph.is_dirty = False
         return graph
@@ -197,7 +197,7 @@ class KerasModelParser:
         
         if platform_type is None:
             self._unsupported_layers.append(keras_class_name)
-            logger.debug(f"未知层类型: {keras_class_name}, 将跳过")
+            logger.debug(f"Unknown layer type: {keras_class_name}, skipped")
             return None
         
         # 获取层配置
@@ -295,13 +295,15 @@ class KerasModelParser:
         # 检查平台是否支持该层类型
         layer_class = get_layer_class(info.layer_type)
         if layer_class is None:
-            logger.warning(f"平台不支持层类型: {info.layer_type} (Keras: {info.keras_class_name})")
+            logger.warning(
+                f"Platform does not support layer type: {info.layer_type} (Keras: {info.keras_class_name})"
+            )
             self._unsupported_layers.append(info.keras_class_name)
             return None
         
         layer_node = create_layer(info.layer_type)
         if layer_node is None:
-            logger.warning(f"无法创建层实例: {info.layer_type}")
+            logger.warning(f"Failed to create layer instance: {info.layer_type}")
             return None
         
         # 设置参数

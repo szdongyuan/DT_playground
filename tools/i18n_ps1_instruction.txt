@@ -1,0 +1,10 @@
+你现在已经可以在项目根目录用这一条一键完成 提取/合并/编译：
+cd d:\pyProject\DT_playground
+.\tools\i18n.ps1 -Action all -MsysRoot "C:\msys64" -Toolchain ucrt64
+常用子命令：
+只提取（更新 src/locale/messages.pot）：
+.\tools\i18n.ps1 -Action extract -MsysRoot "C:\msys64" -Toolchain ucrt64
+只合并（把 pot 更新进两个 .po，保留你已有翻译）：
+.\tools\i18n.ps1 -Action merge -MsysRoot "C:\msys64" -Toolchain ucrt64
+只编译（生成/更新 .mo）：
+.\tools\i18n.ps1 -Action compile -MsysRoot "C:\msys64" -Toolchain ucrt64

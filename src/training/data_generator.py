@@ -12,7 +12,6 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 
-
 class AudioDataGenerator(keras.utils.Sequence):
     """
     音频数据生成器
@@ -120,7 +119,7 @@ class AudioDataGenerator(keras.utils.Sequence):
         
         if len(valid) < len(self.indices):
             invalid_count = len(self.indices) - len(valid)
-            print(f"警告: 发现 {invalid_count} 个无效文件，已跳过")
+            print(f"Warning: found {invalid_count} invalid files; skipped")
         
         return np.array(valid)
     
@@ -330,27 +329,27 @@ def create_data_generators(file_paths: List[str],
     import logging
     logger = logging.getLogger('AudioTrainingApp')
     
-    logger.info(f"create_data_generators: {len(file_paths)} 文件, {len(set(labels))} 类别")
+    logger.info(f"create_data_generators: {len(file_paths)} files, {len(set(labels))} classes")
     
     # 处理特征配置
     feature_types = kwargs.get('feature_types', None)
     feature_combine_mode = kwargs.get('feature_combine_mode', 'channel')
     
     if feature_types:
-        logger.info(f"使用特征组合: {feature_types}, 模式: {feature_combine_mode}")
+        logger.info(f"Using feature combination: {feature_types}, mode: {feature_combine_mode}")
     
     # 确保输入是普通Python列表
     file_paths = list(file_paths)
     labels = [int(l) for l in labels]
     
-    logger.info("开始数据划分...")
+    logger.info("Starting data split...")
     
     # 手动实现分层划分以避免sklearn签名检查问题
     train_files, val_files, train_labels, val_labels = _stratified_split(
         file_paths, labels, train_ratio=train_ratio, random_seed=42
     )
     
-    logger.info(f"划分完成: 训练集 {len(train_files)}, 验证集 {len(val_files)}")
+    logger.info(f"Split done: train={len(train_files)}, val={len(val_files)}")
     
     # 创建生成器
     train_gen = AudioDataGenerator(

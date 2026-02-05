@@ -15,8 +15,7 @@ from ..node_base import BaseNode, NodeCategory, register_node
 from ..port import DataType
 from .data_source import AudioData
 from .preprocessing import process_audio_or_list, process_channels, validate_audio_input
-
-
+from src.ui.i18n import tr_
 logger = logging.getLogger(__name__)
 
 
@@ -29,41 +28,45 @@ class AddNoiseNode(BaseNode):
     """
     
     node_type = "add_noise"
-    display_name = "添加噪声"
+    display_name = tr_("Add noise")
     category = NodeCategory.AUGMENTATION
-    description = "向音频添加噪声"
+    description = tr_("Add noise to audio")
     icon = "🔊"
     
     def _setup_ports(self):
-        self.add_input("audio", DataType.AUDIO, "音频")
-        self.add_output("audio", DataType.AUDIO, "加噪音频")
-        self.add_output("original", DataType.AUDIO, "原始音频", 
-                       description="用于训练降噪模型时作为目标")
+        self.add_input("audio", DataType.AUDIO, tr_("Audio"))
+        self.add_output("audio", DataType.AUDIO, tr_("Noisy audio"))
+        self.add_output(
+            "original",
+            DataType.AUDIO,
+            tr_("Original audio"),
+            description=tr_("Use as target when training denoising models"),
+        )
     
     def _setup_parameters(self):
         self.add_parameter(
             "noise_type", "choice", "gaussian",
-            display_name="噪声类型",
+            display_name=tr_("Noise type"),
             choices=["gaussian", "uniform", "pink", "brown"]
         )
         self.add_parameter(
             "snr_db", "float", 20.0,
-            display_name="信噪比(dB)",
+            display_name=tr_("SNR (dB)"),
             min_value=-10.0, max_value=60.0
         )
         self.add_parameter(
             "random_snr", "bool", False,
-            display_name="随机信噪比",
-            description="在指定范围内随机选择SNR"
+            display_name=tr_("Random SNR"),
+            description=tr_("Randomly choose SNR within the specified range")
         )
         self.add_parameter(
             "snr_min", "float", 10.0,
-            display_name="最小SNR(dB)",
+            display_name=tr_("Min SNR (dB)"),
             min_value=-10.0, max_value=60.0
         )
         self.add_parameter(
             "snr_max", "float", 30.0,
-            display_name="最大SNR(dB)",
+            display_name=tr_("Max SNR (dB)"),
             min_value=-10.0, max_value=60.0
         )
     
@@ -159,34 +162,34 @@ class TimeStretchNode(BaseNode):
     """
     
     node_type = "time_stretch"
-    display_name = "时间拉伸"
+    display_name = tr_("Time stretch")
     category = NodeCategory.AUGMENTATION
-    description = "改变音频速度（保持音高）"
+    description = tr_("Change speed while preserving pitch")
     icon = "⏱️"
     
     def _setup_ports(self):
-        self.add_input("audio", DataType.AUDIO, "音频")
-        self.add_output("audio", DataType.AUDIO, "音频")
+        self.add_input("audio", DataType.AUDIO, tr_("Audio"))
+        self.add_output("audio", DataType.AUDIO, tr_("Audio"))
     
     def _setup_parameters(self):
         self.add_parameter(
             "rate", "float", 1.0,
-            display_name="拉伸比例",
-            description="<1减慢, >1加快",
+            display_name=tr_("Stretch rate"),
+            description=tr_("<1 slower, >1 faster"),
             min_value=0.5, max_value=2.0
         )
         self.add_parameter(
             "random_rate", "bool", False,
-            display_name="随机比例"
+            display_name=tr_("Random rate")
         )
         self.add_parameter(
             "rate_min", "float", 0.8,
-            display_name="最小比例",
+            display_name=tr_("Min rate"),
             min_value=0.5, max_value=1.0
         )
         self.add_parameter(
             "rate_max", "float", 1.2,
-            display_name="最大比例",
+            display_name=tr_("Max rate"),
             min_value=1.0, max_value=2.0
         )
     
@@ -238,34 +241,34 @@ class PitchShiftNode(BaseNode):
     """
     
     node_type = "pitch_shift"
-    display_name = "音高偏移"
+    display_name = tr_("Pitch shift")
     category = NodeCategory.AUGMENTATION
-    description = "改变音频音高（保持速度）"
+    description = tr_("Change pitch while preserving speed")
     icon = "🎵"
     
     def _setup_ports(self):
-        self.add_input("audio", DataType.AUDIO, "音频")
-        self.add_output("audio", DataType.AUDIO, "音频")
+        self.add_input("audio", DataType.AUDIO, tr_("Audio"))
+        self.add_output("audio", DataType.AUDIO, tr_("Audio"))
     
     def _setup_parameters(self):
         self.add_parameter(
             "semitones", "float", 0.0,
-            display_name="半音数",
-            description="正数升调，负数降调",
+            display_name=tr_("Semitones"),
+            description=tr_("Positive = higher, negative = lower"),
             min_value=-12.0, max_value=12.0
         )
         self.add_parameter(
             "random_shift", "bool", False,
-            display_name="随机偏移"
+            display_name=tr_("Random shift")
         )
         self.add_parameter(
             "shift_min", "float", -4.0,
-            display_name="最小偏移(半音)",
+            display_name=tr_("Min shift (semitones)"),
             min_value=-12.0, max_value=0.0
         )
         self.add_parameter(
             "shift_max", "float", 4.0,
-            display_name="最大偏移(半音)",
+            display_name=tr_("Max shift (semitones)"),
             min_value=0.0, max_value=12.0
         )
     
@@ -321,37 +324,37 @@ class RandomAugmentNode(BaseNode):
     """
     
     node_type = "random_augment"
-    display_name = "随机增强"
+    display_name = tr_("Random augment")
     category = NodeCategory.AUGMENTATION
-    description = "随机应用多种增强效果"
+    description = tr_("Randomly apply multiple augmentation effects")
     icon = "🔀"
     
     def _setup_ports(self):
-        self.add_input("audio", DataType.AUDIO, "音频")
-        self.add_output("audio", DataType.AUDIO, "音频")
-        self.add_output("original", DataType.AUDIO, "原始音频")
+        self.add_input("audio", DataType.AUDIO, tr_("Audio"))
+        self.add_output("audio", DataType.AUDIO, tr_("Audio"))
+        self.add_output("original", DataType.AUDIO, tr_("Original audio"))
     
     def _setup_parameters(self):
         self.add_parameter(
             "enable_noise", "bool", True,
-            display_name="启用噪声"
+            display_name=tr_("Enable noise")
         )
         self.add_parameter(
             "enable_stretch", "bool", True,
-            display_name="启用时间拉伸"
+            display_name=tr_("Enable time stretch")
         )
         self.add_parameter(
             "enable_pitch", "bool", True,
-            display_name="启用音高偏移"
+            display_name=tr_("Enable pitch shift")
         )
         self.add_parameter(
             "enable_gain", "bool", True,
-            display_name="启用增益变化"
+            display_name=tr_("Enable gain change")
         )
         self.add_parameter(
             "probability", "float", 0.5,
-            display_name="应用概率",
-            description="每种效果被应用的概率",
+            display_name=tr_("Apply probability"),
+            description=tr_("Probability of applying each effect"),
             min_value=0.0, max_value=1.0
         )
     
@@ -453,54 +456,63 @@ class AudioSliceNode(BaseNode):
     """
     
     node_type = "audio_slice"
-    display_name = "数据切片"
+    display_name = tr_("Audio slicing")
     category = NodeCategory.AUGMENTATION
-    description = "将音频切片成多个短片段扩充数据"
+    description = tr_("Slice audio into multiple short segments to augment data")
     icon = "✂️"
     
     def _setup_ports(self):
-        self.add_input("audio", DataType.AUDIO, "音频")
-        self.add_input("labels", DataType.LABEL, "标签", required=False,
-                      description="可选标签输入，将随切片同步扩充")
-        self.add_output("audio", DataType.AUDIO, "切片音频列表")
-        self.add_output("labels", DataType.LABEL, "切片标签列表",
-                       description="与切片音频一一对应的标签")
+        self.add_input("audio", DataType.AUDIO, tr_("Audio"))
+        self.add_input(
+            "labels",
+            DataType.LABEL,
+            tr_("Labels"),
+            required=False,
+            description=tr_("Optional labels input; will be duplicated along with slices"),
+        )
+        self.add_output("audio", DataType.AUDIO, tr_("Sliced audio list"))
+        self.add_output(
+            "labels",
+            DataType.LABEL,
+            tr_("Sliced label list"),
+            description=tr_("Labels corresponding to sliced audio items"),
+        )
     
     def _setup_parameters(self):
         self.add_parameter(
             "slice_duration", "float", 1.0,
-            display_name="切片长度(秒)",
-            description="每个切片的时长",
+            display_name=tr_("Slice duration (s)"),
+            description=tr_("Duration of each slice"),
             min_value=0.1, max_value=30.0
         )
         self.add_parameter(
             "slice_mode", "choice", "random",
-            display_name="切片模式",
+            display_name=tr_("Slice mode"),
             choices=["random", "sliding"],
-            description="random: 随机起始位置; sliding: 滑动窗口"
+            description=tr_("random: random start; sliding: sliding window")
         )
         self.add_parameter(
             "multiplier", "int", 10,
-            display_name="扩充倍数",
-            description="随机模式下生成的切片数量",
+            display_name=tr_("Multiplier"),
+            description=tr_("Number of slices to generate in random mode"),
             min_value=1, max_value=100
         )
         self.add_parameter(
             "overlap", "float", 0.5,
-            display_name="重叠率",
-            description="滑动窗口模式的重叠比例 (0-0.9)",
+            display_name=tr_("Overlap"),
+            description=tr_("Overlap ratio in sliding window mode (0-0.9)"),
             min_value=0.0, max_value=0.9
         )
         self.add_parameter(
             "include_remainder", "bool", False,
-            display_name="包含尾部残余",
-            description="滑动窗口模式下，是否包含不足一个切片长度的尾部"
+            display_name=tr_("Include remainder"),
+            description=tr_("In sliding window mode, include the final remainder shorter than a full slice")
         )
         self.add_parameter(
             "pad_mode", "choice", "zero",
-            display_name="填充模式",
+            display_name=tr_("Pad mode"),
             choices=["zero", "reflect", "wrap"],
-            description="尾部残余的填充方式"
+            description=tr_("Padding strategy for the remainder segment")
         )
     
     def execute(self) -> bool:

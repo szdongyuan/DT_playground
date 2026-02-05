@@ -26,8 +26,7 @@ from PyQt6.QtCore import QObject, QTimer
 from PyQt6.QtWidgets import QApplication
 
 from src.utils.config import config
-
-
+from src.ui.i18n import tr_
 @dataclass(frozen=True)
 class RestartSpec:
     token: str
@@ -157,7 +156,7 @@ class RestartManager(QObject):
         if time.monotonic() >= self._stop_deadline:
             self._finish(
                 False,
-                "停止当前工作流/训练超时（10 秒）。已取消重启，应用将继续运行。",
+                tr_("Timed out while stopping current workflow/training. Restart cancelled; the app will keep running."),
             )
 
     def _start_spawn_and_wait(self, *, ready_timeout_s: float) -> None:
@@ -169,7 +168,7 @@ class RestartManager(QObject):
 
         ok, err = self._spawn_new_process(self._spec)
         if not ok:
-            self._finish(False, f"无法启动新进程：{err}")
+            self._finish(False, tr_("Failed to start new process: {error}").format(error=err))
             return
 
         self._ready_deadline = time.monotonic() + float(ready_timeout_s)
@@ -205,7 +204,7 @@ class RestartManager(QObject):
         if time.monotonic() >= self._ready_deadline:
             self._finish(
                 False,
-                "新进程未在 10 秒内完成启动（未收到 ready 信号）。已取消重启，应用将继续运行。",
+                tr_("New process did not become ready in time (no ready signal). Restart cancelled; the app will keep running."),
             )
 
     def _build_restart_spec(self) -> RestartSpec:

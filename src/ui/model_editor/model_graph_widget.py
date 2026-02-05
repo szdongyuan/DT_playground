@@ -30,6 +30,7 @@ from src.model_builder.layer_base import (
     LayerCategory, LayerNode
 )
 from src.model_builder.model_graph import ModelConnection, ModelGraph
+from src.ui.i18n import tr_
 from src.ui.styles import Styles
 from src.ui.graph_editor import BasePortItem, BaseConnectionItem, BaseGraphScene, BaseGraphView
 
@@ -78,7 +79,7 @@ class LayerItem(QGraphicsRectItem):
     
     def _create_header(self):
         """创建头部"""
-        title = QGraphicsTextItem(f"{self.layer.icon} {self.layer.display_name}", self)
+        title = QGraphicsTextItem(f"{self.layer.icon} {tr_(self.layer.display_name)}", self)
         title.setDefaultTextColor(QColor("#cdd6f4"))
         title.setFont(QFont("Microsoft YaHei", 10, QFont.Weight.Bold))
         title.setPos(8, 4)
@@ -482,7 +483,7 @@ class ModelGraphWidget(QWidget):
         menu = QMenu(self)
         scene_pos = self._view.mapToScene(pos)
         
-        add_menu = menu.addMenu("添加层")
+        add_menu = menu.addMenu(tr_("Add layer"))
         
         for category in LayerCategory:
             layer_classes = get_layers_by_category(category)
@@ -493,7 +494,7 @@ class ModelGraphWidget(QWidget):
             
             for layer_class in layer_classes:
                 action = category_menu.addAction(
-                    f"{layer_class.icon} {layer_class.display_name}"
+                    f"{layer_class.icon} {tr_(layer_class.display_name)}"
                 )
                 action.setData(layer_class.layer_type)
                 action.triggered.connect(
@@ -504,10 +505,10 @@ class ModelGraphWidget(QWidget):
         menu.addSeparator()
         
         # 重置选中层连接
-        reset_conn_action = menu.addAction("重置选中层连接")
+        reset_conn_action = menu.addAction(tr_("Reset selected layer connections"))
         reset_conn_action.triggered.connect(self._reset_selected_connections)
         
-        delete_action = menu.addAction("删除选中层")
+        delete_action = menu.addAction(tr_("Delete selected layers"))
         delete_action.triggered.connect(self._delete_selected)
         
         menu.exec(self._view.mapToGlobal(pos))

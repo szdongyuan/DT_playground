@@ -9,7 +9,7 @@ import numpy as np
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 
-
+from src.ui.i18n import tr_
 class SpectrogramPlotter:
     """频谱图绘制器"""
     
@@ -74,7 +74,7 @@ class SpectrogramPlotter:
         cbar.outline.set_edgecolor('#45475a')
         plt.setp(plt.getp(cbar.ax.axes, 'yticklabels'), color='#a6adc8')
         
-        self._apply_style('Mel频谱图')
+        self._apply_style(tr_("Mel spectrogram"))
         
         return self.fig
     
@@ -117,7 +117,7 @@ class SpectrogramPlotter:
         cbar.outline.set_edgecolor('#45475a')
         plt.setp(plt.getp(cbar.ax.axes, 'yticklabels'), color='#a6adc8')
         
-        self._apply_style('STFT频谱图')
+        self._apply_style(tr_("STFT spectrogram"))
         
         return self.fig
     
@@ -163,8 +163,8 @@ class SpectrogramPlotter:
         cbar.outline.set_edgecolor('#45475a')
         plt.setp(plt.getp(cbar.ax.axes, 'yticklabels'), color='#a6adc8')
         
-        self.ax.set_ylabel('MFCC系数', color='#cdd6f4')
-        self._apply_style('MFCC')
+        self.ax.set_ylabel(tr_("MFCC coefficients"), color='#cdd6f4')
+        self._apply_style(tr_("MFCC"))
         
         return self.fig
     
@@ -206,7 +206,7 @@ class SpectrogramPlotter:
         cbar.outline.set_edgecolor('#45475a')
         plt.setp(plt.getp(cbar.ax.axes, 'yticklabels'), color='#a6adc8')
         
-        self._apply_style('色度图')
+        self._apply_style(tr_("Chroma"))
         
         return self.fig
     
@@ -238,27 +238,27 @@ class SpectrogramPlotter:
         mel_db = librosa.power_to_db(mel_spec, ref=np.max)
         librosa.display.specshow(mel_db, sr=sample_rate, hop_length=hop_length,
                                   x_axis='time', y_axis='mel', ax=axes[0, 0], cmap=cmap)
-        axes[0, 0].set_title('Mel频谱图', color='#cdd6f4')
+        axes[0, 0].set_title(tr_("Mel spectrogram"), color='#cdd6f4')
         
         # MFCC
         mfcc = librosa.feature.mfcc(y=audio, sr=sample_rate, n_mfcc=20)
         librosa.display.specshow(mfcc, sr=sample_rate, hop_length=hop_length,
                                   x_axis='time', ax=axes[0, 1], cmap=cmap)
-        axes[0, 1].set_title('MFCC', color='#cdd6f4')
+        axes[0, 1].set_title(tr_("MFCC"), color='#cdd6f4')
         
         # 色度图
         chroma = librosa.feature.chroma_stft(y=audio, sr=sample_rate)
         librosa.display.specshow(chroma, sr=sample_rate, hop_length=hop_length,
                                   x_axis='time', y_axis='chroma', ax=axes[1, 0], cmap=cmap)
-        axes[1, 0].set_title('色度图', color='#cdd6f4')
+        axes[1, 0].set_title(tr_("Chroma"), color='#cdd6f4')
         
         # 频谱对比
         spectral_centroids = librosa.feature.spectral_centroid(y=audio, sr=sample_rate)[0]
         frames = range(len(spectral_centroids))
         t = librosa.frames_to_time(frames, sr=sample_rate, hop_length=hop_length)
         axes[1, 1].plot(t, spectral_centroids, color='#89b4fa')
-        axes[1, 1].set_title('频谱质心', color='#cdd6f4')
-        axes[1, 1].set_xlabel('时间 (秒)', color='#cdd6f4')
+        axes[1, 1].set_title(tr_("Spectral centroid"), color='#cdd6f4')
+        axes[1, 1].set_xlabel(tr_("Time (s)"), color='#cdd6f4')
         axes[1, 1].set_ylabel('Hz', color='#cdd6f4')
         
         # 应用样式

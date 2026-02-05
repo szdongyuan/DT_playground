@@ -11,7 +11,7 @@ import numpy as np
 from ....node_base import BaseNode, NodeCategory, register_node
 from ....port import DataType
 from ..base import FeatureData, extract_from_audio_or_list, validate_audio_input, AudioData
-
+from src.ui.i18n import tr_
 # Import unified feature extractor
 from src.audio.features import FeatureExtractor
 
@@ -27,28 +27,28 @@ class STFTNode(BaseNode):
     node_type = "stft"
     display_name = "STFT"
     category = NodeCategory.FEATURE
-    subcategory = "二维特征 (2D)"
-    description = "提取STFT频谱"
+    subcategory = tr_("2D features")
+    description = tr_("Extract STFT spectrogram")
     icon = "🎼"
     
     def _setup_ports(self):
-        self.add_input("audio", DataType.AUDIO, "音频")
-        self.add_output("feature", DataType.FEATURE, "STFT频谱")
+        self.add_input("audio", DataType.AUDIO, tr_("Audio"))
+        self.add_output("feature", DataType.FEATURE, tr_("STFT spectrogram"))
     
     def _setup_parameters(self):
         self.add_parameter(
             "n_fft", "int", 2048,
-            display_name="FFT窗口大小",
+            display_name=tr_("FFT window size"),
             min_value=256, max_value=8192
         )
         self.add_parameter(
             "hop_length", "int", 512,
-            display_name="帧移",
+            display_name=tr_("Hop length"),
             min_value=64, max_value=2048
         )
         self.add_parameter(
             "output_type", "choice", "magnitude",
-            display_name="输出类型",
+            display_name=tr_("Output type"),
             choices=["magnitude", "power", "db", "complex"]
         )
     

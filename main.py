@@ -108,11 +108,23 @@ def main():
     
     # 创建QApplication
     app = QApplication(sys.argv)
+
+    # Install i18n after QApplication is created, and before importing UI modules.
+    try:
+        from src.utils.config import config
+        from src.ui.i18n import install as install_i18n
+
+        install_i18n(config.get("ui.language", "zh_CN"))
+    except Exception:
+        # Never break app startup if i18n init fails.
+        pass
+
+    from src.ui.i18n import tr_
     
     # 安装Qt消息处理器来过滤字体警告
     install_qt_message_handler()
     
-    app.setApplicationName("AI声学信号训练平台")
+    app.setApplicationName(tr_("AI Acoustic Signal Training Platform"))
     app.setApplicationVersion("1.0.0")
     
     # 设置默认字体

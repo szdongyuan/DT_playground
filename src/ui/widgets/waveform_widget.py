@@ -15,7 +15,7 @@ try:
 except ImportError:
     HAS_PYQTGRAPH = False
 
-
+from ..i18n import tr_
 class WaveformWidget(QWidget):
     """波形可视化控件"""
     
@@ -35,7 +35,7 @@ class WaveformWidget(QWidget):
         layout.setContentsMargins(5, 5, 5, 5)
         
         # 标题
-        title = QLabel("波形显示")
+        title = QLabel(tr_("Waveform"))
         title.setStyleSheet("font-weight: bold; color: #89b4fa;")
         layout.addWidget(title)
         
@@ -54,8 +54,8 @@ class WaveformWidget(QWidget):
                 axis.setTickFont(font)
                 axis.setStyle(tickTextOffset=5)
             
-            self.plot_widget.setLabel('left', text='振幅')
-            self.plot_widget.setLabel('bottom', text='时间 (s)')
+            self.plot_widget.setLabel('left', text=tr_('Amplitude'))
+            self.plot_widget.setLabel('bottom', text=tr_('Time (s)'))
             
             # 波形曲线
             self.waveform_curve = self.plot_widget.plot(
@@ -75,7 +75,7 @@ class WaveformWidget(QWidget):
             layout.addWidget(self.plot_widget)
         else:
             # 后备方案：简单标签
-            self.placeholder = QLabel("请安装 pyqtgraph 以显示波形")
+            self.placeholder = QLabel(tr_("Please install pyqtgraph to display waveforms"))
             self.placeholder.setAlignment(Qt.AlignmentFlag.AlignCenter)
             self.placeholder.setStyleSheet("""
                 background-color: #181825;
@@ -103,7 +103,7 @@ class WaveformWidget(QWidget):
                 self._update_waveform()
             
         except Exception as e:
-            print(f"加载音频失败: {e}")
+            print(f"Failed to load audio: {e}")
     
     def _update_waveform(self):
         """更新波形显示"""
@@ -152,7 +152,7 @@ class WaveformWidget(QWidget):
         """设置音频数据（别名）"""
         self.set_audio_data(audio_data, sample_rate)
     
-    def set_curve(self, data: np.ndarray, name: str = "数据"):
+    def set_curve(self, data: np.ndarray, name: str = "Data"):
         """显示任意曲线数据"""
         if not HAS_PYQTGRAPH:
             return
@@ -178,7 +178,7 @@ class WaveformWidget(QWidget):
             margin = (y_max - y_min) * 0.1 if y_max != y_min else 1
             self.plot_widget.setYRange(y_min - margin, y_max + margin)
         
-        self.plot_widget.setLabel('bottom', text='样本')
+        self.plot_widget.setLabel('bottom', text=tr_('Samples'))
         self.plot_widget.setLabel('left', text=name)
     
     def clear(self):

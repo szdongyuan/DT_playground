@@ -16,6 +16,7 @@ from PyQt6.QtWidgets import (
 )
 
 from src.model_builder.layer_base import LayerNode, LayerParameter
+from src.ui.i18n import tr_
 from src.ui.styles import Styles
 
 logger = logging.getLogger(__name__)
@@ -55,7 +56,7 @@ class LayerPropertyPanel(QWidget):
         header_layout = QVBoxLayout(header)
         header_layout.setContentsMargins(12, 8, 12, 8)
         
-        self._title = QLabel("⚙️ 属性面板")
+        self._title = QLabel(tr_("⚙️ Properties"))
         self._title.setStyleSheet(f"""
             font-size: 14px;
             font-weight: bold;
@@ -75,7 +76,7 @@ class LayerPropertyPanel(QWidget):
         self._content_layout.setSpacing(8)
         
         # 层属性标题
-        self._layer_title = QLabel("📦 层属性")
+        self._layer_title = QLabel(tr_("📦 Layer Properties"))
         self._layer_title.setStyleSheet(f"""
             font-size: 13px;
             font-weight: bold;
@@ -92,7 +93,13 @@ class LayerPropertyPanel(QWidget):
         self._content_layout.addWidget(self._layer_props_container)
         
         # 无选中提示
-        self._empty_label = QLabel("选择一个层以编辑属性\n\n💡 提示：编译配置（优化器、损失函数等）\n在 Output 输出层中设置")
+        self._empty_label = QLabel(
+            tr_(
+                "Select a layer to edit its properties.\n\n"
+                "Tip: compile config (optimizer, loss, etc.)\n"
+                "is set in the Output layer."
+            )
+        )
         self._empty_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self._empty_label.setStyleSheet(f"""
             color: {Styles.COLORS['subtext0']};
@@ -117,21 +124,21 @@ class LayerPropertyPanel(QWidget):
         
         if not layer:
             self._empty_label.show()
-            self._layer_title.setText("📦 层属性")
+            self._layer_title.setText(tr_("📦 Layer Properties"))
             return
         
         self._empty_label.hide()
-        self._layer_title.setText(f"📦 {layer.icon} {layer.display_name}")
+        self._layer_title.setText(f"📦 {layer.icon} {tr_(layer.display_name)}")
         
         # 层信息
-        info_group = QGroupBox("层信息")
+        info_group = QGroupBox(tr_("Layer Info"))
         info_layout = QVBoxLayout(info_group)
         
         # 层名称
         name_layout = QVBoxLayout()
-        name_label = QLabel("层名称:")
+        name_label = QLabel(tr_("Layer name:"))
         name_input = QLineEdit(layer.layer_name)
-        name_input.setPlaceholderText("可选，用于标识层")
+        name_input.setPlaceholderText(tr_("Optional, for identifying the layer"))
         name_input.textChanged.connect(lambda v: self._on_name_changed(v))
         name_layout.addWidget(name_label)
         name_layout.addWidget(name_input)
@@ -139,7 +146,7 @@ class LayerPropertyPanel(QWidget):
         
         # 层类型
         type_layout = QHBoxLayout()
-        type_label = QLabel("类型:")
+        type_label = QLabel(tr_("Type:"))
         type_value = QLabel(layer.layer_type)
         type_value.setStyleSheet(f"color: {Styles.COLORS['subtext0']};")
         type_layout.addWidget(type_label)
@@ -151,7 +158,7 @@ class LayerPropertyPanel(QWidget):
         
         # 参数组
         if layer.parameters:
-            params_group = QGroupBox("参数")
+            params_group = QGroupBox(tr_("Parameters"))
             params_layout = QVBoxLayout(params_group)
             
             for name, param in layer.parameters.items():
@@ -295,20 +302,20 @@ class LayerPropertyPanel(QWidget):
     
     def _create_freeze_section(self, layer: LayerNode) -> QGroupBox:
         """创建训练控制区域（权重状态和冻结控制）"""
-        freeze_group = QGroupBox("训练控制")
+        freeze_group = QGroupBox(tr_("Training Control"))
         freeze_layout = QVBoxLayout(freeze_group)
         freeze_layout.setSpacing(8)
         
         # 权重状态
         weight_layout = QHBoxLayout()
-        weight_label = QLabel("权重状态:")
+        weight_label = QLabel(tr_("Weights:"))
         weight_layout.addWidget(weight_label)
         
         if layer.has_weights:
-            weight_status = QLabel("✅ 已加载")
+            weight_status = QLabel(tr_("✅ Loaded"))
             weight_status.setStyleSheet(f"color: {Styles.COLORS['green']}; font-weight: bold;")
         else:
-            weight_status = QLabel("⚪ 无权重")
+            weight_status = QLabel(tr_("⚪ None"))
             weight_status.setStyleSheet(f"color: {Styles.COLORS['subtext0']};")
         
         weight_layout.addWidget(weight_status)
@@ -317,12 +324,14 @@ class LayerPropertyPanel(QWidget):
         
         # 可训练状态（冻结控制）
         trainable_layout = QHBoxLayout()
-        trainable_label = QLabel("训练状态:")
+        trainable_label = QLabel(tr_("Trainable:"))
         trainable_layout.addWidget(trainable_label)
         
-        trainable_checkbox = QCheckBox("可训练")
+        trainable_checkbox = QCheckBox(tr_("Enabled"))
         trainable_checkbox.setChecked(layer.trainable)
-        trainable_checkbox.setToolTip("取消勾选将冻结该层，训练时不更新权重")
+        trainable_checkbox.setToolTip(
+            tr_("Uncheck to freeze this layer so its weights won't be updated during training.")
+        )
         trainable_checkbox.stateChanged.connect(
             lambda state: self._on_trainable_changed(state == 2)
         )
@@ -332,7 +341,7 @@ class LayerPropertyPanel(QWidget):
         
         # 冻结状态提示
         if not layer.trainable:
-            frozen_hint = QLabel("🔒 该层已冻结，训练时权重不会更新")
+            frozen_hint = QLabel(tr_("🔒 This layer is frozen; weights will not be updated during training."))
             frozen_hint.setStyleSheet(f"""
                 color: {Styles.COLORS['peach']};
                 font-size: 11px;

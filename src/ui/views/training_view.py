@@ -23,6 +23,7 @@ try:
 except ImportError:
     HAS_PYQTGRAPH = False
 
+from ..i18n import tr_
 from ..styles import Styles
 
 
@@ -83,7 +84,7 @@ class TrainingView(QWidget):
         left_layout.setContentsMargins(0, 0, 0, 0)
         
         # 损失曲线
-        loss_group = QGroupBox("损失曲线")
+        loss_group = QGroupBox(tr_("Loss curve"))
         loss_group.setStyleSheet(Styles.group_box(Styles.COLORS['red']))
         loss_layout = QVBoxLayout(loss_group)
         
@@ -95,12 +96,12 @@ class TrainingView(QWidget):
             self._loss_plot.setLabel('bottom', 'Epoch')
             loss_layout.addWidget(self._loss_plot)
         else:
-            loss_layout.addWidget(QLabel("需要 pyqtgraph 显示图表"))
+            loss_layout.addWidget(QLabel(tr_("pyqtgraph is required to display charts")))
         
         left_layout.addWidget(loss_group)
         
         # 准确率曲线
-        acc_group = QGroupBox("准确率曲线")
+        acc_group = QGroupBox(tr_("Accuracy curve"))
         acc_group.setStyleSheet(Styles.group_box(Styles.COLORS['green']))
         acc_layout = QVBoxLayout(acc_group)
         
@@ -112,7 +113,7 @@ class TrainingView(QWidget):
             self._acc_plot.setLabel('bottom', 'Epoch')
             acc_layout.addWidget(self._acc_plot)
         else:
-            acc_layout.addWidget(QLabel("需要 pyqtgraph 显示图表"))
+            acc_layout.addWidget(QLabel(tr_("pyqtgraph is required to display charts")))
         
         left_layout.addWidget(acc_group)
         splitter.addWidget(left_widget)
@@ -123,13 +124,13 @@ class TrainingView(QWidget):
         right_layout.setContentsMargins(0, 0, 0, 0)
         
         # 当前指标
-        metrics_group = QGroupBox("当前指标")
+        metrics_group = QGroupBox(tr_("Current metrics"))
         metrics_group.setStyleSheet(Styles.group_box(Styles.COLORS['blue']))
         metrics_layout = QVBoxLayout(metrics_group)
         
         self._metrics_table = QTableWidget()
         self._metrics_table.setColumnCount(2)
-        self._metrics_table.setHorizontalHeaderLabels(["指标", "值"])
+        self._metrics_table.setHorizontalHeaderLabels([tr_("Metric"), tr_("Value")])
         self._metrics_table.horizontalHeader().setStretchLastSection(True)
         self._metrics_table.verticalHeader().setVisible(False)
         self._metrics_table.setStyleSheet(f"""
@@ -149,7 +150,7 @@ class TrainingView(QWidget):
         right_layout.addWidget(metrics_group)
         
         # 训练日志
-        log_group = QGroupBox("训练日志")
+        log_group = QGroupBox(tr_("Training log"))
         log_group.setStyleSheet(Styles.group_box(Styles.COLORS['purple']))
         log_layout = QVBoxLayout(log_group)
         
@@ -187,7 +188,7 @@ class TrainingView(QWidget):
         # 第一行：标题和状态
         row1 = QHBoxLayout()
         
-        title = QLabel("🏋️ 训练监控")
+        title = QLabel(tr_("🏋️ Training Monitor"))
         title.setStyleSheet(f"""
             font-size: 16px;
             font-weight: bold;
@@ -195,7 +196,7 @@ class TrainingView(QWidget):
         """)
         row1.addWidget(title)
         
-        self._status_label = QLabel("空闲")
+        self._status_label = QLabel(tr_("Idle"))
         self._status_label.setStyleSheet(f"""
             color: {Styles.COLORS['subtext1']};
             padding: 4px 12px;
@@ -207,17 +208,17 @@ class TrainingView(QWidget):
         row1.addStretch()
         
         # 控制按钮
-        self._pause_btn = QPushButton("⏸️ 暂停")
+        self._pause_btn = QPushButton(tr_("⏸️ Pause"))
         self._pause_btn.clicked.connect(self._on_pause_resume)
         self._pause_btn.setEnabled(False)
         row1.addWidget(self._pause_btn)
         
-        self._stop_btn = QPushButton("⏹️ 停止训练")
+        self._stop_btn = QPushButton(tr_("⏹️ Stop training"))
         self._stop_btn.clicked.connect(self._on_stop)
         self._stop_btn.setEnabled(False)
         row1.addWidget(self._stop_btn)
 
-        self._stop_and_save_btn = QPushButton("💾 停止并保存检查点")
+        self._stop_and_save_btn = QPushButton(tr_("💾 Stop and save checkpoint"))
         self._stop_and_save_btn.clicked.connect(self._on_stop_and_save)
         self._stop_and_save_btn.setEnabled(False)
         row1.addWidget(self._stop_and_save_btn)
@@ -275,7 +276,7 @@ class TrainingView(QWidget):
         self._val_acc.clear()
         
         # 更新UI
-        self._status_label.setText("训练中...")
+        self._status_label.setText(tr_("Training..."))
         self._status_label.setStyleSheet(f"""
             color: {Styles.COLORS['base']};
             padding: 4px 12px;
@@ -292,7 +293,7 @@ class TrainingView(QWidget):
         self._stop_and_save_btn.setEnabled(True)
         
         self._log_text.clear()
-        self._log("训练开始...")
+        self._log(tr_("Training started..."))
         
         # 清除图表
         if HAS_PYQTGRAPH:
@@ -385,23 +386,23 @@ class TrainingView(QWidget):
         self._is_paused = False
         
         if success:
-            self._status_label.setText("完成")
+            self._status_label.setText(tr_("Completed"))
             self._status_label.setStyleSheet(f"""
                 color: {Styles.COLORS['base']};
                 padding: 4px 12px;
                 background: {Styles.COLORS['blue']};
                 border-radius: 10px;
             """)
-            self._log(f"训练完成! {message}")
+            self._log(tr_("Training completed! {message}").format(message=message))
         else:
-            self._status_label.setText("失败")
+            self._status_label.setText(tr_("Failed"))
             self._status_label.setStyleSheet(f"""
                 color: {Styles.COLORS['base']};
                 padding: 4px 12px;
                 background: {Styles.COLORS['red']};
                 border-radius: 10px;
             """)
-            self._log(f"训练失败: {message}")
+            self._log(tr_("Training failed: {message}").format(message=message))
         
         self._pause_btn.setEnabled(False)
         self._stop_btn.setEnabled(False)
@@ -411,13 +412,13 @@ class TrainingView(QWidget):
         """暂停/恢复"""
         if self._is_paused:
             self._is_paused = False
-            self._pause_btn.setText("⏸️ 暂停")
-            self._status_label.setText("训练中...")
+            self._pause_btn.setText(tr_("⏸️ Pause"))
+            self._status_label.setText(tr_("Training..."))
             self.resume_requested.emit()
         else:
             self._is_paused = True
-            self._pause_btn.setText("▶️ 恢复")
-            self._status_label.setText("已暂停")
+            self._pause_btn.setText(tr_("▶️ Resume"))
+            self._status_label.setText(tr_("Paused"))
             self.pause_requested.emit()
     
     def _on_stop(self):
@@ -436,7 +437,7 @@ class TrainingView(QWidget):
 
         path, _ = QFileDialog.getSaveFileName(
             self,
-            "保存检查点",
+            tr_("Save checkpoint"),
             default_path,
             "Keras Model (*.keras);;H5 Model (*.h5);;All Files (*)"
         )
@@ -468,7 +469,7 @@ class TrainingView(QWidget):
         self._train_acc.clear()
         self._val_acc.clear()
         
-        self._status_label.setText("空闲")
+        self._status_label.setText(tr_("Idle"))
         self._status_label.setStyleSheet(f"""
             color: {Styles.COLORS['subtext1']};
             padding: 4px 12px;

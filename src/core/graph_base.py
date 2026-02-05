@@ -46,6 +46,7 @@ from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Set, Tuple, Type
 
 from .parameter import Parameter, ParamType
+from src.ui.i18n import tr_
 
 
 logger = logging.getLogger(__name__)
@@ -185,7 +186,7 @@ class GraphNodeBase(ABC):
             (success, error_message)
         """
         if name not in self.parameters:
-            return False, f"Unknown parameter: {name}"
+            return False, tr_("Unknown parameter: {name}").format(name=name)
         
         param = self.parameters[name]
         valid, msg = param.validate(value)
@@ -316,17 +317,17 @@ class GraphBase(ABC):
         """
         # Validate nodes exist
         if connection.source_id not in self.nodes:
-            return False, f"Source node {connection.source_id} does not exist"
+            return False, tr_("Source node {id} does not exist").format(id=connection.source_id)
         if connection.target_id not in self.nodes:
-            return False, f"Target node {connection.target_id} does not exist"
+            return False, tr_("Target node {id} does not exist").format(id=connection.target_id)
         
         # Check self-connection
         if connection.source_id == connection.target_id:
-            return False, "Cannot self-connect"
+            return False, tr_("Cannot self-connect")
         
         # Check if already exists
         if connection in self.connections:
-            return False, "Connection already exists"
+            return False, tr_("Connection already exists")
         
         self.connections.append(connection)
         self._mark_dirty()
@@ -446,18 +447,24 @@ class GraphBase(ABC):
         errors = []
         
         if not self.nodes:
-            errors.append("图为空")
+            errors.append(tr_("Graph is empty"))
         
         # Validate each node
         for node in self.nodes.values():
             valid, msg = node.validate()
             if not valid:
-                errors.append(f"节点 '{node.display_name}' ({node.node_id}): {msg}")
+                errors.append(
+                    tr_("Node '{name}' ({id}): {message}").format(
+                        name=node.display_name,
+                        id=node.node_id,
+                        message=msg,
+                    )
+                )
         
         # Check for cycles
         _, has_cycle = self.get_execution_order()
         if has_cycle:
-            errors.append("存在循环依赖")
+            errors.append(tr_("Graph contains cyclic dependencies"))
         
         return len(errors) == 0, errors
     

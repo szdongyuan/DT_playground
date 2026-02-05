@@ -16,6 +16,7 @@ from PyQt6.QtWidgets import (
 )
 
 from src.workflow.port import DataType
+from src.ui.i18n import tr_
 from src.ui.styles import Styles
 from src.ui.widgets.audio_player import AudioPlayerWidget
 from src.ui.widgets.spectrogram_widget import SpectrogramWidget
@@ -36,7 +37,7 @@ class AudioPreviewWidget(BasePreviewWidget):
     """
     
     supported_types = [DataType.AUDIO]
-    display_name = "音频预览"
+    display_name = tr_("Audio preview")
     icon = "🎵"
     
     def __init__(self, parent: Optional[QWidget] = None):
@@ -55,7 +56,7 @@ class AudioPreviewWidget(BasePreviewWidget):
         layout.addWidget(splitter)
         
         # 波形显示
-        waveform_group = QGroupBox("波形")
+        waveform_group = QGroupBox(tr_("Waveform"))
         waveform_group.setStyleSheet(Styles.group_box(Styles.COLORS['blue']))
         waveform_layout = QVBoxLayout(waveform_group)
         waveform_layout.setContentsMargins(4, 4, 4, 4)
@@ -65,7 +66,7 @@ class AudioPreviewWidget(BasePreviewWidget):
         splitter.addWidget(waveform_group)
         
         # 频谱图显示
-        spectrogram_group = QGroupBox("频谱图")
+        spectrogram_group = QGroupBox(tr_("Spectrogram"))
         spectrogram_group.setStyleSheet(Styles.group_box(Styles.COLORS['purple']))
         spectrogram_layout = QVBoxLayout(spectrogram_group)
         spectrogram_layout.setContentsMargins(4, 4, 4, 4)
@@ -75,7 +76,7 @@ class AudioPreviewWidget(BasePreviewWidget):
         splitter.addWidget(spectrogram_group)
         
         # 播放控制
-        player_group = QGroupBox("播放控制")
+        player_group = QGroupBox(tr_("Playback controls"))
         player_group.setStyleSheet(Styles.group_box(Styles.COLORS['green']))
         player_layout = QVBoxLayout(player_group)
         player_layout.setContentsMargins(4, 4, 4, 4)

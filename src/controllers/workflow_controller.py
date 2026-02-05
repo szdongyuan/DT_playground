@@ -11,6 +11,7 @@ from typing import Optional
 from PyQt6.QtCore import QObject, pyqtSignal
 
 from src.core.event_bus import get_event_bus
+from src.ui.i18n import tr_
 from src.workflow.engine import WorkflowEngine, ExecutionResult
 from src.workflow.workflow import Workflow
 
@@ -96,22 +97,24 @@ class WorkflowController(QObject):
             是否成功启动执行
         """
         if not self._workflow:
-            self._event_bus.emit_status("没有可运行的工作流")
+            self._event_bus.emit_status(tr_("No workflow to run"))
             return False
         
         # 验证工作流
         valid, errors = self._workflow.validate()
         if not valid:
-            error_msg = "工作流验证失败:\n" + "\n".join(errors)
+            error_msg = tr_("Workflow validation failed:\n{errors}").format(
+                errors="\n".join(errors)
+            )
             self._event_bus.workflow_error.emit(error_msg)
             return False
         
         # 开始执行
-        self._event_bus.emit_status("正在启动工作流...")
+        self._event_bus.emit_status(tr_("Starting workflow..."))
         success = self._engine.execute()
         
         if not success:
-            self._event_bus.emit_status("工作流启动失败")
+            self._event_bus.emit_status(tr_("Failed to start workflow"))
         
         return success
     
@@ -119,23 +122,25 @@ class WorkflowController(QObject):
         """停止工作流执行"""
         self._engine.stop()
         # Stopping can be asynchronous (e.g., training node stops at batch/epoch boundary).
-        self._event_bus.emit_status("已请求停止工作流，正在等待当前任务结束...")
+        self._event_bus.emit_status(
+            tr_("Stop requested. Waiting for current task to finish...")
+        )
     
     def pause(self):
         """暂停工作流执行"""
         self._engine.pause()
-        self._event_bus.emit_status("工作流已暂停")
+        self._event_bus.emit_status(tr_("Workflow paused"))
     
     def resume(self):
         """恢复工作流执行"""
         self._engine.resume()
-        self._event_bus.emit_status("工作流已恢复")
+        self._event_bus.emit_status(tr_("Workflow resumed"))
     
     def continue_from_breakpoint(self):
         """从断点继续执行"""
         if self._engine.is_waiting_at_breakpoint():
             self._engine.continue_from_breakpoint()
-            self._event_bus.emit_status("从断点继续执行...")
+            self._event_bus.emit_status(tr_("Continuing from breakpoint..."))
     
     def is_running(self) -> bool:
         """检查工作流是否正在执行"""
@@ -161,7 +166,7 @@ class WorkflowController(QObject):
         """引擎开始执行"""
         self.execution_started.emit()
         self._event_bus.workflow_started.emit()
-        self._event_bus.emit_status("工作流执行中...")
+        self._event_bus.emit_status(tr_("Workflow running..."))
     
     def _on_engine_finished(self, result: ExecutionResult):
         """引擎执行完成"""
@@ -169,15 +174,21 @@ class WorkflowController(QObject):
         self._event_bus.workflow_finished.emit(result.success, result.message)
         
         if result.success:
-            self._event_bus.emit_status(f"工作流执行完成 (耗时: {result.execution_time:.2f}秒)")
+            self._event_bus.emit_status(
+                tr_("Workflow finished (elapsed: {seconds:.2f}s)").format(
+                    seconds=result.execution_time
+                )
+            )
         else:
-            self._event_bus.emit_status(f"执行失败: {result.message}")
+            self._event_bus.emit_status(
+                tr_("Execution failed: {message}").format(message=result.message)
+            )
     
     def _on_engine_error(self, error_msg: str):
         """引擎执行错误"""
         self.execution_finished.emit(False, error_msg)
         self._event_bus.workflow_error.emit(error_msg)
-        self._event_bus.emit_status(f"错误: {error_msg}")
+        self._event_bus.emit_status(tr_("Error: {message}").format(message=error_msg))
     
     def _on_node_started(self, node_id: str):
         """节点开始执行"""
@@ -187,7 +198,9 @@ class WorkflowController(QObject):
         if self._workflow:
             node = self._workflow.get_node(node_id)
             if node:
-                self._event_bus.emit_status(f"执行: {node.display_name}")
+                self._event_bus.emit_status(
+                    tr_("Running: {name}").format(name=node.display_name)
+                )
     
     def _on_node_finished(self, node_id: str, success: bool):
         """节点执行完成"""
@@ -213,7 +226,9 @@ class WorkflowController(QObject):
         if self._workflow:
             node = self._workflow.get_node(node_id)
             node_name = node.display_name if node else node_id
-            self._event_bus.emit_status(f"🔴 断点暂停: {node_name}")
+            self._event_bus.emit_status(
+                tr_("🔴 Breakpoint hit: {name}").format(name=node_name)
+            )
     
     def _on_status_message(self, message: str):
         """状态消息"""

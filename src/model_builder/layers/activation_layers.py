@@ -4,22 +4,21 @@ Activation Function Layer Nodes
 """
 
 from ..layer_base import LayerCategory, LayerNode, register_layer
-
-
+from src.ui.i18n import tr_
 @register_layer
 class ActivationLayer(LayerNode):
     """激活函数层"""
     layer_type = "activation"
-    display_name = "Activation 激活函数"
+    display_name = tr_("Activation")
     category = LayerCategory.ACTIVATION
-    description = "应用激活函数"
+    description = tr_("Apply activation function")
     icon = "⚡"
     keras_class = "Activation"
     
     def _setup_parameters(self):
         self.add_parameter(
             "activation", "choice", "relu",
-            display_name="激活函数",
+            display_name=tr_("Activation"),
             choices=[
                 "relu", "sigmoid", "tanh", "softmax", "softplus",
                 "softsign", "elu", "selu", "exponential", "linear",
@@ -42,7 +41,7 @@ class LeakyReLULayer(LayerNode):
     layer_type = "leaky_relu"
     display_name = "LeakyReLU"
     category = LayerCategory.ACTIVATION
-    description = "带泄漏的ReLU激活函数"
+    description = tr_("Leaky ReLU activation")
     icon = "📈"
     keras_class = "LeakyReLU"
     
@@ -50,7 +49,7 @@ class LeakyReLULayer(LayerNode):
         self.add_parameter(
             "alpha", "float", 0.3,
             display_name="Alpha",
-            description="负斜率系数",
+            description=tr_("Negative slope coefficient"),
             min_value=0.0
         )
     
@@ -69,7 +68,7 @@ class PReLULayer(LayerNode):
     layer_type = "prelu"
     display_name = "PReLU"
     category = LayerCategory.ACTIVATION
-    description = "参数化ReLU激活函数"
+    description = tr_("Parametric ReLU activation")
     icon = "📈"
     keras_class = "PReLU"
     
@@ -87,7 +86,7 @@ class ELULayer(LayerNode):
     layer_type = "elu"
     display_name = "ELU"
     category = LayerCategory.ACTIVATION
-    description = "指数线性单元"
+    description = tr_("Exponential Linear Unit")
     icon = "📊"
     keras_class = "ELU"
     
@@ -113,15 +112,15 @@ class SoftmaxLayer(LayerNode):
     layer_type = "softmax"
     display_name = "Softmax"
     category = LayerCategory.ACTIVATION
-    description = "Softmax激活函数"
+    description = tr_("Softmax activation")
     icon = "📊"
     keras_class = "Softmax"
     
     def _setup_parameters(self):
         self.add_parameter(
             "axis", "int", -1,
-            display_name="轴",
-            description="应用softmax的轴"
+            display_name=tr_("Axis"),
+            description=tr_("Axis to apply softmax")
         )
     
     def build_keras_layer(self):

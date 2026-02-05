@@ -16,6 +16,7 @@ from PyQt6.QtWidgets import (
 )
 
 from src.workflow.port import DataType
+from src.ui.i18n import tr_
 from src.ui.styles import Styles
 
 from .base_preview import BasePreviewWidget, register_preview
@@ -41,7 +42,7 @@ class Feature1DPreviewWidget(BasePreviewWidget):
     """
     
     supported_types = [DataType.FEATURE_1D, DataType.FEATURE]
-    display_name = "一维特征"
+    display_name = tr_("1D feature")
     icon = "📈"
     
     def __init__(self, parent: Optional[QWidget] = None):
@@ -55,7 +56,7 @@ class Feature1DPreviewWidget(BasePreviewWidget):
         layout.setSpacing(8)
         
         # 特征线图
-        feature_group = QGroupBox("一维特征")
+        feature_group = QGroupBox(tr_("1D feature"))
         feature_group.setStyleSheet(Styles.group_box(Styles.COLORS['teal']))
         feature_layout = QVBoxLayout(feature_group)
         feature_layout.setContentsMargins(4, 4, 4, 4)
@@ -72,8 +73,8 @@ class Feature1DPreviewWidget(BasePreviewWidget):
                 axis.setTickFont(font)
                 axis.setStyle(tickTextOffset=5)
             
-            self._plot_widget.setLabel('left', text='值')
-            self._plot_widget.setLabel('bottom', text='索引')
+            self._plot_widget.setLabel('left', text=tr_('Value'))
+            self._plot_widget.setLabel('bottom', text=tr_('Index'))
             
             # 特征曲线
             self._curve = self._plot_widget.plot(
@@ -83,7 +84,7 @@ class Feature1DPreviewWidget(BasePreviewWidget):
             self._plot_widget.setMinimumHeight(400)
             feature_layout.addWidget(self._plot_widget)
         else:
-            placeholder = QLabel("请安装 pyqtgraph 以显示特征图")
+            placeholder = QLabel(tr_("Please install pyqtgraph to display charts"))
             placeholder.setAlignment(Qt.AlignmentFlag.AlignCenter)
             placeholder.setStyleSheet(f"""
                 background-color: {Styles.COLORS['mantle']};
@@ -97,7 +98,7 @@ class Feature1DPreviewWidget(BasePreviewWidget):
         layout.addWidget(feature_group)
         
         # 统计信息
-        stats_group = QGroupBox("统计信息")
+        stats_group = QGroupBox(tr_("Statistics"))
         stats_group.setStyleSheet(Styles.group_box(Styles.COLORS['lavender']))
         stats_layout = QVBoxLayout(stats_group)
         stats_layout.setContentsMargins(8, 8, 8, 8)
@@ -182,16 +183,16 @@ class Feature1DPreviewWidget(BasePreviewWidget):
     def _update_stats(self, array: np.ndarray):
         """更新统计信息"""
         if len(array) == 0:
-            self._stats_label.setText("无数据")
+            self._stats_label.setText(tr_("No data"))
             return
         
         stats_text = (
-            f"  长度: {len(array):,}\n"
-            f"  最小值: {np.min(array):.6f}\n"
-            f"  最大值: {np.max(array):.6f}\n"
-            f"  均值: {np.mean(array):.6f}\n"
-            f"  标准差: {np.std(array):.6f}\n"
-            f"  中位数: {np.median(array):.6f}"
+            tr_("  Length: {length:,}\n").format(length=len(array))
+            + tr_("  Min: {value:.6f}\n").format(value=float(np.min(array)))
+            + tr_("  Max: {value:.6f}\n").format(value=float(np.max(array)))
+            + tr_("  Mean: {value:.6f}\n").format(value=float(np.mean(array)))
+            + tr_("  Std: {value:.6f}\n").format(value=float(np.std(array)))
+            + tr_("  Median: {value:.6f}").format(value=float(np.median(array)))
         )
         self._stats_label.setText(stats_text)
     

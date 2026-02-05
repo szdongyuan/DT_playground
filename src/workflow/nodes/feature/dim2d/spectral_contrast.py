@@ -12,7 +12,7 @@ import numpy as np
 from ....node_base import BaseNode, NodeCategory, register_node
 from ....port import DataType
 from ..base import FeatureData, extract_from_audio_or_list, validate_audio_input, AudioData
-
+from src.ui.i18n import tr_
 # Import unified feature extractor
 from src.audio.features import FeatureExtractor
 
@@ -27,32 +27,32 @@ class SpectralContrastNode(BaseNode):
     """
     
     node_type = "spectral_contrast"
-    display_name = "频谱对比度"
+    display_name = tr_("Spectral contrast")
     category = NodeCategory.FEATURE
-    subcategory = "二维特征 (2D)"
-    description = "提取频谱对比度特征"
+    subcategory = tr_("2D features")
+    description = tr_("Extract spectral contrast")
     icon = "📊"
     
     def _setup_ports(self):
-        self.add_input("audio", DataType.AUDIO, "音频")
-        self.add_output("feature", DataType.FEATURE, "频谱对比度")
+        self.add_input("audio", DataType.AUDIO, tr_("Audio"))
+        self.add_output("feature", DataType.FEATURE, tr_("Spectral contrast"))
     
     def _setup_parameters(self):
         self.add_parameter(
             "n_fft", "int", 2048,
-            display_name="FFT窗口大小",
+            display_name=tr_("FFT window size"),
             min_value=256, max_value=8192
         )
         self.add_parameter(
             "hop_length", "int", 512,
-            display_name="帧移",
+            display_name=tr_("Hop length"),
             min_value=64, max_value=2048
         )
         self.add_parameter(
             "n_bands", "int", 6,
-            display_name="频带数",
+            display_name=tr_("Bands"),
             min_value=2, max_value=12,
-            description="子频带数量（输出维度为n_bands+1）"
+            description=tr_("Number of sub-bands (output dimension is n_bands + 1)"),
         )
     
     def execute(self) -> bool:

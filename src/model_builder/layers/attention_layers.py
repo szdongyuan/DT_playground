@@ -6,50 +6,49 @@ Implements Transformer architecture related layer nodes.
 """
 
 from ..layer_base import LayerCategory, LayerNode, register_layer
-
-
+from src.ui.i18n import tr_
 @register_layer
 class MultiHeadAttentionLayer(LayerNode):
     """多头注意力层"""
     layer_type = "multi_head_attention"
     display_name = "MultiHeadAttention"
     category = LayerCategory.ATTENTION
-    description = "多头注意力机制层，用于序列建模"
+    description = tr_("Multi-head attention layer for sequence modeling")
     icon = "🎯"
     keras_class = "MultiHeadAttention"
     
     def _setup_parameters(self):
         self.add_parameter(
             "num_heads", "int", 8,
-            display_name="注意力头数",
-            description="多头注意力的头数量",
+            display_name=tr_("Number of heads"),
+            description=tr_("Number of attention heads"),
             min_value=1,
             max_value=64
         )
         self.add_parameter(
             "key_dim", "int", 64,
-            display_name="键维度",
-            description="每个注意力头的查询和键的维度",
+            display_name=tr_("Key dimension"),
+            description=tr_("Dimension of query and key for each head"),
             min_value=1
         )
         self.add_parameter(
             "value_dim", "int", 0,
-            display_name="值维度",
-            description="每个注意力头的值的维度，0表示等于key_dim",
+            display_name=tr_("Value dimension"),
+            description=tr_("Value dimension for each head; 0 means same as key_dim"),
             min_value=0,
             required=False
         )
         self.add_parameter(
             "dropout", "float", 0.0,
-            display_name="Dropout率",
-            description="注意力权重的dropout比率",
+            display_name=tr_("Dropout rate"),
+            description=tr_("Dropout rate for attention weights"),
             min_value=0.0,
             max_value=1.0
         )
         self.add_parameter(
             "use_bias", "bool", True,
-            display_name="使用偏置",
-            description="是否使用偏置向量"
+            display_name=tr_("Use bias"),
+            description=tr_("Whether to use bias vectors")
         )
     
     def build_keras_layer(self):
@@ -79,54 +78,54 @@ class TransformerEncoderLayer(LayerNode):
     layer_type = "transformer_encoder"
     display_name = "TransformerEncoder"
     category = LayerCategory.ATTENTION
-    description = "Transformer编码器块（自注意力+FFN+残差+归一化）"
+    description = tr_("Transformer encoder block (self-attention + FFN + residual + normalization)")
     icon = "🔀"
     keras_class = "TransformerEncoder"
     
     def _setup_parameters(self):
         self.add_parameter(
             "num_heads", "int", 8,
-            display_name="注意力头数",
-            description="多头注意力的头数量",
+            display_name=tr_("Number of heads"),
+            description=tr_("Number of attention heads"),
             min_value=1,
             max_value=64
         )
         self.add_parameter(
             "key_dim", "int", 64,
-            display_name="键维度",
-            description="每个注意力头的查询和键的维度",
+            display_name=tr_("Key dimension"),
+            description=tr_("Dimension of query and key for each head"),
             min_value=1
         )
         self.add_parameter(
             "ff_dim", "int", 256,
-            display_name="前馈网络维度",
-            description="前馈网络的中间层维度",
+            display_name=tr_("FFN dimension"),
+            description=tr_("Hidden dimension of the feed-forward network"),
             min_value=1
         )
         self.add_parameter(
             "dropout_rate", "float", 0.1,
-            display_name="Dropout率",
-            description="Dropout比率",
+            display_name=tr_("Dropout rate"),
+            description=tr_("Dropout rate"),
             min_value=0.0,
             max_value=1.0
         )
         self.add_parameter(
             "activation", "choice", "gelu",
-            display_name="激活函数",
-            description="前馈网络的激活函数",
+            display_name=tr_("Activation"),
+            description=tr_("Activation function for the feed-forward network"),
             choices=["gelu", "relu", "swish", "silu", "tanh"]
         )
         self.add_parameter(
             "epsilon", "float", 1e-6,
-            display_name="归一化Epsilon",
-            description="层归一化的epsilon参数",
+            display_name=tr_("Normalization epsilon"),
+            description=tr_("Epsilon for layer normalization"),
             min_value=1e-10,
             max_value=1e-3
         )
         self.add_parameter(
             "pre_norm", "bool", False,
             display_name="Pre-Norm",
-            description="使用Pre-Norm（先归一化再注意力），否则使用Post-Norm"
+            description=tr_("Use Pre-Norm; otherwise use Post-Norm")
         )
     
     def build_keras_layer(self):
@@ -238,41 +237,41 @@ class TransformerDecoderLayer(LayerNode):
     layer_type = "transformer_decoder"
     display_name = "TransformerDecoder"
     category = LayerCategory.ATTENTION
-    description = "Transformer解码器块（自注意力+交叉注意力+FFN）"
+    description = tr_("Transformer decoder block (self-attention + cross-attention + FFN)")
     icon = "🔁"
     keras_class = "TransformerDecoder"
     
     def _setup_parameters(self):
         self.add_parameter(
             "num_heads", "int", 8,
-            display_name="注意力头数",
-            description="多头注意力的头数量",
+            display_name=tr_("Number of heads"),
+            description=tr_("Number of attention heads"),
             min_value=1,
             max_value=64
         )
         self.add_parameter(
             "key_dim", "int", 64,
-            display_name="键维度",
-            description="每个注意力头的查询和键的维度",
+            display_name=tr_("Key dimension"),
+            description=tr_("Dimension of query and key for each head"),
             min_value=1
         )
         self.add_parameter(
             "ff_dim", "int", 256,
-            display_name="前馈网络维度",
-            description="前馈网络的中间层维度",
+            display_name=tr_("FFN dimension"),
+            description=tr_("Hidden dimension of the feed-forward network"),
             min_value=1
         )
         self.add_parameter(
             "dropout_rate", "float", 0.1,
-            display_name="Dropout率",
-            description="Dropout比率",
+            display_name=tr_("Dropout rate"),
+            description=tr_("Dropout rate"),
             min_value=0.0,
             max_value=1.0
         )
         self.add_parameter(
             "activation", "choice", "gelu",
-            display_name="激活函数",
-            description="前馈网络的激活函数",
+            display_name=tr_("Activation"),
+            description=tr_("Activation function for the feed-forward network"),
             choices=["gelu", "relu", "swish", "silu", "tanh"]
         )
     
@@ -375,28 +374,28 @@ class PositionalEncodingLayer(LayerNode):
     layer_type = "positional_encoding"
     display_name = "PositionalEncoding"
     category = LayerCategory.ATTENTION
-    description = "位置编码层，为序列添加位置信息"
+    description = tr_("Positional encoding layer to add position information to sequences")
     icon = "📍"
     keras_class = "PositionalEncoding"
     
     def _setup_parameters(self):
         self.add_parameter(
             "max_length", "int", 512,
-            display_name="最大序列长度",
-            description="支持的最大序列长度",
+            display_name=tr_("Max sequence length"),
+            description=tr_("Maximum supported sequence length"),
             min_value=1,
             max_value=10000
         )
         self.add_parameter(
             "encoding_type", "choice", "sinusoidal",
-            display_name="编码类型",
-            description="位置编码的类型",
+            display_name=tr_("Encoding type"),
+            description=tr_("Type of positional encoding"),
             choices=["sinusoidal", "learned"]
         )
         self.add_parameter(
             "dropout_rate", "float", 0.1,
-            display_name="Dropout率",
-            description="添加位置编码后的Dropout比率",
+            display_name=tr_("Dropout rate"),
+            description=tr_("Dropout rate after adding positional encoding"),
             min_value=0.0,
             max_value=1.0
         )
@@ -482,20 +481,20 @@ class AdditiveAttentionLayer(LayerNode):
     layer_type = "additive_attention"
     display_name = "AdditiveAttention"
     category = LayerCategory.ATTENTION
-    description = "加性注意力机制（Bahdanau风格）"
+    description = tr_("Additive attention (Bahdanau-style)")
     icon = "➕"
     keras_class = "AdditiveAttention"
     
     def _setup_parameters(self):
         self.add_parameter(
             "use_scale", "bool", True,
-            display_name="使用缩放",
-            description="是否对注意力分数进行缩放"
+            display_name=tr_("Use scale"),
+            description=tr_("Whether to scale attention scores")
         )
         self.add_parameter(
             "dropout", "float", 0.0,
-            display_name="Dropout率",
-            description="注意力权重的Dropout比率",
+            display_name=tr_("Dropout rate"),
+            description=tr_("Dropout rate for attention weights"),
             min_value=0.0,
             max_value=1.0
         )
@@ -516,26 +515,26 @@ class AttentionLayer(LayerNode):
     layer_type = "attention"
     display_name = "Attention"
     category = LayerCategory.ATTENTION
-    description = "点积注意力机制（Luong风格）"
+    description = tr_("Dot-product attention (Luong-style)")
     icon = "·"
     keras_class = "Attention"
     
     def _setup_parameters(self):
         self.add_parameter(
             "use_scale", "bool", False,
-            display_name="使用缩放",
-            description="是否对注意力分数进行缩放"
+            display_name=tr_("Use scale"),
+            description=tr_("Whether to scale attention scores")
         )
         self.add_parameter(
             "score_mode", "choice", "dot",
-            display_name="评分模式",
-            description="计算注意力分数的方式",
+            display_name=tr_("Score mode"),
+            description=tr_("How to compute attention scores"),
             choices=["dot", "concat"]
         )
         self.add_parameter(
             "dropout", "float", 0.0,
-            display_name="Dropout率",
-            description="注意力权重的Dropout比率",
+            display_name=tr_("Dropout rate"),
+            description=tr_("Dropout rate for attention weights"),
             min_value=0.0,
             max_value=1.0
         )

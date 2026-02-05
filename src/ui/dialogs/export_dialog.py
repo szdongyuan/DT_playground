@@ -12,7 +12,7 @@ from PyQt6.QtWidgets import (
     QVBoxLayout
 )
 
-
+from src.ui.i18n import tr_
 class ExportModelDialog(QDialog):
     """模型导出对话框"""
     
@@ -25,36 +25,36 @@ class ExportModelDialog(QDialog):
     
     def _init_ui(self):
         """初始化界面"""
-        self.setWindowTitle("导出模型")
+        self.setWindowTitle(tr_("Export Model"))
         self.setMinimumSize(450, 350)
         self.setModal(True)
         
         layout = QVBoxLayout(self)
         
         # 导出路径
-        path_group = QGroupBox("导出位置")
+        path_group = QGroupBox(tr_("Export Location"))
         path_layout = QFormLayout(path_group)
         
         path_input_layout = QHBoxLayout()
         self.export_path = QLineEdit()
-        self.export_path.setPlaceholderText("选择导出目录...")
+        self.export_path.setPlaceholderText(tr_("Choose an export directory..."))
         path_input_layout.addWidget(self.export_path)
         
-        browse_btn = QPushButton("浏览")
+        browse_btn = QPushButton(tr_("Browse"))
         browse_btn.clicked.connect(self._browse_path)
         path_input_layout.addWidget(browse_btn)
         
-        path_layout.addRow("目录:", path_input_layout)
+        path_layout.addRow(tr_("Directory:"), path_input_layout)
         
         self.model_name = QLineEdit()
         self.model_name.setPlaceholderText("model_audio_classifier")
         self.model_name.setText("audio_model")
-        path_layout.addRow("模型名称:", self.model_name)
+        path_layout.addRow(tr_("Model name:"), self.model_name)
         
         layout.addWidget(path_group)
         
         # 导出格式
-        format_group = QGroupBox("导出格式")
+        format_group = QGroupBox(tr_("Export Format"))
         format_layout = QFormLayout(format_group)
         
         self.format_combo = QComboBox()
@@ -65,23 +65,23 @@ class ExportModelDialog(QDialog):
             "TensorFlow Lite (.tflite)",
             "ONNX (.onnx)"
         ])
-        format_layout.addRow("格式:", self.format_combo)
+        format_layout.addRow(tr_("Format:"), self.format_combo)
         
         layout.addWidget(format_group)
         
         # 导出选项
-        options_group = QGroupBox("导出选项")
+        options_group = QGroupBox(tr_("Export Options"))
         options_layout = QVBoxLayout(options_group)
         
-        self.include_optimizer = QCheckBox("包含优化器状态")
+        self.include_optimizer = QCheckBox(tr_("Include optimizer state"))
         self.include_optimizer.setChecked(False)
         options_layout.addWidget(self.include_optimizer)
         
-        self.include_config = QCheckBox("导出模型配置 (JSON)")
+        self.include_config = QCheckBox(tr_("Export model config (JSON)"))
         self.include_config.setChecked(True)
         options_layout.addWidget(self.include_config)
         
-        self.include_weights_only = QCheckBox("仅导出权重")
+        self.include_weights_only = QCheckBox(tr_("Export weights only"))
         self.include_weights_only.setChecked(False)
         options_layout.addWidget(self.include_weights_only)
         
@@ -103,11 +103,11 @@ class ExportModelDialog(QDialog):
         btn_layout = QHBoxLayout()
         btn_layout.addStretch()
         
-        self.cancel_btn = QPushButton("取消")
+        self.cancel_btn = QPushButton(tr_("Cancel"))
         self.cancel_btn.clicked.connect(self.reject)
         btn_layout.addWidget(self.cancel_btn)
         
-        self.export_btn = QPushButton("导出")
+        self.export_btn = QPushButton(tr_("Export"))
         self.export_btn.setStyleSheet("""
             QPushButton {
                 background-color: #a6e3a1;
@@ -124,7 +124,7 @@ class ExportModelDialog(QDialog):
     
     def _browse_path(self):
         """浏览导出路径"""
-        path = QFileDialog.getExistingDirectory(self, "选择导出目录")
+        path = QFileDialog.getExistingDirectory(self, tr_("Select an export directory"))
         if path:
             self.export_path.setText(path)
     
@@ -134,15 +134,15 @@ class ExportModelDialog(QDialog):
         model_name = self.model_name.text().strip()
         
         if not export_path:
-            QMessageBox.warning(self, "警告", "请选择导出目录")
+            QMessageBox.warning(self, tr_("Warning"), tr_("Please select an export directory."))
             return
         
         if not model_name:
-            QMessageBox.warning(self, "警告", "请输入模型名称")
+            QMessageBox.warning(self, tr_("Warning"), tr_("Please enter a model name."))
             return
         
         if self.model is None:
-            QMessageBox.warning(self, "警告", "没有可导出的模型")
+            QMessageBox.warning(self, tr_("Warning"), tr_("No model available to export."))
             return
         
         # 构建导出配置
@@ -176,19 +176,20 @@ class ExportModelDialog(QDialog):
         
         self.progress_bar.setVisible(True)
         self.progress_bar.setRange(0, 0)  # 无限进度
-        self.status_label.setText("正在导出模型...")
+        self.status_label.setText(tr_("Exporting model..."))
         self.export_btn.setEnabled(False)
         
         try:
             self._do_export(config)
             self.progress_bar.setRange(0, 100)
             self.progress_bar.setValue(100)
-            self.status_label.setText("导出成功!")
+            self.status_label.setText(tr_("Export succeeded!"))
             self.status_label.setStyleSheet("color: #a6e3a1;")
             
             QMessageBox.information(
-                self, "成功", 
-                f"模型已导出到:\n{config['path']}"
+                self,
+                tr_("Success"),
+                tr_("Model exported to:\n{path}").format(path=config["path"]),
             )
             
             self.export_requested.emit(config)
@@ -196,11 +197,17 @@ class ExportModelDialog(QDialog):
             
         except Exception as e:
             self.progress_bar.setVisible(False)
-            self.status_label.setText(f"导出失败: {str(e)}")
+            self.status_label.setText(
+                tr_("Export failed: {error}").format(error=str(e))
+            )
             self.status_label.setStyleSheet("color: #f38ba8;")
             self.export_btn.setEnabled(True)
             
-            QMessageBox.critical(self, "错误", f"导出失败:\n{str(e)}")
+            QMessageBox.critical(
+                self,
+                tr_("Error"),
+                tr_("Export failed:\n{error}").format(error=str(e)),
+            )
     
     def _do_export(self, config: dict):
         """执行实际的导出操作"""
@@ -233,7 +240,9 @@ class ExportModelDialog(QDialog):
                 with open(path, 'wb') as f:
                     f.write(model_proto.SerializeToString())
             except ImportError:
-                raise ImportError("请安装 tf2onnx: pip install tf2onnx")
+                raise ImportError(
+                    tr_("Please install tf2onnx: pip install tf2onnx")
+                )
         
         # 导出配置文件
         if config['include_config']:

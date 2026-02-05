@@ -12,7 +12,7 @@ from typing import Any, Dict, List, Optional
 
 from ..node_base import BaseNode, NodeCategory, register_node
 from ..port import DataType
-
+from src.ui.i18n import tr_
 logger = logging.getLogger(__name__)
 
 
@@ -28,33 +28,35 @@ class LoadModelNode(BaseNode):
     编译配置直接使用模型中保存的配置（来自模型定义的 OutputLayer）。
     """
     node_type = "load_model"
-    display_name = "加载模型"
+    display_name = tr_("Load model")
     category = NodeCategory.TRAINING
-    description = "加载模型文件（支持Keras模型和模型编辑器定义），使用模型内置的编译配置"
+    description = tr_(
+        "Load model files (Keras models or model editor definitions) and use the model's built-in compile configuration"
+    )
     icon = "📥"
     
     def _setup_ports(self):
-        self.add_output("model", DataType.MODEL, "加载的模型")
+        self.add_output("model", DataType.MODEL, tr_("Loaded model"))
     
     def _setup_parameters(self):
         self.add_parameter(
             "model_path", "file", "",
-            display_name="模型文件路径",
-            description="Keras模型(.h5/.keras)或模型定义文件(.model.json)",
+            display_name=tr_("Model path"),
+            description=tr_("Keras model (.h5/.keras) or model definition (.model.json)"),
             file_filter="All Models (*.h5 *.keras *.model.json);;Keras Models (*.h5 *.keras);;Model Definition (*.model.json);;SavedModel (*)",
             default_directory="model"
         )
         self.add_parameter(
             "compile_model", "bool", True,
-            display_name="编译模型",
-            description="是否使用模型内置的编译配置自动编译（仅对.model.json生效）"
+            display_name=tr_("Compile model"),
+            description=tr_("Compile using built-in configuration (applies to .model.json only)"),
         )
     
     def execute(self) -> bool:
         model_path = self.get_parameter("model_path")
         
         if not model_path or not os.path.exists(model_path):
-            self.error_message = f"模型文件不存在: {model_path}"
+            self.error_message = tr_("Model file does not exist: {path}").format(path=model_path)
             return False
         
         try:
@@ -71,12 +73,12 @@ class LoadModelNode(BaseNode):
             
             # 显示模型信息
             model_name = os.path.basename(model_path)
-            self.report_status(f"模型已加载: {model_name}")
+            self.report_status(tr_("Model loaded: {name}").format(name=model_name))
             logger.info(f"模型已加载: {model_path}")
             return True
             
         except Exception as e:
-            self.error_message = f"加载模型失败: {str(e)}"
+            self.error_message = tr_("Failed to load model: {error}").format(error=str(e))
             logger.exception("加载模型异常")
             return False
     
@@ -105,9 +107,11 @@ class LoadModelNode(BaseNode):
                         logger.error(f"从模型定义文件重建失败: {rebuild_e}")
                 
                 raise ValueError(
-                    f"无法加载模型 {model_path}。\n"
-                    "该模型文件已损坏或不兼容。\n"
-                    "请在模型构建器中重新构建模型并保存。"
+                    tr_(
+                        "Failed to load model {path}.\n"
+                        "The model file is corrupted or incompatible.\n"
+                        "Please rebuild and save the model in the model builder."
+                    ).format(path=model_path)
                 ) from e
             raise
     
@@ -160,57 +164,57 @@ class LoadModelNode(BaseNode):
 class SaveModelNode(BaseNode):
     """保存模型节点"""
     node_type = "save_model"
-    display_name = "保存模型"
+    display_name = tr_("Save model")
     category = NodeCategory.TRAINING
-    description = "保存训练好的模型到文件"
+    description = tr_("Save the trained model to a file")
     icon = "📤"
     
     def _setup_ports(self):
-        self.add_input("model", DataType.MODEL, "待保存模型")
-        self.add_output("model_path", DataType.ANY, "保存路径")
+        self.add_input("model", DataType.MODEL, tr_("Model to save"))
+        self.add_output("model_path", DataType.ANY, tr_("Saved path"))
     
     def _setup_parameters(self):
         self.add_parameter(
             "save_mode", "choice", "new_file",
-            display_name="保存模式",
+            display_name=tr_("Save mode"),
             choices=["new_file", "overwrite"],
-            description="new_file: 选择目录并输入文件名; overwrite: 选择已有文件覆盖"
+            description=tr_("new_file: choose a directory and filename; overwrite: select an existing file"),
         )
         self.add_parameter(
             "save_dir", "folder", "",
-            display_name="保存目录",
-            description="选择保存模型的目录（新建文件模式）",
+            display_name=tr_("Save directory"),
+            description=tr_("Directory to save the model (new_file mode)"),
             default_directory="model"
         )
         self.add_parameter(
             "file_name", "str", "model.keras",
-            display_name="文件名",
-            description="模型文件名（包含扩展名 .keras/.h5）"
+            display_name=tr_("Filename"),
+            description=tr_("Model filename (including .keras/.h5 extension)"),
         )
         self.add_parameter(
             "existing_file", "file", "",
-            display_name="覆盖文件",
-            description="选择要覆盖的模型文件（覆盖模式）",
+            display_name=tr_("File to overwrite"),
+            description=tr_("Select an existing model file (overwrite mode)"),
             file_filter="Keras Models (*.h5 *.keras);;All Files (*)",
             default_directory="model"
         )
         self.add_parameter(
             "save_format", "choice", "keras",
-            display_name="保存格式",
+            display_name=tr_("Save format"),
             choices=["keras", "h5", "saved_model"],
-            description="模型保存格式"
+            description=tr_("Model save format"),
         )
         self.add_parameter(
             "confirm_overwrite", "bool", True,
-            display_name="覆盖警告",
-            description="覆盖已有文件时是否输出警告日志"
+            display_name=tr_("Overwrite warning"),
+            description=tr_("Log a warning when overwriting an existing file"),
         )
     
     def execute(self) -> bool:
         model = self.get_input_data("model")
         
         if model is None:
-            self.error_message = "未提供模型"
+            self.error_message = tr_("No model provided")
             return False
         
         save_mode = self.get_parameter("save_mode")
@@ -222,11 +226,11 @@ class SaveModelNode(BaseNode):
             file_name = self.get_parameter("file_name")
             
             if not save_dir:
-                self.error_message = "未指定保存目录"
+                self.error_message = tr_("Save directory is not set")
                 return False
             
             if not file_name:
-                self.error_message = "未指定文件名"
+                self.error_message = tr_("Filename is not set")
                 return False
             
             # 确保文件名有正确的扩展名
@@ -243,7 +247,7 @@ class SaveModelNode(BaseNode):
             save_path = self.get_parameter("existing_file")
             
             if not save_path:
-                self.error_message = "未选择要覆盖的文件"
+                self.error_message = tr_("No file selected to overwrite")
                 return False
         
         try:
@@ -271,12 +275,12 @@ class SaveModelNode(BaseNode):
             
             # 显示保存信息
             file_name = os.path.basename(save_path)
-            self.report_status(f"模型已保存: {file_name}")
+            self.report_status(tr_("Model saved: {name}").format(name=file_name))
             logger.info(f"模型已保存到: {save_path}")
             return True
             
         except Exception as e:
-            self.error_message = f"保存模型失败: {str(e)}"
+            self.error_message = tr_("Failed to save model: {error}").format(error=str(e))
             logger.exception("保存模型异常")
             return False
 
@@ -291,66 +295,66 @@ class TrainerNode(BaseNode):
     - 覆盖配置（use_model_config=False）：使用节点参数中指定的配置
     """
     node_type = "trainer"
-    display_name = "训练器"
+    display_name = tr_("Trainer")
     category = NodeCategory.TRAINING
-    description = "执行模型训练，支持使用模型配置或自定义覆盖"
+    description = tr_("Run model training with model config or overridden parameters")
     icon = "🏋️"
     
     def _setup_ports(self):
-        self.add_input("model", DataType.MODEL, "模型")
-        self.add_input("x_train", DataType.ANY, "训练数据")  # ANY类型支持特征或预处理后的音频
-        self.add_input("y_train", DataType.ANY, "训练目标")  # ANY类型支持自编码器
-        self.add_input("x_val", DataType.ANY, "验证数据", required=False)  # ANY类型支持特征或预处理后的音频
-        self.add_input("y_val", DataType.ANY, "验证目标", required=False)  # ANY类型支持自编码器
+        self.add_input("model", DataType.MODEL, tr_("Model"))
+        self.add_input("x_train", DataType.ANY, tr_("Train data"))  # ANY supports features/audio
+        self.add_input("y_train", DataType.ANY, tr_("Train targets"))  # ANY supports autoencoders
+        self.add_input("x_val", DataType.ANY, tr_("Validation data"), required=False)
+        self.add_input("y_val", DataType.ANY, tr_("Validation targets"), required=False)
         
-        self.add_output("history", DataType.ANY, "训练历史")
-        self.add_output("trained_model", DataType.MODEL, "训练后模型")
+        self.add_output("history", DataType.ANY, tr_("Training history"))
+        self.add_output("trained_model", DataType.MODEL, tr_("Trained model"))
     
     def _setup_parameters(self):
         from src.model_builder.model_graph import CompileConfig
         
         self.add_parameter(
             "epochs", "int", 50,
-            display_name="训练轮数",
+            display_name=tr_("Epochs"),
             min_value=1
         )
         self.add_parameter(
             "batch_size", "int", 32,
-            display_name="批次大小",
+            display_name=tr_("Batch size"),
             min_value=1
         )
         self.add_parameter(
             "use_model_config", "bool", True,
-            display_name="使用模型配置",
-            description="True: 使用模型内置的编译配置; False: 使用下方的自定义配置覆盖"
+            display_name=tr_("Use model config"),
+            description=tr_("True: use model compile config; False: override with parameters below"),
         )
         # 以下参数仅在 use_model_config=False 时生效
         self.add_parameter(
             "optimizer", "choice", "Adam",
-            display_name="优化器（覆盖）",
+            display_name=tr_("Optimizer (override)"),
             choices=CompileConfig.OPTIMIZERS,
-            description="仅当'使用模型配置'为False时生效"
+            description=tr_("Effective only when 'Use model config' is False"),
         )
         self.add_parameter(
             "learning_rate", "float", 0.001,
-            display_name="学习率（覆盖）",
+            display_name=tr_("Learning rate (override)"),
             min_value=1e-6,
             max_value=1.0,
-            description="仅当'使用模型配置'为False时生效"
+            description=tr_("Effective only when 'Use model config' is False"),
         )
         self.add_parameter(
             "loss", "choice", "auto",
-            display_name="损失函数（覆盖）",
+            display_name=tr_("Loss (override)"),
             choices=["auto"] + CompileConfig.LOSSES,
-            description="auto: 根据数据自动检测; 仅当'使用模型配置'为False时生效"
+            description=tr_("auto: detect from data; effective only when 'Use model config' is False"),
         )
         self.add_parameter(
             "early_stopping", "bool", True,
-            display_name="早停"
+            display_name=tr_("Early stopping"),
         )
         self.add_parameter(
             "patience", "int", 10,
-            display_name="早停耐心值",
+            display_name=tr_("Early stopping patience"),
             min_value=1
         )
     
@@ -370,11 +374,11 @@ class TrainerNode(BaseNode):
             y_val = self.get_input_data("y_val")
             
             if model is None:
-                self.error_message = "未提供模型"
+                self.error_message = tr_("No model provided")
                 return False
             
             if x_train is None or y_train is None:
-                self.error_message = "未提供训练数据"
+                self.error_message = tr_("No training data provided")
                 return False
             
             # 转换为numpy数组（支持AudioData列表或特征列表）
@@ -395,13 +399,20 @@ class TrainerNode(BaseNode):
             if use_model_config:
                 # 使用模型内置配置，检查模型是否已编译
                 if not model.compiled:
-                    self.error_message = "模型未编译，请确保模型已包含编译配置或关闭'使用模型配置'"
+                    self.error_message = tr_(
+                        "Model is not compiled. Ensure it has compile config or disable 'Use model config'."
+                    )
                     return False
                 # 获取已编译模型的配置信息用于日志
                 optimizer_config = model.optimizer.get_config() if model.optimizer else {}
                 optimizer_name = optimizer_config.get('name', 'unknown')
                 loss_name = model.loss if isinstance(model.loss, str) else getattr(model.loss, '__name__', str(model.loss))
-                self.report_status(f"使用模型内置配置: optimizer={optimizer_name}, loss={loss_name}")
+                self.report_status(
+                    tr_("Using model config: optimizer={opt}, loss={loss}").format(
+                        opt=optimizer_name,
+                        loss=loss_name,
+                    )
+                )
             else:
                 # 覆盖配置：使用节点参数
                 optimizer_name = self.get_parameter("optimizer")
@@ -420,7 +431,12 @@ class TrainerNode(BaseNode):
                 metrics = CompileConfig.get_default_metrics(loss)
                 
                 model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
-                self.report_status(f"使用覆盖配置: optimizer={optimizer_name}, loss={loss}")
+                self.report_status(
+                    tr_("Using override config: optimizer={opt}, loss={loss}").format(
+                        opt=optimizer_name,
+                        loss=loss,
+                    )
+                )
             
             # 回调
             callbacks = []
@@ -482,7 +498,12 @@ class TrainerNode(BaseNode):
                 ))
             
             # 训练
-            self.report_status(f"开始训练: {total_epochs} epochs, batch_size={self.get_parameter('batch_size')}")
+            self.report_status(
+                tr_("Training started: {epochs} epochs, batch_size={batch_size}").format(
+                    epochs=total_epochs,
+                    batch_size=self.get_parameter("batch_size"),
+                )
+            )
 
             try:
                 history = model.fit(
@@ -511,15 +532,22 @@ class TrainerNode(BaseNode):
             final_val_loss = history.history.get('val_loss', [0])[-1] if 'val_loss' in history.history else None
             
             if final_val_loss:
-                self.report_status(f"训练完成: loss={final_loss:.4f}, val_loss={final_val_loss:.4f}")
+                self.report_status(
+                    tr_("Training finished: loss={loss:.4f}, val_loss={val_loss:.4f}").format(
+                        loss=final_loss,
+                        val_loss=final_val_loss,
+                    )
+                )
             else:
-                self.report_status(f"训练完成: loss={final_loss:.4f}")
+                self.report_status(
+                    tr_("Training finished: loss={loss:.4f}").format(loss=final_loss)
+                )
             
             logger.info("模型训练完成")
             return True
             
         except Exception as e:
-            self.error_message = f"训练失败: {str(e)}"
+            self.error_message = tr_("Training failed: {error}").format(error=str(e))
             logger.exception("训练异常")
             return False
     
@@ -647,22 +675,22 @@ class TrainerNode(BaseNode):
 class EvaluatorNode(BaseNode):
     """评估器节点"""
     node_type = "evaluator"
-    display_name = "评估器"
+    display_name = tr_("Evaluator")
     category = NodeCategory.TRAINING
-    description = "评估模型性能"
+    description = tr_("Evaluate model performance")
     icon = "📊"
     
     def _setup_ports(self):
-        self.add_input("model", DataType.MODEL, "模型")
-        self.add_input("x_test", DataType.ANY, "测试数据")  # ANY类型支持特征或预处理后的音频
-        self.add_input("y_test", DataType.ANY, "测试目标")  # ANY类型支持自编码器
+        self.add_input("model", DataType.MODEL, tr_("Model"))
+        self.add_input("x_test", DataType.ANY, tr_("Test data"))
+        self.add_input("y_test", DataType.ANY, tr_("Test targets"))
         
-        self.add_output("metrics", DataType.METRICS, "评估指标")
+        self.add_output("metrics", DataType.METRICS, tr_("Metrics"))
     
     def _setup_parameters(self):
         self.add_parameter(
             "batch_size", "int", 32,
-            display_name="批次大小",
+            display_name=tr_("Batch size"),
             min_value=1
         )
     
@@ -676,11 +704,11 @@ class EvaluatorNode(BaseNode):
             y_test = self.get_input_data("y_test")
             
             if model is None:
-                self.error_message = "未提供模型"
+                self.error_message = tr_("No model provided")
                 return False
             
             if x_test is None or y_test is None:
-                self.error_message = "未提供测试数据"
+                self.error_message = tr_("No test data provided")
                 return False
             
             # 转换为numpy数组，传入 model 参数根据模型类型自动调整数据格式
@@ -708,13 +736,13 @@ class EvaluatorNode(BaseNode):
             
             # 显示评估结果
             loss_str = f"loss={metrics.get('loss', 0):.4f}"
-            self.report_status(f"评估完成: {loss_str}")
+            self.report_status(tr_("Evaluation finished: {loss}").format(loss=loss_str))
             
             logger.info(f"评估完成: {metrics}")
             return True
             
         except Exception as e:
-            self.error_message = f"评估失败: {str(e)}"
+            self.error_message = tr_("Evaluation failed: {error}").format(error=str(e))
             logger.exception("评估异常")
             return False
     
@@ -842,35 +870,35 @@ class EvaluatorNode(BaseNode):
 class ShowHistoryNode(BaseNode):
     """展示训练历史节点"""
     node_type = "show_history"
-    display_name = "展示训练历史"
+    display_name = tr_("Show training history")
     category = NodeCategory.TRAINING
-    description = "可视化展示训练历史曲线"
+    description = tr_("Visualize training history curves")
     icon = "📈"
     
     def _setup_ports(self):
-        self.add_input("history", DataType.ANY, "训练历史")
-        self.add_output("history", DataType.ANY, "训练历史(透传)")
+        self.add_input("history", DataType.ANY, tr_("Training history"))
+        self.add_output("history", DataType.ANY, tr_("Training history (passthrough)"))
     
     def _setup_parameters(self):
         self.add_parameter(
             "show_loss", "bool", True,
-            display_name="显示损失曲线"
+            display_name=tr_("Show loss curve"),
         )
         self.add_parameter(
             "show_accuracy", "bool", True,
-            display_name="显示准确率曲线"
+            display_name=tr_("Show accuracy curve"),
         )
         self.add_parameter(
             "save_path", "file", "",
-            display_name="保存路径",
-            description="可选，保存图表到文件",
+            display_name=tr_("Save path"),
+            description=tr_("Optional. Save the chart to a file."),
             file_filter="PNG图像 (*.png);;JPEG图像 (*.jpg)"
         )
     
     def execute(self) -> bool:
         history = self.get_input_data("history")
         if history is None:
-            self.error_message = "未提供训练历史"
+            self.error_message = tr_("No training history provided")
             return False
         
         try:
@@ -920,7 +948,9 @@ class ShowHistoryNode(BaseNode):
             return True
             
         except Exception as e:
-            self.error_message = f"展示训练历史失败: {str(e)}"
+            self.error_message = tr_("Failed to show training history: {error}").format(
+                error=str(e)
+            )
             logger.exception("展示训练历史异常")
             return False
 
@@ -929,26 +959,26 @@ class ShowHistoryNode(BaseNode):
 class ShowMetricsNode(BaseNode):
     """展示评估指标节点"""
     node_type = "show_metrics"
-    display_name = "展示评估指标"
+    display_name = tr_("Show metrics")
     category = NodeCategory.TRAINING
-    description = "展示模型评估指标"
+    description = tr_("Show model evaluation metrics")
     icon = "📊"
     
     def _setup_ports(self):
-        self.add_input("metrics", DataType.ANY, "评估指标")
-        self.add_output("metrics", DataType.ANY, "评估指标(透传)")
+        self.add_input("metrics", DataType.ANY, tr_("Metrics"))
+        self.add_output("metrics", DataType.ANY, tr_("Metrics (passthrough)"))
     
     def _setup_parameters(self):
         self.add_parameter(
             "show_dialog", "bool", True,
-            display_name="详细日志",
-            description="是否输出详细指标日志（弹窗功能已移除）"
+            display_name=tr_("Verbose logs"),
+            description=tr_("Output detailed metrics logs (dialog removed)"),
         )
     
     def execute(self) -> bool:
         metrics = self.get_input_data("metrics")
         if metrics is None:
-            self.error_message = "未提供评估指标"
+            self.error_message = tr_("No metrics provided")
             return False
         
         try:
@@ -975,7 +1005,7 @@ class ShowMetricsNode(BaseNode):
             return True
             
         except Exception as e:
-            self.error_message = f"展示评估指标失败: {str(e)}"
+            self.error_message = tr_("Failed to show metrics: {error}").format(error=str(e))
             logger.exception("展示评估指标异常")
             return False
 
@@ -989,35 +1019,37 @@ class PredictNode(BaseNode):
     支持输出为标签、音频、一维特征或二维特征。
     """
     node_type = "predict"
-    display_name = "预测"
+    display_name = tr_("Predict")
     category = NodeCategory.TRAINING
-    description = "使用训练好的模型进行预测"
+    description = tr_("Run prediction using a trained model")
     icon = "🔮"
     
     def _setup_ports(self):
-        self.add_input("model", DataType.MODEL, "模型")
-        self.add_input("input_data", DataType.ANY, "输入数据")
-        self.add_output("output", DataType.ANY, "预测结果")
+        self.add_input("model", DataType.MODEL, tr_("Model"))
+        self.add_input("input_data", DataType.ANY, tr_("Input data"))
+        self.add_output("output", DataType.ANY, tr_("Predictions"))
     
     def _setup_parameters(self):
         self.add_parameter(
             "output_type", "choice", "label",
-            display_name="输出类型",
+            display_name=tr_("Output type"),
             choices=["label", "audio", "feature_1d", "feature_2d"],
-            description="预测结果的数据类型：label=分类标签, audio=音频, feature_1d=一维特征, feature_2d=二维特征"
+            description=tr_(
+                "Type of prediction result: label=class label, audio=audio, feature_1d=1D feature, feature_2d=2D feature"
+            ),
         )
         self.add_parameter(
             "batch_size", "int", 32,
-            display_name="批次大小",
+            display_name=tr_("Batch size"),
             min_value=1,
-            description="预测时的批次大小"
+            description=tr_("Batch size for prediction"),
         )
         self.add_parameter(
             "sample_rate", "int", 48000,
-            display_name="采样率",
+            display_name=tr_("Sample rate"),
             min_value=8000,
             max_value=192000,
-            description="输出音频的采样率（仅当输出类型为audio时使用）"
+            description=tr_("Output audio sample rate (only for output_type=audio)"),
         )
     
     def execute(self) -> bool:
@@ -1030,11 +1062,11 @@ class PredictNode(BaseNode):
             input_data = self.get_input_data("input_data")
             
             if model is None:
-                self.error_message = "未提供模型"
+                self.error_message = tr_("No model provided")
                 return False
             
             if input_data is None:
-                self.error_message = "未提供输入数据"
+                self.error_message = tr_("No input data provided")
                 return False
             
             # 转换输入数据为numpy数组
@@ -1042,7 +1074,7 @@ class PredictNode(BaseNode):
             
             # 执行预测
             batch_size = self.get_parameter("batch_size")
-            self.report_status(f"正在预测... (batch_size={batch_size})")
+            self.report_status(tr_("Predicting... (batch_size={batch_size})").format(batch_size=batch_size))
             
             predictions = model.predict(X, batch_size=batch_size, verbose=0)
             
@@ -1054,13 +1086,18 @@ class PredictNode(BaseNode):
             
             # 报告完成状态
             result_count = len(result) if isinstance(result, list) else 1
-            self.report_status(f"预测完成: {result_count} 个样本, 输出类型={output_type}")
+            self.report_status(
+                tr_("Prediction finished: {count} samples, output_type={type}").format(
+                    count=result_count,
+                    type=output_type,
+                )
+            )
             logger.info(f"预测完成: {result_count} 个样本, 输出类型={output_type}")
             
             return True
             
         except Exception as e:
-            self.error_message = f"预测失败: {str(e)}"
+            self.error_message = tr_("Prediction failed: {error}").format(error=str(e))
             logger.exception("预测异常")
             return False
     

@@ -7,7 +7,6 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
 
-
 def get_audio_info(file_path: str) -> Dict[str, Any]:
     """
     获取音频文件信息
@@ -56,7 +55,7 @@ def convert_audio(input_path: str, output_path: str,
         sf.write(output_path, y, target_sr)
         return True
     except Exception as e:
-        print(f"转换失败: {e}")
+        print(f"Conversion failed: {e}")
         return False
 
 
@@ -278,7 +277,7 @@ def batch_process_audio(file_paths: List[str],
             output_paths.append(output_path)
             
         except Exception as e:
-            print(f"处理失败 {file_path}: {e}")
+            print(f"Processing failed for {file_path}: {e}")
     
     return output_paths
 

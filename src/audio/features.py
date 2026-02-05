@@ -8,7 +8,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
 
-
+from src.ui.i18n import tr_
 class FeatureType(Enum):
     """特征类型枚举"""
     MEL_SPECTROGRAM = "mel_spectrogram"
@@ -34,24 +34,24 @@ class FeatureType(Enum):
     def get_display_name(cls, feature_type: str) -> str:
         """获取特征的显示名称"""
         display_names = {
-            "mel_spectrogram": "Mel频谱图",
-            "mfcc": "MFCC",
-            "mfcc_delta": "MFCC + Δ",
-            "mfcc_delta2": "MFCC + Δ + ΔΔ",
-            "stft": "STFT",
-            "fft": "FFT频谱",
-            "cqt": "CQT频谱",
-            "chroma": "色度特征",
-            "spectral_contrast": "频谱对比度",
-            "tonnetz": "调性网络",
-            "spectral_centroid": "频谱质心",
-            "spectral_bandwidth": "频谱带宽",
-            "spectral_rolloff": "频谱滚降",
-            "spectral_flatness": "频谱平坦度",
-            "zcr": "过零率",
-            "rms": "均方根能量",
-            "pitch": "基频/音高",
-            "raw": "原始波形",
+            "mel_spectrogram": tr_("Mel spectrogram"),
+            "mfcc": tr_("MFCC"),
+            "mfcc_delta": tr_("MFCC + Δ"),
+            "mfcc_delta2": tr_("MFCC + Δ + ΔΔ"),
+            "stft": tr_("STFT"),
+            "fft": tr_("FFT spectrum"),
+            "cqt": tr_("CQT spectrum"),
+            "chroma": tr_("Chroma"),
+            "spectral_contrast": tr_("Spectral contrast"),
+            "tonnetz": tr_("Tonnetz"),
+            "spectral_centroid": tr_("Spectral centroid"),
+            "spectral_bandwidth": tr_("Spectral bandwidth"),
+            "spectral_rolloff": tr_("Spectral rolloff"),
+            "spectral_flatness": tr_("Spectral flatness"),
+            "zcr": tr_("Zero-crossing rate"),
+            "rms": tr_("RMS energy"),
+            "pitch": tr_("Pitch"),
+            "raw": tr_("Raw waveform"),
         }
         return display_names.get(feature_type, feature_type)
     
@@ -674,7 +674,7 @@ def get_available_features() -> List[Dict[str, str]]:
             })
     features.append({
         "id": "raw",
-        "name": "原始波形",
+        "name": FeatureType.get_display_name("raw"),
         "is_2d": False
     })
     return features
@@ -683,11 +683,22 @@ def get_available_features() -> List[Dict[str, str]]:
 def get_feature_categories() -> Dict[str, List[str]]:
     """获取特征分类"""
     return {
-        "频谱特征 (2D)": ["mel_spectrogram", "stft", "cqt", "chroma", "spectral_contrast"],
-        "MFCC系列 (2D)": ["mfcc", "mfcc_delta", "mfcc_delta2"],
-        "音调特征": ["tonnetz", "pitch"],
-        "频域特征 (1D)": ["fft", "spectral_flatness"],
-        "统计特征 (1D)": ["spectral_centroid", "spectral_bandwidth", 
-                         "spectral_rolloff", "zcr", "rms"],
-        "原始数据": ["raw"]
+        tr_("Spectral features (2D)"): [
+            "mel_spectrogram",
+            "stft",
+            "cqt",
+            "chroma",
+            "spectral_contrast",
+        ],
+        tr_("MFCC family (2D)"): ["mfcc", "mfcc_delta", "mfcc_delta2"],
+        tr_("Pitch features"): ["tonnetz", "pitch"],
+        tr_("Frequency-domain features (1D)"): ["fft", "spectral_flatness"],
+        tr_("Statistical features (1D)"): [
+            "spectral_centroid",
+            "spectral_bandwidth",
+            "spectral_rolloff",
+            "zcr",
+            "rms",
+        ],
+        tr_("Raw data"): ["raw"],
     }

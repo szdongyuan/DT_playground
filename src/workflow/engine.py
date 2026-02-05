@@ -13,6 +13,7 @@ from typing import Any, Callable, Dict, List, Optional, Set
 
 from PyQt6.QtCore import QObject, QThread, pyqtSignal
 
+from src.ui.i18n import tr_
 from .connection import Connection
 from .node_base import BaseNode, NodeState
 from .workflow import Workflow
@@ -107,11 +108,11 @@ class WorkflowEngine(QObject):
             self.workflow = workflow
         
         if not self.workflow:
-            self.workflow_error.emit("未设置工作流")
+            self.workflow_error.emit(tr_("Workflow not set"))
             return False
         
         if self.state == EngineState.RUNNING:
-            self.workflow_error.emit("工作流正在执行中")
+            self.workflow_error.emit(tr_("Workflow is already running"))
             return False
         
         # Validate workflow
@@ -140,7 +141,7 @@ class WorkflowEngine(QObject):
         if not self.workflow:
             return ExecutionResult(
                 success=False,
-                message="未设置工作流",
+                message=tr_("Workflow not set"),
                 execution_time=0,
                 node_results={}
             )
@@ -242,7 +243,7 @@ class WorkflowEngine(QObject):
                     self.state = EngineState.STOPPED
                     result = ExecutionResult(
                         success=False,
-                        message="执行已停止",
+                        message=tr_("Execution stopped"),
                         execution_time=time.time() - start_time,
                         node_results=node_results
                     )
@@ -260,7 +261,11 @@ class WorkflowEngine(QObject):
                     continue
                 
                 # Emit progress signal
-                self.progress_updated.emit(i + 1, total_nodes, f"执行: {node.display_name}")
+                self.progress_updated.emit(
+                    i + 1,
+                    total_nodes,
+                    tr_("Running: {name}").format(name=node.display_name),
+                )
                 
                 # Execute node
                 success = self._execute_node(node)
@@ -269,7 +274,10 @@ class WorkflowEngine(QObject):
                     self.state = EngineState.ERROR
                     result = ExecutionResult(
                         success=False,
-                        message=f"节点 '{node.display_name}' 执行失败: {node.error_message}",
+                        message=tr_("Node '{name}' failed: {error}").format(
+                            name=node.display_name,
+                            error=node.error_message,
+                        ),
                         execution_time=time.time() - start_time,
                         node_results=node_results
                     )
@@ -285,7 +293,7 @@ class WorkflowEngine(QObject):
             self.state = EngineState.COMPLETED
             result = ExecutionResult(
                 success=True,
-                message="工作流执行完成",
+                message=tr_("Workflow finished"),
                 execution_time=time.time() - start_time,
                 node_results=node_results
             )
@@ -295,7 +303,7 @@ class WorkflowEngine(QObject):
         except Exception as e:
             logger.exception("Workflow execution exception")
             self.state = EngineState.ERROR
-            error_msg = f"执行异常: {str(e)}"
+            error_msg = tr_("Execution error: {error}").format(error=str(e))
             self.workflow_error.emit(error_msg)
             return ExecutionResult(
                 success=False,
@@ -397,7 +405,11 @@ class WorkflowEngine(QObject):
         
         # Emit breakpoint signal
         self.breakpoint_hit.emit(node.node_id)
-        self.status_message.emit(f"断点暂停: {node.display_name} - 点击继续按钮以继续执行")
+        self.status_message.emit(
+            tr_("Breakpoint paused: {name} - click Continue to proceed").format(
+                name=node.display_name
+            )
+        )
         
         # Wait for user to continue (blocks current thread)
         while self._breakpoint_waiting and not self._stop_requested:
@@ -409,7 +421,7 @@ class WorkflowEngine(QObject):
         
         # User confirmed continue
         self.state = EngineState.RUNNING
-        self.status_message.emit("从断点继续执行...")
+        self.status_message.emit(tr_("Continuing from breakpoint..."))
         return True
     
     def _collect_node_inputs(self, node: BaseNode):

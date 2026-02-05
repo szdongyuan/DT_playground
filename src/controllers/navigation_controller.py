@@ -12,8 +12,7 @@ from typing import Optional
 from PyQt6.QtCore import QObject, pyqtSignal
 
 from src.core.event_bus import get_event_bus
-
-
+from src.ui.i18n import tr_
 logger = logging.getLogger(__name__)
 
 
@@ -85,10 +84,12 @@ class NavigationController(QObject):
             self._current_view = view_type
             self.view_changed.emit(view_type.value)
             
-            view_names = ["工作流", "模型", "预览", "训练"]
-            self._event_bus.emit_status(f"切换到{view_names[view_type]}视图")
+            view_names = [tr_("Workflow"), tr_("Model"), tr_("Preview"), tr_("Training")]
+            self._event_bus.emit_status(
+                tr_("Switched to {view} view").format(view=view_names[view_type])
+            )
             
-            logger.debug(f"视图切换: {view_type.name}")
+            logger.debug(f"View switched: {view_type.name}")
     
     def switch_to_workflow(self):
         """切换到工作流视图"""

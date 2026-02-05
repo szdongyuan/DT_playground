@@ -18,6 +18,7 @@ from PyQt6.QtWidgets import (
     QVBoxLayout, QWidget
 )
 
+from ..i18n import tr_
 from ..styles import Styles
 from ...workflow.node_base import BaseNode, NodeParameter
 from ...workflow.workflow import Workflow
@@ -76,7 +77,7 @@ class PropertyPanel(QWidget):
         layout.setSpacing(0)
         
         # 标题
-        self._title_label = QLabel("属性")
+        self._title_label = QLabel(tr_("Properties"))
         self._title_label.setStyleSheet(f"""
             QLabel {{
                 font-size: 14px;
@@ -109,7 +110,7 @@ class PropertyPanel(QWidget):
         scroll.setWidget(self._content)
         
         # 节点信息区
-        self._info_group = QGroupBox("节点信息")
+        self._info_group = QGroupBox(tr_("Node Info"))
         self._info_group.setStyleSheet(Styles.group_box(Styles.COLORS['blue']))
         info_layout = QFormLayout(self._info_group)
         
@@ -119,21 +120,21 @@ class PropertyPanel(QWidget):
         self._desc_label = QLabel("-")
         self._desc_label.setWordWrap(True)
         
-        info_layout.addRow("名称:", self._name_label)
-        info_layout.addRow("类型:", self._type_label)
-        info_layout.addRow("分类:", self._category_label)
-        info_layout.addRow("描述:", self._desc_label)
+        info_layout.addRow(tr_("Name:"), self._name_label)
+        info_layout.addRow(tr_("Type:"), self._type_label)
+        info_layout.addRow(tr_("Category:"), self._category_label)
+        info_layout.addRow(tr_("Description:"), self._desc_label)
         
         self._content_layout.addWidget(self._info_group)
         
         # 参数区
-        self._params_group = QGroupBox("参数")
+        self._params_group = QGroupBox(tr_("Parameters"))
         self._params_group.setStyleSheet(Styles.group_box(Styles.COLORS['green']))
         self._params_layout = QFormLayout(self._params_group)
         self._content_layout.addWidget(self._params_group)
         
         # 端口信息区
-        self._ports_group = QGroupBox("端口")
+        self._ports_group = QGroupBox(tr_("Ports"))
         self._ports_group.setStyleSheet(Styles.group_box(Styles.COLORS['purple']))
         self._ports_layout = QVBoxLayout(self._ports_group)
         self._content_layout.addWidget(self._ports_group)
@@ -146,7 +147,7 @@ class PropertyPanel(QWidget):
     
     def _show_empty_state(self):
         """显示空状态"""
-        self._title_label.setText("属性")
+        self._title_label.setText(tr_("Properties"))
         self._info_group.hide()
         self._params_group.hide()
         self._ports_group.hide()
@@ -168,14 +169,16 @@ class PropertyPanel(QWidget):
             return
         
         # 更新标题
-        self._title_label.setText(f"属性 - {node.display_name}")
+        self._title_label.setText(
+            tr_("Properties - {name}").format(name=tr_(node.display_name))
+        )
         
         # 显示节点信息
         self._info_group.show()
-        self._name_label.setText(f"{node.icon} {node.display_name}")
+        self._name_label.setText(f"{node.icon} {tr_(node.display_name)}")
         self._type_label.setText(node.node_type)
         self._category_label.setText(node.category.display_name)
-        self._desc_label.setText(node.description or "无描述")
+        self._desc_label.setText(tr_(node.description) if node.description else tr_("No description"))
         
         # 更新参数
         self._update_parameters(node)
@@ -203,8 +206,8 @@ class PropertyPanel(QWidget):
                 self._widgets[param_name] = widget
                 
                 # 创建标签
-                label = QLabel(param.display_name + ":")
-                label.setToolTip(param.description)
+                label = QLabel(tr_(param.display_name) + ":")
+                label.setToolTip(tr_(param.description) if param.description else "")
                 
                 self._params_layout.addRow(label, widget)
     
@@ -331,7 +334,7 @@ class PropertyPanel(QWidget):
         
         path, _ = QFileDialog.getOpenFileName(
             self,
-            "选择文件",
+            tr_("Select file"),
             start_dir,
             file_filter if file_filter else "All Files (*)"
         )
@@ -351,7 +354,7 @@ class PropertyPanel(QWidget):
         
         path = QFileDialog.getExistingDirectory(
             self,
-            "选择文件夹",
+            tr_("Select folder"),
             start_dir
         )
         if path:
@@ -373,30 +376,30 @@ class PropertyPanel(QWidget):
         
         # 输入端口
         if node.inputs:
-            inputs_label = QLabel("📥 输入:")
+            inputs_label = QLabel(tr_("📥 Inputs:"))
             inputs_label.setStyleSheet(f"color: {Styles.COLORS['green']}; font-weight: bold;")
             self._ports_layout.addWidget(inputs_label)
             
             for port_name, port in node.inputs.items():
                 port_label = QLabel(
-                    f"  • {port.display_name} ({port.data_type.value})"
+                    f"  • {tr_(port.display_name)} ({port.data_type.value})"
                     + (" *" if port.required else "")
                 )
-                port_label.setToolTip(port.description)
+                port_label.setToolTip(tr_(port.description) if port.description else "")
                 port_label.setStyleSheet(f"color: {Styles.COLORS['subtext1']};")
                 self._ports_layout.addWidget(port_label)
         
         # 输出端口
         if node.outputs:
-            outputs_label = QLabel("📤 输出:")
+            outputs_label = QLabel(tr_("📤 Outputs:"))
             outputs_label.setStyleSheet(f"color: {Styles.COLORS['blue']}; font-weight: bold;")
             self._ports_layout.addWidget(outputs_label)
             
             for port_name, port in node.outputs.items():
                 port_label = QLabel(
-                    f"  • {port.display_name} ({port.data_type.value})"
+                    f"  • {tr_(port.display_name)} ({port.data_type.value})"
                 )
-                port_label.setToolTip(port.description)
+                port_label.setToolTip(tr_(port.description) if port.description else "")
                 port_label.setStyleSheet(f"color: {Styles.COLORS['subtext1']};")
                 self._ports_layout.addWidget(port_label)
     

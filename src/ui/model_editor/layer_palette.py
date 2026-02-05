@@ -18,6 +18,7 @@ from PyQt6.QtWidgets import (
 from src.model_builder.layer_base import (
     get_all_layer_types, get_layers_by_category, LayerCategory
 )
+from src.ui.i18n import tr_
 from src.ui.styles import Styles
 
 logger = logging.getLogger(__name__)
@@ -105,7 +106,7 @@ class LayerPalette(QWidget):
         header_layout = QVBoxLayout(header)
         header_layout.setContentsMargins(12, 8, 12, 8)
         
-        title = QLabel("🧱 层节点库")
+        title = QLabel(tr_("🧱 Layer Library"))
         title.setStyleSheet(f"""
             font-size: 14px;
             font-weight: bold;
@@ -120,7 +121,7 @@ class LayerPalette(QWidget):
         search_layout.setContentsMargins(8, 4, 8, 8)
         
         self._search_input = QLineEdit()
-        self._search_input.setPlaceholderText("🔍 搜索层...")
+        self._search_input.setPlaceholderText(tr_("🔍 Search layers..."))
         self._search_input.textChanged.connect(self._on_search)
         search_layout.addWidget(self._search_input)
         layout.addWidget(search_frame)
@@ -132,7 +133,7 @@ class LayerPalette(QWidget):
         layout.addWidget(self._tree)
         
         # 提示
-        hint = QLabel("拖拽或双击添加层")
+        hint = QLabel(tr_("Drag or double-click to add a layer"))
         hint.setAlignment(Qt.AlignmentFlag.AlignCenter)
         hint.setStyleSheet(f"""
             color: {Styles.COLORS['subtext0']};
@@ -160,9 +161,9 @@ class LayerPalette(QWidget):
             
             # 添加层节点
             for layer_class in layer_classes:
-                item = QTreeWidgetItem([f"{layer_class.icon} {layer_class.display_name}"])
+                item = QTreeWidgetItem([f"{layer_class.icon} {tr_(layer_class.display_name)}"])
                 item.setData(0, Qt.ItemDataRole.UserRole, layer_class.layer_type)
-                item.setToolTip(0, layer_class.description)
+                item.setToolTip(0, tr_(layer_class.description) if layer_class.description else "")
                 category_item.addChild(item)
                 layer_count += 1
         

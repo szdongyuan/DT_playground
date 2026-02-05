@@ -6,7 +6,7 @@ from typing import Optional, Tuple
 
 import numpy as np
 
-
+from src.ui.i18n import tr_
 class AudioPreprocessor:
     """音频预处理类"""
     
@@ -54,7 +54,9 @@ class AudioPreprocessor:
             return audio
             
         else:
-            raise ValueError(f"未知的归一化方法: {method}")
+            raise ValueError(
+                tr_("Unknown normalization method: {method}").format(method=method)
+            )
     
     def pad_or_trim(self, audio: np.ndarray, 
                     target_length: int,
@@ -148,7 +150,7 @@ class AudioPreprocessor:
             return non_silent
             
         except Exception as e:
-            print(f"移除静音失败: {e}")
+            print(f"Failed to remove silence: {e}")
             return audio
     
     def apply_preemphasis(self, audio: np.ndarray, 

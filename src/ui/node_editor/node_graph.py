@@ -27,6 +27,7 @@ from PyQt6.QtWidgets import (
 
 from ..styles import Styles
 from ..graph_editor import BasePortItem, BaseConnectionItem, BaseGraphScene, BaseGraphView
+from ..i18n import tr_
 from ...workflow.connection import Connection
 from ...workflow.node_base import (
     BaseNode, NodeCategory, create_node, get_all_node_types,
@@ -120,7 +121,7 @@ class NodeItem(QGraphicsRectItem):
             title.setPos((self.COMPACT_WIDTH - text_width) / 2, 6)
         else:
             # 标准模式：显示图标和名称
-            title = QGraphicsTextItem(f"{self.node.icon} {self.node.display_name}", self)
+            title = QGraphicsTextItem(f"{self.node.icon} {tr_(self.node.display_name)}", self)
             title.setDefaultTextColor(QColor("#cdd6f4"))
             title.setFont(QFont("Microsoft YaHei", 10, QFont.Weight.Bold))
             title.setPos(8, 4)
@@ -156,7 +157,7 @@ class NodeItem(QGraphicsRectItem):
                 self.input_ports[port_name] = port_item
                 
                 # 端口标签
-                label = QGraphicsTextItem(port.display_name, self)
+                label = QGraphicsTextItem(tr_(port.display_name), self)
                 label.setDefaultTextColor(QColor("#a6adc8"))
                 label.setFont(QFont("Microsoft YaHei", 9))
                 label.setPos(12, y_offset + i * self.PORT_SPACING - 8)
@@ -168,7 +169,7 @@ class NodeItem(QGraphicsRectItem):
                 self.output_ports[port_name] = port_item
                 
                 # 端口标签
-                label = QGraphicsTextItem(port.display_name, self)
+                label = QGraphicsTextItem(tr_(port.display_name), self)
                 label.setDefaultTextColor(QColor("#a6adc8"))
                 label.setFont(QFont("Microsoft YaHei", 9))
                 # 右对齐
@@ -656,7 +657,7 @@ class NodeGraphWidget(QWidget):
             logger.warning(f"创建连接失败: {msg}")
             # 显示提示信息
             from PyQt6.QtWidgets import QToolTip, QMessageBox
-            QMessageBox.warning(self, "连接失败", msg)
+            QMessageBox.warning(self, tr_("Connection failed"), msg)
     
     def get_selected_node_id(self) -> Optional[str]:
         """获取选中的节点ID"""
@@ -673,11 +674,11 @@ class NodeGraphWidget(QWidget):
         # 注：新增节点统一从左侧「节点库」添加，避免右键菜单随节点数量膨胀。
         
         # 重置选中节点连接
-        reset_conn_action = menu.addAction("重置选中节点连接")
+        reset_conn_action = menu.addAction(tr_("Reset selected node connections"))
         reset_conn_action.triggered.connect(self._reset_selected_connections)
         
         # 删除选中节点
-        delete_action = menu.addAction("删除选中节点")
+        delete_action = menu.addAction(tr_("Delete selected nodes"))
         delete_action.triggered.connect(self._delete_selected)
         
         menu.exec(self._view.mapToGlobal(pos))

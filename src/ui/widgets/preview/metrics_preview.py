@@ -16,6 +16,7 @@ from PyQt6.QtWidgets import (
 )
 
 from src.workflow.port import DataType
+from src.ui.i18n import tr_
 from src.ui.styles import Styles
 
 from .base_preview import BasePreviewWidget, register_preview
@@ -40,7 +41,7 @@ class MetricsPreviewWidget(BasePreviewWidget):
     """
     
     supported_types = [DataType.METRICS]
-    display_name = "评估指标"
+    display_name = tr_("Metrics")
     icon = "📊"
     
     def __init__(self, parent: Optional[QWidget] = None):
@@ -59,7 +60,7 @@ class MetricsPreviewWidget(BasePreviewWidget):
         layout.addWidget(splitter)
         
         # 左侧：柱状图
-        chart_group = QGroupBox("📊 指标可视化")
+        chart_group = QGroupBox(tr_("📊 Metrics"))
         chart_group.setStyleSheet(Styles.group_box(Styles.COLORS['blue']))
         chart_layout = QVBoxLayout(chart_group)
         chart_layout.setContentsMargins(4, 4, 4, 4)
@@ -68,19 +69,19 @@ class MetricsPreviewWidget(BasePreviewWidget):
             self._bar_widget = pg.PlotWidget()
             self._bar_widget.setBackground('#181825')
             self._bar_widget.showGrid(x=False, y=True, alpha=0.3)
-            self._bar_widget.setLabel('left', text='值')
-            self._bar_widget.setLabel('bottom', text='指标')
+            self._bar_widget.setLabel('left', text=tr_('Value'))
+            self._bar_widget.setLabel('bottom', text=tr_('Metric'))
             self._bar_widget.setMinimumHeight(300)
             chart_layout.addWidget(self._bar_widget)
         else:
-            placeholder = QLabel("请安装 pyqtgraph 以显示图表")
+            placeholder = QLabel(tr_("Please install pyqtgraph to display charts"))
             placeholder.setAlignment(Qt.AlignmentFlag.AlignCenter)
             chart_layout.addWidget(placeholder)
         
         splitter.addWidget(chart_group)
         
         # 右侧：详细指标文本
-        detail_group = QGroupBox("📋 详细指标")
+        detail_group = QGroupBox(tr_("📋 Details"))
         detail_group.setStyleSheet(Styles.group_box(Styles.COLORS['peach']))
         detail_layout = QVBoxLayout(detail_group)
         detail_layout.setContentsMargins(12, 12, 12, 12)
@@ -228,7 +229,7 @@ class MetricsPreviewWidget(BasePreviewWidget):
         
         # 同时输出到日志
         logger.info("=" * 40)
-        logger.info("📊 评估指标:")
+        logger.info("📊 Metrics:")
         for name, value in metrics.items():
             if isinstance(value, float):
                 if 'accuracy' in name.lower() or 'acc' in name.lower():

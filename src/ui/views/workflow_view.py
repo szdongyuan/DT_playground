@@ -16,6 +16,7 @@ from PyQt6.QtWidgets import (
 )
 
 from ..node_editor import NodeGraphWidget, NodePalette, PropertyPanel
+from ..i18n import tr_
 from ..styles import Styles
 from ...controllers.workflow_controller import WorkflowController
 from ...workflow.engine import WorkflowEngine
@@ -135,19 +136,19 @@ class WorkflowView(QWidget):
         """
         
         # 新建按钮
-        new_btn = QPushButton("📄 新建")
+        new_btn = QPushButton(tr_("📄 New"))
         new_btn.setStyleSheet(btn_style)
         new_btn.clicked.connect(self._on_new_workflow)
         toolbar_layout.addWidget(new_btn)
         
         # 打开按钮
-        open_btn = QPushButton("📂 打开")
+        open_btn = QPushButton(tr_("📂 Open"))
         open_btn.setStyleSheet(btn_style)
         open_btn.clicked.connect(self._on_open_workflow)
         toolbar_layout.addWidget(open_btn)
         
         # 保存按钮
-        save_btn = QPushButton("💾 保存")
+        save_btn = QPushButton(tr_("💾 Save"))
         save_btn.setStyleSheet(btn_style)
         save_btn.clicked.connect(self._on_save_workflow)
         toolbar_layout.addWidget(save_btn)
@@ -165,12 +166,12 @@ class WorkflowView(QWidget):
         normal_layout.setContentsMargins(0, 0, 0, 0)
         normal_layout.setSpacing(4)
         
-        self._run_btn = QPushButton("▶️ 运行")
+        self._run_btn = QPushButton(tr_("▶️ Run"))
         self._run_btn.clicked.connect(self._on_run_workflow)
         self._run_btn.setStyleSheet(btn_style)
         normal_layout.addWidget(self._run_btn)
         
-        self._stop_btn = QPushButton("⏹️ 停止运行")
+        self._stop_btn = QPushButton(tr_("⏹️ Stop"))
         self._stop_btn.clicked.connect(self._on_stop_workflow)
         self._stop_btn.setStyleSheet(btn_style)
         self._stop_btn.setEnabled(False)  # Only enabled while a workflow is running
@@ -185,7 +186,7 @@ class WorkflowView(QWidget):
         breakpoint_layout.setContentsMargins(0, 0, 0, 0)
         breakpoint_layout.setSpacing(4)
         
-        self._breakpoint_label = QLabel("🔴 暂停")
+        self._breakpoint_label = QLabel(tr_("🔴 Paused"))
         self._breakpoint_label.setStyleSheet(f"""
             QLabel {{
                 color: {Styles.COLORS['red']};
@@ -197,7 +198,7 @@ class WorkflowView(QWidget):
         """)
         breakpoint_layout.addWidget(self._breakpoint_label)
         
-        self._continue_btn = QPushButton("⏵ 继续")
+        self._continue_btn = QPushButton(tr_("⏵ Continue"))
         self._continue_btn.clicked.connect(self._on_continue_clicked)
         self._continue_btn.setStyleSheet(f"""
             QPushButton {{
@@ -222,13 +223,13 @@ class WorkflowView(QWidget):
         toolbar_layout.addWidget(self._run_control_stack)
         
         # 适应画布按钮
-        fit_btn = QPushButton("🔍 适应")
+        fit_btn = QPushButton(tr_("🔍 Fit"))
         fit_btn.setStyleSheet(btn_style)
         fit_btn.clicked.connect(lambda: self._node_graph.fit_to_selection())
         toolbar_layout.addWidget(fit_btn)
         
         # 清空画布按钮
-        clear_btn = QPushButton("🗑️ 清空")
+        clear_btn = QPushButton(tr_("🗑️ Clear"))
         clear_btn.setStyleSheet(btn_style)
         clear_btn.clicked.connect(self._on_clear_workflow)
         toolbar_layout.addWidget(clear_btn)
@@ -346,9 +347,9 @@ class WorkflowView(QWidget):
         
         path, _ = QFileDialog.getOpenFileName(
             self,
-            "打开工作流",
+            tr_("Open workflow"),
             "workflows",
-            "工作流文件 (*.json)"
+            tr_("Workflow files (*.json)")
         )
         if path:
             workflow = Workflow.load(path)
@@ -374,9 +375,9 @@ class WorkflowView(QWidget):
         
         path, _ = QFileDialog.getSaveFileName(
             self,
-            "保存工作流",
+            tr_("Save workflow"),
             f"workflows/{workflow.name}.json",
-            "工作流文件 (*.json)"
+            tr_("Workflow files (*.json)")
         )
         if path:
             workflow.save(path)
@@ -400,12 +401,12 @@ class WorkflowView(QWidget):
         # Immediate UI feedback: stopping can take time (e.g., waiting for training batch/epoch end).
         if hasattr(self, "_stop_btn"):
             self._stop_btn.setEnabled(False)
-            self._stop_btn.setText("⏳ 正在停止...")
+            self._stop_btn.setText(tr_("⏳ Stopping..."))
         if hasattr(self, "_run_btn"):
             self._run_btn.setEnabled(False)
 
         event_bus = get_event_bus()
-        event_bus.emit_status("正在停止工作流...（等待当前任务收尾）")
+        event_bus.emit_status(tr_("Stopping workflow... (waiting for current task to finish)"))
         event_bus.training_stopped.emit()
 
         controller = getattr(self, "_workflow_controller", None)
@@ -420,8 +421,8 @@ class WorkflowView(QWidget):
         
         reply = QMessageBox.question(
             self,
-            "确认清空",
-            "确定要清空当前工作流吗？",
+            tr_("Confirm"),
+            tr_("Clear the current workflow?"),
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
         )
         
@@ -468,5 +469,5 @@ class WorkflowView(QWidget):
         if enabled and node_name:
             self._breakpoint_label.setText(f"🔴 {node_name}")
         else:
-            self._breakpoint_label.setText("🔴 暂停")
+            self._breakpoint_label.setText(tr_("🔴 Paused"))
 

@@ -9,6 +9,8 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any, List, Optional, Tuple
 
+from src.ui.i18n import tr_
+
 
 class ParamType(Enum):
     """Parameter type enumeration"""
@@ -61,7 +63,9 @@ class Parameter:
         """
         if value is None:
             if self.required:
-                return False, f"参数 {self.display_name} 是必需的"
+                return False, tr_("Parameter '{name}' is required").format(
+                    name=self.display_name
+                )
             return True, ""
         
         # Get type string, compatible with enum and string
@@ -69,31 +73,54 @@ class Parameter:
         
         if ptype == "int":
             if not isinstance(value, int):
-                return False, f"参数 {self.display_name} 必须是整数"
+                return False, tr_("Parameter '{name}' must be an integer").format(
+                    name=self.display_name
+                )
             if self.min_value is not None and value < self.min_value:
-                return False, f"参数 {self.display_name} 不能小于 {self.min_value}"
+                return False, tr_("Parameter '{name}' must be >= {min_value}").format(
+                    name=self.display_name,
+                    min_value=self.min_value,
+                )
             if self.max_value is not None and value > self.max_value:
-                return False, f"参数 {self.display_name} 不能大于 {self.max_value}"
+                return False, tr_("Parameter '{name}' must be <= {max_value}").format(
+                    name=self.display_name,
+                    max_value=self.max_value,
+                )
                 
         elif ptype == "float":
             if not isinstance(value, (int, float)):
-                return False, f"参数 {self.display_name} 必须是数值"
+                return False, tr_("Parameter '{name}' must be a number").format(
+                    name=self.display_name
+                )
             if self.min_value is not None and value < self.min_value:
-                return False, f"参数 {self.display_name} 不能小于 {self.min_value}"
+                return False, tr_("Parameter '{name}' must be >= {min_value}").format(
+                    name=self.display_name,
+                    min_value=self.min_value,
+                )
             if self.max_value is not None and value > self.max_value:
-                return False, f"参数 {self.display_name} 不能大于 {self.max_value}"
+                return False, tr_("Parameter '{name}' must be <= {max_value}").format(
+                    name=self.display_name,
+                    max_value=self.max_value,
+                )
                 
         elif ptype == "bool":
             if not isinstance(value, bool):
-                return False, f"参数 {self.display_name} 必须是布尔值"
+                return False, tr_("Parameter '{name}' must be a boolean").format(
+                    name=self.display_name
+                )
                 
         elif ptype == "choice":
             if self.choices and value not in self.choices:
-                return False, f"参数 {self.display_name} 必须是 {self.choices} 之一"
+                return False, tr_("Parameter '{name}' must be one of {choices}").format(
+                    name=self.display_name,
+                    choices=self.choices,
+                )
                 
         elif ptype == "str":
             if not isinstance(value, str):
-                return False, f"参数 {self.display_name} 必须是字符串"
+                return False, tr_("Parameter '{name}' must be a string").format(
+                    name=self.display_name
+                )
         
         return True, ""
     
