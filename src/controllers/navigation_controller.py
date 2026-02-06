@@ -6,23 +6,19 @@ Responsible for navigation and switching logic between views within the applicat
 """
 
 import logging
-from enum import IntEnum
 from typing import Optional
 
 from PyQt6.QtCore import QObject, pyqtSignal
 
 from src.core.event_bus import get_event_bus
 from src.ui.i18n import tr_
+from src.controllers.view_types import ViewType
+from src.controllers.navigation_dto import (
+    MessageBoxSpec,
+    NodeDoubleClickContext,
+    NodeDoubleClickDecision,
+)
 logger = logging.getLogger(__name__)
-
-
-class ViewType(IntEnum):
-    """视图类型枚举"""
-    WORKFLOW = 0      # 工作流视图
-    MODEL = 1         # 模型视图
-    PREVIEW = 2       # 预览视图
-    TRAINING = 3      # 训练视图
-
 
 class NavigationController(QObject):
     """
@@ -170,33 +166,121 @@ class NavigationController(QObject):
         Returns:
             是否处理了双击事件
         """
-        # 训练相关节点
-        if category == "training":
-            if node_type == "trainer":
+        # Keep this legacy API, but delegate the decision to the unified implementation.
+        ctx = NodeDoubleClickContext(
+            node_id=node_id,
+            node_type=node_type,
+            category=category,
+            display_name=node_id,
+            has_output=has_output,
+            outputs=outputs or {},
+        )
+        decision = self.decide_node_double_click(ctx)
+        return decision.handled
+
+    def decide_node_double_click(self, ctx: NodeDoubleClickContext) -> NodeDoubleClickDecision:
+        """
+        Decide what to do when a workflow node is double-clicked.
+
+        This is a UI-agnostic decision API. It can trigger view switching via existing
+        controller methods, and returns a `NodeDoubleClickDecision` describing any
+        additional UI actions the caller should perform (message box, preview payload, etc.).
+        """
+        # Special cases first (kept consistent with legacy MainWindow logic).
+        if ctx.node_type == "save_model":
+            if ctx.has_output:
+                model_path = (ctx.outputs or {}).get("model_path")
+                if model_path:
+                    return NodeDoubleClickDecision(
+                        handled=True,
+                        message_box=MessageBoxSpec(
+                            level="info",
+                            title=tr_("Model save path"),
+                            message=tr_("Model saved to:\n{path}").format(path=model_path),
+                        ),
+                    )
+            return NodeDoubleClickDecision(handled=True, show_not_run_tip=True)
+
+        if ctx.category == "control" and ctx.node_type == "loop":
+            return NodeDoubleClickDecision(
+                handled=True,
+                message_box=MessageBoxSpec(
+                    level="info",
+                    title=tr_("Info"),
+                    message=tr_(
+                        "Loop node [{name}] cannot be previewed.\n"
+                        "Please preview a specific processing node inside the loop."
+                    ).format(name=ctx.display_name),
+                ),
+            )
+
+        if ctx.node_type == "label_file":
+            if ctx.has_output:
+                labels = (ctx.outputs or {}).get("labels")
+                if labels:
+                    if isinstance(labels, (list, dict)):
+                        label_count = len(labels)
+                    else:
+                        label_count = 1
+                    return NodeDoubleClickDecision(
+                        handled=True,
+                        message_box=MessageBoxSpec(
+                            level="info",
+                            title=tr_("Label data"),
+                            message=tr_(
+                                "Loaded {count} label(s).\n"
+                                "Label data cannot be visualized for preview."
+                            ).format(count=label_count),
+                        ),
+                    )
+            return NodeDoubleClickDecision(handled=True, show_not_run_tip=True)
+
+        if ctx.node_type == "show_history" and ctx.has_output:
+            history = (ctx.outputs or {}).get("history")
+            if history is not None:
+                # View should inject this to TrainingView before switching.
                 self.switch_to_training()
-                return True
-            elif node_type == "load_model":
-                # 跳转到预览视图显示模型 summary
-                if has_output and outputs:
-                    self._selected_node_id = node_id
-                    self.switch_to_preview()
-                    return True
-                return False
-            elif node_type == "show_history":
+                return NodeDoubleClickDecision(
+                    handled=True,
+                    switch_to=ViewType.TRAINING,
+                    training_history=history,
+                )
+
+        # Training-related nodes.
+        if ctx.category == "training":
+            if ctx.node_type in ("trainer", "show_history"):
                 self.switch_to_training()
-                return True
-        
-        # 控制流节点通常不需要预览
-        if category == "control":
-            return False
-        
-        # 其他节点：如果有输出数据则跳转预览
-        if has_output and outputs:
-            self._selected_node_id = node_id
+                return NodeDoubleClickDecision(handled=True, switch_to=ViewType.TRAINING)
+
+            # For other training nodes, if they have output, go to preview.
+            if ctx.has_output and ctx.outputs:
+                self._selected_node_id = ctx.node_id
+                self.switch_to_preview()
+                return NodeDoubleClickDecision(
+                    handled=True,
+                    switch_to=ViewType.PREVIEW,
+                    preview_payload=(ctx.node_id, ctx.display_name, ctx.outputs),
+                )
+            return NodeDoubleClickDecision(handled=True, show_not_run_tip=True)
+
+        # Control nodes: do not preview (legacy behavior).
+        if ctx.category == "control":
+            return NodeDoubleClickDecision(handled=False)
+
+        # Default fallback: if it has output data, preview it; otherwise show tip.
+        if not ctx.has_output:
+            return NodeDoubleClickDecision(handled=True, show_not_run_tip=True)
+
+        if ctx.outputs:
+            self._selected_node_id = ctx.node_id
             self.switch_to_preview()
-            return True
-        
-        return False
+            return NodeDoubleClickDecision(
+                handled=True,
+                switch_to=ViewType.PREVIEW,
+                preview_payload=(ctx.node_id, ctx.display_name, ctx.outputs),
+            )
+
+        return NodeDoubleClickDecision(handled=False)
     
     def _on_node_selected(self, node_id: str):
         """节点选中事件"""

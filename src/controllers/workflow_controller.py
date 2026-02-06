@@ -88,8 +88,22 @@ class WorkflowController(QObject):
         """
         self._workflow = workflow
         self._engine.set_workflow(workflow)
+
+    def validate_workflow(self, workflow: Workflow) -> tuple[bool, list[str]]:
+        """
+        Validate a workflow and return raw errors without side effects.
+
+        This API is intended for UI to present validation results (e.g. warning dialog)
+        without coupling UI to domain validation details.
+        """
+        try:
+            valid, errors = workflow.validate()
+            return bool(valid), list(errors or [])
+        except Exception as e:
+            # Keep a stable return shape; callers decide how to present the error.
+            return False, [str(e)]
     
-    def run(self) -> bool:
+    def run(self, *, validate: bool = True) -> bool:
         """
         运行当前工作流
         
@@ -100,14 +114,14 @@ class WorkflowController(QObject):
             self._event_bus.emit_status(tr_("No workflow to run"))
             return False
         
-        # 验证工作流
-        valid, errors = self._workflow.validate()
-        if not valid:
-            error_msg = tr_("Workflow validation failed:\n{errors}").format(
-                errors="\n".join(errors)
-            )
-            self._event_bus.workflow_error.emit(error_msg)
-            return False
+        if validate:
+            valid, errors = self.validate_workflow(self._workflow)
+            if not valid:
+                error_msg = tr_("Workflow validation failed:\n{errors}").format(
+                    errors="\n".join(errors)
+                )
+                self._event_bus.workflow_error.emit(error_msg)
+                return False
         
         # 开始执行
         self._event_bus.emit_status(tr_("Starting workflow..."))

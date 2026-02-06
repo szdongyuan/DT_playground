@@ -15,7 +15,6 @@ from PyQt6.QtWidgets import (
     QGroupBox, QLabel, QVBoxLayout, QWidget
 )
 
-from src.workflow.port import DataType
 from src.ui.i18n import tr_
 from src.ui.styles import Styles
 
@@ -41,7 +40,6 @@ class Feature1DPreviewWidget(BasePreviewWidget):
     显示一维特征数据的线图。
     """
     
-    supported_types = [DataType.FEATURE_1D, DataType.FEATURE]
     display_name = tr_("1D feature")
     icon = "📈"
     

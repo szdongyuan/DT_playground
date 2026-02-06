@@ -11,6 +11,7 @@ from PyQt6.QtWidgets import (
 )
 
 from src.ui.i18n import tr_
+from src.services.system_info_service import SystemInfoService
 class SettingsDialog(QDialog):
     """应用设置对话框"""
     
@@ -19,6 +20,7 @@ class SettingsDialog(QDialog):
     def __init__(self, parent=None, current_settings: dict = None):
         super().__init__(parent)
         self.current_settings = current_settings or {}
+        self._system_info_service = SystemInfoService()
         self._init_ui()
         self._load_settings()
     
@@ -322,25 +324,21 @@ class SettingsDialog(QDialog):
         return widget
     
     def _detect_gpu(self):
-        """检测GPU"""
-        try:
-            import tensorflow as tf
-            gpus = tf.config.list_physical_devices('GPU')
-            if gpus:
-                info_text = tr_("Detected {count} GPU(s):\n").format(count=len(gpus))
-                for i, gpu in enumerate(gpus):
-                    info_text += f"  {i+1}. {gpu.name}\n"
-                self.gpu_info_label.setText(info_text)
-                self.gpu_info_label.setStyleSheet("color: #a6e3a1;")
-            else:
-                self.gpu_info_label.setText(
-                    tr_("No GPU detected. Training will use CPU.")
-                )
-                self.gpu_info_label.setStyleSheet("color: #f9e2af;")
-        except Exception as e:
-            self.gpu_info_label.setText(
-                tr_("GPU detection error: {error}").format(error=str(e))
-            )
+        """Detect GPU and update the GPU info label."""
+        info = self._system_info_service.get_gpu_info(force_refresh=True)
+        if info.available:
+            info_text = tr_("Detected {count} GPU(s):\n").format(count=info.device_count)
+            for i, name in enumerate(info.device_names):
+                info_text += f"  {i+1}. {name}\n"
+            self.gpu_info_label.setText(info_text)
+            self.gpu_info_label.setStyleSheet("color: #a6e3a1;")
+            return
+
+        if info.backend == "tensorflow":
+            self.gpu_info_label.setText(tr_("No GPU detected. Training will use CPU."))
+            self.gpu_info_label.setStyleSheet("color: #f9e2af;")
+        else:
+            self.gpu_info_label.setText(tr_("GPU detection error: {error}").format(error=info.error or "unknown"))
             self.gpu_info_label.setStyleSheet("color: #f38ba8;")
     
     def _browse_model_path(self):

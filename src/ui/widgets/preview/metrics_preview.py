@@ -15,7 +15,6 @@ from PyQt6.QtWidgets import (
     QGroupBox, QHBoxLayout, QLabel, QSplitter, QVBoxLayout, QWidget
 )
 
-from src.workflow.port import DataType
 from src.ui.i18n import tr_
 from src.ui.styles import Styles
 
@@ -40,7 +39,6 @@ class MetricsPreviewWidget(BasePreviewWidget):
     显示评估指标的柱状图和详细文本。
     """
     
-    supported_types = [DataType.METRICS]
     display_name = tr_("Metrics")
     icon = "📊"
     

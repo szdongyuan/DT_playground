@@ -17,7 +17,6 @@ from PyQt6.QtWidgets import (
     QSplitter, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
 )
 
-from src.workflow.port import DataType
 from src.ui.i18n import tr_
 from src.ui.styles import Styles
 
@@ -42,7 +41,6 @@ class LabelPreviewWidget(BasePreviewWidget):
     显示标签数据的表格视图、统计信息和分布图。
     """
     
-    supported_types = [DataType.LABEL]
     display_name = tr_("Label preview")
     icon = "🏷️"
     

@@ -15,7 +15,6 @@ from PyQt6.QtWidgets import (
     QGroupBox, QHBoxLayout, QLabel, QSplitter, QVBoxLayout, QWidget
 )
 
-from src.workflow.port import DataType
 from src.ui.i18n import tr_
 from src.ui.styles import Styles
 
@@ -41,7 +40,6 @@ class Feature2DPreviewWidget(BasePreviewWidget):
     显示二维特征数据的热力图和边际分布。
     """
     
-    supported_types = [DataType.FEATURE_2D, DataType.FEATURE]
     display_name = tr_("2D feature")
     icon = "🗺️"
     

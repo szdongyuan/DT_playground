@@ -15,7 +15,6 @@ from PyQt6.QtWidgets import (
     QGroupBox, QSplitter, QVBoxLayout, QWidget
 )
 
-from src.workflow.port import DataType
 from src.ui.i18n import tr_
 from src.ui.styles import Styles
 from src.ui.widgets.audio_player import AudioPlayerWidget
@@ -36,7 +35,6 @@ class AudioPreviewWidget(BasePreviewWidget):
     显示音频的波形、频谱图，并提供播放控制。
     """
     
-    supported_types = [DataType.AUDIO]
     display_name = tr_("Audio preview")
     icon = "🎵"
     
@@ -106,7 +104,7 @@ class AudioPreviewWidget(BasePreviewWidget):
         
         # 验证数据类型
         if not hasattr(data, 'data') or not hasattr(data, 'sample_rate'):
-            logger.warning(f"无效的音频数据类型: {type(data)}")
+            logger.warning("Invalid audio data type: %s", type(data))
             return False
         
         try:
@@ -139,7 +137,7 @@ class AudioPreviewWidget(BasePreviewWidget):
             return True
             
         except Exception as e:
-            logger.error(f"设置音频数据失败: {e}")
+            logger.error("Failed to set audio data: %s", e)
             return False
     
     def clear(self):

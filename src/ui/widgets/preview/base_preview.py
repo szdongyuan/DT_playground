@@ -11,23 +11,20 @@ from typing import Any, List, Optional, Type
 from PyQt6.QtCore import pyqtSignal
 from PyQt6.QtWidgets import QWidget
 
-from src.workflow.port import DataType
 from src.ui.i18n import tr_
 logger = logging.getLogger(__name__)
 
 
 class BasePreviewWidget(QWidget):
     """
-    预览组件基类
-    
-    所有专用预览组件都应继承此类并实现 set_data 和 clear 方法。
+    Base class for all preview widgets.
+
+    All specialized preview widgets should inherit from this class and implement
+    `set_data` and `clear`.
     
     Signals:
-        data_changed: 当显示的数据发生变化时发射
+        data_changed: emitted when displayed data changes
     """
-    
-    # 类属性：该组件支持的数据类型列表
-    supported_types: List[DataType] = []
     
     # 组件显示名称
     display_name: str = tr_("Base preview")
@@ -45,58 +42,58 @@ class BasePreviewWidget(QWidget):
     
     @property
     def current_data(self) -> Any:
-        """获取当前显示的数据"""
+        """Return the currently displayed data object."""
         return self._current_data
     
     @property
     def data_info(self) -> str:
-        """获取数据信息字符串（用于显示在标题栏）"""
+        """Return a short info string shown in the header."""
         return self._data_info
     
     def set_data(self, data: Any) -> bool:
         """
-        设置要显示的数据
+        Set the data to be displayed.
         
         Args:
-            data: 要显示的数据对象
+            data: data object to display
             
         Returns:
-            是否成功设置数据
+            True if data was accepted and rendered
         
         Note:
-            子类必须实现此方法
+            Subclasses must implement this method.
         """
         raise NotImplementedError(tr_("Subclasses must implement set_data()"))
     
     def clear(self):
         """
-        清除当前显示
+        Clear current view.
         
         Note:
-            子类必须实现此方法
+            Subclasses must implement this method.
         """
         raise NotImplementedError(tr_("Subclasses must implement clear()"))
     
     @classmethod
     def can_display(cls, data: Any) -> bool:
         """
-        检查该组件是否能显示给定的数据
+        Return whether this widget can display the given data object.
         
         Args:
-            data: 要检查的数据对象
+            data: data object to check
             
         Returns:
-            是否可以显示该数据
+            True if this widget can display the data
         """
-        # 默认实现：子类可以覆盖以提供更精确的检查
+        # Default implementation: subclasses may override for better checks.
         return False
     
     def _update_data_info(self, info: str):
-        """更新数据信息"""
+        """Update the header info string."""
         self._data_info = info
 
 
-# 预览组件注册表
+# Preview widget registry.
 _preview_registry: List[Type[BasePreviewWidget]] = []
 
 
@@ -110,7 +107,7 @@ def register_preview(widget_class: Type[BasePreviewWidget]) -> Type[BasePreviewW
             ...
     """
     _preview_registry.append(widget_class)
-    logger.debug(f"注册预览组件: {widget_class.__name__}")
+    logger.debug("Registered preview widget: %s", widget_class.__name__)
     return widget_class
 
 
