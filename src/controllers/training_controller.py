@@ -11,6 +11,7 @@ from typing import Any, Dict, Optional
 from PyQt6.QtCore import QObject, pyqtSignal
 
 from src.core.event_bus import get_event_bus
+from src.services.training_params_service import TrainingParamsService
 from src.ui.i18n import tr_
 logger = logging.getLogger(__name__)
 
@@ -94,6 +95,20 @@ class TrainingController(QObject):
         )
         
         logger.info(f"Training started: {total_epochs} epochs")
+
+    def start_training_for_workflow(self, workflow, default_epochs: int = 20) -> int:
+        """
+        Derive training parameters from a workflow and start training tracking.
+
+        Returns:
+            The derived total epochs.
+        """
+        total_epochs = TrainingParamsService.derive_total_epochs(
+            workflow,
+            default_epochs=default_epochs,
+        )
+        self.start_training(total_epochs)
+        return total_epochs
     
     def update_epoch(self, current: int, total: int, metrics: Dict[str, Any]):
         """

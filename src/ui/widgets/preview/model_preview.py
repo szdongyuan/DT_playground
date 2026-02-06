@@ -15,7 +15,6 @@ from PyQt6.QtWidgets import (
     QTextEdit, QVBoxLayout, QWidget
 )
 
-from src.workflow.port import DataType
 from src.ui.i18n import tr_
 from src.ui.styles import Styles
 
@@ -33,7 +32,6 @@ class ModelPreviewWidget(BasePreviewWidget):
     显示 Keras 模型的 summary 信息和参数统计。
     """
     
-    supported_types = [DataType.MODEL]
     display_name = tr_("Model preview")
     icon = "🧠"
     

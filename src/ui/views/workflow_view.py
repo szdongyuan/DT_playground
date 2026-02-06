@@ -390,12 +390,33 @@ class WorkflowView(QWidget):
             except Exception:
                 pass
     
+    def set_run_controls_state(
+        self,
+        *,
+        run_enabled: bool,
+        stop_enabled: bool,
+        stop_text: Optional[str] = None,
+    ) -> None:
+        """
+        Update the workflow Run/Stop controls state.
+
+        This is a public API for other UI components (e.g. MainWindow) to update
+        run controls without accessing private widget members like `_run_btn`
+        or `_stop_btn`.
+        """
+        if hasattr(self, "_run_btn"):
+            self._run_btn.setEnabled(run_enabled)
+        if hasattr(self, "_stop_btn"):
+            self._stop_btn.setEnabled(stop_enabled)
+            if stop_text is not None:
+                self._stop_btn.setText(stop_text)
+
     def _on_run_workflow(self):
-        """运行工作流"""
+        """Request to run the workflow."""
         self.run_requested.emit()
     
     def _on_stop_workflow(self):
-        """停止工作流"""
+        """Request to stop the workflow."""
         from src.core.event_bus import get_event_bus
 
         # Immediate UI feedback: stopping can take time (e.g., waiting for training batch/epoch end).
