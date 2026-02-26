@@ -29,7 +29,7 @@ from src.ui.views.model_builder_view import ModelBuilderView
 from src.ui.views.preview_view import PreviewView
 from src.ui.views.training_view import TrainingView
 from src.ui.views.workflow_tabs_view import WorkflowTabsView
-from src.workflow.engine import WorkflowEngine, ExecutionResult
+from src.workflow.engine import WorkflowEngine, ExecutionResult, EngineState
 from src.workflow.workflow import Workflow
 
 
@@ -352,6 +352,8 @@ class MainWindow(QWidget):
     
     def _on_event_workflow_started(self):
         """EventBus: workflow started."""
+        if self._workflow_view.get_running_tab_index() is None:
+            self._workflow_view.set_running_tab_index(self._workflow_view.get_current_tab_index())
         self.training_started.emit()
         self._workflow_view.reset_all_node_states()
         # Ensure workflow run controls are updated when a run starts.
@@ -365,6 +367,8 @@ class MainWindow(QWidget):
         """EventBus: workflow finished."""
         if success:
             self.training_completed.emit({})
+        self._workflow_view.clear_breakpoint_mode()
+        self._workflow_view.clear_running_tab()
         # Restore workflow run controls (stop may take time and temporarily disables buttons).
         self._workflow_view.set_run_controls_state(
             run_enabled=True,
@@ -374,6 +378,8 @@ class MainWindow(QWidget):
     
     def _on_event_workflow_error(self, error_msg: str):
         """EventBus: workflow error."""
+        self._workflow_view.clear_breakpoint_mode()
+        self._workflow_view.clear_running_tab()
         # Restore workflow run controls on error as well.
         self._workflow_view.set_run_controls_state(
             run_enabled=True,
@@ -394,12 +400,13 @@ class MainWindow(QWidget):
     def _on_event_breakpoint_hit(self, node_id: str):
         """事件总线：断点触发"""
         self._selected_node_id = node_id
+        self._workflow_view.activate_running_tab()
         self._workflow_btn.setChecked(True)
         self._view_stack.setCurrentWidget(self._workflow_view)
         self._workflow_view.highlight_node(node_id)
         self._workflow_view.update_node_state(node_id, 'waiting')
         
-        workflow = self._workflow_view.get_workflow()
+        workflow = self._workflow_controller.workflow or self._workflow_view.get_workflow()
         node_name = ""
         if workflow:
             node = workflow.get_node(node_id)
@@ -498,10 +505,25 @@ class MainWindow(QWidget):
     
     def _on_run_workflow(self):
         """Handle workflow run request from the UI."""
+        if self._is_workflow_run_active():
+            running_idx = self._workflow_view.get_running_tab_index()
+            current_idx = self._workflow_view.get_current_tab_index()
+            if running_idx is not None and current_idx != running_idx:
+                self._event_bus.emit_status(
+                    tr_("A workflow is already running. Switching to the running tab.")
+                )
+                self._workflow_view.activate_running_tab()
+                return
+
+            self._event_bus.emit_status(tr_("A workflow is already running."))
+            return
+
         workflow = self._workflow_view.get_workflow()
         if not workflow:
             QMessageBox.warning(self, tr_("Warning"), tr_("No runnable workflow."))
             return
+
+        self._workflow_view.set_running_tab_index(self._workflow_view.get_current_tab_index())
         
         # Update controller's workflow first so downstream calls have a consistent source of truth.
         self._workflow_controller.set_workflow(workflow)
@@ -514,15 +536,26 @@ class MainWindow(QWidget):
                 tr_("Validation failed"),
                 tr_("Workflow validation failed:\n") + "\n".join(errors),
             )
+            self._workflow_view.clear_running_tab()
             return
 
-        # Notify training controller using derived params (UI should not traverse nodes).
-        self._training_controller.start_training_for_workflow(workflow, default_epochs=20)
-        
         # 通过控制器执行工作流
         success = self._workflow_controller.run(validate=False)
         if not success:
+            # Do not start training tracking if the workflow didn't actually start.
+            self._workflow_view.clear_breakpoint_mode()
+            self._workflow_view.clear_running_tab()
+            self._workflow_view.set_run_controls_state(
+                run_enabled=True,
+                stop_enabled=False,
+                stop_text=tr_("⏹️ Stop"),
+            )
             self._training_controller.finish_training(False, tr_("Startup failed"))
+            return
+
+        # Notify training controller using derived params (UI should not traverse nodes).
+        # Only start training tracking after the workflow successfully starts.
+        self._training_controller.start_training_for_workflow(workflow, default_epochs=20)
     
     def _on_pause_training(self):
         """暂停训练"""
@@ -597,13 +630,28 @@ class MainWindow(QWidget):
         
         # 如果是运行状态，更新状态栏
         if state == 'running':
-            workflow = self._workflow_view.get_workflow()
+            workflow = self._workflow_controller.workflow or self._workflow_view.get_workflow()
             if workflow:
                 node = workflow.get_node(node_id)
                 if node:
                     self.status_label.setText(
                         tr_("Running: {name}").format(name=node.display_name)
                     )
+
+    def _is_workflow_run_active(self) -> bool:
+        try:
+            state = self._workflow_controller.engine.state
+            engine = self._workflow_controller.engine
+            worker = getattr(engine, "_worker", None)
+            if worker is not None:
+                try:
+                    if worker.isRunning():
+                        return True
+                except Exception:
+                    pass
+            return state in (EngineState.RUNNING, EngineState.PAUSED, EngineState.STOPPED)
+        except Exception:
+            return bool(self._workflow_controller.is_running() or self._workflow_controller.is_at_breakpoint())
     
     # ===== Engine 直接信号处理 (旧代码兼容，将逐步迁移) =====
     

@@ -12,7 +12,7 @@ from PyQt6.QtCore import QObject, pyqtSignal
 
 from src.core.event_bus import get_event_bus
 from src.ui.i18n import tr_
-from src.workflow.engine import WorkflowEngine, ExecutionResult
+from src.workflow.engine import WorkflowEngine, ExecutionResult, EngineState
 from src.workflow.workflow import Workflow
 
 
@@ -86,6 +86,10 @@ class WorkflowController(QObject):
         Args:
             workflow: 工作流对象
         """
+        if self._engine.state in (EngineState.RUNNING, EngineState.PAUSED, EngineState.STOPPED) or self._engine.is_waiting_at_breakpoint():
+            self._event_bus.emit_status(tr_("Workflow is active; switching workflow is not allowed"))
+            return
+
         self._workflow = workflow
         self._engine.set_workflow(workflow)
 

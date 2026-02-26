@@ -35,6 +35,13 @@ class _Tab:
     editor: WorkflowEditorWidget
 
 
+@dataclass
+class _RunControlsState:
+    run_enabled: bool
+    stop_enabled: bool
+    stop_text: Optional[str] = None
+
+
 class WorkflowTabsView(QWidget):
     """
     Workflow tab container.
@@ -52,6 +59,14 @@ class WorkflowTabsView(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self._controller: Optional[WorkflowController] = None
+        self._running_tab_index: Optional[int] = None
+        self._running_controls: _RunControlsState = _RunControlsState(
+            run_enabled=True,
+            stop_enabled=False,
+            stop_text=None,
+        )
+        self._breakpoint_active: bool = False
+        self._breakpoint_node_name: str = ""
 
         self._setup_ui()
         self._connect_signals()
@@ -82,22 +97,24 @@ class WorkflowTabsView(QWidget):
         return editor.get_workflow() if editor else None
 
     def reset_all_node_states(self):
-        editor = self._current_editor()
+        editor = self._runtime_editor()
         if editor:
             editor.reset_all_node_states()
 
     def update_node_state(self, node_id: str, state: str):
-        editor = self._current_editor()
+        editor = self._runtime_editor()
         if editor:
             editor.update_node_state(node_id, state)
 
     def highlight_node(self, node_id: str):
-        editor = self._current_editor()
+        editor = self._runtime_editor()
         if editor:
             editor.highlight_node(node_id)
 
     def show_breakpoint_mode(self, enabled: bool, node_name: str = ""):
-        self._toolbar.show_breakpoint_mode(enabled, node_name)
+        self._breakpoint_active = bool(enabled)
+        self._breakpoint_node_name = node_name or ""
+        self._apply_toolbar_state_for_current_tab()
 
     def set_run_controls_state(
         self,
@@ -106,11 +123,59 @@ class WorkflowTabsView(QWidget):
         stop_enabled: bool,
         stop_text: Optional[str] = None,
     ) -> None:
-        self._toolbar.set_run_controls_state(
+        if self._running_tab_index is None:
+            self._toolbar.set_run_controls_state(
+                run_enabled=run_enabled,
+                stop_enabled=stop_enabled,
+                stop_text=stop_text,
+            )
+            return
+
+        self._running_controls = _RunControlsState(
             run_enabled=run_enabled,
             stop_enabled=stop_enabled,
             stop_text=stop_text,
         )
+        self._apply_toolbar_state_for_current_tab()
+
+    # ===== Running tab tracking =====
+
+    def get_current_tab_index(self) -> int:
+        return int(self._tabs.currentIndex())
+
+    def get_running_tab_index(self) -> Optional[int]:
+        return self._running_tab_index
+
+    def set_running_tab_index(self, index: Optional[int]) -> None:
+        if index is None:
+            self._running_tab_index = None
+            self._apply_toolbar_state_for_current_tab()
+            return
+
+        if 0 <= index < self._tabs.count():
+            self._running_tab_index = int(index)
+        else:
+            self._running_tab_index = None
+        self._apply_toolbar_state_for_current_tab()
+
+    def clear_running_tab(self) -> None:
+        self.set_running_tab_index(None)
+
+    def clear_breakpoint_mode(self) -> None:
+        self._breakpoint_active = False
+        self._breakpoint_node_name = ""
+        self._apply_toolbar_state_for_current_tab()
+
+    def activate_running_tab(self) -> None:
+        idx = self._running_tab_index
+        if idx is None:
+            return
+        if 0 <= idx < self._tabs.count():
+            self._tabs.setCurrentIndex(idx)
+
+    def is_current_tab_running(self) -> bool:
+        idx = self._running_tab_index
+        return idx is not None and idx == self._tabs.currentIndex()
 
     # ===== Tab operations =====
 
@@ -222,6 +287,46 @@ class WorkflowTabsView(QWidget):
         tab = self._get_tab(self._tabs.currentIndex())
         return tab.editor if tab else None
 
+    def _runtime_editor(self) -> Optional[WorkflowEditorWidget]:
+        idx = self._running_tab_index
+        if idx is not None:
+            tab = self._get_tab(idx)
+            if tab:
+                return tab.editor
+        return self._current_editor()
+
+    def _apply_toolbar_state_for_current_tab(self) -> None:
+        """
+        Keep toolbar controls consistent with the selected tab.
+
+        While a workflow is running (or stopping/paused), only the running tab can
+        interact with runtime controls. Other tabs show disabled controls.
+        """
+        if self._running_tab_index is None:
+            if self._breakpoint_active:
+                self._toolbar.show_breakpoint_mode(False)
+            return
+
+        if self.is_current_tab_running():
+            self._toolbar.show_breakpoint_mode(
+                self._breakpoint_active,
+                self._breakpoint_node_name,
+            )
+            if not self._breakpoint_active:
+                self._toolbar.set_run_controls_state(
+                    run_enabled=self._running_controls.run_enabled,
+                    stop_enabled=self._running_controls.stop_enabled,
+                    stop_text=self._running_controls.stop_text,
+                )
+            return
+
+        self._toolbar.show_breakpoint_mode(False)
+        self._toolbar.set_run_controls_state(
+            run_enabled=False,
+            stop_enabled=False,
+            stop_text=None,
+        )
+
     # ===== Title helpers =====
 
     def _workflow_display_name(self, workflow: Optional[Workflow]) -> str:
@@ -261,6 +366,7 @@ class WorkflowTabsView(QWidget):
     def _on_current_changed(self, index: int):
         self._update_tab_title(index)
         self._refresh_titles()
+        self._apply_toolbar_state_for_current_tab()
         self.workflow_changed.emit()
 
     def _open_dialog(self):
@@ -317,7 +423,7 @@ class WorkflowTabsView(QWidget):
         return bool(ok)
 
     def _on_stop_workflow(self):
-        self._toolbar.set_run_controls_state(
+        self.set_run_controls_state(
             run_enabled=False,
             stop_enabled=False,
             stop_text=tr_("⏳ Stopping..."),
@@ -358,6 +464,17 @@ class WorkflowTabsView(QWidget):
         self._on_editor_workflow_changed()
 
     def _on_tab_close_requested(self, index: int):
+        if self._running_tab_index is not None:
+            if index == self._running_tab_index:
+                QMessageBox.information(
+                    self,
+                    tr_("Running"),
+                    tr_("Cannot close the running tab while a workflow is active."),
+                )
+                return
+            if index < self._running_tab_index:
+                self._running_tab_index -= 1
+
         tab = self._get_tab(index)
         if not tab:
             return
@@ -392,4 +509,5 @@ class WorkflowTabsView(QWidget):
             self.new_tab()
         else:
             self._refresh_titles()
+            self._apply_toolbar_state_for_current_tab()
             self.workflow_changed.emit()
