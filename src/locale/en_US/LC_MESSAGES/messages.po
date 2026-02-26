@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-26 13:08+0800\n"
+"POT-Creation-Date: 2026-02-26 17:34+0800\n"
 "PO-Revision-Date: 2026-02-04 17:15+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -81,11 +81,11 @@ msgstr "Help(&H)"
 msgid "About..."
 msgstr "About..."
 
-#: src/app.py:256 src/workflow/nodes/training.py:31
+#: src/app.py:324 src/workflow/nodes/training.py:31
 msgid "Load model"
 msgstr "Load model"
 
-#: src/app.py:258
+#: src/app.py:326
 msgid ""
 "Keras models (*.h5 *.keras);;Model definition (*.model.json);;SavedModel "
 "(*);;All files (*)"
@@ -93,36 +93,36 @@ msgstr ""
 "Keras models (*.h5 *.keras);;Model definition (*.model.json);;SavedModel "
 "(*);;All files (*)"
 
-#: src/app.py:267 src/ui/dialogs/export_dialog.py:191
+#: src/app.py:335 src/ui/dialogs/export_dialog.py:191
 msgid "Success"
 msgstr "Success"
 
-#: src/app.py:268
+#: src/app.py:336
 #, python-brace-format
 msgid "Model loaded: {path}"
 msgstr "Model loaded: {path}"
 
-#: src/app.py:273 src/ui/dialogs/export_dialog.py:208
+#: src/app.py:341 src/ui/dialogs/export_dialog.py:208
 #: src/ui/views/model_builder_view.py:336
 #: src/ui/views/model_builder_view.py:521
 msgid "Error"
 msgstr "Error"
 
-#: src/app.py:274 src/ui/views/model_builder_view.py:337
+#: src/app.py:342 src/ui/views/model_builder_view.py:337
 #: src/workflow/nodes/training.py:81
 #, python-brace-format
 msgid "Failed to load model: {error}"
 msgstr "Failed to load model: {error}"
 
-#: src/app.py:288
+#: src/app.py:356
 msgid "(No recent files)"
 msgstr "(No recent files)"
 
-#: src/app.py:299
+#: src/app.py:367
 msgid "Clear recent files"
 msgstr "Clear recent files"
 
-#: src/app.py:339 src/ui/main_window.py:523
+#: src/app.py:407 src/ui/main_window.py:523
 #: src/ui/dialogs/dataset_dialog.py:216 src/ui/dialogs/export_dialog.py:137
 #: src/ui/dialogs/export_dialog.py:141 src/ui/dialogs/export_dialog.py:145
 #: src/ui/views/model_builder_view.py:452
@@ -130,26 +130,26 @@ msgstr "Clear recent files"
 msgid "Warning"
 msgstr "Warning"
 
-#: src/app.py:340 src/audio/loader.py:58 src/workflow/nodes/data_source.py:285
+#: src/app.py:408 src/audio/loader.py:58 src/workflow/nodes/data_source.py:285
 #: src/workflow/nodes/data_source.py:351
 #, python-brace-format
 msgid "File does not exist: {path}"
 msgstr "File does not exist: {path}"
 
-#: src/app.py:394 src/controllers/navigation_controller.py:209
+#: src/app.py:462 src/controllers/navigation_controller.py:209
 #: src/ui/main_window.py:829
 msgid "Info"
 msgstr "Info"
 
-#: src/app.py:395
+#: src/app.py:463
 msgid "Settings saved. Some changes require a restart to take effect."
 msgstr "Settings saved. Some changes require a restart to take effect."
 
-#: src/app.py:423
+#: src/app.py:491
 msgid "Confirm restart"
 msgstr "Confirm restart"
 
-#: src/app.py:425
+#: src/app.py:493
 msgid ""
 "A workflow/training is currently running.\n"
 "Restart will stop the current run and start a new instance.\n"
@@ -161,11 +161,11 @@ msgstr ""
 "\n"
 "Continue?"
 
-#: src/app.py:458
+#: src/app.py:526
 msgid "Restart failed"
 msgstr "Restart failed"
 
-#: src/app.py:459
+#: src/app.py:527
 msgid "Please check the latest log under the logs directory."
 msgstr "Please check the latest log under the logs directory."
 
@@ -2310,8 +2310,9 @@ msgstr "🗑️ Clear"
 #: src/ui/views/model_builder_view.py:294
 #: src/ui/views/model_builder_view.py:357
 #: src/ui/views/model_builder_view.py:593
-#: src/ui/views/workflow_tabs_view.py:454
-#: src/ui/views/workflow_tabs_view.py:489 src/ui/views/workflow_view.py:211
+#: src/ui/views/workflow_tabs_view.py:128
+#: src/ui/views/workflow_tabs_view.py:582
+#: src/ui/views/workflow_tabs_view.py:617 src/ui/views/workflow_view.py:211
 msgid "Confirm"
 msgstr "Confirm"
 
@@ -2596,47 +2597,55 @@ msgstr "Paused"
 msgid "Save checkpoint"
 msgstr "Save checkpoint"
 
-#: src/ui/views/workflow_tabs_view.py:192
-#: src/ui/views/workflow_tabs_view.py:375 src/ui/views/workflow_view.py:148
+#: src/ui/views/workflow_tabs_view.py:129
+msgid "There are unsaved workflows. Save your changes before closing?"
+msgstr ""
+
+#: src/ui/views/workflow_tabs_view.py:130
+msgid "If you don't save, your changes will be lost."
+msgstr ""
+
+#: src/ui/views/workflow_tabs_view.py:284
+#: src/ui/views/workflow_tabs_view.py:499 src/ui/views/workflow_view.py:148
 msgid "Open workflow"
 msgstr "Open workflow"
 
-#: src/ui/views/workflow_tabs_view.py:193
+#: src/ui/views/workflow_tabs_view.py:285
 #, python-brace-format
 msgid "Failed to load workflow: {path}"
 msgstr "Failed to load workflow: {path}"
 
-#: src/ui/views/workflow_tabs_view.py:377
-#: src/ui/views/workflow_tabs_view.py:409 src/ui/views/workflow_view.py:150
+#: src/ui/views/workflow_tabs_view.py:501
+#: src/ui/views/workflow_tabs_view.py:535 src/ui/views/workflow_view.py:150
 #: src/ui/views/workflow_view.py:175
 msgid "Workflow files (*.json)"
 msgstr "Workflow files (*.json)"
 
-#: src/ui/views/workflow_tabs_view.py:407 src/ui/views/workflow_view.py:173
+#: src/ui/views/workflow_tabs_view.py:533 src/ui/views/workflow_view.py:173
 msgid "Save workflow"
 msgstr "Save workflow"
 
-#: src/ui/views/workflow_tabs_view.py:429 src/ui/views/workflow_view.py:194
+#: src/ui/views/workflow_tabs_view.py:557 src/ui/views/workflow_view.py:194
 msgid "⏳ Stopping..."
 msgstr "⏳ Stopping..."
 
-#: src/ui/views/workflow_tabs_view.py:433 src/ui/views/workflow_view.py:198
+#: src/ui/views/workflow_tabs_view.py:561 src/ui/views/workflow_view.py:198
 msgid "Stopping workflow... (waiting for current task to finish)"
 msgstr "Stopping workflow... (waiting for current task to finish)"
 
-#: src/ui/views/workflow_tabs_view.py:455 src/ui/views/workflow_view.py:212
+#: src/ui/views/workflow_tabs_view.py:583 src/ui/views/workflow_view.py:212
 msgid "Clear the current workflow?"
 msgstr "Clear the current workflow?"
 
-#: src/ui/views/workflow_tabs_view.py:471
+#: src/ui/views/workflow_tabs_view.py:599
 msgid "Running"
 msgstr "Running"
 
-#: src/ui/views/workflow_tabs_view.py:472
+#: src/ui/views/workflow_tabs_view.py:600
 msgid "Cannot close the running tab while a workflow is active."
 msgstr "Cannot close the running tab while a workflow is active."
 
-#: src/ui/views/workflow_tabs_view.py:486
+#: src/ui/views/workflow_tabs_view.py:614
 #, python-brace-format
 msgid "Save changes to '{name}' before closing?"
 msgstr "Save changes to '{name}' before closing?"

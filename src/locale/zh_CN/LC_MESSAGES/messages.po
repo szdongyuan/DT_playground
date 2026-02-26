@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-26 13:08+0800\n"
+"POT-Creation-Date: 2026-02-26 17:34+0800\n"
 "PO-Revision-Date: 2026-02-04 17:15+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -80,11 +80,11 @@ msgstr "帮助(&H)"
 msgid "About..."
 msgstr "关于..."
 
-#: src/app.py:256 src/workflow/nodes/training.py:31
+#: src/app.py:324 src/workflow/nodes/training.py:31
 msgid "Load model"
 msgstr "加载模型"
 
-#: src/app.py:258
+#: src/app.py:326
 msgid ""
 "Keras models (*.h5 *.keras);;Model definition (*.model.json);;SavedModel "
 "(*);;All files (*)"
@@ -92,36 +92,36 @@ msgstr ""
 "Keras 模型 (*.h5 *.keras);;模型定义 (*.model.json);;SavedModel (*);;所有文件 "
 "(*)"
 
-#: src/app.py:267 src/ui/dialogs/export_dialog.py:191
+#: src/app.py:335 src/ui/dialogs/export_dialog.py:191
 msgid "Success"
 msgstr "成功"
 
-#: src/app.py:268
+#: src/app.py:336
 #, python-brace-format
 msgid "Model loaded: {path}"
 msgstr "模型已加载：{path}"
 
-#: src/app.py:273 src/ui/dialogs/export_dialog.py:208
+#: src/app.py:341 src/ui/dialogs/export_dialog.py:208
 #: src/ui/views/model_builder_view.py:336
 #: src/ui/views/model_builder_view.py:521
 msgid "Error"
 msgstr "错误"
 
-#: src/app.py:274 src/ui/views/model_builder_view.py:337
+#: src/app.py:342 src/ui/views/model_builder_view.py:337
 #: src/workflow/nodes/training.py:81
 #, python-brace-format
 msgid "Failed to load model: {error}"
 msgstr "加载模型失败：{error}"
 
-#: src/app.py:288
+#: src/app.py:356
 msgid "(No recent files)"
 msgstr "（无最近文件）"
 
-#: src/app.py:299
+#: src/app.py:367
 msgid "Clear recent files"
 msgstr "清除最近文件"
 
-#: src/app.py:339 src/ui/main_window.py:523
+#: src/app.py:407 src/ui/main_window.py:523
 #: src/ui/dialogs/dataset_dialog.py:216 src/ui/dialogs/export_dialog.py:137
 #: src/ui/dialogs/export_dialog.py:141 src/ui/dialogs/export_dialog.py:145
 #: src/ui/views/model_builder_view.py:452
@@ -129,26 +129,26 @@ msgstr "清除最近文件"
 msgid "Warning"
 msgstr "警告"
 
-#: src/app.py:340 src/audio/loader.py:58 src/workflow/nodes/data_source.py:285
+#: src/app.py:408 src/audio/loader.py:58 src/workflow/nodes/data_source.py:285
 #: src/workflow/nodes/data_source.py:351
 #, python-brace-format
 msgid "File does not exist: {path}"
 msgstr "文件不存在：{path}"
 
-#: src/app.py:394 src/controllers/navigation_controller.py:209
+#: src/app.py:462 src/controllers/navigation_controller.py:209
 #: src/ui/main_window.py:829
 msgid "Info"
 msgstr "提示"
 
-#: src/app.py:395
+#: src/app.py:463
 msgid "Settings saved. Some changes require a restart to take effect."
 msgstr "设置已保存。部分更改需要重启后生效。"
 
-#: src/app.py:423
+#: src/app.py:491
 msgid "Confirm restart"
 msgstr "确认重启"
 
-#: src/app.py:425
+#: src/app.py:493
 msgid ""
 "A workflow/training is currently running.\n"
 "Restart will stop the current run and start a new instance.\n"
@@ -160,11 +160,11 @@ msgstr ""
 "\n"
 "是否继续？"
 
-#: src/app.py:458
+#: src/app.py:526
 msgid "Restart failed"
 msgstr "重启失败"
 
-#: src/app.py:459
+#: src/app.py:527
 msgid "Please check the latest log under the logs directory."
 msgstr "请查看 logs 目录下最新的日志。"
 
@@ -2306,8 +2306,9 @@ msgstr "🗑️ 清空"
 #: src/ui/views/model_builder_view.py:294
 #: src/ui/views/model_builder_view.py:357
 #: src/ui/views/model_builder_view.py:593
-#: src/ui/views/workflow_tabs_view.py:454
-#: src/ui/views/workflow_tabs_view.py:489 src/ui/views/workflow_view.py:211
+#: src/ui/views/workflow_tabs_view.py:128
+#: src/ui/views/workflow_tabs_view.py:582
+#: src/ui/views/workflow_tabs_view.py:617 src/ui/views/workflow_view.py:211
 msgid "Confirm"
 msgstr "确认"
 
@@ -2592,47 +2593,55 @@ msgstr "已暂停"
 msgid "Save checkpoint"
 msgstr "保存检查点"
 
-#: src/ui/views/workflow_tabs_view.py:192
-#: src/ui/views/workflow_tabs_view.py:375 src/ui/views/workflow_view.py:148
+#: src/ui/views/workflow_tabs_view.py:129
+msgid "There are unsaved workflows. Save your changes before closing?"
+msgstr "存在未保存的工作流。关闭前要保存更改吗？"
+
+#: src/ui/views/workflow_tabs_view.py:130
+msgid "If you don't save, your changes will be lost."
+msgstr "如果不保存，你的更改将会丢失。"
+
+#: src/ui/views/workflow_tabs_view.py:284
+#: src/ui/views/workflow_tabs_view.py:499 src/ui/views/workflow_view.py:148
 msgid "Open workflow"
 msgstr "打开工作流"
 
-#: src/ui/views/workflow_tabs_view.py:193
+#: src/ui/views/workflow_tabs_view.py:285
 #, python-brace-format
 msgid "Failed to load workflow: {path}"
 msgstr "无法加载工作流：{path}"
 
-#: src/ui/views/workflow_tabs_view.py:377
-#: src/ui/views/workflow_tabs_view.py:409 src/ui/views/workflow_view.py:150
+#: src/ui/views/workflow_tabs_view.py:501
+#: src/ui/views/workflow_tabs_view.py:535 src/ui/views/workflow_view.py:150
 #: src/ui/views/workflow_view.py:175
 msgid "Workflow files (*.json)"
 msgstr "工作流文件 (*.json)"
 
-#: src/ui/views/workflow_tabs_view.py:407 src/ui/views/workflow_view.py:173
+#: src/ui/views/workflow_tabs_view.py:533 src/ui/views/workflow_view.py:173
 msgid "Save workflow"
 msgstr "保存工作流"
 
-#: src/ui/views/workflow_tabs_view.py:429 src/ui/views/workflow_view.py:194
+#: src/ui/views/workflow_tabs_view.py:557 src/ui/views/workflow_view.py:194
 msgid "⏳ Stopping..."
 msgstr "⏳ 正在停止..."
 
-#: src/ui/views/workflow_tabs_view.py:433 src/ui/views/workflow_view.py:198
+#: src/ui/views/workflow_tabs_view.py:561 src/ui/views/workflow_view.py:198
 msgid "Stopping workflow... (waiting for current task to finish)"
 msgstr "正在停止工作流...（等待当前任务结束）"
 
-#: src/ui/views/workflow_tabs_view.py:455 src/ui/views/workflow_view.py:212
+#: src/ui/views/workflow_tabs_view.py:583 src/ui/views/workflow_view.py:212
 msgid "Clear the current workflow?"
 msgstr "清空当前工作流？"
 
-#: src/ui/views/workflow_tabs_view.py:471
+#: src/ui/views/workflow_tabs_view.py:599
 msgid "Running"
 msgstr "正在运行"
 
-#: src/ui/views/workflow_tabs_view.py:472
+#: src/ui/views/workflow_tabs_view.py:600
 msgid "Cannot close the running tab while a workflow is active."
 msgstr "工作流处于活动状态时无法关闭运行中的标签页。"
 
-#: src/ui/views/workflow_tabs_view.py:486
+#: src/ui/views/workflow_tabs_view.py:614
 #, python-brace-format
 msgid "Save changes to '{name}' before closing?"
 msgstr "关闭前是否保存对 '{name}' 的更改？"
