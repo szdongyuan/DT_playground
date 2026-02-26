@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-05 09:52+0800\n"
+"POT-Creation-Date: 2026-02-26 10:58+0800\n"
 "PO-Revision-Date: 2026-02-04 17:15+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -81,11 +81,11 @@ msgstr "Help(&H)"
 msgid "About..."
 msgstr "About..."
 
-#: src/app.py:260 src/workflow/nodes/training.py:31
+#: src/app.py:256 src/workflow/nodes/training.py:31
 msgid "Load model"
 msgstr "Load model"
 
-#: src/app.py:262
+#: src/app.py:258
 msgid ""
 "Keras models (*.h5 *.keras);;Model definition (*.model.json);;SavedModel "
 "(*);;All files (*)"
@@ -93,36 +93,36 @@ msgstr ""
 "Keras models (*.h5 *.keras);;Model definition (*.model.json);;SavedModel "
 "(*);;All files (*)"
 
-#: src/app.py:271 src/ui/dialogs/export_dialog.py:191
+#: src/app.py:267 src/ui/dialogs/export_dialog.py:191
 msgid "Success"
 msgstr "Success"
 
-#: src/app.py:272
+#: src/app.py:268
 #, python-brace-format
 msgid "Model loaded: {path}"
 msgstr "Model loaded: {path}"
 
-#: src/app.py:277 src/ui/dialogs/export_dialog.py:208
+#: src/app.py:273 src/ui/dialogs/export_dialog.py:208
 #: src/ui/views/model_builder_view.py:336
 #: src/ui/views/model_builder_view.py:521
 msgid "Error"
 msgstr "Error"
 
-#: src/app.py:278 src/ui/views/model_builder_view.py:337
+#: src/app.py:274 src/ui/views/model_builder_view.py:337
 #: src/workflow/nodes/training.py:81
 #, python-brace-format
 msgid "Failed to load model: {error}"
 msgstr "Failed to load model: {error}"
 
-#: src/app.py:292
+#: src/app.py:288
 msgid "(No recent files)"
 msgstr "(No recent files)"
 
-#: src/app.py:303
+#: src/app.py:299
 msgid "Clear recent files"
 msgstr "Clear recent files"
 
-#: src/app.py:343 src/ui/main_window.py:505
+#: src/app.py:339 src/ui/main_window.py:503
 #: src/ui/dialogs/dataset_dialog.py:216 src/ui/dialogs/export_dialog.py:137
 #: src/ui/dialogs/export_dialog.py:141 src/ui/dialogs/export_dialog.py:145
 #: src/ui/views/model_builder_view.py:452
@@ -130,25 +130,26 @@ msgstr "Clear recent files"
 msgid "Warning"
 msgstr "Warning"
 
-#: src/app.py:344 src/audio/loader.py:58 src/workflow/nodes/data_source.py:285
+#: src/app.py:340 src/audio/loader.py:58 src/workflow/nodes/data_source.py:285
 #: src/workflow/nodes/data_source.py:351
 #, python-brace-format
 msgid "File does not exist: {path}"
 msgstr "File does not exist: {path}"
 
-#: src/app.py:398 src/ui/main_window.py:795 src/ui/main_window.py:848
+#: src/app.py:394 src/controllers/navigation_controller.py:209
+#: src/ui/main_window.py:781
 msgid "Info"
 msgstr "Info"
 
-#: src/app.py:399
+#: src/app.py:395
 msgid "Settings saved. Some changes require a restart to take effect."
 msgstr "Settings saved. Some changes require a restart to take effect."
 
-#: src/app.py:427
+#: src/app.py:423
 msgid "Confirm restart"
 msgstr "Confirm restart"
 
-#: src/app.py:429
+#: src/app.py:425
 msgid ""
 "A workflow/training is currently running.\n"
 "Restart will stop the current run and start a new instance.\n"
@@ -160,11 +161,11 @@ msgstr ""
 "\n"
 "Continue?"
 
-#: src/app.py:462
+#: src/app.py:458
 msgid "Restart failed"
 msgstr "Restart failed"
 
-#: src/app.py:463
+#: src/app.py:459
 msgid "Please check the latest log under the logs directory."
 msgstr "Please check the latest log under the logs directory."
 
@@ -299,57 +300,93 @@ msgstr "Failed to get audio info: {error}"
 msgid "Unknown normalization method: {method}"
 msgstr "Unknown normalization method: {method}"
 
-#: src/controllers/navigation_controller.py:87 src/ui/main_window.py:181
-#: src/ui/main_window.py:439
+#: src/controllers/navigation_controller.py:83 src/ui/main_window.py:187
+#: src/ui/main_window.py:437
 msgid "Workflow"
 msgstr "Workflow"
 
-#: src/controllers/navigation_controller.py:87 src/ui/main_window.py:182
-#: src/ui/main_window.py:440 src/ui/main_window.py:893
-#: src/ui/dialogs/settings_dialog.py:40 src/workflow/nodes/training.py:304
-#: src/workflow/nodes/training.py:684 src/workflow/nodes/training.py:1028
+#: src/controllers/navigation_controller.py:83 src/ui/main_window.py:188
+#: src/ui/main_window.py:438 src/ui/dialogs/settings_dialog.py:42
+#: src/workflow/nodes/training.py:304 src/workflow/nodes/training.py:684
+#: src/workflow/nodes/training.py:1028
 msgid "Model"
 msgstr "Model"
 
-#: src/controllers/navigation_controller.py:87 src/ui/main_window.py:183
-#: src/ui/main_window.py:441
+#: src/controllers/navigation_controller.py:83 src/ui/main_window.py:189
+#: src/ui/main_window.py:439
 msgid "Preview"
 msgstr "Preview"
 
-#: src/controllers/navigation_controller.py:87 src/ui/main_window.py:184
-#: src/ui/main_window.py:442
+#: src/controllers/navigation_controller.py:83 src/ui/main_window.py:190
+#: src/ui/main_window.py:440
 msgid "Training"
 msgstr "Training"
 
-#: src/controllers/navigation_controller.py:89 src/ui/main_window.py:445
+#: src/controllers/navigation_controller.py:85 src/ui/main_window.py:443
 #, python-brace-format
 msgid "Switched to {view} view"
 msgstr "Switched to {view} view"
 
-#: src/controllers/training_controller.py:93
+#: src/controllers/navigation_controller.py:198
+msgid "Model save path"
+msgstr "Model save path"
+
+#: src/controllers/navigation_controller.py:199
+#: src/ui/views/model_builder_view.py:515
+#, python-brace-format
+msgid ""
+"Model saved to:\n"
+"{path}"
+msgstr ""
+"Model saved to:\n"
+"{path}"
+
+#: src/controllers/navigation_controller.py:211
+#, python-brace-format
+msgid ""
+"Loop node [{name}] cannot be previewed.\n"
+"Please preview a specific processing node inside the loop."
+msgstr ""
+"Loop node [{name}] cannot be previewed.\n"
+"Please preview a specific processing node inside the loop."
+
+#: src/controllers/navigation_controller.py:229
+msgid "Label data"
+msgstr "Label data"
+
+#: src/controllers/navigation_controller.py:231
+#, python-brace-format
+msgid ""
+"Loaded {count} label(s).\n"
+"Label data cannot be visualized for preview."
+msgstr ""
+"Loaded {count} label(s).\n"
+"Label data cannot be visualized for preview."
+
+#: src/controllers/training_controller.py:94
 #, python-brace-format
 msgid "Training started (total {epochs} epochs)"
 msgstr "Training started (total {epochs} epochs)"
 
-#: src/controllers/training_controller.py:142
+#: src/controllers/training_controller.py:157
 #, python-brace-format
 msgid "Training finished - final loss: {loss:.4f}, acc: {acc:.4f}"
 msgstr "Training finished - final loss: {loss:.4f}, acc: {acc:.4f}"
 
-#: src/controllers/training_controller.py:149 src/ui/views/training_view.py:405
+#: src/controllers/training_controller.py:164 src/ui/views/training_view.py:405
 #, python-brace-format
 msgid "Training failed: {message}"
 msgstr "Training failed: {message}"
 
-#: src/controllers/training_controller.py:159 src/training/trainer.py:314
+#: src/controllers/training_controller.py:174 src/training/trainer.py:314
 msgid "Training stopped"
 msgstr "Training stopped"
 
-#: src/controllers/workflow_controller.py:100
+#: src/controllers/workflow_controller.py:114
 msgid "No workflow to run"
 msgstr "No workflow to run"
 
-#: src/controllers/workflow_controller.py:106
+#: src/controllers/workflow_controller.py:120
 #, python-brace-format
 msgid ""
 "Workflow validation failed:\n"
@@ -358,57 +395,57 @@ msgstr ""
 "Workflow validation failed:\n"
 "{errors}"
 
-#: src/controllers/workflow_controller.py:113
+#: src/controllers/workflow_controller.py:127
 msgid "Starting workflow..."
 msgstr "Starting workflow..."
 
-#: src/controllers/workflow_controller.py:117
+#: src/controllers/workflow_controller.py:131
 msgid "Failed to start workflow"
 msgstr "Failed to start workflow"
 
-#: src/controllers/workflow_controller.py:126
+#: src/controllers/workflow_controller.py:140
 msgid "Stop requested. Waiting for current task to finish..."
 msgstr "Stop requested. Waiting for current task to finish..."
 
-#: src/controllers/workflow_controller.py:132
+#: src/controllers/workflow_controller.py:146
 msgid "Workflow paused"
 msgstr "Workflow paused"
 
-#: src/controllers/workflow_controller.py:137
+#: src/controllers/workflow_controller.py:151
 msgid "Workflow resumed"
 msgstr "Workflow resumed"
 
-#: src/controllers/workflow_controller.py:143 src/workflow/engine.py:424
+#: src/controllers/workflow_controller.py:157 src/workflow/engine.py:424
 msgid "Continuing from breakpoint..."
 msgstr "Continuing from breakpoint..."
 
-#: src/controllers/workflow_controller.py:169
+#: src/controllers/workflow_controller.py:183
 msgid "Workflow running..."
 msgstr "Workflow running..."
 
-#: src/controllers/workflow_controller.py:178
+#: src/controllers/workflow_controller.py:192
 #, python-brace-format
 msgid "Workflow finished (elapsed: {seconds:.2f}s)"
 msgstr "Workflow finished (elapsed: {seconds:.2f}s)"
 
-#: src/controllers/workflow_controller.py:184 src/ui/main_window.py:585
-#: src/ui/main_window.py:605
+#: src/controllers/workflow_controller.py:198 src/ui/main_window.py:571
+#: src/ui/main_window.py:591
 #, python-brace-format
 msgid "Execution failed: {message}"
 msgstr "Execution failed: {message}"
 
-#: src/controllers/workflow_controller.py:191
+#: src/controllers/workflow_controller.py:205
 #, python-brace-format
 msgid "Error: {message}"
 msgstr "Error: {message}"
 
-#: src/controllers/workflow_controller.py:202 src/ui/main_window.py:619
-#: src/ui/main_window.py:631 src/workflow/engine.py:267
+#: src/controllers/workflow_controller.py:216 src/ui/main_window.py:605
+#: src/ui/main_window.py:617 src/workflow/engine.py:267
 #, python-brace-format
 msgid "Running: {name}"
 msgstr "Running: {name}"
 
-#: src/controllers/workflow_controller.py:230
+#: src/controllers/workflow_controller.py:244
 #, python-brace-format
 msgid "🔴 Breakpoint hit: {name}"
 msgstr "🔴 Breakpoint hit: {name}"
@@ -1000,7 +1037,7 @@ msgid "Define the model input shape"
 msgstr "Define the model input shape"
 
 #: src/model_builder/layers/input_layers.py:24
-#: src/ui/widgets/preview/model_preview.py:275
+#: src/ui/widgets/preview/model_preview.py:273
 msgid "Input shape"
 msgstr "Input shape"
 
@@ -1056,7 +1093,7 @@ msgid "Activation function for output layer ('none' means no activation)"
 msgstr "Activation function for output layer ('none' means no activation)"
 
 #: src/model_builder/layers/input_layers.py:117
-#: src/ui/widgets/preview/model_preview.py:290
+#: src/ui/widgets/preview/model_preview.py:288
 msgid "Optimizer"
 msgstr "Optimizer"
 
@@ -1065,8 +1102,8 @@ msgid "Training optimizer"
 msgstr "Training optimizer"
 
 #: src/model_builder/layers/input_layers.py:125
+#: src/ui/widgets/preview/model_preview.py:293
 #: src/ui/widgets/preview/model_preview.py:295
-#: src/ui/widgets/preview/model_preview.py:297
 msgid "Learning rate"
 msgstr "Learning rate"
 
@@ -1075,7 +1112,7 @@ msgid "Optimizer learning rate"
 msgstr "Optimizer learning rate"
 
 #: src/model_builder/layers/input_layers.py:134
-#: src/ui/widgets/preview/model_preview.py:300
+#: src/ui/widgets/preview/model_preview.py:298
 msgid "Loss"
 msgstr "Loss"
 
@@ -1083,8 +1120,8 @@ msgstr "Loss"
 msgid "Training loss function"
 msgstr "Training loss function"
 
-#: src/model_builder/layers/input_layers.py:142 src/ui/main_window.py:894
-#: src/ui/widgets/preview/metrics_preview.py:44
+#: src/model_builder/layers/input_layers.py:142
+#: src/ui/widgets/preview/metrics_preview.py:42
 #: src/workflow/nodes/training.py:688 src/workflow/nodes/training.py:968
 msgid "Metrics"
 msgstr "Metrics"
@@ -1425,145 +1462,110 @@ msgstr "Please build the model first"
 msgid "Please train the model first"
 msgstr "Please train the model first"
 
-#: src/ui/main_window.py:159
+#: src/ui/main_window.py:165
 msgid "🎵 AI Acoustic Training Platform"
 msgstr "🎵 AI Acoustic Training Platform"
 
-#: src/ui/main_window.py:214
+#: src/ui/main_window.py:220
 msgid "Ready"
 msgstr "Ready"
 
-#: src/ui/main_window.py:217
+#: src/ui/main_window.py:223
 msgid "Workflow: Unsaved"
 msgstr "Workflow: Unsaved"
 
-#: src/ui/main_window.py:220
+#: src/ui/main_window.py:226
 msgid "GPU: Detecting..."
 msgstr "GPU: Detecting..."
 
-#: src/ui/main_window.py:221
+#: src/ui/main_window.py:227
 msgid "Memory: --"
 msgstr "Memory: --"
 
-#: src/ui/main_window.py:252
+#: src/ui/main_window.py:255
 #, python-brace-format
 msgid "GPU: {count} available"
 msgstr "GPU: {count} available"
 
-#: src/ui/main_window.py:256
+#: src/ui/main_window.py:261
 msgid "GPU: CPU only"
 msgstr "GPU: CPU only"
 
-#: src/ui/main_window.py:259
+#: src/ui/main_window.py:264
 msgid "GPU: Unknown"
 msgstr "GPU: Unknown"
 
-#: src/ui/main_window.py:276
+#: src/ui/main_window.py:278
 #, python-brace-format
 msgid "Memory: {used:.1f}/{total:.1f}GB"
 msgstr "Memory: {used:.1f}/{total:.1f}GB"
 
-#: src/ui/main_window.py:359 src/ui/main_window.py:372
-#: src/ui/main_window.py:382 src/ui/views/workflow_view.py:174
+#: src/ui/main_window.py:361 src/ui/main_window.py:372
+#: src/ui/main_window.py:381 src/ui/views/workflow_toolbar.py:154
 msgid "⏹️ Stop"
 msgstr "⏹️ Stop"
 
-#: src/ui/main_window.py:385 src/ui/main_window.py:592
+#: src/ui/main_window.py:383 src/ui/main_window.py:578
 msgid "Execution error"
 msgstr "Execution error"
 
-#: src/ui/main_window.py:461
+#: src/ui/main_window.py:459
 msgid "Modified"
 msgstr "Modified"
 
-#: src/ui/main_window.py:461 src/ui/views/model_builder_view.py:514
+#: src/ui/main_window.py:459 src/ui/views/model_builder_view.py:514
 msgid "Saved"
 msgstr "Saved"
 
-#: src/ui/main_window.py:463
+#: src/ui/main_window.py:461
 #, python-brace-format
 msgid "Workflow: {name} ({status})"
 msgstr "Workflow: {name} ({status})"
 
-#: src/ui/main_window.py:468
+#: src/ui/main_window.py:466
 msgid "Workflow: None"
 msgstr "Workflow: None"
 
-#: src/ui/main_window.py:505
+#: src/ui/main_window.py:503
 msgid "No runnable workflow."
 msgstr "No runnable workflow."
 
-#: src/ui/main_window.py:513 src/ui/views/model_builder_view.py:537
+#: src/ui/main_window.py:514 src/ui/views/model_builder_view.py:537
 msgid "Validation failed"
 msgstr "Validation failed"
 
-#: src/ui/main_window.py:514
+#: src/ui/main_window.py:515
 msgid "Workflow validation failed:\n"
 msgstr "Workflow validation failed:\n"
 
-#: src/ui/main_window.py:539
+#: src/ui/main_window.py:525
 msgid "Startup failed"
 msgstr "Startup failed"
 
-#: src/ui/main_window.py:567
+#: src/ui/main_window.py:553
 msgid "Running workflow..."
 msgstr "Running workflow..."
 
-#: src/ui/main_window.py:577
+#: src/ui/main_window.py:563
 #, python-brace-format
 msgid "Time: {seconds:.2f}s"
 msgstr "Time: {seconds:.2f}s"
 
-#: src/ui/main_window.py:581 src/ui/main_window.py:601
+#: src/ui/main_window.py:567 src/ui/main_window.py:587
 msgid "Workflow completed"
 msgstr "Workflow completed"
 
-#: src/ui/main_window.py:591
+#: src/ui/main_window.py:577
 #, python-brace-format
 msgid "Error: {error}"
 msgstr "Error: {error}"
 
-#: src/ui/main_window.py:719
+#: src/ui/main_window.py:700
 #, python-brace-format
 msgid "🔴 Breakpoint paused: {name} - Click to continue"
 msgstr "🔴 Breakpoint paused: {name} - Click to continue"
 
-#: src/ui/main_window.py:784
-msgid "Model save path"
-msgstr "Model save path"
-
-#: src/ui/main_window.py:785 src/ui/views/model_builder_view.py:515
-#, python-brace-format
-msgid ""
-"Model saved to:\n"
-"{path}"
-msgstr ""
-"Model saved to:\n"
-"{path}"
-
-#: src/ui/main_window.py:797
-#, python-brace-format
-msgid ""
-"Loop node [{name}] cannot be previewed.\n"
-"Please preview a specific processing node inside the loop."
-msgstr ""
-"Loop node [{name}] cannot be previewed.\n"
-"Please preview a specific processing node inside the loop."
-
-#: src/ui/main_window.py:811 src/ui/main_window.py:895
-msgid "Label data"
-msgstr "Label data"
-
-#: src/ui/main_window.py:813
-#, python-brace-format
-msgid ""
-"Loaded {count} label(s).\n"
-"Label data cannot be visualized for preview."
-msgstr ""
-"Loaded {count} label(s).\n"
-"Label data cannot be visualized for preview."
-
-#: src/ui/main_window.py:850
+#: src/ui/main_window.py:783
 #, python-brace-format
 msgid ""
 "Node [{name}] has not been run yet.\n"
@@ -1571,37 +1573,6 @@ msgid ""
 msgstr ""
 "Node [{name}] has not been run yet.\n"
 "Click \"Run\" to execute the workflow first."
-
-#: src/ui/main_window.py:875
-#, python-brace-format
-msgid "Preview {name} - {type}"
-msgstr "Preview {name} - {type}"
-
-#: src/ui/main_window.py:889
-msgid "Audio waveform"
-msgstr "Audio waveform"
-
-#: src/ui/main_window.py:890
-msgid "1D feature curve"
-msgstr "1D feature curve"
-
-#: src/ui/main_window.py:891
-msgid "2D feature map"
-msgstr "2D feature map"
-
-#: src/ui/main_window.py:892
-msgid "Feature data"
-msgstr "Feature data"
-
-#: src/ui/main_window.py:896 src/ui/main_window.py:899
-#: src/workflow/nodes/control.py:123 src/workflow/nodes/control.py:384
-#: src/workflow/nodes/control.py:385
-msgid "Data"
-msgstr "Data"
-
-#: src/ui/main_window.py:897
-msgid "Trigger"
-msgstr "Trigger"
 
 #: src/ui/dialogs/about_dialog.py:22
 msgid "About"
@@ -1695,7 +1666,7 @@ msgid "Class Distribution"
 msgstr "Class Distribution"
 
 #: src/ui/dialogs/dataset_dialog.py:144
-#: src/ui/widgets/preview/label_preview.py:103 src/visualization/metrics.py:206
+#: src/ui/widgets/preview/label_preview.py:101 src/visualization/metrics.py:206
 msgid "Class"
 msgstr "Class"
 
@@ -1712,7 +1683,7 @@ msgid "Val/Test"
 msgstr "Val/Test"
 
 #: src/ui/dialogs/dataset_dialog.py:158 src/ui/dialogs/export_dialog.py:106
-#: src/ui/dialogs/settings_dialog.py:58
+#: src/ui/dialogs/settings_dialog.py:60
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -1751,7 +1722,7 @@ msgstr "Export Location"
 msgid "Choose an export directory..."
 msgstr "Choose an export directory..."
 
-#: src/ui/dialogs/export_dialog.py:43 src/ui/dialogs/settings_dialog.py:184
+#: src/ui/dialogs/export_dialog.py:43 src/ui/dialogs/settings_dialog.py:186
 msgid "Browse"
 msgstr "Browse"
 
@@ -1842,11 +1813,11 @@ msgstr ""
 msgid "Please install tf2onnx: pip install tf2onnx"
 msgstr "Please install tf2onnx: pip install tf2onnx"
 
-#: src/ui/dialogs/settings_dialog.py:27
+#: src/ui/dialogs/settings_dialog.py:29
 msgid "Settings"
 msgstr "Settings"
 
-#: src/ui/dialogs/settings_dialog.py:37 src/workflow/nodes/augmentation.py:37
+#: src/ui/dialogs/settings_dialog.py:39 src/workflow/nodes/augmentation.py:37
 #: src/workflow/nodes/augmentation.py:171
 #: src/workflow/nodes/augmentation.py:172
 #: src/workflow/nodes/augmentation.py:250
@@ -1878,215 +1849,215 @@ msgstr "Settings"
 msgid "Audio"
 msgstr "Audio"
 
-#: src/ui/dialogs/settings_dialog.py:43
+#: src/ui/dialogs/settings_dialog.py:45
 msgid "UI"
 msgstr "UI"
 
-#: src/ui/dialogs/settings_dialog.py:46
+#: src/ui/dialogs/settings_dialog.py:48
 msgid "GPU"
 msgstr "GPU"
 
-#: src/ui/dialogs/settings_dialog.py:54
+#: src/ui/dialogs/settings_dialog.py:56
 msgid "Reset to defaults"
 msgstr "Reset to defaults"
 
-#: src/ui/dialogs/settings_dialog.py:62
+#: src/ui/dialogs/settings_dialog.py:64
 msgid "Save"
 msgstr "Save"
 
-#: src/ui/dialogs/settings_dialog.py:83
+#: src/ui/dialogs/settings_dialog.py:85
 msgid "Sampling"
 msgstr "Sampling"
 
-#: src/ui/dialogs/settings_dialog.py:89
+#: src/ui/dialogs/settings_dialog.py:91
 msgid "Sample rate (Hz):"
 msgstr "Sample rate (Hz):"
 
-#: src/ui/dialogs/settings_dialog.py:91
+#: src/ui/dialogs/settings_dialog.py:93
 msgid "Convert to mono"
 msgstr "Convert to mono"
 
-#: src/ui/dialogs/settings_dialog.py:98
+#: src/ui/dialogs/settings_dialog.py:100
 msgid "Spectrum analysis"
 msgstr "Spectrum analysis"
 
-#: src/ui/dialogs/settings_dialog.py:104
+#: src/ui/dialogs/settings_dialog.py:106
 msgid "FFT window size:"
 msgstr "FFT window size:"
 
-#: src/ui/dialogs/settings_dialog.py:110
+#: src/ui/dialogs/settings_dialog.py:112
 msgid "Hop length:"
 msgstr "Hop length:"
 
-#: src/ui/dialogs/settings_dialog.py:115
+#: src/ui/dialogs/settings_dialog.py:117
 msgid "Mel filters:"
 msgstr "Mel filters:"
 
-#: src/ui/dialogs/settings_dialog.py:120
+#: src/ui/dialogs/settings_dialog.py:122
 msgid "MFCC coefficients:"
 msgstr "MFCC coefficients:"
 
-#: src/ui/dialogs/settings_dialog.py:125 src/workflow/node_base.py:47
+#: src/ui/dialogs/settings_dialog.py:127 src/workflow/node_base.py:47
 msgid "Preprocessing"
 msgstr "Preprocessing"
 
-#: src/ui/dialogs/settings_dialog.py:128
+#: src/ui/dialogs/settings_dialog.py:130
 msgid "Normalize audio"
 msgstr "Normalize audio"
 
-#: src/ui/dialogs/settings_dialog.py:132
+#: src/ui/dialogs/settings_dialog.py:134
 msgid "Remove silence"
 msgstr "Remove silence"
 
-#: src/ui/dialogs/settings_dialog.py:140
+#: src/ui/dialogs/settings_dialog.py:142
 msgid "Silence threshold:"
 msgstr "Silence threshold:"
 
-#: src/ui/dialogs/settings_dialog.py:153
+#: src/ui/dialogs/settings_dialog.py:155
 msgid "Default training parameters"
 msgstr "Default training parameters"
 
-#: src/ui/dialogs/settings_dialog.py:171
+#: src/ui/dialogs/settings_dialog.py:173
 msgid "Learning rate:"
 msgstr "Learning rate:"
 
-#: src/ui/dialogs/settings_dialog.py:176
+#: src/ui/dialogs/settings_dialog.py:178
 msgid "Model saving"
 msgstr "Model saving"
 
-#: src/ui/dialogs/settings_dialog.py:181
+#: src/ui/dialogs/settings_dialog.py:183
 msgid "Choose a model save directory..."
 msgstr "Choose a model save directory..."
 
-#: src/ui/dialogs/settings_dialog.py:188
+#: src/ui/dialogs/settings_dialog.py:190
 msgid "Save path:"
 msgstr "Save path:"
 
-#: src/ui/dialogs/settings_dialog.py:190
+#: src/ui/dialogs/settings_dialog.py:192
 msgid "Auto-save best model"
 msgstr "Auto-save best model"
 
-#: src/ui/dialogs/settings_dialog.py:196
+#: src/ui/dialogs/settings_dialog.py:198
 msgid "Save format:"
 msgstr "Save format:"
 
-#: src/ui/dialogs/settings_dialog.py:201 src/workflow/nodes/training.py:353
+#: src/ui/dialogs/settings_dialog.py:203 src/workflow/nodes/training.py:353
 msgid "Early stopping"
 msgstr "Early stopping"
 
-#: src/ui/dialogs/settings_dialog.py:204
+#: src/ui/dialogs/settings_dialog.py:206
 msgid "Enable early stopping"
 msgstr "Enable early stopping"
 
-#: src/ui/dialogs/settings_dialog.py:211
+#: src/ui/dialogs/settings_dialog.py:213
 msgid "Patience:"
 msgstr "Patience:"
 
-#: src/ui/dialogs/settings_dialog.py:218
+#: src/ui/dialogs/settings_dialog.py:220
 msgid "Minimum delta:"
 msgstr "Minimum delta:"
 
-#: src/ui/dialogs/settings_dialog.py:231
+#: src/ui/dialogs/settings_dialog.py:233
 msgid "Theme"
 msgstr "Theme"
 
-#: src/ui/dialogs/settings_dialog.py:235
+#: src/ui/dialogs/settings_dialog.py:237
 msgid "Dark"
 msgstr "Dark"
 
-#: src/ui/dialogs/settings_dialog.py:235
+#: src/ui/dialogs/settings_dialog.py:237
 msgid "Light"
 msgstr "Light"
 
-#: src/ui/dialogs/settings_dialog.py:235
+#: src/ui/dialogs/settings_dialog.py:237
 msgid "Follow system"
 msgstr "Follow system"
 
-#: src/ui/dialogs/settings_dialog.py:236
+#: src/ui/dialogs/settings_dialog.py:238
 msgid "Theme:"
 msgstr "Theme:"
 
-#: src/ui/dialogs/settings_dialog.py:240
+#: src/ui/dialogs/settings_dialog.py:242
 msgid "Chinese (Simplified)"
 msgstr "Chinese (Simplified)"
 
-#: src/ui/dialogs/settings_dialog.py:241
+#: src/ui/dialogs/settings_dialog.py:243
 msgid "English"
 msgstr "English"
 
-#: src/ui/dialogs/settings_dialog.py:242
+#: src/ui/dialogs/settings_dialog.py:244
 msgid "Language:"
 msgstr "Language:"
 
-#: src/ui/dialogs/settings_dialog.py:247
+#: src/ui/dialogs/settings_dialog.py:249
 msgid "Visualization"
 msgstr "Visualization"
 
-#: src/ui/dialogs/settings_dialog.py:251
+#: src/ui/dialogs/settings_dialog.py:253
 msgid "Blue"
 msgstr "Blue"
 
-#: src/ui/dialogs/settings_dialog.py:251
+#: src/ui/dialogs/settings_dialog.py:253
 msgid "Green"
 msgstr "Green"
 
-#: src/ui/dialogs/settings_dialog.py:251
+#: src/ui/dialogs/settings_dialog.py:253
 msgid "Purple"
 msgstr "Purple"
 
-#: src/ui/dialogs/settings_dialog.py:251
+#: src/ui/dialogs/settings_dialog.py:253
 msgid "Orange"
 msgstr "Orange"
 
-#: src/ui/dialogs/settings_dialog.py:252
+#: src/ui/dialogs/settings_dialog.py:254
 msgid "Waveform color:"
 msgstr "Waveform color:"
 
-#: src/ui/dialogs/settings_dialog.py:256
+#: src/ui/dialogs/settings_dialog.py:258
 msgid "Spectrogram colormap:"
 msgstr "Spectrogram colormap:"
 
-#: src/ui/dialogs/settings_dialog.py:258
+#: src/ui/dialogs/settings_dialog.py:260
 msgid "Show grid"
 msgstr "Show grid"
 
-#: src/ui/dialogs/settings_dialog.py:265
+#: src/ui/dialogs/settings_dialog.py:267
 msgid "Update"
 msgstr "Update"
 
-#: src/ui/dialogs/settings_dialog.py:272
+#: src/ui/dialogs/settings_dialog.py:274
 msgid "Chart update interval:"
 msgstr "Chart update interval:"
 
-#: src/ui/dialogs/settings_dialog.py:285
+#: src/ui/dialogs/settings_dialog.py:287
 msgid "GPU settings"
 msgstr "GPU settings"
 
-#: src/ui/dialogs/settings_dialog.py:288
+#: src/ui/dialogs/settings_dialog.py:290
 msgid "Use GPU acceleration"
 msgstr "Use GPU acceleration"
 
-#: src/ui/dialogs/settings_dialog.py:295
+#: src/ui/dialogs/settings_dialog.py:297
 msgid " % (0=auto)"
 msgstr " % (0=auto)"
 
-#: src/ui/dialogs/settings_dialog.py:296
+#: src/ui/dialogs/settings_dialog.py:298
 msgid "GPU memory limit:"
 msgstr "GPU memory limit:"
 
-#: src/ui/dialogs/settings_dialog.py:298
+#: src/ui/dialogs/settings_dialog.py:300
 msgid "Mixed precision training"
 msgstr "Mixed precision training"
 
-#: src/ui/dialogs/settings_dialog.py:305
+#: src/ui/dialogs/settings_dialog.py:307
 msgid "GPU info"
 msgstr "GPU info"
 
-#: src/ui/dialogs/settings_dialog.py:308
+#: src/ui/dialogs/settings_dialog.py:310
 msgid "Detecting GPU..."
 msgstr "Detecting GPU..."
 
-#: src/ui/dialogs/settings_dialog.py:312
+#: src/ui/dialogs/settings_dialog.py:314
 msgid "Re-detect"
 msgstr "Re-detect"
 
@@ -2095,16 +2066,16 @@ msgstr "Re-detect"
 msgid "Detected {count} GPU(s):\n"
 msgstr "Detected {count} GPU(s):\n"
 
-#: src/ui/dialogs/settings_dialog.py:337
+#: src/ui/dialogs/settings_dialog.py:338
 msgid "No GPU detected. Training will use CPU."
 msgstr "No GPU detected. Training will use CPU."
 
-#: src/ui/dialogs/settings_dialog.py:342
+#: src/ui/dialogs/settings_dialog.py:341
 #, python-brace-format
 msgid "GPU detection error: {error}"
 msgstr "GPU detection error: {error}"
 
-#: src/ui/dialogs/settings_dialog.py:348
+#: src/ui/dialogs/settings_dialog.py:346
 msgid "Select a model save directory"
 msgstr "Select a model save directory"
 
@@ -2287,15 +2258,15 @@ msgstr "📤 Outputs:"
 msgid "📐 New model"
 msgstr "📐 New model"
 
-#: src/ui/views/model_builder_view.py:150 src/ui/views/workflow_view.py:139
+#: src/ui/views/model_builder_view.py:150 src/ui/views/workflow_toolbar.py:112
 msgid "📄 New"
 msgstr "📄 New"
 
-#: src/ui/views/model_builder_view.py:156 src/ui/views/workflow_view.py:145
+#: src/ui/views/model_builder_view.py:156 src/ui/views/workflow_toolbar.py:117
 msgid "📂 Open"
 msgstr "📂 Open"
 
-#: src/ui/views/model_builder_view.py:162 src/ui/views/workflow_view.py:151
+#: src/ui/views/model_builder_view.py:162 src/ui/views/workflow_toolbar.py:122
 msgid "💾 Save"
 msgstr "💾 Save"
 
@@ -2315,17 +2286,19 @@ msgstr "Import architecture from a trained .keras/.h5 model file"
 msgid "🔨 Build model"
 msgstr "🔨 Build model"
 
-#: src/ui/views/model_builder_view.py:225 src/ui/views/workflow_view.py:226
+#: src/ui/views/model_builder_view.py:225 src/ui/views/workflow_toolbar.py:202
 msgid "🔍 Fit"
 msgstr "🔍 Fit"
 
-#: src/ui/views/model_builder_view.py:231 src/ui/views/workflow_view.py:232
+#: src/ui/views/model_builder_view.py:231 src/ui/views/workflow_toolbar.py:207
 msgid "🗑️ Clear"
 msgstr "🗑️ Clear"
 
 #: src/ui/views/model_builder_view.py:294
 #: src/ui/views/model_builder_view.py:357
-#: src/ui/views/model_builder_view.py:593 src/ui/views/workflow_view.py:424
+#: src/ui/views/model_builder_view.py:593
+#: src/ui/views/workflow_tabs_view.py:348
+#: src/ui/views/workflow_tabs_view.py:372 src/ui/views/workflow_view.py:211
 msgid "Confirm"
 msgstr "Confirm"
 
@@ -2547,13 +2520,13 @@ msgid "Current metrics"
 msgstr "Current metrics"
 
 #: src/ui/views/training_view.py:133
-#: src/ui/widgets/preview/metrics_preview.py:73
+#: src/ui/widgets/preview/metrics_preview.py:71
 msgid "Metric"
 msgstr "Metric"
 
 #: src/ui/views/training_view.py:133
-#: src/ui/widgets/preview/feature_1d_preview.py:76
-#: src/ui/widgets/preview/metrics_preview.py:72
+#: src/ui/widgets/preview/feature_1d_preview.py:74
+#: src/ui/widgets/preview/metrics_preview.py:70
 msgid "Value"
 msgstr "Value"
 
@@ -2610,44 +2583,61 @@ msgstr "Paused"
 msgid "Save checkpoint"
 msgstr "Save checkpoint"
 
-#: src/ui/views/workflow_view.py:169
-msgid "▶️ Run"
-msgstr "▶️ Run"
-
-#: src/ui/views/workflow_view.py:189 src/ui/views/workflow_view.py:472
-msgid "🔴 Paused"
-msgstr "🔴 Paused"
-
-#: src/ui/views/workflow_view.py:201
-msgid "⏵ Continue"
-msgstr "⏵ Continue"
-
-#: src/ui/views/workflow_view.py:350
+#: src/ui/views/workflow_tabs_view.py:127
+#: src/ui/views/workflow_tabs_view.py:269 src/ui/views/workflow_view.py:148
 msgid "Open workflow"
 msgstr "Open workflow"
 
-#: src/ui/views/workflow_view.py:352 src/ui/views/workflow_view.py:380
+#: src/ui/views/workflow_tabs_view.py:128
+#, fuzzy, python-brace-format
+msgid "Failed to load workflow: {path}"
+msgstr "Failed to start workflow"
+
+#: src/ui/views/workflow_tabs_view.py:271
+#: src/ui/views/workflow_tabs_view.py:303 src/ui/views/workflow_view.py:150
+#: src/ui/views/workflow_view.py:175
 msgid "Workflow files (*.json)"
 msgstr "Workflow files (*.json)"
 
-#: src/ui/views/workflow_view.py:378
+#: src/ui/views/workflow_tabs_view.py:301 src/ui/views/workflow_view.py:173
 msgid "Save workflow"
 msgstr "Save workflow"
 
-#: src/ui/views/workflow_view.py:404
+#: src/ui/views/workflow_tabs_view.py:323 src/ui/views/workflow_view.py:194
 msgid "⏳ Stopping..."
 msgstr "⏳ Stopping..."
 
-#: src/ui/views/workflow_view.py:409
+#: src/ui/views/workflow_tabs_view.py:327 src/ui/views/workflow_view.py:198
 msgid "Stopping workflow... (waiting for current task to finish)"
 msgstr "Stopping workflow... (waiting for current task to finish)"
 
-#: src/ui/views/workflow_view.py:425
+#: src/ui/views/workflow_tabs_view.py:349 src/ui/views/workflow_view.py:212
 msgid "Clear the current workflow?"
 msgstr "Clear the current workflow?"
 
+#: src/ui/views/workflow_tabs_view.py:369
+#, python-brace-format
+msgid "Save changes to '{name}' before closing?"
+msgstr ""
+
+#: src/ui/views/workflow_toolbar.py:72 src/ui/views/workflow_toolbar.py:169
+msgid "🔴 Paused"
+msgstr "🔴 Paused"
+
+#: src/ui/views/workflow_toolbar.py:128
+msgid "📑 Duplicate"
+msgstr ""
+
+#: src/ui/views/workflow_toolbar.py:149
+msgid "▶️ Run"
+msgstr "▶️ Run"
+
+#: src/ui/views/workflow_toolbar.py:181
+msgid "⏵ Continue"
+msgstr "⏵ Continue"
+
 #: src/ui/widgets/spectrogram_widget.py:42
-#: src/ui/widgets/preview/audio_preview.py:69
+#: src/ui/widgets/preview/audio_preview.py:67
 msgid "Spectrogram"
 msgstr "Spectrogram"
 
@@ -2660,7 +2650,7 @@ msgid "Please install pyqtgraph to display spectrograms"
 msgstr "Please install pyqtgraph to display spectrograms"
 
 #: src/ui/widgets/waveform_widget.py:38
-#: src/ui/widgets/preview/audio_preview.py:59
+#: src/ui/widgets/preview/audio_preview.py:57
 msgid "Waveform"
 msgstr "Waveform"
 
@@ -2683,247 +2673,247 @@ msgstr "Please install pyqtgraph to display waveforms"
 msgid "Samples"
 msgstr "Samples"
 
-#: src/ui/widgets/preview/audio_preview.py:40
+#: src/ui/widgets/preview/audio_preview.py:38
 msgid "Audio preview"
 msgstr "Audio preview"
 
-#: src/ui/widgets/preview/audio_preview.py:79
+#: src/ui/widgets/preview/audio_preview.py:77
 msgid "Playback controls"
 msgstr "Playback controls"
 
-#: src/ui/widgets/preview/base_preview.py:33
+#: src/ui/widgets/preview/base_preview.py:30
 msgid "Base preview"
 msgstr "Base preview"
 
-#: src/ui/widgets/preview/base_preview.py:69
+#: src/ui/widgets/preview/base_preview.py:66
 msgid "Subclasses must implement set_data()"
 msgstr "Subclasses must implement set_data()"
 
-#: src/ui/widgets/preview/base_preview.py:78
+#: src/ui/widgets/preview/base_preview.py:75
 msgid "Subclasses must implement clear()"
 msgstr "Subclasses must implement clear()"
 
-#: src/ui/widgets/preview/feature_1d_preview.py:45
-#: src/ui/widgets/preview/feature_1d_preview.py:59
+#: src/ui/widgets/preview/feature_1d_preview.py:43
+#: src/ui/widgets/preview/feature_1d_preview.py:57
 msgid "1D feature"
 msgstr "1D feature"
 
-#: src/ui/widgets/preview/feature_1d_preview.py:77
+#: src/ui/widgets/preview/feature_1d_preview.py:75
 msgid "Index"
 msgstr "Index"
 
-#: src/ui/widgets/preview/feature_1d_preview.py:87
-#: src/ui/widgets/preview/label_preview.py:107
-#: src/ui/widgets/preview/metrics_preview.py:77
+#: src/ui/widgets/preview/feature_1d_preview.py:85
+#: src/ui/widgets/preview/label_preview.py:105
+#: src/ui/widgets/preview/metrics_preview.py:75
 msgid "Please install pyqtgraph to display charts"
 msgstr "Please install pyqtgraph to display charts"
 
-#: src/ui/widgets/preview/feature_1d_preview.py:101
-#: src/ui/widgets/preview/feature_2d_preview.py:132
+#: src/ui/widgets/preview/feature_1d_preview.py:99
+#: src/ui/widgets/preview/feature_2d_preview.py:130
 msgid "Statistics"
 msgstr "Statistics"
 
-#: src/ui/widgets/preview/feature_1d_preview.py:186
-#: src/ui/widgets/preview/feature_2d_preview.py:226
+#: src/ui/widgets/preview/feature_1d_preview.py:184
+#: src/ui/widgets/preview/feature_2d_preview.py:224
 msgid "No data"
 msgstr "No data"
 
-#: src/ui/widgets/preview/feature_1d_preview.py:190
+#: src/ui/widgets/preview/feature_1d_preview.py:188
 msgid "  Length: {length:,}\n"
 msgstr "  Length: {length:,}\n"
 
-#: src/ui/widgets/preview/feature_1d_preview.py:191
-#: src/ui/widgets/preview/feature_2d_preview.py:232
+#: src/ui/widgets/preview/feature_1d_preview.py:189
+#: src/ui/widgets/preview/feature_2d_preview.py:230
 #, python-brace-format
 msgid "  Min: {value:.6f}\n"
 msgstr "  Min: {value:.6f}\n"
 
-#: src/ui/widgets/preview/feature_1d_preview.py:192
-#: src/ui/widgets/preview/feature_2d_preview.py:233
+#: src/ui/widgets/preview/feature_1d_preview.py:190
+#: src/ui/widgets/preview/feature_2d_preview.py:231
 #, python-brace-format
 msgid "  Max: {value:.6f}\n"
 msgstr "  Max: {value:.6f}\n"
 
-#: src/ui/widgets/preview/feature_1d_preview.py:193
-#: src/ui/widgets/preview/feature_2d_preview.py:234
+#: src/ui/widgets/preview/feature_1d_preview.py:191
+#: src/ui/widgets/preview/feature_2d_preview.py:232
 #, python-brace-format
 msgid "  Mean: {value:.6f}\n"
 msgstr "  Mean: {value:.6f}\n"
 
-#: src/ui/widgets/preview/feature_1d_preview.py:194
+#: src/ui/widgets/preview/feature_1d_preview.py:192
 #, python-brace-format
 msgid "  Std: {value:.6f}\n"
 msgstr "  Std: {value:.6f}\n"
 
-#: src/ui/widgets/preview/feature_1d_preview.py:195
+#: src/ui/widgets/preview/feature_1d_preview.py:193
 #, python-brace-format
 msgid "  Median: {value:.6f}"
 msgstr "  Median: {value:.6f}"
 
-#: src/ui/widgets/preview/feature_2d_preview.py:45
+#: src/ui/widgets/preview/feature_2d_preview.py:43
 msgid "2D feature"
 msgstr "2D feature"
 
-#: src/ui/widgets/preview/feature_2d_preview.py:64
+#: src/ui/widgets/preview/feature_2d_preview.py:62
 msgid "2D feature heatmap"
 msgstr "2D feature heatmap"
 
-#: src/ui/widgets/preview/feature_2d_preview.py:87
+#: src/ui/widgets/preview/feature_2d_preview.py:85
 msgid "Please install pyqtgraph to display heatmaps"
 msgstr "Please install pyqtgraph to display heatmaps"
 
-#: src/ui/widgets/preview/feature_2d_preview.py:101
+#: src/ui/widgets/preview/feature_2d_preview.py:99
 msgid "Mean over time"
 msgstr "Mean over time"
 
-#: src/ui/widgets/preview/feature_2d_preview.py:116
+#: src/ui/widgets/preview/feature_2d_preview.py:114
 msgid "Mean"
 msgstr "Mean"
 
-#: src/ui/widgets/preview/feature_2d_preview.py:117
+#: src/ui/widgets/preview/feature_2d_preview.py:115
 msgid "Frame"
 msgstr "Frame"
 
-#: src/ui/widgets/preview/feature_2d_preview.py:126
+#: src/ui/widgets/preview/feature_2d_preview.py:124
 msgid "Please install pyqtgraph"
 msgstr "Please install pyqtgraph"
 
-#: src/ui/widgets/preview/feature_2d_preview.py:230
+#: src/ui/widgets/preview/feature_2d_preview.py:228
 #, python-brace-format
 msgid "  Shape: {h} × {w} (features × frames)\n"
 msgstr "  Shape: {h} × {w} (features × frames)\n"
 
-#: src/ui/widgets/preview/feature_2d_preview.py:231
+#: src/ui/widgets/preview/feature_2d_preview.py:229
 msgid "  Elements: {n:,}\n"
 msgstr "  Elements: {n:,}\n"
 
-#: src/ui/widgets/preview/feature_2d_preview.py:235
+#: src/ui/widgets/preview/feature_2d_preview.py:233
 #, python-brace-format
 msgid "  Std: {value:.6f}"
 msgstr "  Std: {value:.6f}"
 
-#: src/ui/widgets/preview/label_preview.py:46
+#: src/ui/widgets/preview/label_preview.py:44
 msgid "Label preview"
 msgstr "Label preview"
 
-#: src/ui/widgets/preview/label_preview.py:73
+#: src/ui/widgets/preview/label_preview.py:71
 msgid "📊 Statistics"
 msgstr "📊 Statistics"
 
-#: src/ui/widgets/preview/label_preview.py:93
+#: src/ui/widgets/preview/label_preview.py:91
 msgid "📈 Label distribution"
 msgstr "📈 Label distribution"
 
-#: src/ui/widgets/preview/label_preview.py:102 src/visualization/metrics.py:207
+#: src/ui/widgets/preview/label_preview.py:100 src/visualization/metrics.py:207
 msgid "Count"
 msgstr "Count"
 
-#: src/ui/widgets/preview/label_preview.py:115
+#: src/ui/widgets/preview/label_preview.py:113
 msgid "📋 Label list"
 msgstr "📋 Label list"
 
-#: src/ui/widgets/preview/label_preview.py:122
+#: src/ui/widgets/preview/label_preview.py:120
 msgid "Class name"
 msgstr "Class name"
 
-#: src/ui/widgets/preview/label_preview.py:122
+#: src/ui/widgets/preview/label_preview.py:120
 msgid "Label"
 msgstr "Label"
 
-#: src/ui/widgets/preview/label_preview.py:263
+#: src/ui/widgets/preview/label_preview.py:261
 msgid "Total labels"
 msgstr "Total labels"
 
-#: src/ui/widgets/preview/label_preview.py:264
+#: src/ui/widgets/preview/label_preview.py:262
 msgid "Classes"
 msgstr "Classes"
 
-#: src/ui/widgets/preview/label_preview.py:265
+#: src/ui/widgets/preview/label_preview.py:263
 msgid "Most common"
 msgstr "Most common"
 
+#: src/ui/widgets/preview/label_preview.py:264
 #: src/ui/widgets/preview/label_preview.py:266
-#: src/ui/widgets/preview/label_preview.py:268
-#: src/ui/widgets/preview/label_preview.py:269
+#: src/ui/widgets/preview/label_preview.py:267
 msgid "items"
 msgstr "items"
 
-#: src/ui/widgets/preview/label_preview.py:267
+#: src/ui/widgets/preview/label_preview.py:265
 msgid "Least common"
 msgstr "Least common"
 
-#: src/ui/widgets/preview/label_preview.py:269
+#: src/ui/widgets/preview/label_preview.py:267
 msgid "Avg per class"
 msgstr "Avg per class"
 
-#: src/ui/widgets/preview/label_preview.py:345
+#: src/ui/widgets/preview/label_preview.py:343
 #, python-brace-format
 msgid "... {count} more item(s) not shown"
 msgstr "... {count} more item(s) not shown"
 
-#: src/ui/widgets/preview/metrics_preview.py:63
+#: src/ui/widgets/preview/metrics_preview.py:61
 msgid "📊 Metrics"
 msgstr "📊 Metrics"
 
-#: src/ui/widgets/preview/metrics_preview.py:84
+#: src/ui/widgets/preview/metrics_preview.py:82
 msgid "📋 Details"
 msgstr "📋 Details"
 
-#: src/ui/widgets/preview/model_preview.py:37
+#: src/ui/widgets/preview/model_preview.py:35
 msgid "Model preview"
 msgstr "Model preview"
 
-#: src/ui/widgets/preview/model_preview.py:56
+#: src/ui/widgets/preview/model_preview.py:54
 msgid "🧠 Model summary"
 msgstr "🧠 Model summary"
 
-#: src/ui/widgets/preview/model_preview.py:79
+#: src/ui/widgets/preview/model_preview.py:77
 msgid "📊 Model parameters"
 msgstr "📊 Model parameters"
 
-#: src/ui/widgets/preview/model_preview.py:151
+#: src/ui/widgets/preview/model_preview.py:149
 #, python-brace-format
 msgid "Failed to parse model: {error}"
 msgstr "Failed to parse model: {error}"
 
-#: src/ui/widgets/preview/model_preview.py:168
+#: src/ui/widgets/preview/model_preview.py:166
 #, python-brace-format
 msgid "Failed to get model summary: {error}"
 msgstr "Failed to get model summary: {error}"
 
-#: src/ui/widgets/preview/model_preview.py:244
+#: src/ui/widgets/preview/model_preview.py:242
 msgid "Model name"
 msgstr "Model name"
 
-#: src/ui/widgets/preview/model_preview.py:247
+#: src/ui/widgets/preview/model_preview.py:245
 msgid "Layers"
 msgstr "Layers"
 
-#: src/ui/widgets/preview/model_preview.py:256
+#: src/ui/widgets/preview/model_preview.py:254
 msgid "Total params"
 msgstr "Total params"
 
-#: src/ui/widgets/preview/model_preview.py:261
+#: src/ui/widgets/preview/model_preview.py:259
 msgid "Trainable params"
 msgstr "Trainable params"
 
-#: src/ui/widgets/preview/model_preview.py:266
+#: src/ui/widgets/preview/model_preview.py:264
 msgid "Non-trainable params"
 msgstr "Non-trainable params"
 
-#: src/ui/widgets/preview/model_preview.py:278
+#: src/ui/widgets/preview/model_preview.py:276
 msgid "Output shape"
 msgstr "Output shape"
 
-#: src/ui/widgets/preview/model_preview.py:286
+#: src/ui/widgets/preview/model_preview.py:284
 msgid "✅ Compiled"
 msgstr "✅ Compiled"
 
-#: src/ui/widgets/preview/model_preview.py:286
+#: src/ui/widgets/preview/model_preview.py:284
 msgid "❌ Not compiled"
 msgstr "❌ Not compiled"
 
-#: src/ui/widgets/preview/model_preview.py:287
+#: src/ui/widgets/preview/model_preview.py:285
 msgid "Compile status"
 msgstr "Compile status"
 
@@ -3388,6 +3378,11 @@ msgstr "Split dataset"
 #: src/workflow/nodes/control.py:119
 msgid "Split data into train/val/test sets"
 msgstr "Split data into train/val/test sets"
+
+#: src/workflow/nodes/control.py:123 src/workflow/nodes/control.py:384
+#: src/workflow/nodes/control.py:385
+msgid "Data"
+msgstr "Data"
 
 #: src/workflow/nodes/control.py:125 src/workflow/nodes/training.py:305
 msgid "Train data"
@@ -4716,3 +4711,22 @@ msgstr "Number of sub-bands (output dimension is n_bands + 1)"
 #: src/workflow/nodes/feature/dim2d/stft.py:31
 msgid "Extract STFT spectrogram"
 msgstr "Extract STFT spectrogram"
+
+#, python-brace-format
+#~ msgid "Preview {name} - {type}"
+#~ msgstr "Preview {name} - {type}"
+
+#~ msgid "Audio waveform"
+#~ msgstr "Audio waveform"
+
+#~ msgid "1D feature curve"
+#~ msgstr "1D feature curve"
+
+#~ msgid "2D feature map"
+#~ msgstr "2D feature map"
+
+#~ msgid "Feature data"
+#~ msgstr "Feature data"
+
+#~ msgid "Trigger"
+#~ msgstr "Trigger"

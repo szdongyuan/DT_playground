@@ -28,7 +28,7 @@ from src.ui.styles import Styles
 from src.ui.views.model_builder_view import ModelBuilderView
 from src.ui.views.preview_view import PreviewView
 from src.ui.views.training_view import TrainingView
-from src.ui.views.workflow_view import WorkflowView
+from src.ui.views.workflow_tabs_view import WorkflowTabsView
 from src.workflow.engine import WorkflowEngine, ExecutionResult
 from src.workflow.workflow import Workflow
 
@@ -130,7 +130,7 @@ class MainWindow(QWidget):
         main_layout.addWidget(self._view_stack)
         
         # 创建视图
-        self._workflow_view = WorkflowView()
+        self._workflow_view = WorkflowTabsView()
         self._model_builder_view = ModelBuilderView()
         self._preview_view = PreviewView()
         self._training_view = TrainingView()

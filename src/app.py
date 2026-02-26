@@ -177,28 +177,24 @@ class AudioTrainingApp(QMainWindow):
         try:
             last_workflow_path = config.get('session.last_workflow_path')
             if last_workflow_path and os.path.exists(last_workflow_path):
-                workflow = Workflow.load(last_workflow_path)
-                if workflow:
-                    # 记录文件路径（供 UI 显示文件名）
-                    workflow._file_path = last_workflow_path  # type: ignore[attr-defined]
-                    # 同步 main_window 内部状态 + view + controller
-                    try:
-                        self.main_window._workflow = workflow
-                    except Exception:
-                        pass
-                    self.main_window._workflow_view.set_workflow(workflow)
-                    try:
-                        self.main_window._workflow_controller.set_workflow(workflow)
-                    except Exception:
-                        pass
-                    try:
-                        self.main_window._update_workflow_status()
-                    except Exception:
-                        pass
-                    try:
-                        config.add_recent_file(last_workflow_path)
-                    except Exception:
-                        pass
+                try:
+                    self.main_window._workflow_view.open_workflow_file(last_workflow_path)
+                    wf = self.main_window._workflow_view.get_workflow()
+                    if wf is not None:
+                        try:
+                            self.main_window._workflow = wf
+                        except Exception:
+                            pass
+                        try:
+                            self.main_window._workflow_controller.set_workflow(wf)
+                        except Exception:
+                            pass
+                        try:
+                            self.main_window._update_workflow_status()
+                        except Exception:
+                            pass
+                except Exception:
+                    pass
         except Exception:
             # 启动恢复失败不应阻断应用启动
             pass
@@ -310,30 +306,30 @@ class AudioTrainingApp(QMainWindow):
         if os.path.exists(file_path):
             # 根据文件类型打开
             if file_path.endswith('.json'):
-                # 工作流文件，加载到工作流视图
-                from src.workflow.workflow import Workflow
-                workflow = Workflow.load(file_path)
-                if workflow:
-                    workflow._file_path = file_path  # type: ignore[attr-defined]
-                    # 同步 main_window 内部状态 + view + controller
-                    try:
-                        self.main_window._workflow = workflow
-                    except Exception:
-                        pass
-                    self.main_window._workflow_view.set_workflow(workflow)
-                    try:
-                        self.main_window._workflow_controller.set_workflow(workflow)
-                    except Exception:
-                        pass
-                    try:
-                        self.main_window._update_workflow_status()
-                    except Exception:
-                        pass
-                    try:
-                        config.set('session.last_workflow_path', file_path)
-                    except Exception:
-                        pass
+                # Workflow file: always open in a new workflow tab.
+                try:
+                    self.main_window._workflow_view.open_workflow_file(file_path)
+                    wf = self.main_window._workflow_view.get_workflow()
+                    if wf is not None:
+                        try:
+                            self.main_window._workflow = wf
+                        except Exception:
+                            pass
+                        try:
+                            self.main_window._workflow_controller.set_workflow(wf)
+                        except Exception:
+                            pass
+                        try:
+                            self.main_window._update_workflow_status()
+                        except Exception:
+                            pass
+                        try:
+                            config.set('session.last_workflow_path', file_path)
+                        except Exception:
+                            pass
                     self._switch_view(0)
+                except Exception:
+                    pass
             elif file_path.endswith(('.h5', '.keras', '.model.json')):
                 # 模型文件
                 self._load_model()
