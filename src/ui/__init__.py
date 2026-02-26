@@ -2,7 +2,20 @@
 UI Components Module
 """
 
-from src.ui.main_window import MainWindow
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from .main_window import MainWindow as MainWindow
 
 __all__ = ["MainWindow"]
+
+
+def __getattr__(name: str) -> Any:
+    if name == "MainWindow":
+        from .main_window import MainWindow
+
+        return MainWindow
+    raise AttributeError(name)
 

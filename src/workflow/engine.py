@@ -110,6 +110,12 @@ class WorkflowEngine(QObject):
         if not self.workflow:
             self.workflow_error.emit(tr_("Workflow not set"))
             return False
+
+        # Prevent starting a new run while the previous worker thread is still finishing.
+        # A terminal state (COMPLETED/STOPPED/ERROR) can be observed before QThread fully exits.
+        if self._worker is not None and self._worker.isRunning():
+            self.workflow_error.emit(tr_("Workflow is already running"))
+            return False
         
         if self.state == EngineState.RUNNING:
             self.workflow_error.emit(tr_("Workflow is already running"))
@@ -441,6 +447,9 @@ class WorkflowEngine(QObject):
     def _on_worker_finished(self):
         """Worker thread completion callback"""
         self._worker = None
+        # Once the worker thread exits, the engine is ready for the next execution.
+        if self.state in (EngineState.COMPLETED, EngineState.ERROR, EngineState.STOPPED):
+            self.state = EngineState.IDLE
     
     def get_node_output(self, node_id: str, port_name: str = None) -> Any:
         """
