@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-26 10:58+0800\n"
+"POT-Creation-Date: 2026-02-26 13:08+0800\n"
 "PO-Revision-Date: 2026-02-04 17:15+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -121,7 +121,7 @@ msgstr "（无最近文件）"
 msgid "Clear recent files"
 msgstr "清除最近文件"
 
-#: src/app.py:339 src/ui/main_window.py:503
+#: src/app.py:339 src/ui/main_window.py:523
 #: src/ui/dialogs/dataset_dialog.py:216 src/ui/dialogs/export_dialog.py:137
 #: src/ui/dialogs/export_dialog.py:141 src/ui/dialogs/export_dialog.py:145
 #: src/ui/views/model_builder_view.py:452
@@ -136,7 +136,7 @@ msgid "File does not exist: {path}"
 msgstr "文件不存在：{path}"
 
 #: src/app.py:394 src/controllers/navigation_controller.py:209
-#: src/ui/main_window.py:781
+#: src/ui/main_window.py:829
 msgid "Info"
 msgstr "提示"
 
@@ -300,28 +300,28 @@ msgid "Unknown normalization method: {method}"
 msgstr "未知的归一化方法：{method}"
 
 #: src/controllers/navigation_controller.py:83 src/ui/main_window.py:187
-#: src/ui/main_window.py:437
+#: src/ui/main_window.py:444
 msgid "Workflow"
 msgstr "工作流"
 
 #: src/controllers/navigation_controller.py:83 src/ui/main_window.py:188
-#: src/ui/main_window.py:438 src/ui/dialogs/settings_dialog.py:42
+#: src/ui/main_window.py:445 src/ui/dialogs/settings_dialog.py:42
 #: src/workflow/nodes/training.py:304 src/workflow/nodes/training.py:684
 #: src/workflow/nodes/training.py:1028
 msgid "Model"
 msgstr "模型"
 
 #: src/controllers/navigation_controller.py:83 src/ui/main_window.py:189
-#: src/ui/main_window.py:439
+#: src/ui/main_window.py:446
 msgid "Preview"
 msgstr "预览"
 
 #: src/controllers/navigation_controller.py:83 src/ui/main_window.py:190
-#: src/ui/main_window.py:440
+#: src/ui/main_window.py:447
 msgid "Training"
 msgstr "训练"
 
-#: src/controllers/navigation_controller.py:85 src/ui/main_window.py:443
+#: src/controllers/navigation_controller.py:85 src/ui/main_window.py:450
 #, python-brace-format
 msgid "Switched to {view} view"
 msgstr "已切换到 {view} 视图"
@@ -381,11 +381,15 @@ msgstr "训练失败：{message}"
 msgid "Training stopped"
 msgstr "训练已停止"
 
-#: src/controllers/workflow_controller.py:114
+#: src/controllers/workflow_controller.py:90
+msgid "Workflow is active; switching workflow is not allowed"
+msgstr "工作流处于活动状态，禁止切换工作流"
+
+#: src/controllers/workflow_controller.py:118
 msgid "No workflow to run"
 msgstr "没有可运行的工作流"
 
-#: src/controllers/workflow_controller.py:120
+#: src/controllers/workflow_controller.py:124
 #, python-brace-format
 msgid ""
 "Workflow validation failed:\n"
@@ -394,57 +398,57 @@ msgstr ""
 "工作流验证失败：\n"
 "{errors}"
 
-#: src/controllers/workflow_controller.py:127
+#: src/controllers/workflow_controller.py:131
 msgid "Starting workflow..."
 msgstr "正在启动工作流..."
 
-#: src/controllers/workflow_controller.py:131
+#: src/controllers/workflow_controller.py:135
 msgid "Failed to start workflow"
 msgstr "启动工作流失败"
 
-#: src/controllers/workflow_controller.py:140
+#: src/controllers/workflow_controller.py:144
 msgid "Stop requested. Waiting for current task to finish..."
 msgstr "已请求停止。正在等待当前任务结束..."
 
-#: src/controllers/workflow_controller.py:146
+#: src/controllers/workflow_controller.py:150
 msgid "Workflow paused"
 msgstr "工作流已暂停"
 
-#: src/controllers/workflow_controller.py:151
+#: src/controllers/workflow_controller.py:155
 msgid "Workflow resumed"
 msgstr "工作流已恢复"
 
-#: src/controllers/workflow_controller.py:157 src/workflow/engine.py:424
+#: src/controllers/workflow_controller.py:161 src/workflow/engine.py:430
 msgid "Continuing from breakpoint..."
 msgstr "正在从断点继续..."
 
-#: src/controllers/workflow_controller.py:183
+#: src/controllers/workflow_controller.py:187
 msgid "Workflow running..."
 msgstr "工作流运行中..."
 
-#: src/controllers/workflow_controller.py:192
+#: src/controllers/workflow_controller.py:196
 #, python-brace-format
 msgid "Workflow finished (elapsed: {seconds:.2f}s)"
 msgstr "工作流结束（耗时：{seconds:.2f}s）"
 
-#: src/controllers/workflow_controller.py:198 src/ui/main_window.py:571
-#: src/ui/main_window.py:591
+#: src/controllers/workflow_controller.py:202 src/ui/main_window.py:604
+#: src/ui/main_window.py:624
 #, python-brace-format
 msgid "Execution failed: {message}"
 msgstr "执行失败：{message}"
 
-#: src/controllers/workflow_controller.py:205
+#: src/controllers/workflow_controller.py:209
 #, python-brace-format
 msgid "Error: {message}"
 msgstr "错误：{message}"
 
-#: src/controllers/workflow_controller.py:216 src/ui/main_window.py:605
-#: src/ui/main_window.py:617 src/workflow/engine.py:267
+#: src/controllers/workflow_controller.py:220 src/ui/main_window.py:638
+#: src/ui/main_window.py:665 src/workflow/engine.py:273
 #, python-brace-format
 msgid "Running: {name}"
 msgstr "正在运行：{name}"
 
-#: src/controllers/workflow_controller.py:244
+#: src/controllers/workflow_controller.py:248
 #, python-brace-format
 msgid "🔴 Breakpoint hit: {name}"
 msgstr "🔴 命中断点：{name}"
@@ -1498,72 +1502,81 @@ msgstr "GPU：未知"
 msgid "Memory: {used:.1f}/{total:.1f}GB"
 msgstr "内存：{used:.1f}/{total:.1f}GB"
 
-#: src/ui/main_window.py:361 src/ui/main_window.py:372
-#: src/ui/main_window.py:381 src/ui/views/workflow_toolbar.py:154
+#: src/ui/main_window.py:363 src/ui/main_window.py:376
+#: src/ui/main_window.py:387 src/ui/main_window.py:551
+#: src/ui/views/workflow_toolbar.py:154
 msgid "⏹️ Stop"
 msgstr "⏹️ 停止"
 
-#: src/ui/main_window.py:383 src/ui/main_window.py:578
+#: src/ui/main_window.py:389 src/ui/main_window.py:611
 msgid "Execution error"
 msgstr "执行错误"
 
-#: src/ui/main_window.py:459
+#: src/ui/main_window.py:466
 msgid "Modified"
 msgstr "已修改"
 
-#: src/ui/main_window.py:459 src/ui/views/model_builder_view.py:514
+#: src/ui/main_window.py:466 src/ui/views/model_builder_view.py:514
 msgid "Saved"
 msgstr "已保存"
 
-#: src/ui/main_window.py:461
+#: src/ui/main_window.py:468
 #, python-brace-format
 msgid "Workflow: {name} ({status})"
 msgstr "工作流：{name}（{status}）"
 
-#: src/ui/main_window.py:466
+#: src/ui/main_window.py:473
 msgid "Workflow: None"
 msgstr "工作流：无"
 
-#: src/ui/main_window.py:503
+#: src/ui/main_window.py:513
+msgid "A workflow is already running. Switching to the running tab."
+msgstr "已有工作流正在运行，正在切换到运行中的标签页。"
+
+#: src/ui/main_window.py:518
+msgid "A workflow is already running."
+msgstr "已有工作流正在运行。"
+
+#: src/ui/main_window.py:523
 msgid "No runnable workflow."
 msgstr "没有可运行的工作流。"
 
-#: src/ui/main_window.py:514 src/ui/views/model_builder_view.py:537
+#: src/ui/main_window.py:536 src/ui/views/model_builder_view.py:537
 msgid "Validation failed"
 msgstr "验证失败"
 
-#: src/ui/main_window.py:515
+#: src/ui/main_window.py:537
 msgid "Workflow validation failed:\n"
 msgstr "工作流验证失败：\n"
 
-#: src/ui/main_window.py:525
+#: src/ui/main_window.py:553
 msgid "Startup failed"
 msgstr "启动失败"
 
-#: src/ui/main_window.py:553
+#: src/ui/main_window.py:586
 msgid "Running workflow..."
 msgstr "正在运行工作流..."
 
-#: src/ui/main_window.py:563
+#: src/ui/main_window.py:596
 #, python-brace-format
 msgid "Time: {seconds:.2f}s"
 msgstr "耗时：{seconds:.2f}s"
 
-#: src/ui/main_window.py:567 src/ui/main_window.py:587
+#: src/ui/main_window.py:600 src/ui/main_window.py:620
 msgid "Workflow completed"
 msgstr "工作流已完成"
 
-#: src/ui/main_window.py:577
+#: src/ui/main_window.py:610
 #, python-brace-format
 msgid "Error: {error}"
 msgstr "错误：{error}"
 
-#: src/ui/main_window.py:700
+#: src/ui/main_window.py:748
 #, python-brace-format
 msgid "🔴 Breakpoint paused: {name} - Click to continue"
 msgstr "🔴 断点暂停：{name} - 点击继续"
 
-#: src/ui/main_window.py:783
+#: src/ui/main_window.py:831
 #, python-brace-format
 msgid ""
 "Node [{name}] has not been run yet.\n"
@@ -2293,8 +2306,8 @@ msgstr "🗑️ 清空"
 #: src/ui/views/model_builder_view.py:294
 #: src/ui/views/model_builder_view.py:357
 #: src/ui/views/model_builder_view.py:593
-#: src/ui/views/workflow_tabs_view.py:348
-#: src/ui/views/workflow_tabs_view.py:372 src/ui/views/workflow_view.py:211
+#: src/ui/views/workflow_tabs_view.py:454
+#: src/ui/views/workflow_tabs_view.py:489 src/ui/views/workflow_view.py:211
 msgid "Confirm"
 msgstr "确认"
 
@@ -2579,39 +2592,47 @@ msgstr "已暂停"
 msgid "Save checkpoint"
 msgstr "保存检查点"
 
-#: src/ui/views/workflow_tabs_view.py:127
-#: src/ui/views/workflow_tabs_view.py:269 src/ui/views/workflow_view.py:148
+#: src/ui/views/workflow_tabs_view.py:192
+#: src/ui/views/workflow_tabs_view.py:375 src/ui/views/workflow_view.py:148
 msgid "Open workflow"
 msgstr "打开工作流"
 
-#: src/ui/views/workflow_tabs_view.py:128
-#, fuzzy, python-brace-format
+#: src/ui/views/workflow_tabs_view.py:193
+#, python-brace-format
 msgid "Failed to load workflow: {path}"
-msgstr "启动工作流失败"
+msgstr "无法加载工作流：{path}"
 
-#: src/ui/views/workflow_tabs_view.py:271
-#: src/ui/views/workflow_tabs_view.py:303 src/ui/views/workflow_view.py:150
+#: src/ui/views/workflow_tabs_view.py:377
+#: src/ui/views/workflow_tabs_view.py:409 src/ui/views/workflow_view.py:150
 #: src/ui/views/workflow_view.py:175
 msgid "Workflow files (*.json)"
 msgstr "工作流文件 (*.json)"
 
-#: src/ui/views/workflow_tabs_view.py:301 src/ui/views/workflow_view.py:173
+#: src/ui/views/workflow_tabs_view.py:407 src/ui/views/workflow_view.py:173
 msgid "Save workflow"
 msgstr "保存工作流"
 
-#: src/ui/views/workflow_tabs_view.py:323 src/ui/views/workflow_view.py:194
+#: src/ui/views/workflow_tabs_view.py:429 src/ui/views/workflow_view.py:194
 msgid "⏳ Stopping..."
 msgstr "⏳ 正在停止..."
 
-#: src/ui/views/workflow_tabs_view.py:327 src/ui/views/workflow_view.py:198
+#: src/ui/views/workflow_tabs_view.py:433 src/ui/views/workflow_view.py:198
 msgid "Stopping workflow... (waiting for current task to finish)"
 msgstr "正在停止工作流...（等待当前任务结束）"
 
-#: src/ui/views/workflow_tabs_view.py:349 src/ui/views/workflow_view.py:212
+#: src/ui/views/workflow_tabs_view.py:455 src/ui/views/workflow_view.py:212
 msgid "Clear the current workflow?"
 msgstr "清空当前工作流？"
 
-#: src/ui/views/workflow_tabs_view.py:369
+#: src/ui/views/workflow_tabs_view.py:471
+msgid "Running"
+msgstr "正在运行"
+
+#: src/ui/views/workflow_tabs_view.py:472
+msgid "Cannot close the running tab while a workflow is active."
+msgstr "工作流处于活动状态时无法关闭运行中的标签页。"
+
+#: src/ui/views/workflow_tabs_view.py:486
 #, python-brace-format
 msgid "Save changes to '{name}' before closing?"
 msgstr "关闭前是否保存对 '{name}' 的更改？"
@@ -3024,33 +3045,33 @@ msgstr "右"
 msgid "Waveform envelope"
 msgstr "波形包络"
 
-#: src/workflow/engine.py:111 src/workflow/engine.py:144
+#: src/workflow/engine.py:111 src/workflow/engine.py:150
 msgid "Workflow not set"
 msgstr "未设置工作流"
 
-#: src/workflow/engine.py:115
+#: src/workflow/engine.py:117 src/workflow/engine.py:121
 msgid "Workflow is already running"
 msgstr "工作流已在运行"
 
-#: src/workflow/engine.py:246
+#: src/workflow/engine.py:252
 msgid "Execution stopped"
 msgstr "执行已停止"
 
-#: src/workflow/engine.py:277
+#: src/workflow/engine.py:283
 #, python-brace-format
 msgid "Node '{name}' failed: {error}"
 msgstr "节点“{name}”失败：{error}"
 
-#: src/workflow/engine.py:296
+#: src/workflow/engine.py:302
 msgid "Workflow finished"
 msgstr "工作流已结束"
 
-#: src/workflow/engine.py:306
+#: src/workflow/engine.py:312
 #, python-brace-format
 msgid "Execution error: {error}"
 msgstr "执行错误：{error}"
 
-#: src/workflow/engine.py:409
+#: src/workflow/engine.py:415
 #, python-brace-format
 msgid "Breakpoint paused: {name} - click Continue to proceed"
 msgstr "断点暂停：{name} - 点击“继续”以继续执行"
