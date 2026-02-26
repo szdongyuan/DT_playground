@@ -170,34 +170,102 @@ class AudioTrainingApp(QMainWindow):
         """加载设置"""
         # 启动恢复：上次工作流 + 模型编辑器状态
         import os
-        from src.workflow.workflow import Workflow
         from src.model_builder.model_graph import ModelGraph
+
+        # Prevent the default empty tab from overwriting the previous session state
+        # before we restore workflow tabs from config.
+        try:
+            self.main_window._workflow_view.set_session_restore_in_progress(True)
+        except Exception:
+            pass
 
         # ===== 恢复工作流 =====
         try:
-            last_workflow_path = config.get('session.last_workflow_path')
-            if last_workflow_path and os.path.exists(last_workflow_path):
+            open_paths = config.get("session.open_workflow_paths", [])
+            active_idx = config.get("session.active_workflow_tab", -1)
+
+            restored_paths: list[str] = []
+            if isinstance(open_paths, list):
+                for p in open_paths:
+                    if isinstance(p, str) and p and os.path.exists(p):
+                        restored_paths.append(p)
+
+            if restored_paths:
                 try:
-                    self.main_window._workflow_view.open_workflow_file(last_workflow_path)
-                    wf = self.main_window._workflow_view.get_workflow()
-                    if wf is not None:
-                        try:
-                            self.main_window._workflow = wf
-                        except Exception:
-                            pass
-                        try:
-                            self.main_window._workflow_controller.set_workflow(wf)
-                        except Exception:
-                            pass
-                        try:
-                            self.main_window._update_workflow_status()
-                        except Exception:
-                            pass
+                    # Remove the default empty tab before restoring.
+                    self.main_window._workflow_view.clear_all_tabs(ensure_one_tab=False)
                 except Exception:
                     pass
+
+                for p in restored_paths:
+                    try:
+                        self.main_window._workflow_view.open_workflow_file(p)
+                    except Exception:
+                        pass
+
+                # Restore active tab (index into restored file-backed list).
+                try:
+                    count = int(self.main_window._workflow_view._tabs.count())
+                except Exception:
+                    count = 0
+                if count > 0:
+                    try:
+                        idx = int(active_idx)
+                    except Exception:
+                        idx = -1
+                    if idx < 0 or idx >= count:
+                        idx = 0
+                    try:
+                        self.main_window._workflow_view._tabs.setCurrentIndex(idx)
+                    except Exception:
+                        pass
+
+                wf = self.main_window._workflow_view.get_workflow()
+                if wf is not None:
+                    try:
+                        self.main_window._workflow = wf
+                    except Exception:
+                        pass
+                    try:
+                        self.main_window._workflow_controller.set_workflow(wf)
+                    except Exception:
+                        pass
+                    try:
+                        self.main_window._update_workflow_status()
+                    except Exception:
+                        pass
+            else:
+                # Backward compatibility: restore last_workflow_path (single file)
+                last_workflow_path = config.get('session.last_workflow_path')
+                if last_workflow_path and os.path.exists(last_workflow_path):
+                    try:
+                        self.main_window._workflow_view.open_workflow_file(last_workflow_path)
+                        wf = self.main_window._workflow_view.get_workflow()
+                        if wf is not None:
+                            try:
+                                self.main_window._workflow = wf
+                            except Exception:
+                                pass
+                            try:
+                                self.main_window._workflow_controller.set_workflow(wf)
+                            except Exception:
+                                pass
+                            try:
+                                self.main_window._update_workflow_status()
+                            except Exception:
+                                pass
+                    except Exception:
+                        pass
         except Exception:
             # 启动恢复失败不应阻断应用启动
             pass
+        finally:
+            # Unfreeze session persistence and persist the restored final state once.
+            try:
+                self.main_window._workflow_view.set_session_restore_in_progress(False)
+                self.main_window._workflow_view.persist_session_state_guarded()
+            except Exception:
+                pass
 
         # ===== 恢复模型编辑器 =====
         try:
@@ -461,6 +529,20 @@ class AudioTrainingApp(QMainWindow):
     
     def closeEvent(self, event):
         """窗口关闭事件"""
-        # 保存窗口状态
+        # Prompt on unsaved workflows (Save / Don't Save / Cancel)
+        try:
+            if not self.main_window._workflow_view.confirm_save_dirty_on_close():
+                event.ignore()
+                return
+        except Exception:
+            # Never block close if prompt flow fails.
+            pass
+
+        # Persist session state (open tabs + active index)
+        try:
+            self.main_window._workflow_view.persist_session_state_guarded(force=True)
+        except Exception:
+            pass
+
         config.save()
         event.accept()

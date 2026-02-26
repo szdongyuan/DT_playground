@@ -2,10 +2,15 @@
 Configuration Manager
 """
 
+import logging
 import json
 import os
+import tempfile
 from pathlib import Path
 from typing import Any, Dict, Optional
+
+
+logger = logging.getLogger(__name__)
 
 
 class ConfigManager:
@@ -71,6 +76,10 @@ class ConfigManager:
         'session': {
             # 上次打开/保存的工作流文件路径（存在且可读时启动自动加载）
             'last_workflow_path': None,
+            # 上次会话打开的工作流文件路径列表（仅文件型 tabs；恢复时仅恢复存在的文件）
+            'open_workflow_paths': [],
+            # 上次会话激活的工作流 tab（按 open_workflow_paths 的索引；-1 表示无可用文件型激活 tab）
+            'active_workflow_tab': -1,
             # 上次打开/保存的模型定义文件路径（.model.json）
             'last_model_path': None,
             # 模型编辑器快照（用于无可用 last_model_path 时恢复）
@@ -130,10 +139,48 @@ class ConfigManager:
     def save(self):
         """保存配置到文件"""
         try:
-            with open(self.config_file, 'w', encoding='utf-8') as f:
-                json.dump(self.config, f, indent=2, ensure_ascii=False)
+            self._ensure_config_dir()
+
+            payload = json.dumps(self.config, indent=2, ensure_ascii=False)
+            target = Path(self.config_file)
+            tmp_fd = None
+            tmp_path = None
+            try:
+                tmp_fd, tmp_path = tempfile.mkstemp(
+                    prefix=target.name + ".",
+                    suffix=".tmp",
+                    dir=str(target.parent),
+                    text=True,
+                )
+                with os.fdopen(tmp_fd, "w", encoding="utf-8", newline="\n") as f:
+                    tmp_fd = None
+                    f.write(payload)
+                    f.flush()
+                    try:
+                        os.fsync(f.fileno())
+                    except Exception:
+                        # Best effort; some environments may not support fsync.
+                        pass
+
+                os.replace(tmp_path, str(target))
+                tmp_path = None
+            finally:
+                if tmp_fd is not None:
+                    try:
+                        os.close(tmp_fd)
+                    except Exception:
+                        pass
+                if tmp_path is not None:
+                    try:
+                        os.remove(tmp_path)
+                    except Exception:
+                        pass
+
         except Exception as e:
-            print(f"Failed to save config: {e}")
+            try:
+                logger.exception("Failed to save config: %s", e)
+            except Exception:
+                pass
     
     def get(self, key: str, default: Any = None) -> Any:
         """

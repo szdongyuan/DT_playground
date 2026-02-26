@@ -482,6 +482,12 @@ class Workflow:
                 data = json.load(f)
             
             workflow = cls.from_dict(data)
+            # Attach source path for UI/session features.
+            # Some callsites rely on `_file_path` to persist/restore workflow tabs.
+            try:
+                workflow._file_path = str(path)  # type: ignore[attr-defined]
+            except Exception:
+                pass
             logger.info(f"Workflow loaded: {filepath}")
             return workflow
         except Exception as e:
