@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-26 10:58+0800\n"
+"POT-Creation-Date: 2026-02-26 13:08+0800\n"
 "PO-Revision-Date: 2026-02-04 17:15+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -122,7 +122,7 @@ msgstr "(No recent files)"
 msgid "Clear recent files"
 msgstr "Clear recent files"
 
-#: src/app.py:339 src/ui/main_window.py:503
+#: src/app.py:339 src/ui/main_window.py:523
 #: src/ui/dialogs/dataset_dialog.py:216 src/ui/dialogs/export_dialog.py:137
 #: src/ui/dialogs/export_dialog.py:141 src/ui/dialogs/export_dialog.py:145
 #: src/ui/views/model_builder_view.py:452
@@ -137,7 +137,7 @@ msgid "File does not exist: {path}"
 msgstr "File does not exist: {path}"
 
 #: src/app.py:394 src/controllers/navigation_controller.py:209
-#: src/ui/main_window.py:781
+#: src/ui/main_window.py:829
 msgid "Info"
 msgstr "Info"
 
@@ -301,28 +301,28 @@ msgid "Unknown normalization method: {method}"
 msgstr "Unknown normalization method: {method}"
 
 #: src/controllers/navigation_controller.py:83 src/ui/main_window.py:187
-#: src/ui/main_window.py:437
+#: src/ui/main_window.py:444
 msgid "Workflow"
 msgstr "Workflow"
 
 #: src/controllers/navigation_controller.py:83 src/ui/main_window.py:188
-#: src/ui/main_window.py:438 src/ui/dialogs/settings_dialog.py:42
+#: src/ui/main_window.py:445 src/ui/dialogs/settings_dialog.py:42
 #: src/workflow/nodes/training.py:304 src/workflow/nodes/training.py:684
 #: src/workflow/nodes/training.py:1028
 msgid "Model"
 msgstr "Model"
 
 #: src/controllers/navigation_controller.py:83 src/ui/main_window.py:189
-#: src/ui/main_window.py:439
+#: src/ui/main_window.py:446
 msgid "Preview"
 msgstr "Preview"
 
 #: src/controllers/navigation_controller.py:83 src/ui/main_window.py:190
-#: src/ui/main_window.py:440
+#: src/ui/main_window.py:447
 msgid "Training"
 msgstr "Training"
 
-#: src/controllers/navigation_controller.py:85 src/ui/main_window.py:443
+#: src/controllers/navigation_controller.py:85 src/ui/main_window.py:450
 #, python-brace-format
 msgid "Switched to {view} view"
 msgstr "Switched to {view} view"
@@ -382,11 +382,15 @@ msgstr "Training failed: {message}"
 msgid "Training stopped"
 msgstr "Training stopped"
 
-#: src/controllers/workflow_controller.py:114
+#: src/controllers/workflow_controller.py:90
+msgid "Workflow is active; switching workflow is not allowed"
+msgstr "Workflow is active; switching workflow is not allowed"
+
+#: src/controllers/workflow_controller.py:118
 msgid "No workflow to run"
 msgstr "No workflow to run"
 
-#: src/controllers/workflow_controller.py:120
+#: src/controllers/workflow_controller.py:124
 #, python-brace-format
 msgid ""
 "Workflow validation failed:\n"
@@ -395,57 +399,57 @@ msgstr ""
 "Workflow validation failed:\n"
 "{errors}"
 
-#: src/controllers/workflow_controller.py:127
+#: src/controllers/workflow_controller.py:131
 msgid "Starting workflow..."
 msgstr "Starting workflow..."
 
-#: src/controllers/workflow_controller.py:131
+#: src/controllers/workflow_controller.py:135
 msgid "Failed to start workflow"
 msgstr "Failed to start workflow"
 
-#: src/controllers/workflow_controller.py:140
+#: src/controllers/workflow_controller.py:144
 msgid "Stop requested. Waiting for current task to finish..."
 msgstr "Stop requested. Waiting for current task to finish..."
 
-#: src/controllers/workflow_controller.py:146
+#: src/controllers/workflow_controller.py:150
 msgid "Workflow paused"
 msgstr "Workflow paused"
 
-#: src/controllers/workflow_controller.py:151
+#: src/controllers/workflow_controller.py:155
 msgid "Workflow resumed"
 msgstr "Workflow resumed"
 
-#: src/controllers/workflow_controller.py:157 src/workflow/engine.py:424
+#: src/controllers/workflow_controller.py:161 src/workflow/engine.py:430
 msgid "Continuing from breakpoint..."
 msgstr "Continuing from breakpoint..."
 
-#: src/controllers/workflow_controller.py:183
+#: src/controllers/workflow_controller.py:187
 msgid "Workflow running..."
 msgstr "Workflow running..."
 
-#: src/controllers/workflow_controller.py:192
+#: src/controllers/workflow_controller.py:196
 #, python-brace-format
 msgid "Workflow finished (elapsed: {seconds:.2f}s)"
 msgstr "Workflow finished (elapsed: {seconds:.2f}s)"
 
-#: src/controllers/workflow_controller.py:198 src/ui/main_window.py:571
-#: src/ui/main_window.py:591
+#: src/controllers/workflow_controller.py:202 src/ui/main_window.py:604
+#: src/ui/main_window.py:624
 #, python-brace-format
 msgid "Execution failed: {message}"
 msgstr "Execution failed: {message}"
 
-#: src/controllers/workflow_controller.py:205
+#: src/controllers/workflow_controller.py:209
 #, python-brace-format
 msgid "Error: {message}"
 msgstr "Error: {message}"
 
-#: src/controllers/workflow_controller.py:216 src/ui/main_window.py:605
-#: src/ui/main_window.py:617 src/workflow/engine.py:267
+#: src/controllers/workflow_controller.py:220 src/ui/main_window.py:638
+#: src/ui/main_window.py:665 src/workflow/engine.py:273
 #, python-brace-format
 msgid "Running: {name}"
 msgstr "Running: {name}"
 
-#: src/controllers/workflow_controller.py:244
+#: src/controllers/workflow_controller.py:248
 #, python-brace-format
 msgid "🔴 Breakpoint hit: {name}"
 msgstr "🔴 Breakpoint hit: {name}"
@@ -1500,72 +1504,81 @@ msgstr "GPU: Unknown"
 msgid "Memory: {used:.1f}/{total:.1f}GB"
 msgstr "Memory: {used:.1f}/{total:.1f}GB"
 
-#: src/ui/main_window.py:361 src/ui/main_window.py:372
-#: src/ui/main_window.py:381 src/ui/views/workflow_toolbar.py:154
+#: src/ui/main_window.py:363 src/ui/main_window.py:376
+#: src/ui/main_window.py:387 src/ui/main_window.py:551
+#: src/ui/views/workflow_toolbar.py:154
 msgid "⏹️ Stop"
 msgstr "⏹️ Stop"
 
-#: src/ui/main_window.py:383 src/ui/main_window.py:578
+#: src/ui/main_window.py:389 src/ui/main_window.py:611
 msgid "Execution error"
 msgstr "Execution error"
 
-#: src/ui/main_window.py:459
+#: src/ui/main_window.py:466
 msgid "Modified"
 msgstr "Modified"
 
-#: src/ui/main_window.py:459 src/ui/views/model_builder_view.py:514
+#: src/ui/main_window.py:466 src/ui/views/model_builder_view.py:514
 msgid "Saved"
 msgstr "Saved"
 
-#: src/ui/main_window.py:461
+#: src/ui/main_window.py:468
 #, python-brace-format
 msgid "Workflow: {name} ({status})"
 msgstr "Workflow: {name} ({status})"
 
-#: src/ui/main_window.py:466
+#: src/ui/main_window.py:473
 msgid "Workflow: None"
 msgstr "Workflow: None"
 
-#: src/ui/main_window.py:503
+#: src/ui/main_window.py:513
+msgid "A workflow is already running. Switching to the running tab."
+msgstr "A workflow is already running. Switching to the running tab."
+
+#: src/ui/main_window.py:518
+msgid "A workflow is already running."
+msgstr "A workflow is already running."
+
+#: src/ui/main_window.py:523
 msgid "No runnable workflow."
 msgstr "No runnable workflow."
 
-#: src/ui/main_window.py:514 src/ui/views/model_builder_view.py:537
+#: src/ui/main_window.py:536 src/ui/views/model_builder_view.py:537
 msgid "Validation failed"
 msgstr "Validation failed"
 
-#: src/ui/main_window.py:515
+#: src/ui/main_window.py:537
 msgid "Workflow validation failed:\n"
 msgstr "Workflow validation failed:\n"
 
-#: src/ui/main_window.py:525
+#: src/ui/main_window.py:553
 msgid "Startup failed"
 msgstr "Startup failed"
 
-#: src/ui/main_window.py:553
+#: src/ui/main_window.py:586
 msgid "Running workflow..."
 msgstr "Running workflow..."
 
-#: src/ui/main_window.py:563
+#: src/ui/main_window.py:596
 #, python-brace-format
 msgid "Time: {seconds:.2f}s"
 msgstr "Time: {seconds:.2f}s"
 
-#: src/ui/main_window.py:567 src/ui/main_window.py:587
+#: src/ui/main_window.py:600 src/ui/main_window.py:620
 msgid "Workflow completed"
 msgstr "Workflow completed"
 
-#: src/ui/main_window.py:577
+#: src/ui/main_window.py:610
 #, python-brace-format
 msgid "Error: {error}"
 msgstr "Error: {error}"
 
-#: src/ui/main_window.py:700
+#: src/ui/main_window.py:748
 #, python-brace-format
 msgid "🔴 Breakpoint paused: {name} - Click to continue"
 msgstr "🔴 Breakpoint paused: {name} - Click to continue"
 
-#: src/ui/main_window.py:783
+#: src/ui/main_window.py:831
 #, python-brace-format
 msgid ""
 "Node [{name}] has not been run yet.\n"
@@ -2297,8 +2310,8 @@ msgstr "🗑️ Clear"
 #: src/ui/views/model_builder_view.py:294
 #: src/ui/views/model_builder_view.py:357
 #: src/ui/views/model_builder_view.py:593
-#: src/ui/views/workflow_tabs_view.py:348
-#: src/ui/views/workflow_tabs_view.py:372 src/ui/views/workflow_view.py:211
+#: src/ui/views/workflow_tabs_view.py:454
+#: src/ui/views/workflow_tabs_view.py:489 src/ui/views/workflow_view.py:211
 msgid "Confirm"
 msgstr "Confirm"
 
@@ -2583,42 +2596,50 @@ msgstr "Paused"
 msgid "Save checkpoint"
 msgstr "Save checkpoint"
 
-#: src/ui/views/workflow_tabs_view.py:127
-#: src/ui/views/workflow_tabs_view.py:269 src/ui/views/workflow_view.py:148
+#: src/ui/views/workflow_tabs_view.py:192
+#: src/ui/views/workflow_tabs_view.py:375 src/ui/views/workflow_view.py:148
 msgid "Open workflow"
 msgstr "Open workflow"
 
-#: src/ui/views/workflow_tabs_view.py:128
-#, fuzzy, python-brace-format
+#: src/ui/views/workflow_tabs_view.py:193
+#, python-brace-format
 msgid "Failed to load workflow: {path}"
-msgstr "Failed to start workflow"
+msgstr "Failed to load workflow: {path}"
 
-#: src/ui/views/workflow_tabs_view.py:271
-#: src/ui/views/workflow_tabs_view.py:303 src/ui/views/workflow_view.py:150
+#: src/ui/views/workflow_tabs_view.py:377
+#: src/ui/views/workflow_tabs_view.py:409 src/ui/views/workflow_view.py:150
 #: src/ui/views/workflow_view.py:175
 msgid "Workflow files (*.json)"
 msgstr "Workflow files (*.json)"
 
-#: src/ui/views/workflow_tabs_view.py:301 src/ui/views/workflow_view.py:173
+#: src/ui/views/workflow_tabs_view.py:407 src/ui/views/workflow_view.py:173
 msgid "Save workflow"
 msgstr "Save workflow"
 
-#: src/ui/views/workflow_tabs_view.py:323 src/ui/views/workflow_view.py:194
+#: src/ui/views/workflow_tabs_view.py:429 src/ui/views/workflow_view.py:194
 msgid "⏳ Stopping..."
 msgstr "⏳ Stopping..."
 
-#: src/ui/views/workflow_tabs_view.py:327 src/ui/views/workflow_view.py:198
+#: src/ui/views/workflow_tabs_view.py:433 src/ui/views/workflow_view.py:198
 msgid "Stopping workflow... (waiting for current task to finish)"
 msgstr "Stopping workflow... (waiting for current task to finish)"
 
-#: src/ui/views/workflow_tabs_view.py:349 src/ui/views/workflow_view.py:212
+#: src/ui/views/workflow_tabs_view.py:455 src/ui/views/workflow_view.py:212
 msgid "Clear the current workflow?"
 msgstr "Clear the current workflow?"
 
-#: src/ui/views/workflow_tabs_view.py:369
+#: src/ui/views/workflow_tabs_view.py:471
+msgid "Running"
+msgstr "Running"
+
+#: src/ui/views/workflow_tabs_view.py:472
+msgid "Cannot close the running tab while a workflow is active."
+msgstr "Cannot close the running tab while a workflow is active."
+
+#: src/ui/views/workflow_tabs_view.py:486
 #, python-brace-format
 msgid "Save changes to '{name}' before closing?"
-msgstr ""
+msgstr "Save changes to '{name}' before closing?"
 
 #: src/ui/views/workflow_toolbar.py:72 src/ui/views/workflow_toolbar.py:169
 msgid "🔴 Paused"
@@ -2626,7 +2647,7 @@ msgstr "🔴 Paused"
 
 #: src/ui/views/workflow_toolbar.py:128
 msgid "📑 Duplicate"
-msgstr ""
+msgstr "📑 Duplicate"
 
 #: src/ui/views/workflow_toolbar.py:149
 msgid "▶️ Run"
@@ -3032,33 +3053,33 @@ msgstr "Right"
 msgid "Waveform envelope"
 msgstr "Waveform envelope"
 
-#: src/workflow/engine.py:111 src/workflow/engine.py:144
+#: src/workflow/engine.py:111 src/workflow/engine.py:150
 msgid "Workflow not set"
 msgstr "Workflow not set"
 
-#: src/workflow/engine.py:115
+#: src/workflow/engine.py:117 src/workflow/engine.py:121
 msgid "Workflow is already running"
 msgstr "Workflow is already running"
 
-#: src/workflow/engine.py:246
+#: src/workflow/engine.py:252
 msgid "Execution stopped"
 msgstr "Execution stopped"
 
-#: src/workflow/engine.py:277
+#: src/workflow/engine.py:283
 #, python-brace-format
 msgid "Node '{name}' failed: {error}"
 msgstr "Node '{name}' failed: {error}"
 
-#: src/workflow/engine.py:296
+#: src/workflow/engine.py:302
 msgid "Workflow finished"
 msgstr "Workflow finished"
 
-#: src/workflow/engine.py:306
+#: src/workflow/engine.py:312
 #, python-brace-format
 msgid "Execution error: {error}"
 msgstr "Execution error: {error}"
 
-#: src/workflow/engine.py:409
+#: src/workflow/engine.py:415
 #, python-brace-format
 msgid "Breakpoint paused: {name} - click Continue to proceed"
 msgstr "Breakpoint paused: {name} - click Continue to proceed"
