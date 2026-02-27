@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-26 17:34+0800\n"
+"POT-Creation-Date: 2026-02-26 18:19+0800\n"
 "PO-Revision-Date: 2026-02-04 17:15+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -136,20 +136,36 @@ msgstr "Warning"
 msgid "File does not exist: {path}"
 msgstr "File does not exist: {path}"
 
-#: src/app.py:462 src/controllers/navigation_controller.py:209
+#: src/app.py:467
+msgid "Restart required"
+msgstr "Restart required"
+
+#: src/app.py:468
+msgid "Language change will take effect after restart."
+msgstr "Language change will take effect after restart."
+
+#: src/app.py:469
+msgid "Restart now"
+msgstr "Restart now"
+
+#: src/app.py:470
+msgid "Restart later"
+msgstr "Restart later"
+
+#: src/app.py:483 src/controllers/navigation_controller.py:209
 #: src/ui/main_window.py:829
 msgid "Info"
 msgstr "Info"
 
-#: src/app.py:463
+#: src/app.py:484
 msgid "Settings saved. Some changes require a restart to take effect."
 msgstr "Settings saved. Some changes require a restart to take effect."
 
-#: src/app.py:491
+#: src/app.py:512
 msgid "Confirm restart"
 msgstr "Confirm restart"
 
-#: src/app.py:493
+#: src/app.py:514
 msgid ""
 "A workflow/training is currently running.\n"
 "Restart will stop the current run and start a new instance.\n"
@@ -161,11 +177,11 @@ msgstr ""
 "\n"
 "Continue?"
 
-#: src/app.py:526
+#: src/app.py:547
 msgid "Restart failed"
 msgstr "Restart failed"
 
-#: src/app.py:527
+#: src/app.py:548
 msgid "Please check the latest log under the logs directory."
 msgstr "Please check the latest log under the logs directory."
 
