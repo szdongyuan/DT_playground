@@ -31,8 +31,8 @@ Determine which branch to base your new branch on:
 
 | Scenario | Base Branch |
 |----------|-------------|
-| New feature | `origin/main` or `origin/master` |
-| Hotfix | `origin/main` or release branch |
+| New feature | `origin/develop` |
+| Hotfix | `origin/develop` or release branch |
 | Bugfix for specific version | Corresponding release branch |
 
 ### Step 3: Determine Branch Name
@@ -86,23 +86,20 @@ refactor/optimize_query_performance
 Create the new branch from the latest remote code:
 
 ```bash
-# Create branch from origin/main (or origin/master)
-git checkout -b {branch_name} origin/main
-
-# Or if using origin/master
-git checkout -b {branch_name} origin/master
+# Create branch from origin/develop
+git checkout -b {branch_name} origin/develop
 ```
 
 **Complete example with issue:**
 ```bash
 git fetch origin
-git checkout -b feature/FEAT2026012801_user_authentication origin/main
+git checkout -b feature/FEAT2026012801_user_authentication origin/develop
 ```
 
 **Complete example without issue:**
 ```bash
 git fetch origin
-git checkout -b feature/add_export_function origin/main
+git checkout -b feature/add_export_function origin/develop
 ```
 
 ## Quick Reference
@@ -114,10 +111,10 @@ git checkout -b feature/add_export_function origin/main
 git fetch origin
 
 # 2. Create branch (with issue)
-git checkout -b feature/ISSUE123_description origin/main
+git checkout -b feature/ISSUE123_description origin/develop
 
 # 3. Create branch (without issue)
-git checkout -b feature/description origin/main
+git checkout -b feature/description origin/develop
 
 # 4. Verify branch
 git branch --show-current
@@ -142,10 +139,10 @@ git branch --show-current
 **Commands:**
 ```bash
 git fetch origin
-git checkout -b feature/FEAT2026012801_user_authentication origin/main
+git checkout -b feature/FEAT2026012801_user_authentication origin/develop
 ```
 
-**Result:** Branch `feature/FEAT2026012801_user_authentication` created from latest `origin/main`
+**Result:** Branch `feature/FEAT2026012801_user_authentication` created from latest `origin/develop`
 
 ### Example 2: Bugfix with Issue
 
@@ -154,10 +151,10 @@ git checkout -b feature/FEAT2026012801_user_authentication origin/main
 **Commands:**
 ```bash
 git fetch origin
-git checkout -b bugfix/BUG2026012802_login_validation_error origin/main
+git checkout -b bugfix/BUG2026012802_login_validation_error origin/develop
 ```
 
-**Result:** Branch `bugfix/BUG2026012802_login_validation_error` created from latest `origin/main`
+**Result:** Branch `bugfix/BUG2026012802_login_validation_error` created from latest `origin/develop`
 
 ### Example 3: Feature without Issue
 
@@ -166,10 +163,10 @@ git checkout -b bugfix/BUG2026012802_login_validation_error origin/main
 **Commands:**
 ```bash
 git fetch origin
-git checkout -b feature/add_string_utils origin/main
+git checkout -b feature/add_string_utils origin/develop
 ```
 
-**Result:** Branch `feature/add_string_utils` created from latest `origin/main`
+**Result:** Branch `feature/add_string_utils` created from latest `origin/develop`
 
 ### Example 4: Hotfix from Release Branch
 
@@ -188,7 +185,7 @@ git checkout -b hotfix/BUG2026012803_fix_payment_crash origin/release/v2.0
 | Mistake | Fix |
 |---------|-----|
 | Not fetching before branching | Always run `git fetch origin` first |
-| Branching from local main (outdated) | Use `origin/main` not `main` |
+| Branching from local develop (outdated) | Use `origin/develop` not `develop` |
 | Spaces in branch name | Replace with underscores |
 | Missing branch type prefix | Always include `feature/`, `bugfix/`, etc. |
 | Issue ID without underscore separator | Use `TYPE/ID_description` not `TYPE/IDdescription` |
@@ -198,7 +195,7 @@ git checkout -b hotfix/BUG2026012803_fix_payment_crash origin/release/v2.0
 After creating a branch, verify:
 
 - [ ] Ran `git fetch origin` before creating branch
-- [ ] Branch created from remote base (`origin/main`)
+- [ ] Branch created from remote base (`origin/develop`)
 - [ ] Branch name includes type prefix
 - [ ] Issue ID included if applicable
 - [ ] Branch name uses underscores, no spaces

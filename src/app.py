@@ -452,10 +452,31 @@ class AudioTrainingApp(QMainWindow):
     
     def _apply_settings(self, settings: dict):
         """应用设置"""
-        # 更新音频设置
+        old_lang = config.get("ui.language", "zh_CN")
+        new_lang = settings.get("ui.language", old_lang)
+
+        # 更新设置
         for key, value in settings.items():
             config.set(key, value, save_immediately=False)
         config.save()
+
+        # If UI language changed, prompt restart now/later.
+        if str(new_lang) != str(old_lang):
+            msg = QMessageBox(self)
+            msg.setIcon(QMessageBox.Icon.Question)
+            msg.setWindowTitle(tr_("Restart required"))
+            msg.setText(tr_("Language change will take effect after restart."))
+            btn_now = msg.addButton(tr_("Restart now"), QMessageBox.ButtonRole.AcceptRole)
+            btn_later = msg.addButton(tr_("Restart later"), QMessageBox.ButtonRole.RejectRole)
+            try:
+                msg.setDefaultButton(btn_later)
+            except Exception:
+                pass
+            msg.exec()
+
+            if msg.clickedButton() == btn_now:
+                self._request_restart()
+            return
         
         QMessageBox.information(
             self,
