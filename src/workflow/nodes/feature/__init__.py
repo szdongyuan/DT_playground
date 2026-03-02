@@ -32,6 +32,9 @@ from .dim2d import (
     SpectralContrastNode,
 )
 
+# Import AI feature node
+from .ai_embedding import AIFeatureExtractionNode
+
 __all__ = [
     # Base
     'FeatureData',
@@ -47,4 +50,6 @@ __all__ = [
     'STFTNode',
     'CQTNode',
     'SpectralContrastNode',
+    # AI node
+    'AIFeatureExtractionNode',
 ]
