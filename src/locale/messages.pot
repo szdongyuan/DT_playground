@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-27 09:16+0800\n"
+"POT-Creation-Date: 2026-03-04 11:26+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -319,6 +319,7 @@ msgstr ""
 #: src/ui/main_window.py:445 src/ui/dialogs/settings_dialog.py:42
 #: src/workflow/nodes/training.py:304 src/workflow/nodes/training.py:684
 #: src/workflow/nodes/training.py:1028
+#: src/workflow/nodes/feature/ai_embedding.py:45
 msgid "Model"
 msgstr ""
 
@@ -622,6 +623,7 @@ msgid "Cyclic connections are not allowed"
 msgstr ""
 
 #: src/model_builder/model_graph.py:426
+#: src/workflow/nodes/feature/ai_embedding.py:154
 msgid "Model has no layers"
 msgstr ""
 
@@ -4238,6 +4240,7 @@ msgstr ""
 
 #: src/workflow/nodes/training.py:217 src/workflow/nodes/training.py:377
 #: src/workflow/nodes/training.py:707 src/workflow/nodes/training.py:1065
+#: src/workflow/nodes/feature/ai_embedding.py:87
 msgid "No model provided"
 msgstr ""
 
@@ -4288,6 +4291,7 @@ msgstr ""
 
 #: src/workflow/nodes/training.py:323 src/workflow/nodes/training.py:693
 #: src/workflow/nodes/training.py:1043
+#: src/workflow/nodes/feature/ai_embedding.py:78
 msgid "Batch size"
 msgstr ""
 
@@ -4464,6 +4468,7 @@ msgid "Run prediction using a trained model"
 msgstr ""
 
 #: src/workflow/nodes/training.py:1029
+#: src/workflow/nodes/feature/ai_embedding.py:46
 msgid "Input data"
 msgstr ""
 
@@ -4472,6 +4477,7 @@ msgid "Predictions"
 msgstr ""
 
 #: src/workflow/nodes/training.py:1035
+#: src/workflow/nodes/feature/ai_embedding.py:62
 #: src/workflow/nodes/feature/dim1d/fft.py:47
 #: src/workflow/nodes/feature/dim2d/stft.py:51
 msgid "Output type"
@@ -4496,6 +4502,7 @@ msgid "Output audio sample rate (only for output_type=audio)"
 msgstr ""
 
 #: src/workflow/nodes/training.py:1069
+#: src/workflow/nodes/feature/ai_embedding.py:90
 msgid "No input data provided"
 msgstr ""
 
@@ -4512,6 +4519,91 @@ msgstr ""
 #: src/workflow/nodes/training.py:1100
 #, python-brace-format
 msgid "Prediction failed: {error}"
+msgstr ""
+
+#: src/workflow/nodes/feature/ai_embedding.py:38
+msgid "AI feature extraction"
+msgstr ""
+
+#: src/workflow/nodes/feature/ai_embedding.py:40
+#: src/workflow/nodes/feature/ai_embedding.py:47
+msgid "AI features"
+msgstr ""
+
+#: src/workflow/nodes/feature/ai_embedding.py:41
+msgid "Extract embeddings/activations from a model layer"
+msgstr ""
+
+#: src/workflow/nodes/feature/ai_embedding.py:55
+msgid "Layer name (optional)"
+msgstr ""
+
+#: src/workflow/nodes/feature/ai_embedding.py:56
+msgid "If set, extract activations from this layer name; otherwise auto-select"
+msgstr ""
+
+#: src/workflow/nodes/feature/ai_embedding.py:64
+msgid ""
+"feature_1d: (channels, features); feature_2d: (channels, features, frames)"
+msgstr ""
+
+#: src/workflow/nodes/feature/ai_embedding.py:70
+msgid "Auto layer strategy"
+msgstr ""
+
+#: src/workflow/nodes/feature/ai_embedding.py:72
+msgid "How to auto-select layer when layer name is empty"
+msgstr ""
+
+#: src/workflow/nodes/feature/ai_embedding.py:96
+#, python-brace-format
+msgid "Failed to prepare input data: {error}"
+msgstr ""
+
+#: src/workflow/nodes/feature/ai_embedding.py:103
+#, python-brace-format
+msgid "Failed to select layer: {error}"
+msgstr ""
+
+#: src/workflow/nodes/feature/ai_embedding.py:109
+#, python-brace-format
+msgid "TensorFlow/Keras is required: {error}"
+msgstr ""
+
+#: src/workflow/nodes/feature/ai_embedding.py:116
+#, python-brace-format
+msgid "Extracting AI features from layer: {layer}"
+msgstr ""
+
+#: src/workflow/nodes/feature/ai_embedding.py:121
+msgid ""
+"Selected layer produced multiple outputs; please choose a single-output layer"
+msgstr ""
+
+#: src/workflow/nodes/feature/ai_embedding.py:139
+#, python-brace-format
+msgid "AI feature extraction failed: {error}"
+msgstr ""
+
+#: src/workflow/nodes/feature/ai_embedding.py:149
+#, python-brace-format
+msgid "Layer not found: {name}"
+msgstr ""
+
+#: src/workflow/nodes/feature/ai_embedding.py:193
+msgid "Input data list is empty"
+msgstr ""
+
+#: src/workflow/nodes/feature/ai_embedding.py:206
+msgid "Input samples have inconsistent shapes; cannot stack into a batch array"
+msgstr ""
+
+#: src/workflow/nodes/feature/ai_embedding.py:285
+msgid "Unsupported model output shape"
+msgstr ""
+
+#: src/workflow/nodes/feature/ai_embedding.py:296
+msgid "Output batch size does not match input batch size"
 msgstr ""
 
 #: src/workflow/nodes/feature/dim1d/fft.py:30
