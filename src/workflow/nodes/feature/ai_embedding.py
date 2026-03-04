@@ -47,12 +47,21 @@ class AIFeatureExtractionNode(BaseNode):
         self.add_output("feature", DataType.FEATURE, tr_("AI features"))
 
     def _setup_parameters(self):
+        # Keep naming aligned with PredictNode where possible.
         self.add_parameter(
             "layer_name",
             "str",
             "",
             display_name=tr_("Layer name (optional)"),
             description=tr_("If set, extract activations from this layer name; otherwise auto-select"),
+        )
+        self.add_parameter(
+            "output_type",
+            "choice",
+            "feature_2d",
+            display_name=tr_("Output type"),
+            choices=["feature_1d", "feature_2d"],
+            description=tr_("feature_1d: (channels, features); feature_2d: (channels, features, frames)"),
         )
         self.add_parameter(
             "auto_layer_strategy",
@@ -111,7 +120,18 @@ class AIFeatureExtractionNode(BaseNode):
             if isinstance(y, (list, tuple)):
                 raise ValueError(tr_("Selected layer produced multiple outputs; please choose a single-output layer"))
 
-            features = self._wrap_outputs_as_feature_data(y, meta_list, is_batch=is_batch)
+            # Keep outputs consistent with workflow convention (channels_first)
+            # and align with Predict/Trainer nodes: Keras runs in channels_last by default.
+            if self._is_keras_model(model):
+                y = self._convert_to_channels_first(np.asarray(y))
+
+            output_type = self.get_parameter("output_type") or "feature_2d"
+            features = self._wrap_outputs_as_feature_data(
+                y,
+                meta_list,
+                is_batch=is_batch,
+                output_type=str(output_type),
+            )
             self.set_output_data("feature", features)
             return True
 
@@ -224,6 +244,24 @@ class AIFeatureExtractionNode(BaseNode):
                 return np.transpose(x, (0, 2, 3, 1))
         return x
 
+    def _convert_to_channels_first(self, data: np.ndarray) -> np.ndarray:
+        """
+        Convert data from channels_last (NHWC/NLC) to channels_first (NCHW/NCL).
+
+        This mirrors PredictNode's conversion heuristic so that downstream FeatureData
+        stays in the workflow's channels_first convention.
+        """
+        ndim = data.ndim
+        if ndim == 3:
+            # (batch, length, channels) -> (batch, channels, length)
+            if data.shape[2] < data.shape[1]:
+                return np.transpose(data, (0, 2, 1))
+        elif ndim == 4:
+            # (batch, height, width, channels) -> (batch, channels, height, width)
+            if data.shape[3] < data.shape[1] and data.shape[3] < data.shape[2]:
+                return np.transpose(data, (0, 3, 1, 2))
+        return data
+
     def _is_keras_model(self, model: Any) -> bool:
         try:
             from tensorflow import keras  # type: ignore
@@ -233,7 +271,11 @@ class AIFeatureExtractionNode(BaseNode):
             return False
 
     def _wrap_outputs_as_feature_data(
-        self, y: Any, meta_list: List[Dict[str, Any]], is_batch: bool
+        self,
+        y: Any,
+        meta_list: List[Dict[str, Any]],
+        is_batch: bool,
+        output_type: str = "feature_2d",
     ) -> Union[FeatureData, List[FeatureData]]:
         arr = np.asarray(y)
         if arr.ndim == 0:
@@ -255,26 +297,21 @@ class AIFeatureExtractionNode(BaseNode):
 
         out_list: List[FeatureData] = []
         for i in range(arr.shape[0]):
-            out_list.append(self._wrap_single_sample(arr[i], meta_list[i]))
+            out_list.append(self._wrap_single_sample(arr[i], meta_list[i], output_type=output_type))
 
         return out_list if is_batch else out_list[0]
 
-    def _wrap_single_sample(self, sample_out: np.ndarray, meta: Dict[str, Any]) -> FeatureData:
-        a = np.asarray(sample_out)
-        if a.ndim == 0:
-            data = a.reshape(1, 1).astype(np.float32)
-        elif a.ndim == 1:
-            # (features,) -> (channels=1, features)
-            data = a.reshape(1, -1).astype(np.float32)
-        elif a.ndim == 2:
-            # Heuristic: keep (features, frames) if features <= frames, otherwise transpose.
-            feat_frames = a if a.shape[0] <= a.shape[1] else a.T
-            data = feat_frames[np.newaxis, :, :].astype(np.float32)  # (1, features, frames)
+    def _wrap_single_sample(
+        self,
+        sample_out: np.ndarray,
+        meta: Dict[str, Any],
+        *,
+        output_type: str = "feature_2d",
+    ) -> FeatureData:
+        if output_type == "feature_1d":
+            data = self._wrap_feature_1d(sample_out)
         else:
-            # Flatten all but last dim into frames, last dim is treated as features.
-            last = int(a.shape[-1])
-            flat = a.reshape(-1, last)  # (frames, features)
-            data = flat.T[np.newaxis, :, :].astype(np.float32)  # (1, features, frames)
+            data = self._wrap_feature_2d(sample_out)
 
         return FeatureData(
             data=data,
@@ -283,4 +320,55 @@ class AIFeatureExtractionNode(BaseNode):
             hop_length=int(meta.get("hop_length", 512)),
             source_file=str(meta.get("source_file", "")),
         )
+
+    def _wrap_feature_1d(self, sample_out: np.ndarray) -> np.ndarray:
+        """
+        Align with PredictNode output_type=feature_1d.
+
+        Target shape: (channels, features)
+        """
+        a = np.asarray(sample_out)
+        if a.ndim == 0:
+            return a.reshape(1, 1).astype(np.float32)
+        elif a.ndim == 1:
+            return a.reshape(1, -1).astype(np.float32)
+        elif a.ndim == 2:
+            # Most dense embeddings come as (features,) or (1, features).
+            # If one dim is 1, collapse into a vector feature.
+            if a.shape[0] == 1:
+                return a.astype(np.float32)
+            if a.shape[1] == 1:
+                return a.reshape(1, -1).astype(np.float32)
+
+            # For other 2D outputs, keep as-is (caller requested 1D feature output).
+            return a.astype(np.float32)
+
+        # For higher-rank tensors, flatten to a single feature vector.
+        return a.reshape(1, -1).astype(np.float32)
+
+    def _wrap_feature_2d(self, sample_out: np.ndarray) -> np.ndarray:
+        """
+        Align with PredictNode output_type=feature_2d.
+
+        Target shape: (channels, features, frames)
+        """
+        a = np.asarray(sample_out)
+        if a.ndim == 0:
+            return a.reshape(1, 1, 1).astype(np.float32)
+        if a.ndim == 1:
+            # (features,) -> (channels=1, features, frames=1)
+            return a.reshape(1, -1, 1).astype(np.float32)
+        if a.ndim == 2:
+            # Heuristic: keep (features, frames) if features <= frames, otherwise transpose.
+            feat_frames = a if a.shape[0] <= a.shape[1] else a.T
+            return feat_frames[np.newaxis, :, :].astype(np.float32)  # (1, features, frames)
+
+        if a.ndim == 3:
+            # Assume already (channels, features, frames)
+            return a.astype(np.float32)
+
+        # Flatten all but last dim into frames, last dim is treated as features.
+        last = int(a.shape[-1])
+        flat = a.reshape(-1, last)  # (frames, features)
+        return flat.T[np.newaxis, :, :].astype(np.float32)  # (1, features, frames)
 

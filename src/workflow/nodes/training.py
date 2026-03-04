@@ -384,13 +384,13 @@ class TrainerNode(BaseNode):
             # 转换为numpy数组（支持AudioData列表或特征列表）
             # 传入 model 参数，根据模型类型自动调整数据格式（NCHW -> NHWC for Keras）
             X = self._convert_to_array(x_train, model)
-            Y = self._convert_to_array(y_train)  # 标签数据不需要转换格式
+            Y = self._convert_to_array(y_train, model)
             
             # 准备验证数据
             validation_data = None
             if x_val is not None and y_val is not None:
                 X_val = self._convert_to_array(x_val, model)
-                Y_val = self._convert_to_array(y_val)  # 标签数据不需要转换格式
+                Y_val = self._convert_to_array(y_val, model)
                 validation_data = (X_val, Y_val)
             
             # 根据配置模式编译模型
@@ -713,7 +713,7 @@ class EvaluatorNode(BaseNode):
             
             # 转换为numpy数组，传入 model 参数根据模型类型自动调整数据格式
             X = self._convert_to_array(x_test, model)
-            Y = self._convert_to_array(y_test)  # 标签数据不需要转换格式
+            Y = self._convert_to_array(y_test, model)
             
             # 评估
             results = model.evaluate(
