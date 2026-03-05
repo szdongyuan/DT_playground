@@ -370,6 +370,105 @@ class NormalizeNode(BaseNode):
 
 
 @register_node
+class WindowingNode(BaseNode):
+    """
+    加窗节点
+    
+    对整段波形应用窗函数以减少频谱泄漏等边缘效应。
+    输入输出均为 AudioData（或 AudioData 列表），不改变数据形状。
+    """
+    
+    node_type = "windowing"
+    display_name = tr_("Windowing")
+    category = NodeCategory.PREPROCESSING
+    description = tr_("Apply a window function to the full waveform")
+    icon = "🪟"
+    
+    def _setup_ports(self):
+        self.add_input(
+            "audio",
+            DataType.AUDIO,
+            tr_("Audio"),
+            description=tr_("Audio or audio list"),
+        )
+        self.add_output("audio", DataType.AUDIO, tr_("Audio"))
+    
+    def _setup_parameters(self):
+        self.add_parameter(
+            "window_type",
+            "choice",
+            "hann",
+            display_name=tr_("Window type"),
+            description=tr_("Window function applied to the full waveform"),
+            choices=["hann", "hamming", "blackman", "boxcar"],
+        )
+        self.add_parameter(
+            "window_len", "int", 0,
+            display_name=tr_("Window length"),
+            min_value=0
+        )
+    
+    def execute(self) -> bool:
+        try:
+            audio_input = validate_audio_input(
+                self.get_input_data("audio"),
+                self.display_name
+            )
+        except (ValueError, TypeError) as e:
+            self.error_message = str(e)
+            return False
+        
+        window_type = self.get_parameter("window_type")
+        
+        def apply_window(audio: AudioData) -> AudioData:
+            # boxcar is effectively "no window" (identity)
+            if window_type == "boxcar" or audio.samples <= 0:
+                return audio
+            
+            from scipy.signal import get_window
+            
+            data = audio.data
+            target_len = audio.samples
+
+            win_len = int(self.get_parameter("window_len") or 0)
+            if win_len <= 0:
+                win_len = target_len  # default: full length
+
+            dtype = data.dtype if data.dtype.kind == "f" else np.float32
+
+            win = get_window(window_type, win_len).astype(dtype, copy=False)
+            effective_window = np.ones(target_len, dtype=dtype)
+
+            if win_len == target_len:
+                effective_window = win
+            elif win_len > target_len:
+                offset = (win_len - target_len) // 2
+                effective_window = win[offset:offset + target_len]
+            else:
+                split_idx = win_len // 2
+                left_half = win[:split_idx]
+                right_half = win[split_idx:]
+                effective_window[:len(left_half)] = left_half
+                effective_window[-len(right_half):] = right_half
+
+            if data.dtype.kind != "f":
+                # Ensure numeric stability and avoid integer truncation.
+                data = data.astype(np.float32, copy=False)
+
+            windowed = data * effective_window[None, :]
+            
+            return AudioData(
+                data=windowed,
+                sample_rate=audio.sample_rate,
+                file_path=audio.file_path
+            )
+        
+        result = process_audio_or_list(audio_input, apply_window)
+        self.set_output_data("audio", result)
+        return True
+
+
+@register_node
 class SilenceTrimNode(BaseNode):
     """
     静音裁剪节点

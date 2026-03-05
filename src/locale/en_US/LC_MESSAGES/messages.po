@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-04 11:26+0800\n"
+"POT-Creation-Date: 2026-03-05 09:19+0800\n"
 "PO-Revision-Date: 2026-02-04 17:15+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1863,11 +1863,13 @@ msgstr "Settings"
 #: src/workflow/nodes/preprocessing.py:188
 #: src/workflow/nodes/preprocessing.py:307
 #: src/workflow/nodes/preprocessing.py:308
-#: src/workflow/nodes/preprocessing.py:387
-#: src/workflow/nodes/preprocessing.py:388
-#: src/workflow/nodes/preprocessing.py:467
-#: src/workflow/nodes/preprocessing.py:833
-#: src/workflow/nodes/preprocessing.py:834
+#: src/workflow/nodes/preprocessing.py:391
+#: src/workflow/nodes/preprocessing.py:394
+#: src/workflow/nodes/preprocessing.py:486
+#: src/workflow/nodes/preprocessing.py:487
+#: src/workflow/nodes/preprocessing.py:566
+#: src/workflow/nodes/preprocessing.py:932
+#: src/workflow/nodes/preprocessing.py:933
 #: src/workflow/nodes/feature/dim1d/fft.py:35
 #: src/workflow/nodes/feature/dim1d/pitch.py:36
 #: src/workflow/nodes/feature/dim1d/spectral_flatness.py:38
@@ -3375,7 +3377,7 @@ msgstr ""
 
 #: src/workflow/nodes/augmentation.py:513
 #: src/workflow/nodes/preprocessing.py:203
-#: src/workflow/nodes/preprocessing.py:673
+#: src/workflow/nodes/preprocessing.py:772
 msgid "Pad mode"
 msgstr "Pad mode"
 
@@ -3925,7 +3927,8 @@ msgid "Resample audio to the target sample rate"
 msgstr "Resample audio to the target sample rate"
 
 #: src/workflow/nodes/preprocessing.py:125
-#: src/workflow/nodes/preprocessing.py:833
+#: src/workflow/nodes/preprocessing.py:392
+#: src/workflow/nodes/preprocessing.py:932
 msgid "Audio or audio list"
 msgstr "Audio or audio list"
 
@@ -3961,27 +3964,47 @@ msgstr "Method"
 msgid "Target level (dB)"
 msgstr "Target level (dB)"
 
-#: src/workflow/nodes/preprocessing.py:381
+#: src/workflow/nodes/preprocessing.py:382
+msgid "Windowing"
+msgstr "Windowing"
+
+#: src/workflow/nodes/preprocessing.py:384
+msgid "Apply a window function to the full waveform"
+msgstr "Apply a window function to the full waveform"
+
+#: src/workflow/nodes/preprocessing.py:401
+msgid "Window type"
+msgstr "Window type"
+
+#: src/workflow/nodes/preprocessing.py:402
+msgid "Window function applied to the full waveform"
+msgstr "Window function applied to the full waveform"
+
+#: src/workflow/nodes/preprocessing.py:407
+msgid "Window length"
+msgstr "Window length"
+
+#: src/workflow/nodes/preprocessing.py:480
 msgid "Trim silence"
 msgstr "Trim silence"
 
-#: src/workflow/nodes/preprocessing.py:383
+#: src/workflow/nodes/preprocessing.py:482
 msgid "Remove leading and trailing silence"
 msgstr "Remove leading and trailing silence"
 
-#: src/workflow/nodes/preprocessing.py:393
+#: src/workflow/nodes/preprocessing.py:492
 msgid "Threshold (dB)"
 msgstr "Threshold (dB)"
 
-#: src/workflow/nodes/preprocessing.py:394
+#: src/workflow/nodes/preprocessing.py:493
 msgid "Below this threshold is considered silence"
 msgstr "Below this threshold is considered silence"
 
-#: src/workflow/nodes/preprocessing.py:399
+#: src/workflow/nodes/preprocessing.py:498
 msgid "Frame length"
 msgstr "Frame length"
 
-#: src/workflow/nodes/preprocessing.py:404
+#: src/workflow/nodes/preprocessing.py:503
 #: src/workflow/nodes/feature/dim1d/pitch.py:54
 #: src/workflow/nodes/feature/dim1d/spectral_flatness.py:49
 #: src/workflow/nodes/feature/dim2d/cqt.py:55
@@ -3992,194 +4015,194 @@ msgstr "Frame length"
 msgid "Hop length"
 msgstr "Hop length"
 
-#: src/workflow/nodes/preprocessing.py:458
+#: src/workflow/nodes/preprocessing.py:557
 msgid "Channel mapper"
 msgstr "Channel mapper"
 
-#: src/workflow/nodes/preprocessing.py:460
+#: src/workflow/nodes/preprocessing.py:559
 msgid "Map selected channels to different outputs"
 msgstr "Map selected channels to different outputs"
 
-#: src/workflow/nodes/preprocessing.py:468
+#: src/workflow/nodes/preprocessing.py:567
 msgid "Multichannel audio input"
 msgstr "Multichannel audio input"
 
-#: src/workflow/nodes/preprocessing.py:470
+#: src/workflow/nodes/preprocessing.py:569
 msgid "Output 1"
 msgstr "Output 1"
 
-#: src/workflow/nodes/preprocessing.py:471
+#: src/workflow/nodes/preprocessing.py:570
 msgid "Output 2"
 msgstr "Output 2"
 
-#: src/workflow/nodes/preprocessing.py:472
+#: src/workflow/nodes/preprocessing.py:571
 msgid "Output 3"
 msgstr "Output 3"
 
-#: src/workflow/nodes/preprocessing.py:473
+#: src/workflow/nodes/preprocessing.py:572
 msgid "Output 4"
 msgstr "Output 4"
 
-#: src/workflow/nodes/preprocessing.py:478
+#: src/workflow/nodes/preprocessing.py:577
 msgid "Output 1 channels"
 msgstr "Output 1 channels"
 
-#: src/workflow/nodes/preprocessing.py:479
+#: src/workflow/nodes/preprocessing.py:578
 msgid "Channel indices (0-based), comma-separated, e.g. 0 or 0,1,2"
 msgstr "Channel indices (0-based), comma-separated, e.g. 0 or 0,1,2"
 
-#: src/workflow/nodes/preprocessing.py:483
+#: src/workflow/nodes/preprocessing.py:582
 msgid "Output 2 channels"
 msgstr "Output 2 channels"
 
-#: src/workflow/nodes/preprocessing.py:484
-#: src/workflow/nodes/preprocessing.py:489
-#: src/workflow/nodes/preprocessing.py:494
+#: src/workflow/nodes/preprocessing.py:583
+#: src/workflow/nodes/preprocessing.py:588
+#: src/workflow/nodes/preprocessing.py:593
 msgid "Channel indices; leave blank to disable output"
 msgstr "Channel indices; leave blank to disable output"
 
-#: src/workflow/nodes/preprocessing.py:488
+#: src/workflow/nodes/preprocessing.py:587
 msgid "Output 3 channels"
 msgstr "Output 3 channels"
 
-#: src/workflow/nodes/preprocessing.py:493
+#: src/workflow/nodes/preprocessing.py:592
 msgid "Output 4 channels"
 msgstr "Output 4 channels"
 
-#: src/workflow/nodes/preprocessing.py:634
+#: src/workflow/nodes/preprocessing.py:733
 msgid "Channel merge"
 msgstr "Channel merge"
 
-#: src/workflow/nodes/preprocessing.py:636
+#: src/workflow/nodes/preprocessing.py:735
 msgid "Merge channels from multiple audio inputs"
 msgstr "Merge channels from multiple audio inputs"
 
-#: src/workflow/nodes/preprocessing.py:640
+#: src/workflow/nodes/preprocessing.py:739
 msgid "Input 1"
 msgstr "Input 1"
 
-#: src/workflow/nodes/preprocessing.py:640
+#: src/workflow/nodes/preprocessing.py:739
 msgid "Audio input 1"
 msgstr "Audio input 1"
 
-#: src/workflow/nodes/preprocessing.py:644
+#: src/workflow/nodes/preprocessing.py:743
 msgid "Input 2"
 msgstr "Input 2"
 
-#: src/workflow/nodes/preprocessing.py:645
+#: src/workflow/nodes/preprocessing.py:744
 msgid "Audio input 2 (optional)"
 msgstr "Audio input 2 (optional)"
 
-#: src/workflow/nodes/preprocessing.py:651
+#: src/workflow/nodes/preprocessing.py:750
 msgid "Input 3"
 msgstr "Input 3"
 
-#: src/workflow/nodes/preprocessing.py:652
+#: src/workflow/nodes/preprocessing.py:751
 msgid "Audio input 3 (optional)"
 msgstr "Audio input 3 (optional)"
 
-#: src/workflow/nodes/preprocessing.py:658
+#: src/workflow/nodes/preprocessing.py:757
 msgid "Input 4"
 msgstr "Input 4"
 
-#: src/workflow/nodes/preprocessing.py:659
+#: src/workflow/nodes/preprocessing.py:758
 msgid "Audio input 4 (optional)"
 msgstr "Audio input 4 (optional)"
 
-#: src/workflow/nodes/preprocessing.py:662
+#: src/workflow/nodes/preprocessing.py:761
 msgid "Merged audio"
 msgstr "Merged audio"
 
-#: src/workflow/nodes/preprocessing.py:667
+#: src/workflow/nodes/preprocessing.py:766
 msgid "Length handling"
 msgstr "Length handling"
 
-#: src/workflow/nodes/preprocessing.py:668
+#: src/workflow/nodes/preprocessing.py:767
 msgid "How to handle different input lengths"
 msgstr "How to handle different input lengths"
 
-#: src/workflow/nodes/preprocessing.py:674
+#: src/workflow/nodes/preprocessing.py:773
 msgid "Padding strategy for shorter audio when using max length"
 msgstr "Padding strategy for shorter audio when using max length"
 
-#: src/workflow/nodes/preprocessing.py:689
+#: src/workflow/nodes/preprocessing.py:788
 msgid "At least one valid audio input is required"
 msgstr "At least one valid audio input is required"
 
-#: src/workflow/nodes/preprocessing.py:703
+#: src/workflow/nodes/preprocessing.py:802
 msgid "All inputs must be the same type (all single audio or all audio lists)"
 msgstr "All inputs must be the same type (all single audio or all audio lists)"
 
-#: src/workflow/nodes/preprocessing.py:708
+#: src/workflow/nodes/preprocessing.py:807
 #, python-brace-format
 msgid "Audio list lengths differ: {lengths}"
 msgstr "Audio list lengths differ: {lengths}"
 
-#: src/workflow/nodes/preprocessing.py:728
+#: src/workflow/nodes/preprocessing.py:827
 #, python-brace-format
 msgid "Expected AudioData, but got {type}"
 msgstr "Expected AudioData, but got {type}"
 
-#: src/workflow/nodes/preprocessing.py:752
+#: src/workflow/nodes/preprocessing.py:851
 msgid "No audio to merge"
 msgstr "No audio to merge"
 
-#: src/workflow/nodes/preprocessing.py:759
+#: src/workflow/nodes/preprocessing.py:858
 #, python-brace-format
 msgid "Sample rates differ: {rates}. Please resample first."
 msgstr "Sample rates differ: {rates}. Please resample first."
 
-#: src/workflow/nodes/preprocessing.py:827
+#: src/workflow/nodes/preprocessing.py:926
 msgid "Filter"
 msgstr "Filter"
 
-#: src/workflow/nodes/preprocessing.py:829
+#: src/workflow/nodes/preprocessing.py:928
 msgid "Apply digital filtering (lowpass/highpass/bandpass/bandstop)"
 msgstr "Apply digital filtering (lowpass/highpass/bandpass/bandstop)"
 
-#: src/workflow/nodes/preprocessing.py:839
+#: src/workflow/nodes/preprocessing.py:938
 msgid "Filter type"
 msgstr "Filter type"
 
-#: src/workflow/nodes/preprocessing.py:840
+#: src/workflow/nodes/preprocessing.py:939
 msgid "lowpass, highpass, bandpass, bandstop"
 msgstr "lowpass, highpass, bandpass, bandstop"
 
-#: src/workflow/nodes/preprocessing.py:845
+#: src/workflow/nodes/preprocessing.py:944
 msgid "Cutoff (Hz)"
 msgstr "Cutoff (Hz)"
 
-#: src/workflow/nodes/preprocessing.py:846
+#: src/workflow/nodes/preprocessing.py:945
 msgid "Used by lowpass/highpass; low bound for bandpass/bandstop"
 msgstr "Used by lowpass/highpass; low bound for bandpass/bandstop"
 
-#: src/workflow/nodes/preprocessing.py:851
+#: src/workflow/nodes/preprocessing.py:950
 msgid "High cutoff (Hz)"
 msgstr "High cutoff (Hz)"
 
-#: src/workflow/nodes/preprocessing.py:852
+#: src/workflow/nodes/preprocessing.py:951
 msgid "Only for bandpass/bandstop; ignored for lowpass/highpass"
 msgstr "Only for bandpass/bandstop; ignored for lowpass/highpass"
 
-#: src/workflow/nodes/preprocessing.py:857
+#: src/workflow/nodes/preprocessing.py:956
 msgid "Filter order"
 msgstr "Filter order"
 
-#: src/workflow/nodes/preprocessing.py:858
+#: src/workflow/nodes/preprocessing.py:957
 msgid "Butterworth order; higher means steeper rolloff"
 msgstr "Butterworth order; higher means steeper rolloff"
 
-#: src/workflow/nodes/preprocessing.py:911
+#: src/workflow/nodes/preprocessing.py:1010
 #, python-brace-format
 msgid "Unknown filter type: {type}"
 msgstr "Unknown filter type: {type}"
 
-#: src/workflow/nodes/preprocessing.py:913
+#: src/workflow/nodes/preprocessing.py:1012
 #, python-brace-format
 msgid "Filter design failed: {error}"
 msgstr "Filter design failed: {error}"
 
-#: src/workflow/nodes/preprocessing.py:935
+#: src/workflow/nodes/preprocessing.py:1034
 #, python-brace-format
 msgid "Filtering failed: {error}"
 msgstr "Filtering failed: {error}"
@@ -4606,12 +4629,14 @@ msgstr "Layer name (optional)"
 
 #: src/workflow/nodes/feature/ai_embedding.py:56
 msgid "If set, extract activations from this layer name; otherwise auto-select"
-msgstr "If set, extract activations from this layer name; otherwise auto-select"
+msgstr ""
+"If set, extract activations from this layer name; otherwise auto-select"
 
 #: src/workflow/nodes/feature/ai_embedding.py:64
 msgid ""
 "feature_1d: (channels, features); feature_2d: (channels, features, frames)"
-msgstr "feature_1d: (channels, features); feature_2d: (channels, features, frames)"
+msgstr ""
+"feature_1d: (channels, features); feature_2d: (channels, features, frames)"
 
 #: src/workflow/nodes/feature/ai_embedding.py:70
 msgid "Auto layer strategy"
@@ -4644,7 +4669,8 @@ msgstr "Extracting AI features from layer: {layer}"
 #: src/workflow/nodes/feature/ai_embedding.py:121
 msgid ""
 "Selected layer produced multiple outputs; please choose a single-output layer"
-msgstr "Selected layer produced multiple outputs; please choose a single-output layer"
+msgstr ""
+"Selected layer produced multiple outputs; please choose a single-output layer"
 
 #: src/workflow/nodes/feature/ai_embedding.py:139
 #, python-brace-format
@@ -4662,7 +4688,8 @@ msgstr "Input data list is empty"
 
 #: src/workflow/nodes/feature/ai_embedding.py:206
 msgid "Input samples have inconsistent shapes; cannot stack into a batch array"
-msgstr "Input samples have inconsistent shapes; cannot stack into a batch array"
+msgstr ""
+"Input samples have inconsistent shapes; cannot stack into a batch array"
 
 #: src/workflow/nodes/feature/ai_embedding.py:285
 msgid "Unsupported model output shape"
