@@ -31,6 +31,7 @@ class WorkflowEditorWidget(QWidget):
     workflow_changed = pyqtSignal()
     node_selected = pyqtSignal(str)
     node_double_clicked = pyqtSignal(str)
+    run_from_node_requested = pyqtSignal(str)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -73,6 +74,7 @@ class WorkflowEditorWidget(QWidget):
         self._node_palette.node_add_requested.connect(self._on_add_node_from_palette)
         self._node_graph.node_selected.connect(self._on_node_selected)
         self._node_graph.node_double_clicked.connect(self.node_double_clicked)
+        self._node_graph.run_from_node_requested.connect(self.run_from_node_requested)
         self._node_graph.workflow_changed.connect(self._on_workflow_changed)
         self._property_panel.parameter_changed.connect(self._on_parameter_changed)
 
@@ -93,6 +95,9 @@ class WorkflowEditorWidget(QWidget):
 
     def reset_all_node_states(self):
         self._node_graph.reset_all_node_states()
+
+    def reset_node_states(self, node_ids: list[str]):
+        self._node_graph.reset_node_states(node_ids)
 
     def highlight_node(self, node_id: str):
         self._node_graph.highlight_node(node_id)

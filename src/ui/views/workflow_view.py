@@ -38,6 +38,7 @@ class WorkflowView(QWidget):
     run_requested = pyqtSignal()
     node_selected = pyqtSignal(str)
     node_double_clicked = pyqtSignal(str)
+    run_from_node_requested = pyqtSignal(str)
     continue_requested = pyqtSignal()
 
     def __init__(self, parent=None, *, show_toolbar: bool = True):
@@ -69,6 +70,7 @@ class WorkflowView(QWidget):
         self._editor.workflow_changed.connect(self._on_workflow_changed)
         self._editor.node_selected.connect(self.node_selected)
         self._editor.node_double_clicked.connect(self.node_double_clicked)
+        self._editor.run_from_node_requested.connect(self.run_from_node_requested)
 
         if self._toolbar is not None:
             self._toolbar.new_requested.connect(self._on_new_workflow)
@@ -95,6 +97,9 @@ class WorkflowView(QWidget):
 
     def reset_all_node_states(self):
         self._editor.reset_all_node_states()
+
+    def reset_node_states(self, node_ids: list[str]):
+        self._editor.reset_node_states(node_ids)
 
     def highlight_node(self, node_id: str):
         self._editor.highlight_node(node_id)

@@ -293,6 +293,7 @@ class MainWindow(QWidget):
         self._workflow_view.run_requested.connect(self._on_run_workflow)
         self._workflow_view.node_selected.connect(self._on_node_selected)
         self._workflow_view.node_double_clicked.connect(self._on_node_double_clicked)
+        self._workflow_view.run_from_node_requested.connect(self._on_run_from_node)
         
         # 预览视图信号
         self._preview_view.preview_requested.connect(self._on_preview_requested)
@@ -355,7 +356,7 @@ class MainWindow(QWidget):
         if self._workflow_view.get_running_tab_index() is None:
             self._workflow_view.set_running_tab_index(self._workflow_view.get_current_tab_index())
         self.training_started.emit()
-        self._workflow_view.reset_all_node_states()
+        self._reset_runtime_node_states_for_active_run()
         # Ensure workflow run controls are updated when a run starts.
         self._workflow_view.set_run_controls_state(
             run_enabled=False,
@@ -556,6 +557,59 @@ class MainWindow(QWidget):
         # Notify training controller using derived params (UI should not traverse nodes).
         # Only start training tracking after the workflow successfully starts.
         self._training_controller.start_training_for_workflow(workflow, default_epochs=20)
+
+    def _on_run_from_node(self, node_id: str):
+        """Handle partial workflow rerun starting from the selected node."""
+        if self._is_workflow_run_active():
+            running_idx = self._workflow_view.get_running_tab_index()
+            current_idx = self._workflow_view.get_current_tab_index()
+            if running_idx is not None and current_idx != running_idx:
+                self._event_bus.emit_status(
+                    tr_("A workflow is already running. Switching to the running tab.")
+                )
+                self._workflow_view.activate_running_tab()
+                return
+
+            self._event_bus.emit_status(tr_("A workflow is already running."))
+            return
+
+        workflow = self._workflow_view.get_workflow()
+        if not workflow:
+            QMessageBox.warning(self, tr_("Warning"), tr_("No runnable workflow."))
+            return
+
+        node = workflow.get_node(node_id)
+        if node is None:
+            QMessageBox.warning(self, tr_("Warning"), tr_("Selected node does not exist."))
+            return
+
+        self._workflow_view.set_running_tab_index(self._workflow_view.get_current_tab_index())
+        self._workflow_controller.set_workflow(workflow)
+
+        valid, errors = self._workflow_controller.validate_workflow(workflow)
+        if not valid:
+            QMessageBox.warning(
+                self,
+                tr_("Validation failed"),
+                tr_("Workflow validation failed:\n") + "\n".join(errors),
+            )
+            self._workflow_view.clear_running_tab()
+            return
+
+        success = self._workflow_controller.run_from_node(node_id, validate=False)
+        if not success:
+            self._workflow_view.clear_breakpoint_mode()
+            self._workflow_view.clear_running_tab()
+            self._workflow_view.set_run_controls_state(
+                run_enabled=True,
+                stop_enabled=False,
+                stop_text=tr_("⏹️ Stop"),
+            )
+            self._training_controller.finish_training(False, tr_("Startup failed"))
+            return
+
+        self._selected_node_id = node_id
+        self._training_controller.start_training_for_workflow(workflow, default_epochs=20)
     
     def _on_pause_training(self):
         """暂停训练"""
@@ -587,7 +641,7 @@ class MainWindow(QWidget):
         self.training_started.emit()
         
         # 重置所有节点的可视化状态
-        self._workflow_view.reset_all_node_states()
+        self._reset_runtime_node_states_for_active_run()
     
     def _on_engine_finished(self, result: ExecutionResult):
         """引擎执行完成"""
@@ -832,6 +886,16 @@ class MainWindow(QWidget):
                 "Click \"Run\" to execute the workflow first."
             ).format(name=node.display_name),
         )
+
+    def _reset_runtime_node_states_for_active_run(self):
+        """Reset only the nodes participating in the active run when possible."""
+        workflow = self._workflow_controller.workflow or self._workflow_view.get_workflow()
+        active_node_ids = self._workflow_controller.engine.get_active_run_node_ids()
+        if workflow and active_node_ids and len(active_node_ids) < len(workflow.nodes):
+            self._workflow_view.reset_node_states(sorted(active_node_ids))
+            return
+
+        self._workflow_view.reset_all_node_states()
     
     # ===== 兼容旧接口 =====
     

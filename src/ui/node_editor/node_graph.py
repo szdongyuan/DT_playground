@@ -395,6 +395,12 @@ class NodeGraphScene(BaseGraphScene):
         """重置所有节点的执行状态为 idle"""
         for node_item in self.node_items.values():
             node_item.set_execution_state('idle')
+
+    def reset_node_states(self, node_ids: List[str]):
+        """Reset the execution state of the specified nodes to idle."""
+        for node_id in node_ids:
+            if node_id in self.node_items:
+                self.node_items[node_id].set_execution_state('idle')
     
     def highlight_node(self, node_id: str):
         """高亮显示指定节点（居中并选中）"""
@@ -536,6 +542,7 @@ class NodeGraphWidget(QWidget):
     
     node_selected = pyqtSignal(str)
     node_double_clicked = pyqtSignal(str)
+    run_from_node_requested = pyqtSignal(str)
     connection_created = pyqtSignal(str, str, str, str)
     workflow_changed = pyqtSignal()
     
@@ -666,12 +673,26 @@ class NodeGraphWidget(QWidget):
             if isinstance(item, NodeItem):
                 return item.node.node_id
         return None
+
+    def get_selected_node_ids(self) -> List[str]:
+        """Get all selected node IDs."""
+        node_ids: List[str] = []
+        for item in self._scene.selectedItems():
+            if isinstance(item, NodeItem):
+                node_ids.append(item.node.node_id)
+        return node_ids
     
     def _show_context_menu(self, pos):
         """显示右键菜单"""
         menu = QMenu(self)
         
         # 注：新增节点统一从左侧「节点库」添加，避免右键菜单随节点数量膨胀。
+
+        selected_node_ids = self.get_selected_node_ids()
+
+        rerun_action = menu.addAction(tr_("Rerun from selected node"))
+        rerun_action.setEnabled(len(selected_node_ids) == 1 and self.workflow is not None)
+        rerun_action.triggered.connect(self._rerun_from_selected_node)
         
         # 重置选中节点连接
         reset_conn_action = menu.addAction(tr_("Reset selected node connections"))
@@ -682,6 +703,12 @@ class NodeGraphWidget(QWidget):
         delete_action.triggered.connect(self._delete_selected)
         
         menu.exec(self._view.mapToGlobal(pos))
+
+    def _rerun_from_selected_node(self):
+        """Emit a request to rerun the workflow from the selected node."""
+        node_id = self.get_selected_node_id()
+        if node_id:
+            self.run_from_node_requested.emit(node_id)
     
     def _delete_selected(self):
         """Delete selected items.
@@ -768,6 +795,10 @@ class NodeGraphWidget(QWidget):
     def reset_all_node_states(self):
         """重置所有节点的执行状态为 idle"""
         self._scene.reset_all_node_states()
+
+    def reset_node_states(self, node_ids: List[str]):
+        """Reset the execution state of the specified nodes to idle."""
+        self._scene.reset_node_states(node_ids)
     
     def highlight_node(self, node_id: str):
         """高亮显示指定节点（居中并选中）"""

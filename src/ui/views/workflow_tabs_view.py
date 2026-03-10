@@ -54,6 +54,7 @@ class WorkflowTabsView(QWidget):
     run_requested = pyqtSignal()
     node_selected = pyqtSignal(str)
     node_double_clicked = pyqtSignal(str)
+    run_from_node_requested = pyqtSignal(str)
     continue_requested = pyqtSignal()
 
     def __init__(self, parent=None):
@@ -192,6 +193,11 @@ class WorkflowTabsView(QWidget):
         editor = self._runtime_editor()
         if editor:
             editor.reset_all_node_states()
+
+    def reset_node_states(self, node_ids: list[str]):
+        editor = self._runtime_editor()
+        if editor:
+            editor.reset_node_states(node_ids)
 
     def update_node_state(self, node_id: str, state: str):
         editor = self._runtime_editor()
@@ -386,6 +392,7 @@ class WorkflowTabsView(QWidget):
         editor.workflow_changed.connect(self._on_editor_workflow_changed)
         editor.node_selected.connect(self.node_selected)
         editor.node_double_clicked.connect(self.node_double_clicked)
+        editor.run_from_node_requested.connect(self.run_from_node_requested)
 
         idx = self._tabs.addTab(editor, "")
         self._update_tab_title(idx)
