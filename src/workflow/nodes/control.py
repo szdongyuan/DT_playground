@@ -104,6 +104,10 @@ class LoopNode(BaseNode):
         self._current_index = 0
         self._data_list = None
 
+    def on_reset(self):
+        """Clear loop runtime state before a new execution."""
+        self.reset_loop()
+
 
 @register_node
 class SplitNode(BaseNode):

@@ -135,6 +135,33 @@ class WorkflowController(QObject):
             self._event_bus.emit_status(tr_("Failed to start workflow"))
         
         return success
+
+    def run_from_node(self, node_id: str, *, validate: bool = True) -> bool:
+        """
+        Run the current workflow starting from a selected node.
+
+        Preserves valid upstream cached outputs and reruns only the selected node
+        together with its downstream nodes.
+        """
+        if not self._workflow:
+            self._event_bus.emit_status(tr_("No workflow to run"))
+            return False
+
+        if validate:
+            valid, errors = self.validate_workflow(self._workflow)
+            if not valid:
+                error_msg = tr_("Workflow validation failed:\n{errors}").format(
+                    errors="\n".join(errors)
+                )
+                self._event_bus.workflow_error.emit(error_msg)
+                return False
+
+        self._event_bus.emit_status(tr_("Starting workflow from selected node..."))
+        success = self._engine.execute_from(node_id)
+        if not success:
+            self._event_bus.emit_status(tr_("Failed to start workflow from selected node"))
+
+        return success
     
     def stop(self):
         """停止工作流执行"""

@@ -89,6 +89,8 @@ class WorkflowEngine(QObject):
         
         # Worker thread
         self._worker: Optional[EngineWorker] = None
+        self._pending_execution_node_ids: Optional[Set[str]] = None
+        self._active_execution_node_ids: Optional[Set[str]] = None
     
     def set_workflow(self, workflow: Workflow):
         """Set workflow to execute"""
@@ -104,38 +106,16 @@ class WorkflowEngine(QObject):
         Returns:
             Whether execution started successfully
         """
-        if workflow:
-            self.workflow = workflow
-        
-        if not self.workflow:
-            self.workflow_error.emit(tr_("Workflow not set"))
-            return False
+        return self._start_execution(workflow=workflow)
 
-        # Prevent starting a new run while the previous worker thread is still finishing.
-        # A terminal state (COMPLETED/STOPPED/ERROR) can be observed before QThread fully exits.
-        if self._worker is not None and self._worker.isRunning():
-            self.workflow_error.emit(tr_("Workflow is already running"))
-            return False
-        
-        if self.state == EngineState.RUNNING:
-            self.workflow_error.emit(tr_("Workflow is already running"))
-            return False
-        
-        # Validate workflow
-        valid, errors = self.workflow.validate()
-        if not valid:
-            self.workflow_error.emit("\n".join(errors))
-            return False
-        
-        # Reset state
-        self._reset()
-        
-        # Create and start worker thread
-        self._worker = EngineWorker(self)
-        self._worker.finished.connect(self._on_worker_finished)
-        self._worker.start()
-        
-        return True
+    def execute_from(self, start_node_id: str, workflow: Workflow = None) -> bool:
+        """
+        Execute workflow starting from a specific node.
+
+        Preserves cached upstream outputs and only reruns the target node plus its
+        downstream nodes.
+        """
+        return self._start_execution(workflow=workflow, start_node_id=start_node_id)
     
     def execute_sync(self) -> ExecutionResult:
         """
@@ -144,26 +124,27 @@ class WorkflowEngine(QObject):
         Returns:
             Execution result
         """
-        if not self.workflow:
+        ok, error = self._prepare_execution()
+        if not ok:
             return ExecutionResult(
                 success=False,
-                message=tr_("Workflow not set"),
+                message=error or tr_("Workflow not set"),
                 execution_time=0,
                 node_results={}
             )
-        
-        # Validate workflow
-        valid, errors = self.workflow.validate()
-        if not valid:
+        return self._execute_pending_workflow()
+
+    def execute_from_sync(self, start_node_id: str, workflow: Workflow = None) -> ExecutionResult:
+        """Synchronously execute a workflow subset from the selected node."""
+        ok, error = self._prepare_execution(workflow=workflow, start_node_id=start_node_id)
+        if not ok:
             return ExecutionResult(
                 success=False,
-                message="\n".join(errors),
+                message=error or tr_("Workflow not set"),
                 execution_time=0,
                 node_results={}
             )
-        
-        self._reset()
-        return self._execute_workflow()
+        return self._execute_pending_workflow()
     
     def stop(self):
         """Stop execution"""
@@ -202,9 +183,15 @@ class WorkflowEngine(QObject):
     def get_current_breakpoint_node(self) -> Optional[str]:
         """Get current breakpoint node ID"""
         return self._current_breakpoint_node
+
+    def get_active_run_node_ids(self) -> Optional[Set[str]]:
+        """Get the node IDs scheduled for the current run."""
+        if self._active_execution_node_ids is None:
+            return None
+        return set(self._active_execution_node_ids)
     
-    def _reset(self):
-        """Reset engine state"""
+    def _reset(self, node_ids: Optional[Set[str]] = None):
+        """Reset engine state and optionally only a subset of nodes."""
         self._stop_requested = False
         self._pause_requested = False
         self._breakpoint_waiting = False
@@ -214,12 +201,138 @@ class WorkflowEngine(QObject):
         self._loop_data.clear()
         self.state = EngineState.IDLE
         
-        # Reset all nodes
+        # Reset nodes
         if self.workflow:
-            for node in self.workflow.nodes.values():
+            nodes_to_reset: List[BaseNode]
+            if node_ids is None:
+                nodes_to_reset = list(self.workflow.nodes.values())
+            else:
+                nodes_to_reset = [
+                    node for node_id, node in self.workflow.nodes.items()
+                    if node_id in node_ids
+                ]
+
+            for node in nodes_to_reset:
                 node.reset()
-    
-    def _execute_workflow(self) -> ExecutionResult:
+
+    def _start_execution(
+        self,
+        *,
+        workflow: Workflow = None,
+        start_node_id: Optional[str] = None,
+    ) -> bool:
+        ok, error = self._prepare_execution(workflow=workflow, start_node_id=start_node_id)
+        if not ok:
+            self.workflow_error.emit(error or tr_("Workflow not set"))
+            return False
+
+        self._worker = EngineWorker(self)
+        self._worker.finished.connect(self._on_worker_finished)
+        self._worker.start()
+        return True
+
+    def _prepare_execution(
+        self,
+        *,
+        workflow: Workflow = None,
+        start_node_id: Optional[str] = None,
+    ) -> tuple[bool, Optional[str]]:
+        if workflow:
+            self.workflow = workflow
+
+        if not self.workflow:
+            return False, tr_("Workflow not set")
+
+        # Prevent starting a new run while the previous worker thread is still finishing.
+        # A terminal state (COMPLETED/STOPPED/ERROR) can be observed before QThread fully exits.
+        if self._worker is not None and self._worker.isRunning():
+            return False, tr_("Workflow is already running")
+
+        if self.state == EngineState.RUNNING:
+            return False, tr_("Workflow is already running")
+
+        valid, errors = self.workflow.validate()
+        if not valid:
+            return False, "\n".join(errors)
+
+        execution_node_ids: Optional[Set[str]] = None
+        if start_node_id is not None:
+            execution_node_ids = self._resolve_execution_node_ids(start_node_id)
+            if execution_node_ids is None:
+                return False, tr_("Start node does not exist")
+
+            valid_cache, cache_error = self._validate_cached_inputs_for_subset(execution_node_ids)
+            if not valid_cache:
+                return False, cache_error
+
+        self._pending_execution_node_ids = execution_node_ids
+        self._reset(node_ids=execution_node_ids)
+        return True, None
+
+    def _execute_pending_workflow(self) -> ExecutionResult:
+        self._active_execution_node_ids = (
+            set(self._pending_execution_node_ids)
+            if self._pending_execution_node_ids is not None
+            else None
+        )
+        self._pending_execution_node_ids = None
+        try:
+            return self._execute_workflow(target_node_ids=self._active_execution_node_ids)
+        finally:
+            self._active_execution_node_ids = None
+
+    def _resolve_execution_node_ids(self, start_node_id: str) -> Optional[Set[str]]:
+        """Resolve the selected node plus all downstream nodes."""
+        if not self.workflow:
+            return None
+        if not self.workflow.get_node(start_node_id):
+            return None
+
+        node_ids = set(self.workflow.get_downstream_nodes(start_node_id))
+        node_ids.add(start_node_id)
+        return node_ids
+
+    def _validate_cached_inputs_for_subset(
+        self,
+        target_node_ids: Set[str],
+    ) -> tuple[bool, Optional[str]]:
+        """Ensure required inputs from preserved upstream branches still have cached data."""
+        if not self.workflow:
+            return False, tr_("Workflow not set")
+
+        for node_id in target_node_ids:
+            node = self.workflow.get_node(node_id)
+            if node is None:
+                continue
+
+            for conn in self.workflow.get_incoming_connections(node_id):
+                if conn.source_node_id in target_node_ids:
+                    continue
+                if conn.target_port not in node.inputs:
+                    continue
+
+                input_port = node.inputs[conn.target_port]
+                if not input_port.required or input_port.default_value is not None:
+                    continue
+
+                source_node = self.workflow.get_node(conn.source_node_id)
+                if source_node is None or conn.source_port not in source_node.outputs:
+                    return False, tr_(
+                        "Cannot rerun from '{node}'. Upstream connection data is unavailable."
+                    ).format(node=node.display_name)
+
+                source_data = source_node.outputs[conn.source_port].data
+                if source_data is None:
+                    return False, tr_(
+                        "Cannot rerun from '{node}'. Required cached output from upstream node '{upstream}' is missing."
+                    ).format(
+                        node=node.display_name,
+                        upstream=source_node.display_name,
+                    )
+
+        return True, None
+
+    def _execute_workflow(self, target_node_ids: Optional[Set[str]] = None) -> ExecutionResult:
         """
         Core workflow execution logic
         
@@ -235,11 +348,27 @@ class WorkflowEngine(QObject):
             
             # Get execution order
             execution_order, has_cycle = self.workflow.get_execution_order()
+            if target_node_ids is not None:
+                execution_order = [
+                    node_id for node_id in execution_order
+                    if node_id in target_node_ids
+                ]
             
             if has_cycle:
                 # Has cycle, use special handling
                 # Currently simple handling: ignore cycle, execute in topological order
                 logger.warning("Detected cyclic dependency, will try to execute in topological order")
+
+            if not execution_order:
+                self.state = EngineState.ERROR
+                result = ExecutionResult(
+                    success=False,
+                    message=tr_("No runnable nodes found"),
+                    execution_time=time.time() - start_time,
+                    node_results=node_results
+                )
+                self.workflow_finished.emit(result)
+                return result
             
             total_nodes = len(execution_order)
             
@@ -490,5 +619,5 @@ class EngineWorker(QThread):
     
     def run(self):
         """Thread execution"""
-        self.engine._execute_workflow()
+        self.engine._execute_pending_workflow()
 

@@ -292,6 +292,11 @@ class BaseNode(ABC):
             port.clear()
         for port in self.outputs.values():
             port.clear()
+        self.on_reset()
+
+    def on_reset(self):
+        """Hook for subclasses to clear internal runtime state."""
+        pass
     
     def report_progress(self, progress: float, message: str = "", data: Dict = None):
         """
