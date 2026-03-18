@@ -257,7 +257,10 @@ class ModelBuilderView(QWidget):
     
     def _on_add_layer(self, layer_type: str):
         """添加层"""
-        self._graph_widget.add_layer(layer_type, (100, 100))
+        self._graph_widget.add_layer(
+            layer_type,
+            self._graph_widget.get_visible_viewport_center(),
+        )
     
     def _on_layer_selected(self, layer_id: str):
         """层选中"""

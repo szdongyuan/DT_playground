@@ -437,6 +437,12 @@ class ModelGraphWidget(QWidget):
         self._scene.add_layer_item(layer)
         self.graph_changed.emit()
         return layer.layer_id
+
+    def get_visible_viewport_center(self) -> tuple[float, float]:
+        """获取当前可视区域中心点（场景坐标）"""
+        viewport_center = self._view.viewport().rect().center()
+        scene_pos = self._view.mapToScene(viewport_center)
+        return scene_pos.x(), scene_pos.y()
     
     def remove_layer(self, layer_id: str):
         """移除层"""

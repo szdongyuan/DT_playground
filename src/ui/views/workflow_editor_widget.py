@@ -108,7 +108,10 @@ class WorkflowEditorWidget(QWidget):
     # ===== Internal event handlers =====
 
     def _on_add_node_from_palette(self, node_type: str):
-        self._node_graph.add_node(node_type, (100, 100))
+        self._node_graph.add_node(
+            node_type,
+            self._node_graph.get_visible_viewport_center(),
+        )
 
     def _on_node_selected(self, node_id: str):
         workflow = self._node_graph.get_workflow()
