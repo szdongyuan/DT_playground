@@ -623,6 +623,12 @@ class NodeGraphWidget(QWidget):
         
         self.workflow_changed.emit()
         return node.node_id
+
+    def get_visible_viewport_center(self) -> Tuple[float, float]:
+        """获取当前可视区域中心点（场景坐标）"""
+        viewport_center = self._view.viewport().rect().center()
+        scene_pos = self._view.mapToScene(viewport_center)
+        return scene_pos.x(), scene_pos.y()
     
     def remove_node(self, node_id: str):
         """移除节点"""
