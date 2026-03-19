@@ -26,7 +26,10 @@ from PyQt6.QtWidgets import (
 )
 
 from ..styles import Styles
-from ..graph_editor import BasePortItem, BaseConnectionItem, BaseGraphScene, BaseGraphView
+from ..graph_editor import (
+    BasePortItem, BaseConnectionItem, BaseGraphScene, BaseGraphView,
+    get_graph_clipboard_data, has_graph_clipboard_data, set_graph_clipboard_data,
+)
 from ..i18n import tr_
 from ...workflow.connection import Connection
 from ...workflow.node_base import (
@@ -540,6 +543,9 @@ class NodeGraphWidget(QWidget):
         workflow_changed: 工作流发生变化
     """
     
+    CLIPBOARD_KIND = "workflow_nodes"
+    PASTE_OFFSET = (40.0, 40.0)
+
     node_selected = pyqtSignal(str)
     node_double_clicked = pyqtSignal(str)
     run_from_node_requested = pyqtSignal(str)
@@ -550,6 +556,7 @@ class NodeGraphWidget(QWidget):
         super().__init__(parent)
         
         self.workflow: Optional[Workflow] = None
+        self._paste_serial = 0
         
         self._setup_ui()
         self._connect_signals()
@@ -687,6 +694,111 @@ class NodeGraphWidget(QWidget):
             if isinstance(item, NodeItem):
                 node_ids.append(item.node.node_id)
         return node_ids
+
+    def _copy_selected(self) -> bool:
+        """Copy the selected nodes and their internal connections."""
+        if not self.workflow:
+            return False
+
+        selected_node_ids = self.get_selected_node_ids()
+        if not selected_node_ids:
+            return False
+
+        selected_id_set = set(selected_node_ids)
+        payload = {
+            "nodes": [
+                self.workflow.get_node(node_id).to_dict()
+                for node_id in selected_node_ids
+                if self.workflow.get_node(node_id) is not None
+            ],
+            "connections": [
+                conn.to_dict()
+                for conn in self.workflow.connections
+                if conn.source_node_id in selected_id_set and conn.target_node_id in selected_id_set
+            ],
+        }
+        if not payload["nodes"]:
+            return False
+
+        set_graph_clipboard_data(self.CLIPBOARD_KIND, payload)
+        self._paste_serial = 0
+        return True
+
+    def _paste_clipboard(self) -> bool:
+        """Paste nodes from the clipboard with fresh IDs and offset positions."""
+        payload = get_graph_clipboard_data(self.CLIPBOARD_KIND)
+        if not payload:
+            return False
+
+        if not self.workflow:
+            self.workflow = Workflow()
+
+        nodes_data = payload.get("nodes") or []
+        connections_data = payload.get("connections") or []
+        if not nodes_data:
+            return False
+
+        self._paste_serial += 1
+        offset_x = self.PASTE_OFFSET[0] * self._paste_serial
+        offset_y = self.PASTE_OFFSET[1] * self._paste_serial
+
+        id_map: Dict[str, str] = {}
+        new_node_ids: List[str] = []
+        for node_data in nodes_data:
+            node_type = node_data.get("type")
+            node = create_node(node_type)
+            if node is None:
+                continue
+
+            old_node_id = node_data.get("id")
+            id_map[old_node_id] = node.node_id
+
+            position = node_data.get("position", [0, 0])
+            node.position = (position[0] + offset_x, position[1] + offset_y)
+            for name, value in (node_data.get("parameters") or {}).items():
+                node.set_parameter(name, value)
+
+            if self.workflow.add_node(node):
+                self._scene.add_node_item(node)
+                new_node_ids.append(node.node_id)
+
+        if not new_node_ids:
+            self._paste_serial -= 1
+            return False
+
+        for conn_data in connections_data:
+            source = conn_data.get("source") or {}
+            target = conn_data.get("target") or {}
+            source_node_id = id_map.get(source.get("node"))
+            target_node_id = id_map.get(target.get("node"))
+            if not source_node_id or not target_node_id:
+                continue
+
+            success, _msg = self.workflow.connect(
+                source_node_id,
+                source.get("port"),
+                target_node_id,
+                target.get("port"),
+            )
+            if success:
+                self._scene.add_connection_item(
+                    source_node_id,
+                    source.get("port"),
+                    target_node_id,
+                    target.get("port"),
+                )
+
+        self._scene.clearSelection()
+        for node_id in new_node_ids:
+            item = self._scene.node_items.get(node_id)
+            if item:
+                item.setSelected(True)
+
+        if len(new_node_ids) == 1:
+            self.node_selected.emit(new_node_ids[0])
+
+        self.workflow_changed.emit()
+        return True
     
     def _show_context_menu(self, pos):
         """显示右键菜单"""
@@ -699,6 +811,14 @@ class NodeGraphWidget(QWidget):
         rerun_action = menu.addAction(tr_("Rerun from selected node"))
         rerun_action.setEnabled(len(selected_node_ids) == 1 and self.workflow is not None)
         rerun_action.triggered.connect(self._rerun_from_selected_node)
+
+        copy_action = menu.addAction(tr_("Copy"))
+        copy_action.setEnabled(bool(selected_node_ids))
+        copy_action.triggered.connect(self._copy_selected)
+
+        paste_action = menu.addAction(tr_("Paste"))
+        paste_action.setEnabled(has_graph_clipboard_data(self.CLIPBOARD_KIND))
+        paste_action.triggered.connect(self._paste_clipboard)
         
         # 重置选中节点连接
         reset_conn_action = menu.addAction(tr_("Reset selected node connections"))

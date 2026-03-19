@@ -32,7 +32,10 @@ from src.model_builder.layer_base import (
 from src.model_builder.model_graph import ModelConnection, ModelGraph
 from src.ui.i18n import tr_
 from src.ui.styles import Styles
-from src.ui.graph_editor import BasePortItem, BaseConnectionItem, BaseGraphScene, BaseGraphView
+from src.ui.graph_editor import (
+    BasePortItem, BaseConnectionItem, BaseGraphScene, BaseGraphView,
+    get_graph_clipboard_data, has_graph_clipboard_data, set_graph_clipboard_data,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -365,6 +368,9 @@ class ModelGraphWidget(QWidget):
     模型画布组件
     """
     
+    CLIPBOARD_KIND = "model_layers"
+    PASTE_OFFSET = (40.0, 40.0)
+
     layer_selected = pyqtSignal(str)
     layer_double_clicked = pyqtSignal(str)
     connection_created = pyqtSignal(str, str)
@@ -374,6 +380,7 @@ class ModelGraphWidget(QWidget):
         super().__init__(parent)
         
         self.model_graph: Optional[ModelGraph] = None
+        self._paste_serial = 0
         
         self._setup_ui()
         self._connect_signals()
@@ -483,6 +490,104 @@ class ModelGraphWidget(QWidget):
             if isinstance(item, LayerItem):
                 layer_ids.append(item.layer.layer_id)
         return layer_ids
+
+    def _copy_selected(self) -> bool:
+        """Copy the selected layers and their internal connections."""
+        if not self.model_graph:
+            return False
+
+        selected_layer_ids = self.get_selected_layer_ids()
+        if not selected_layer_ids:
+            return False
+
+        selected_id_set = set(selected_layer_ids)
+        layers_data = []
+        for layer_id in selected_layer_ids:
+            layer = self.model_graph.get_layer(layer_id)
+            if layer is None:
+                continue
+            layer_data = layer.to_dict()
+            layer_data.pop("has_weights", None)
+            layers_data.append(layer_data)
+
+        if not layers_data:
+            return False
+
+        payload = {
+            "layers": layers_data,
+            "connections": [
+                conn.to_dict()
+                for conn in self.model_graph.connections
+                if conn.source_layer_id in selected_id_set and conn.target_layer_id in selected_id_set
+            ],
+        }
+        set_graph_clipboard_data(self.CLIPBOARD_KIND, payload)
+        self._paste_serial = 0
+        return True
+
+    def _paste_clipboard(self) -> bool:
+        """Paste layers from the clipboard with fresh IDs and offset positions."""
+        payload = get_graph_clipboard_data(self.CLIPBOARD_KIND)
+        if not payload or not self.model_graph:
+            return False
+
+        layers_data = payload.get("layers") or []
+        connections_data = payload.get("connections") or []
+        if not layers_data:
+            return False
+
+        self._paste_serial += 1
+        offset_x = self.PASTE_OFFSET[0] * self._paste_serial
+        offset_y = self.PASTE_OFFSET[1] * self._paste_serial
+
+        id_map: Dict[str, str] = {}
+        new_layer_ids: List[str] = []
+        for layer_data in layers_data:
+            layer_type = layer_data.get("type")
+            layer = create_layer(layer_type)
+            if layer is None:
+                continue
+
+            old_layer_id = layer_data.get("id")
+            id_map[old_layer_id] = layer.layer_id
+
+            position = layer_data.get("position", [0, 0])
+            layer.position = (position[0] + offset_x, position[1] + offset_y)
+            layer.layer_name = layer_data.get("layer_name", "")
+            for name, value in (layer_data.get("parameters") or {}).items():
+                layer.set_parameter(name, value)
+            layer.trainable = layer_data.get("trainable", True)
+            layer._has_weights = False
+
+            self.model_graph.add_layer(layer)
+            self._scene.add_layer_item(layer)
+            new_layer_ids.append(layer.layer_id)
+
+        if not new_layer_ids:
+            self._paste_serial -= 1
+            return False
+
+        for conn_data in connections_data:
+            source_layer_id = id_map.get(conn_data.get("source"))
+            target_layer_id = id_map.get(conn_data.get("target"))
+            if not source_layer_id or not target_layer_id:
+                continue
+
+            success, _msg = self.model_graph.connect(source_layer_id, target_layer_id)
+            if success:
+                self._scene.add_connection_item(source_layer_id, target_layer_id)
+
+        self._scene.clearSelection()
+        for layer_id in new_layer_ids:
+            item = self._scene.layer_items.get(layer_id)
+            if item:
+                item.setSelected(True)
+
+        if len(new_layer_ids) == 1:
+            self.layer_selected.emit(new_layer_ids[0])
+
+        self.graph_changed.emit()
+        return True
     
     def _show_context_menu(self, pos):
         """显示右键菜单"""
@@ -509,6 +614,14 @@ class ModelGraphWidget(QWidget):
                 )
         
         menu.addSeparator()
+
+        copy_action = menu.addAction(tr_("Copy"))
+        copy_action.setEnabled(bool(self.get_selected_layer_ids()))
+        copy_action.triggered.connect(self._copy_selected)
+
+        paste_action = menu.addAction(tr_("Paste"))
+        paste_action.setEnabled(has_graph_clipboard_data(self.CLIPBOARD_KIND))
+        paste_action.triggered.connect(self._paste_clipboard)
         
         # 重置选中层连接
         reset_conn_action = menu.addAction(tr_("Reset selected layer connections"))
