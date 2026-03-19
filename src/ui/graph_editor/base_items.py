@@ -10,7 +10,7 @@ from typing import List, Optional
 
 from PyQt6.QtCore import QPoint, QPointF, QRectF, Qt
 from PyQt6.QtGui import (
-    QBrush, QColor, QFont, QKeyEvent, QMouseEvent, QPainter,
+    QBrush, QColor, QFont, QKeyEvent, QKeySequence, QMouseEvent, QPainter,
     QPainterPath, QPen, QWheelEvent
 )
 from PyQt6.QtWidgets import (
@@ -304,9 +304,18 @@ class BaseGraphView(QGraphicsView):
             super().mouseReleaseEvent(event)
     
     def keyPressEvent(self, event: QKeyEvent):
-        """键盘按下 - DEL 删除"""
+        """Keyboard shortcuts for graph editing."""
+        parent = self.parent()
+
+        if event.matches(QKeySequence.StandardKey.Copy):
+            if hasattr(parent, '_copy_selected') and parent._copy_selected():
+                return
+
+        if event.matches(QKeySequence.StandardKey.Paste):
+            if hasattr(parent, '_paste_clipboard') and parent._paste_clipboard():
+                return
+
         if event.key() == Qt.Key.Key_Delete or event.key() == Qt.Key.Key_Backspace:
-            parent = self.parent()
             if hasattr(parent, '_delete_selected'):
                 parent._delete_selected()
             return
