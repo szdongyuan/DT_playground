@@ -469,6 +469,204 @@ class WindowingNode(BaseNode):
 
 
 @register_node
+class SpectralSubtractionNode(BaseNode):
+    """
+    Spectral subtraction denoise node.
+
+    Performs frequency-domain denoising on waveform audio while preserving the
+    input/output `AudioData` shape semantics used by other preprocessing nodes.
+    """
+
+    node_type = "spectral_subtraction"
+    display_name = tr_("Spectral subtraction")
+    category = NodeCategory.PREPROCESSING
+    subcategory = tr_("Denoise")
+    description = tr_("Reduce stationary noise using spectral subtraction")
+    icon = "🔉"
+
+    def _setup_ports(self):
+        self.add_input(
+            "audio",
+            DataType.AUDIO,
+            tr_("Audio"),
+            description=tr_("Audio or audio list"),
+        )
+        self.add_input(
+            "noise",
+            DataType.AUDIO,
+            tr_("Noise reference"),
+            required=False,
+            description=tr_("Optional noise-only audio or audio list"),
+        )
+        self.add_output("audio", DataType.AUDIO, tr_("Audio"))
+
+    def _setup_parameters(self):
+        self.add_parameter(
+            "noise_duration",
+            "float",
+            0.25,
+            display_name=tr_("Noise duration (s)"),
+            description=tr_("Head duration used for noise estimation when no reference is connected"),
+            min_value=0.01,
+            max_value=10.0,
+        )
+        self.add_parameter(
+            "subtract_alpha",
+            "float",
+            1.0,
+            display_name=tr_("Subtract alpha"),
+            description=tr_("Strength of spectral subtraction"),
+            min_value=0.1,
+            max_value=5.0,
+        )
+        self.add_parameter(
+            "spectral_floor",
+            "float",
+            0.02,
+            display_name=tr_("Spectral floor"),
+            description=tr_("Residual floor factor to avoid musical noise"),
+            min_value=0.0,
+            max_value=1.0,
+        )
+
+    def execute(self) -> bool:
+        try:
+            audio_input = validate_audio_input(
+                self.get_input_data("audio"),
+                self.display_name,
+            )
+            noise_input = self._validate_noise_input(
+                self.get_input_data("noise"),
+                self.display_name,
+            )
+            result = self._process_audio_input(audio_input, noise_input)
+        except (ValueError, TypeError) as e:
+            self.error_message = str(e)
+            return False
+        except Exception as e:
+            self.error_message = tr_("Spectral subtraction failed: {error}").format(
+                error=str(e)
+            )
+            return False
+
+        self.set_output_data("audio", result)
+        return True
+
+    def _validate_noise_input(self, data, node_name: str):
+        if data is None:
+            return None
+        return validate_audio_input(data, node_name)
+
+    def _process_audio_input(self, audio_input, noise_input):
+        if isinstance(audio_input, list):
+            if isinstance(noise_input, list) and len(noise_input) != len(audio_input):
+                raise ValueError(
+                    tr_("{node}: Noise reference list length must match audio list length").format(
+                        node=self.display_name
+                    )
+                )
+
+            results = []
+            for index, audio in enumerate(audio_input):
+                noise_reference = None
+                if isinstance(noise_input, list):
+                    noise_reference = noise_input[index]
+                elif noise_input is not None:
+                    noise_reference = noise_input
+                results.append(self._denoise_audio(audio, noise_reference))
+            return results
+
+        if isinstance(noise_input, list):
+            raise ValueError(
+                tr_("{node}: Noise reference list requires audio list input").format(
+                    node=self.display_name
+                )
+            )
+        else:
+            noise_reference = noise_input
+        return self._denoise_audio(audio_input, noise_reference)
+
+    def _denoise_audio(
+        self,
+        audio: AudioData,
+        noise_reference: AudioData | None,
+    ) -> AudioData:
+        noise_waveform = self._resolve_noise_waveform(audio, noise_reference)
+
+        def subtract_channel(channel_data: np.ndarray) -> np.ndarray:
+            return self._spectral_subtract_channel(channel_data, noise_waveform)
+
+        denoised = process_channels(audio.data, subtract_channel)
+        return AudioData(
+            data=denoised,
+            sample_rate=audio.sample_rate,
+            file_path=audio.file_path,
+        )
+
+    def _resolve_noise_waveform(
+        self,
+        audio: AudioData,
+        noise_reference: AudioData | None,
+    ) -> np.ndarray:
+        if audio.samples <= 0:
+            raise ValueError(
+                tr_("{node}: Input audio is empty").format(node=self.display_name)
+            )
+
+        if noise_reference is not None:
+            if noise_reference.sample_rate != audio.sample_rate:
+                raise ValueError(
+                    tr_("{node}: Noise reference sample rate must match input audio").format(
+                        node=self.display_name
+                    )
+                )
+            noise_data = noise_reference.data
+        else:
+            duration_s = float(self.get_parameter("noise_duration"))
+            noise_samples = max(1, int(duration_s * audio.sample_rate))
+            noise_data = audio.data[:, : min(noise_samples, audio.samples)]
+
+        if noise_data.size == 0:
+            raise ValueError(
+                tr_("{node}: Noise estimation segment is empty").format(
+                    node=self.display_name
+                )
+            )
+
+        mono_noise = np.mean(noise_data, axis=0)
+        return mono_noise.astype(np.float32, copy=False)
+
+    def _spectral_subtract_channel(
+        self,
+        channel_data: np.ndarray,
+        noise_waveform: np.ndarray,
+    ) -> np.ndarray:
+        alpha = float(self.get_parameter("subtract_alpha"))
+        spectral_floor = float(self.get_parameter("spectral_floor"))
+
+        channel_data = np.asarray(channel_data, dtype=np.float32)
+        n_fft = self._choose_fft_size(channel_data.shape[0], noise_waveform.shape[0])
+        hop_length = max(8, n_fft // 4)
+
+        signal_stft = librosa.stft(channel_data, n_fft=n_fft, hop_length=hop_length)
+        noise_stft = librosa.stft(noise_waveform, n_fft=n_fft, hop_length=hop_length)
+
+        signal_mag = np.abs(signal_stft)
+        noise_mag = np.mean(np.abs(noise_stft), axis=1, keepdims=True)
+        phase = np.angle(signal_stft)
+
+        cleaned_mag = np.maximum(signal_mag - (alpha * noise_mag), spectral_floor * noise_mag)
+        cleaned_stft = cleaned_mag * np.exp(1j * phase)
+
+        return librosa.istft(cleaned_stft, hop_length=hop_length, length=channel_data.shape[0])
+
+    def _choose_fft_size(self, signal_len: int, noise_len: int) -> int:
+        base_length = max(32, min(signal_len, max(32, noise_len), 512))
+        fft_size = 1 << int(np.floor(np.log2(base_length)))
+        return max(32, int(fft_size))
+
+
+@register_node
 class SilenceTrimNode(BaseNode):
     """
     静音裁剪节点
