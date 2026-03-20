@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-18 18:34+0800\n"
+"POT-Creation-Date: 2026-03-20 14:22+0800\n"
 "PO-Revision-Date: 2026-02-04 17:15+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1880,11 +1880,13 @@ msgstr "设置"
 #: src/workflow/nodes/preprocessing.py:308
 #: src/workflow/nodes/preprocessing.py:391
 #: src/workflow/nodes/preprocessing.py:394
-#: src/workflow/nodes/preprocessing.py:486
-#: src/workflow/nodes/preprocessing.py:487
-#: src/workflow/nodes/preprocessing.py:566
-#: src/workflow/nodes/preprocessing.py:932
-#: src/workflow/nodes/preprocessing.py:933
+#: src/workflow/nodes/preprocessing.py:491
+#: src/workflow/nodes/preprocessing.py:501
+#: src/workflow/nodes/preprocessing.py:684
+#: src/workflow/nodes/preprocessing.py:685
+#: src/workflow/nodes/preprocessing.py:764
+#: src/workflow/nodes/preprocessing.py:1130
+#: src/workflow/nodes/preprocessing.py:1131
 #: src/workflow/nodes/feature/dim1d/fft.py:35
 #: src/workflow/nodes/feature/dim1d/pitch.py:36
 #: src/workflow/nodes/feature/dim1d/spectral_flatness.py:38
@@ -3424,7 +3426,7 @@ msgstr "滑动窗口模式下，包含最后一段短于完整切片的余段"
 
 #: src/workflow/nodes/augmentation.py:513
 #: src/workflow/nodes/preprocessing.py:203
-#: src/workflow/nodes/preprocessing.py:772
+#: src/workflow/nodes/preprocessing.py:970
 msgid "Pad mode"
 msgstr "填充模式"
 
@@ -3973,7 +3975,8 @@ msgstr "将音频重采样到目标采样率"
 
 #: src/workflow/nodes/preprocessing.py:125
 #: src/workflow/nodes/preprocessing.py:392
-#: src/workflow/nodes/preprocessing.py:932
+#: src/workflow/nodes/preprocessing.py:492
+#: src/workflow/nodes/preprocessing.py:1130
 msgid "Audio or audio list"
 msgstr "音频或音频列表"
 
@@ -4029,27 +4032,101 @@ msgstr "应用于整段波形的窗函数"
 msgid "Window length"
 msgstr "窗长"
 
-#: src/workflow/nodes/preprocessing.py:480
+#: src/workflow/nodes/preprocessing.py:481
+msgid "Spectral subtraction"
+msgstr "谱减法"
+
+#: src/workflow/nodes/preprocessing.py:483
+msgid "Denoise"
+msgstr "降噪"
+
+#: src/workflow/nodes/preprocessing.py:484
+msgid "Reduce stationary noise using spectral subtraction"
+msgstr "使用谱减法降低平稳噪声"
+
+#: src/workflow/nodes/preprocessing.py:497
+msgid "Noise reference"
+msgstr "噪声参考"
+
+#: src/workflow/nodes/preprocessing.py:499
+msgid "Optional noise-only audio or audio list"
+msgstr "可选：仅包含噪声的音频或音频列表"
+
+#: src/workflow/nodes/preprocessing.py:508
+msgid "Noise duration (s)"
+msgstr "噪声时长（秒）"
+
+#: src/workflow/nodes/preprocessing.py:509
+msgid "Head duration used for noise estimation when no reference is connected"
+msgstr "未连接噪声参考时，用于噪声估计的开头时长"
+
+#: src/workflow/nodes/preprocessing.py:517
+msgid "Subtract alpha"
+msgstr "减法系数"
+
+#: src/workflow/nodes/preprocessing.py:518
+msgid "Strength of spectral subtraction"
+msgstr "谱减法强度"
+
+#: src/workflow/nodes/preprocessing.py:526
+msgid "Spectral floor"
+msgstr "频谱下限"
+
+#: src/workflow/nodes/preprocessing.py:527
+msgid "Residual floor factor to avoid musical noise"
+msgstr "用于避免音乐噪声的残余下限系数"
+
+#: src/workflow/nodes/preprocessing.py:547
+#, python-brace-format
+msgid "Spectral subtraction failed: {error}"
+msgstr "谱减法失败：{error}"
+
+#: src/workflow/nodes/preprocessing.py:564
+#, python-brace-format
+msgid "{node}: Noise reference list length must match audio list length"
+msgstr "{node}：噪声参考列表长度必须与音频列表长度一致"
+
+#: src/workflow/nodes/preprocessing.py:581
+#, python-brace-format
+msgid "{node}: Noise reference list requires audio list input"
+msgstr "{node}：噪声参考列表需要与音频列表输入配套使用"
+
+#: src/workflow/nodes/preprocessing.py:613
+#, python-brace-format
+msgid "{node}: Input audio is empty"
+msgstr "{node}：输入音频为空"
+
+#: src/workflow/nodes/preprocessing.py:619
+#, python-brace-format
+msgid "{node}: Noise reference sample rate must match input audio"
+msgstr "{node}：噪声参考的采样率必须与输入音频一致"
+
+#: src/workflow/nodes/preprocessing.py:631
+#, python-brace-format
+msgid "{node}: Noise estimation segment is empty"
+msgstr "{node}：噪声估计片段为空"
+
+#: src/workflow/nodes/preprocessing.py:678
 msgid "Trim silence"
 msgstr "去除静音"
 
-#: src/workflow/nodes/preprocessing.py:482
+#: src/workflow/nodes/preprocessing.py:680
 msgid "Remove leading and trailing silence"
 msgstr "去除首尾静音"
 
-#: src/workflow/nodes/preprocessing.py:492
+#: src/workflow/nodes/preprocessing.py:690
 msgid "Threshold (dB)"
 msgstr "阈值（dB）"
 
-#: src/workflow/nodes/preprocessing.py:493
+#: src/workflow/nodes/preprocessing.py:691
 msgid "Below this threshold is considered silence"
 msgstr "低于该阈值视为静音"
 
-#: src/workflow/nodes/preprocessing.py:498
+#: src/workflow/nodes/preprocessing.py:696
 msgid "Frame length"
 msgstr "帧长"
 
-#: src/workflow/nodes/preprocessing.py:503
+#: src/workflow/nodes/preprocessing.py:701
 #: src/workflow/nodes/feature/dim1d/pitch.py:54
 #: src/workflow/nodes/feature/dim1d/spectral_flatness.py:49
 #: src/workflow/nodes/feature/dim2d/cqt.py:55
@@ -4060,194 +4137,194 @@ msgstr "帧长"
 msgid "Hop length"
 msgstr "帧移"
 
-#: src/workflow/nodes/preprocessing.py:557
+#: src/workflow/nodes/preprocessing.py:755
 msgid "Channel mapper"
 msgstr "通道映射"
 
-#: src/workflow/nodes/preprocessing.py:559
+#: src/workflow/nodes/preprocessing.py:757
 msgid "Map selected channels to different outputs"
 msgstr "将选定通道映射到不同输出"
 
-#: src/workflow/nodes/preprocessing.py:567
+#: src/workflow/nodes/preprocessing.py:765
 msgid "Multichannel audio input"
 msgstr "多通道音频输入"
 
-#: src/workflow/nodes/preprocessing.py:569
+#: src/workflow/nodes/preprocessing.py:767
 msgid "Output 1"
 msgstr "输出 1"
 
-#: src/workflow/nodes/preprocessing.py:570
+#: src/workflow/nodes/preprocessing.py:768
 msgid "Output 2"
 msgstr "输出 2"
 
-#: src/workflow/nodes/preprocessing.py:571
+#: src/workflow/nodes/preprocessing.py:769
 msgid "Output 3"
 msgstr "输出 3"
 
-#: src/workflow/nodes/preprocessing.py:572
+#: src/workflow/nodes/preprocessing.py:770
 msgid "Output 4"
 msgstr "输出 4"
 
-#: src/workflow/nodes/preprocessing.py:577
+#: src/workflow/nodes/preprocessing.py:775
 msgid "Output 1 channels"
 msgstr "输出 1 通道"
 
-#: src/workflow/nodes/preprocessing.py:578
+#: src/workflow/nodes/preprocessing.py:776
 msgid "Channel indices (0-based), comma-separated, e.g. 0 or 0,1,2"
 msgstr "通道索引（从 0 开始），用逗号分隔，例如 0 或 0,1,2"
 
-#: src/workflow/nodes/preprocessing.py:582
+#: src/workflow/nodes/preprocessing.py:780
 msgid "Output 2 channels"
 msgstr "输出 2 通道"
 
-#: src/workflow/nodes/preprocessing.py:583
-#: src/workflow/nodes/preprocessing.py:588
-#: src/workflow/nodes/preprocessing.py:593
+#: src/workflow/nodes/preprocessing.py:781
+#: src/workflow/nodes/preprocessing.py:786
+#: src/workflow/nodes/preprocessing.py:791
 msgid "Channel indices; leave blank to disable output"
 msgstr "通道索引；留空以禁用该输出"
 
-#: src/workflow/nodes/preprocessing.py:587
+#: src/workflow/nodes/preprocessing.py:785
 msgid "Output 3 channels"
 msgstr "输出 3 通道"
 
-#: src/workflow/nodes/preprocessing.py:592
+#: src/workflow/nodes/preprocessing.py:790
 msgid "Output 4 channels"
 msgstr "输出 4 通道"
 
-#: src/workflow/nodes/preprocessing.py:733
+#: src/workflow/nodes/preprocessing.py:931
 msgid "Channel merge"
 msgstr "通道合并"
 
-#: src/workflow/nodes/preprocessing.py:735
+#: src/workflow/nodes/preprocessing.py:933
 msgid "Merge channels from multiple audio inputs"
 msgstr "合并多个音频输入的通道"
 
-#: src/workflow/nodes/preprocessing.py:739
+#: src/workflow/nodes/preprocessing.py:937
 msgid "Input 1"
 msgstr "输入 1"
 
-#: src/workflow/nodes/preprocessing.py:739
+#: src/workflow/nodes/preprocessing.py:937
 msgid "Audio input 1"
 msgstr "音频输入 1"
 
-#: src/workflow/nodes/preprocessing.py:743
+#: src/workflow/nodes/preprocessing.py:941
 msgid "Input 2"
 msgstr "输入 2"
 
-#: src/workflow/nodes/preprocessing.py:744
+#: src/workflow/nodes/preprocessing.py:942
 msgid "Audio input 2 (optional)"
 msgstr "音频输入 2（可选）"
 
-#: src/workflow/nodes/preprocessing.py:750
+#: src/workflow/nodes/preprocessing.py:948
 msgid "Input 3"
 msgstr "输入 3"
 
-#: src/workflow/nodes/preprocessing.py:751
+#: src/workflow/nodes/preprocessing.py:949
 msgid "Audio input 3 (optional)"
 msgstr "音频输入 3（可选）"
 
-#: src/workflow/nodes/preprocessing.py:757
+#: src/workflow/nodes/preprocessing.py:955
 msgid "Input 4"
 msgstr "输入 4"
 
-#: src/workflow/nodes/preprocessing.py:758
+#: src/workflow/nodes/preprocessing.py:956
 msgid "Audio input 4 (optional)"
 msgstr "音频输入 4（可选）"
 
-#: src/workflow/nodes/preprocessing.py:761
+#: src/workflow/nodes/preprocessing.py:959
 msgid "Merged audio"
 msgstr "合并后的音频"
 
-#: src/workflow/nodes/preprocessing.py:766
+#: src/workflow/nodes/preprocessing.py:964
 msgid "Length handling"
 msgstr "长度处理"
 
-#: src/workflow/nodes/preprocessing.py:767
+#: src/workflow/nodes/preprocessing.py:965
 msgid "How to handle different input lengths"
 msgstr "如何处理不同的输入长度"
 
-#: src/workflow/nodes/preprocessing.py:773
+#: src/workflow/nodes/preprocessing.py:971
 msgid "Padding strategy for shorter audio when using max length"
 msgstr "使用最大长度时，较短音频的填充策略"
 
-#: src/workflow/nodes/preprocessing.py:788
+#: src/workflow/nodes/preprocessing.py:986
 msgid "At least one valid audio input is required"
 msgstr "至少需要一个有效的音频输入"
 
-#: src/workflow/nodes/preprocessing.py:802
+#: src/workflow/nodes/preprocessing.py:1000
 msgid "All inputs must be the same type (all single audio or all audio lists)"
 msgstr "所有输入必须为同一类型（全部为单个音频或全部为音频列表）"
 
-#: src/workflow/nodes/preprocessing.py:807
+#: src/workflow/nodes/preprocessing.py:1005
 #, python-brace-format
 msgid "Audio list lengths differ: {lengths}"
 msgstr "音频列表长度不一致：{lengths}"
 
-#: src/workflow/nodes/preprocessing.py:827
+#: src/workflow/nodes/preprocessing.py:1025
 #, python-brace-format
 msgid "Expected AudioData, but got {type}"
 msgstr "期望 AudioData，但得到 {type}"
 
-#: src/workflow/nodes/preprocessing.py:851
+#: src/workflow/nodes/preprocessing.py:1049
 msgid "No audio to merge"
 msgstr "没有可合并的音频"
 
-#: src/workflow/nodes/preprocessing.py:858
+#: src/workflow/nodes/preprocessing.py:1056
 #, python-brace-format
 msgid "Sample rates differ: {rates}. Please resample first."
 msgstr "采样率不一致：{rates}。请先重采样。"
 
-#: src/workflow/nodes/preprocessing.py:926
+#: src/workflow/nodes/preprocessing.py:1124
 msgid "Filter"
 msgstr "滤波"
 
-#: src/workflow/nodes/preprocessing.py:928
+#: src/workflow/nodes/preprocessing.py:1126
 msgid "Apply digital filtering (lowpass/highpass/bandpass/bandstop)"
 msgstr "应用数字滤波（低通/高通/带通/带阻）"
 
-#: src/workflow/nodes/preprocessing.py:938
+#: src/workflow/nodes/preprocessing.py:1136
 msgid "Filter type"
 msgstr "滤波类型"
 
-#: src/workflow/nodes/preprocessing.py:939
+#: src/workflow/nodes/preprocessing.py:1137
 msgid "lowpass, highpass, bandpass, bandstop"
 msgstr "lowpass、highpass、bandpass、bandstop"
 
-#: src/workflow/nodes/preprocessing.py:944
+#: src/workflow/nodes/preprocessing.py:1142
 msgid "Cutoff (Hz)"
 msgstr "截止频率（Hz）"
 
-#: src/workflow/nodes/preprocessing.py:945
+#: src/workflow/nodes/preprocessing.py:1143
 msgid "Used by lowpass/highpass; low bound for bandpass/bandstop"
 msgstr "用于低通/高通；用于带通/带阻的低截止频率"
 
-#: src/workflow/nodes/preprocessing.py:950
+#: src/workflow/nodes/preprocessing.py:1148
 msgid "High cutoff (Hz)"
 msgstr "高截止频率（Hz）"
 
-#: src/workflow/nodes/preprocessing.py:951
+#: src/workflow/nodes/preprocessing.py:1149
 msgid "Only for bandpass/bandstop; ignored for lowpass/highpass"
 msgstr "仅用于带通/带阻；低通/高通忽略"
 
-#: src/workflow/nodes/preprocessing.py:956
+#: src/workflow/nodes/preprocessing.py:1154
 msgid "Filter order"
 msgstr "滤波阶数"
 
-#: src/workflow/nodes/preprocessing.py:957
+#: src/workflow/nodes/preprocessing.py:1155
 msgid "Butterworth order; higher means steeper rolloff"
 msgstr "巴特沃斯阶数；越高滚降越陡"
 
-#: src/workflow/nodes/preprocessing.py:1010
+#: src/workflow/nodes/preprocessing.py:1208
 #, python-brace-format
 msgid "Unknown filter type: {type}"
 msgstr "未知的滤波类型：{type}"
 
-#: src/workflow/nodes/preprocessing.py:1012
+#: src/workflow/nodes/preprocessing.py:1210
 #, python-brace-format
 msgid "Filter design failed: {error}"
 msgstr "滤波器设计失败：{error}"
 
-#: src/workflow/nodes/preprocessing.py:1034
+#: src/workflow/nodes/preprocessing.py:1232
 #, python-brace-format
 msgid "Filtering failed: {error}"
 msgstr "滤波失败：{error}"
