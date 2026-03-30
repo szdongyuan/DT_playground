@@ -2,6 +2,8 @@
 Main Application Class
 """
 
+from collections.abc import Callable
+
 from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtGui import QAction, QIcon, QKeySequence
 from PyQt6.QtWidgets import (
@@ -21,16 +23,26 @@ from src.utils.config import config
 class AudioTrainingApp(QMainWindow):
     """AI声学信号训练平台主应用程序"""
     
-    def __init__(self):
+    def __init__(self, startup_progress: Callable[[int, str | None], None] | None = None):
         super().__init__()
         self.current_model = None
         self._restart_manager: RestartManager | None = None
         self._restart_in_progress = False
+        self._startup_progress = startup_progress
         self._init_ui()
+        self._report_startup_progress(84, "Main window created...")
         self._init_menubar()
         self._init_toolbar()
         self._init_connections()
+        self._report_startup_progress(90, "Restoring previous session...")
         self._load_settings()
+        self._report_startup_progress(96, "Finalizing startup...")
+
+    def _report_startup_progress(self, value: int, step_text: str | None = None):
+        """Forward startup milestones to the splash screen when available."""
+        if self._startup_progress is None:
+            return
+        self._startup_progress(value, step_text)
     
     def _init_ui(self):
         """初始化用户界面"""
@@ -38,7 +50,7 @@ class AudioTrainingApp(QMainWindow):
         self.setMinimumSize(1280, 800)
         
         # 设置主窗口内容
-        self.main_window = MainWindow(self)
+        self.main_window = MainWindow(self, startup_progress=self._startup_progress)
         self.setCentralWidget(self.main_window)
         
         # 居中显示
@@ -171,6 +183,7 @@ class AudioTrainingApp(QMainWindow):
         # 启动恢复：上次工作流 + 模型编辑器状态
         import os
         from src.model_builder.model_graph import ModelGraph
+        self._report_startup_progress(91, "Restoring workflow session...")
 
         # Prevent the default empty tab from overwriting the previous session state
         # before we restore workflow tabs from config.
@@ -269,6 +282,7 @@ class AudioTrainingApp(QMainWindow):
 
         # ===== 恢复模型编辑器 =====
         try:
+            self._report_startup_progress(94, "Restoring model editor state...")
             model_graph = None
             model_file_path = None
 
@@ -306,6 +320,7 @@ class AudioTrainingApp(QMainWindow):
                     pass
         except Exception:
             pass
+        self._report_startup_progress(95, "Startup state restored...")
     
     def _center_window(self):
         """将窗口居中显示"""
