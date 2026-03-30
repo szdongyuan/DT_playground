@@ -60,16 +60,8 @@ warnings.filterwarnings('ignore', category=FutureWarning)
 warnings.filterwarnings('ignore', category=DeprecationWarning)
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # 抑制TensorFlow日志
 
-# 配置 Keras 允许加载包含 Lambda 层的旧模型
-try:
-    import tensorflow as tf
-    tf.keras.config.enable_unsafe_deserialization()
-except Exception:
-    pass  # Keras 配置失败时忽略
-
-# 应用Qt警告过滤
-from src.utils.pyqtgraph_fix import suppress_qt_font_warnings, install_qt_message_handler
-suppress_qt_font_warnings()
+# Apply the lightest possible Qt logging suppression before splash appears.
+os.environ['QT_LOGGING_RULES'] = '*.debug=false;qt.qpa.*=false'
 
 # 必须先导入Qt并创建QApplication
 from PyQt6.QtWidgets import QApplication
@@ -91,6 +83,7 @@ def exception_hook(exc_type, exc_value, exc_tb):
 def main():
     """应用程序主入口"""
     logger.info("应用程序启动")
+    splash = None
 
     # Parse restart handshake args (do not interfere with Qt args)
     parser = argparse.ArgumentParser(add_help=False)
@@ -109,49 +102,75 @@ def main():
     # 创建QApplication
     app = QApplication(sys.argv)
 
-    # Install i18n after QApplication is created, and before importing UI modules.
-    try:
-        from src.utils.config import config
-        from src.ui.i18n import install as install_i18n
+    from src.ui.startup_splash import StartupSplash
 
-        install_i18n(config.get("ui.language", "zh_CN"))
+    splash = StartupSplash()
+    splash.show()
+    splash.set_progress(10, "Starting application...")
+
+    try:
+        splash.set_progress(18, "Loading AI runtime...")
+        try:
+            import tensorflow as tf
+            tf.keras.config.enable_unsafe_deserialization()
+        except Exception:
+            pass  # Keras configuration should not block startup.
+
+        # Install i18n after QApplication is created, and before importing UI modules.
+        try:
+            splash.set_progress(28, "Loading configuration...")
+            from src.utils.config import config
+            from src.ui.i18n import install as install_i18n
+
+            install_i18n(config.get("ui.language", "zh_CN"))
+        except Exception:
+            # Never break app startup if i18n init fails.
+            pass
+
+        from src.ui.i18n import tr_
+        
+        # 安装Qt消息处理器来过滤字体警告
+        from src.utils.pyqtgraph_fix import install_qt_message_handler
+        install_qt_message_handler()
+        
+        app.setApplicationName(tr_("AI Acoustic Signal Training Platform"))
+        app.setApplicationVersion("1.0.0")
+        
+        # 设置默认字体
+        font = QFont("Microsoft YaHei", 10)
+        font.setStyleHint(QFont.StyleHint.SansSerif)
+        app.setFont(font)
+        
+        # 配置PyQtGraph（在QApplication创建后）
+        try:
+            splash.set_progress(36, "Configuring visualization tools...")
+            import pyqtgraph as pg
+            pg.setConfigOptions(
+                antialias=True,
+                useOpenGL=False,
+                enableExperimental=False
+            )
+            logger.info("PyQtGraph 配置完成")
+        except ImportError:
+            logger.warning("PyQtGraph 未安装")
+        
+        # 在QApplication创建后再导入主窗口模块
+        logger.info("加载主窗口模块...")
+        splash.set_progress(50, "Loading application modules...")
+        from src.app import AudioTrainingApp
+        
+        # 创建并显示主窗口
+        logger.info("创建主窗口...")
+        splash.set_progress(60, "Creating main window...")
+        window = AudioTrainingApp(startup_progress=splash.set_progress)
+        splash.set_progress(100, "Launching application...")
+        window.show()
+        app.processEvents()
+        splash.finish(window)
     except Exception:
-        # Never break app startup if i18n init fails.
-        pass
-
-    from src.ui.i18n import tr_
-    
-    # 安装Qt消息处理器来过滤字体警告
-    install_qt_message_handler()
-    
-    app.setApplicationName(tr_("AI Acoustic Signal Training Platform"))
-    app.setApplicationVersion("1.0.0")
-    
-    # 设置默认字体
-    font = QFont("Microsoft YaHei", 10)
-    font.setStyleHint(QFont.StyleHint.SansSerif)
-    app.setFont(font)
-    
-    # 配置PyQtGraph（在QApplication创建后）
-    try:
-        import pyqtgraph as pg
-        pg.setConfigOptions(
-            antialias=True,
-            useOpenGL=False,
-            enableExperimental=False
-        )
-        logger.info("PyQtGraph 配置完成")
-    except ImportError:
-        logger.warning("PyQtGraph 未安装")
-    
-    # 在QApplication创建后再导入主窗口模块
-    logger.info("加载主窗口模块...")
-    from src.app import AudioTrainingApp
-    
-    # 创建并显示主窗口
-    logger.info("创建主窗口...")
-    window = AudioTrainingApp()
-    window.show()
+        splash.close()
+        app.processEvents()
+        raise
 
     # If we were started by a restart request, signal readiness after the window is shown.
     if restart_args.restart_token and restart_args.restart_ready_file:
@@ -175,7 +194,13 @@ def main():
         QTimer.singleShot(0, _write_ready_file)
     
     logger.info("进入主事件循环")
-    sys.exit(app.exec())
+    try:
+        sys.exit(app.exec())
+    except Exception:
+        if splash is not None:
+            splash.close()
+            app.processEvents()
+        raise
 
 
 if __name__ == "__main__":

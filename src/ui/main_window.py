@@ -7,6 +7,7 @@ Uses controller pattern to separate business logic and an event bus to decouple 
 """
 
 import logging
+from collections.abc import Callable
 from typing import Optional
 
 from PyQt6.QtCore import Qt, pyqtSignal, QTimer
@@ -84,8 +85,13 @@ class MainWindow(QWidget):
     training_stopped = pyqtSignal()
     training_completed = pyqtSignal(dict)
     
-    def __init__(self, parent=None):
+    def __init__(
+        self,
+        parent=None,
+        startup_progress: Callable[[int, str | None], None] | None = None,
+    ):
         super().__init__(parent)
+        self._startup_progress = startup_progress
         
         # Event bus
         self._event_bus = get_event_bus()
@@ -100,6 +106,7 @@ class MainWindow(QWidget):
         self._workflow_controller = WorkflowController()
         self._training_controller = TrainingController()
         self._navigation_controller = NavigationController()
+        self._report_startup_progress(62, "Preparing main workspace...")
         
         # Current model (legacy compatibility)
         self.current_model = None
@@ -108,6 +115,7 @@ class MainWindow(QWidget):
         self._selected_node_id: Optional[str] = None
         
         self._init_ui()
+        self._report_startup_progress(82, "Preparing system status...")
         self._init_connections()
         self._init_event_bus_connections()
         self._apply_styles()
@@ -115,6 +123,13 @@ class MainWindow(QWidget):
         
         # Create default workflow
         self._create_default_workflow()
+        self._report_startup_progress(88, "Main workspace ready...")
+
+    def _report_startup_progress(self, value: int, step_text: str | None = None):
+        """Forward startup milestones to the splash screen when available."""
+        if self._startup_progress is None:
+            return
+        self._startup_progress(value, step_text)
     
     def _init_ui(self):
         """初始化界面布局"""
@@ -131,9 +146,13 @@ class MainWindow(QWidget):
         
         # 创建视图
         self._workflow_view = WorkflowTabsView()
+        self._report_startup_progress(68, "Loading workflow editor...")
         self._model_builder_view = ModelBuilderView()
+        self._report_startup_progress(73, "Loading model builder...")
         self._preview_view = PreviewView()
+        self._report_startup_progress(77, "Loading preview tools...")
         self._training_view = TrainingView()
+        self._report_startup_progress(80, "Loading training monitor...")
         
         self._view_stack.addWidget(self._workflow_view)
         self._view_stack.addWidget(self._model_builder_view)
@@ -240,6 +259,7 @@ class MainWindow(QWidget):
         layout.addWidget(status_frame)
         
         # Detect GPU once at startup.
+        self._report_startup_progress(86, "Detecting runtime environment...")
         self._detect_gpu()
     
     def _create_separator(self) -> QLabel:
@@ -429,6 +449,7 @@ class MainWindow(QWidget):
     
     def _create_default_workflow(self):
         """创建默认工作流"""
+        self._report_startup_progress(87, "Preparing default workflow...")
         self._workflow = Workflow("new_workflow")
         self._workflow_view.set_workflow(self._workflow)
         self._workflow_controller.set_workflow(self._workflow)
