@@ -4023,7 +4023,27 @@ msgstr "Method"
 msgid "Target level (dB)"
 msgstr "Target level (dB)"
 
+#: src/workflow/nodes/preprocessing.py:380
+msgid "Adjust gain"
+msgstr "Adjust gain"
+
 #: src/workflow/nodes/preprocessing.py:382
+msgid "Increase or decrease audio level by a relative dB amount"
+msgstr "Increase or decrease audio level by a relative dB amount"
+
+#: src/workflow/nodes/preprocessing.py:396
+msgid "Gain (dB)"
+msgstr "Gain (dB)"
+
+#: src/workflow/nodes/preprocessing.py:401
+msgid "Clip protection"
+msgstr "Clip protection"
+
+#: src/workflow/nodes/preprocessing.py:402
+msgid "Automatically rescale audio to avoid clipping"
+msgstr "Automatically rescale audio to avoid clipping"
+
+#: src/workflow/nodes/preprocessing.py:447
 msgid "Windowing"
 msgstr "Windowing"
 

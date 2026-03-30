@@ -4012,7 +4012,27 @@ msgstr "方法"
 msgid "Target level (dB)"
 msgstr "目标电平（dB）"
 
+#: src/workflow/nodes/preprocessing.py:380
+msgid "Adjust gain"
+msgstr "调整增益"
+
 #: src/workflow/nodes/preprocessing.py:382
+msgid "Increase or decrease audio level by a relative dB amount"
+msgstr "按相对 dB 值提高或降低音频电平"
+
+#: src/workflow/nodes/preprocessing.py:396
+msgid "Gain (dB)"
+msgstr "增益（dB）"
+
+#: src/workflow/nodes/preprocessing.py:401
+msgid "Clip protection"
+msgstr "削波保护"
+
+#: src/workflow/nodes/preprocessing.py:402
+msgid "Automatically rescale audio to avoid clipping"
+msgstr "自动缩放音频以避免削波"
+
+#: src/workflow/nodes/preprocessing.py:447
 msgid "Windowing"
 msgstr "加窗"
 
