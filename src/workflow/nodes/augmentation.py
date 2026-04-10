@@ -10,6 +10,7 @@ from typing import List, Union
 
 import librosa
 import numpy as np
+from scipy.signal import fftconvolve
 
 from ..node_base import BaseNode, NodeCategory, register_node
 from ..port import DataType
@@ -311,6 +312,177 @@ class PitchShiftNode(BaseNode):
             )
         
         result = process_audio_or_list(audio_input, pitch_shift)
+        self.set_output_data("audio", result)
+        return True
+
+
+@register_node
+class ReverbNode(BaseNode):
+    node_type = "reverb"
+    display_name = tr_("Reverb")
+    category = NodeCategory.AUGMENTATION
+    description = tr_("Apply synthetic room reverb to audio")
+    icon = "🏛️"
+
+    def _setup_ports(self):
+        self.add_input("audio", DataType.AUDIO, tr_("Audio"))
+        self.add_input(
+            "ir",
+            DataType.AUDIO,
+            tr_("Impulse response"),
+            required=False,
+            description=tr_("Optional impulse response audio or audio list"),
+        )
+        self.add_output("audio", DataType.AUDIO, tr_("Audio"))
+
+    def _setup_parameters(self):
+        self.add_parameter(
+            "decay", "float", 0.4,
+            display_name=tr_("Decay"),
+            description=tr_("Controls how long the reverb tail lasts"),
+            min_value=0.05, max_value=1.0
+        )
+        self.add_parameter(
+            "wet_mix", "float", 0.3,
+            display_name=tr_("Wet mix"),
+            description=tr_("Blend between dry input and reverberated output"),
+            min_value=0.0, max_value=1.0
+        )
+        self.add_parameter(
+            "random_wet_mix", "bool", False,
+            display_name=tr_("Random wet mix"),
+            description=tr_("Randomly choose wet mix within the specified range")
+        )
+        self.add_parameter(
+            "wet_mix_min", "float", 0.2,
+            display_name=tr_("Min wet mix"),
+            min_value=0.0, max_value=1.0
+        )
+        self.add_parameter(
+            "wet_mix_max", "float", 0.7,
+            display_name=tr_("Max wet mix"),
+            min_value=0.0, max_value=1.0
+        )
+
+    def _create_synthetic_impulse_response(
+        self,
+        sample_rate: int,
+        decay: float,
+    ) -> np.ndarray:
+        pre_delay_samples = int(sample_rate * 0.012)
+        density = 0.7 + (0.5 * decay)
+        tail_seconds = 0.18 + (decay * 0.95)
+        tail_samples = max(1, int(sample_rate * tail_seconds))
+        ir = np.zeros(pre_delay_samples + tail_samples, dtype=np.float32)
+
+        early_reflections = np.array([0.0, 8.0, 16.0, 26.0, 38.0, 53.0], dtype=np.float32)
+        early_reflections *= density
+        early_gains = np.array([0.9, 0.65, 0.5, 0.38, 0.26, 0.18], dtype=np.float32) * decay
+
+        for reflection_ms, gain in zip(early_reflections, early_gains):
+            reflection_idx = pre_delay_samples + int(sample_rate * reflection_ms / 1000.0)
+            if reflection_idx < ir.size:
+                ir[reflection_idx] += gain
+
+        tail_time = np.arange(tail_samples, dtype=np.float32) / float(sample_rate)
+        decay_time = 0.08 + (decay * 1.35)
+        envelope = np.exp(-tail_time / max(decay_time, 1e-4)).astype(np.float32)
+        diffusion = (
+            0.55 * np.sin(2 * np.pi * 41.0 * tail_time)
+            + 0.30 * np.sin(2 * np.pi * 89.0 * tail_time + 0.7)
+            + 0.15 * np.sin(2 * np.pi * 173.0 * tail_time + 1.3)
+        ).astype(np.float32)
+        ir[pre_delay_samples:] += 0.12 * decay * envelope * diffusion
+
+        peak = float(np.max(np.abs(ir)))
+        if peak > 0.0:
+            ir /= peak
+
+        return ir
+
+    def _prepare_impulse_response(
+        self,
+        ir_input: Union[AudioData, List[AudioData], None],
+        sample_rate: int,
+        decay: float,
+    ) -> np.ndarray:
+        if ir_input is None:
+            return self._create_synthetic_impulse_response(sample_rate, decay)
+
+        selected_ir = ir_input[np.random.randint(0, len(ir_input))] if isinstance(ir_input, list) else ir_input
+        ir = np.mean(selected_ir.data, axis=0)
+
+        if selected_ir.sample_rate != sample_rate:
+            ir = librosa.resample(ir, orig_sr=selected_ir.sample_rate, target_sr=sample_rate)
+
+        peak = float(np.max(np.abs(ir)))
+        if peak <= 0.0:
+            raise ValueError(tr_("Reverb: impulse response audio contains only silence"))
+
+        ir = (ir / peak).astype(np.float32)
+        tail_time = np.arange(ir.shape[0], dtype=np.float32) / float(sample_rate)
+        decay_time = 0.08 + (decay * 1.35)
+        envelope = np.exp(-tail_time / max(decay_time, 1e-4)).astype(np.float32)
+        return (ir * envelope).astype(np.float32)
+
+    def execute(self) -> bool:
+        try:
+            audio_input = validate_audio_input(
+                self.get_input_data("audio"),
+                self.display_name
+            )
+        except (ValueError, TypeError) as e:
+            self.error_message = str(e)
+            return False
+
+        ir_input = self.get_input_data("ir")
+        if ir_input is not None:
+            try:
+                ir_input = validate_audio_input(ir_input, tr_("Reverb impulse response"))
+            except (ValueError, TypeError) as e:
+                self.error_message = str(e)
+                return False
+
+        random_wet_mix = self.get_parameter("random_wet_mix")
+
+        def apply_reverb(audio: AudioData) -> AudioData:
+            if random_wet_mix:
+                wet_mix = np.random.uniform(
+                    self.get_parameter("wet_mix_min"),
+                    self.get_parameter("wet_mix_max"),
+                )
+            else:
+                wet_mix = self.get_parameter("wet_mix")
+
+            if wet_mix <= 0.0:
+                return audio
+
+            decay = self.get_parameter("decay")
+
+            impulse_response = self._prepare_impulse_response(
+                ir_input,
+                audio.sample_rate,
+                decay,
+            )
+
+            def reverb_channel(ch_data: np.ndarray) -> np.ndarray:
+                wet_signal = fftconvolve(ch_data, impulse_response, mode="full")[: len(ch_data)]
+                mixed = ((1.0 - wet_mix) * ch_data) + (wet_mix * wet_signal)
+
+                peak = np.max(np.abs(mixed))
+                if peak > 1.0:
+                    mixed = mixed / peak
+
+                return mixed.astype(np.float32)
+
+            reverberated = process_channels(audio.data, reverb_channel)
+            return AudioData(
+                data=reverberated,
+                sample_rate=audio.sample_rate,
+                file_path=audio.file_path
+            )
+
+        result = process_audio_or_list(audio_input, apply_reverb)
         self.set_output_data("audio", result)
         return True
 
