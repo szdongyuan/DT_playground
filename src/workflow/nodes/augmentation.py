@@ -155,6 +155,122 @@ class AddNoiseNode(BaseNode):
 
 
 @register_node
+class AdjustGainNode(BaseNode):
+    """
+    Gain adjustment node.
+
+    Applies a fixed or random relative gain change in decibels.
+    """
+
+    node_type = "adjust_gain"
+    display_name = tr_("Adjust gain")
+    category = NodeCategory.AUGMENTATION
+    description = tr_("Increase or decrease audio level by a fixed or random dB amount")
+    icon = "🔊"
+
+    def _setup_ports(self):
+        self.add_input(
+            "audio",
+            DataType.AUDIO,
+            tr_("Audio"),
+            description=tr_("Audio or audio list"),
+        )
+        self.add_output("audio", DataType.AUDIO, tr_("Audio"))
+
+    def _setup_parameters(self):
+        self.add_parameter(
+            "gain_db", "float", 0.0,
+            display_name=tr_("Gain (dB)"),
+            min_value=-60.0, max_value=60.0
+        )
+        self.add_parameter(
+            "random_gain", "bool", False,
+            display_name=tr_("Random gain"),
+            description=tr_("Randomly choose gain within the specified range")
+        )
+        self.add_parameter(
+            "gain_db_min", "float", -6.0,
+            display_name=tr_("Minimum gain (dB)"),
+            min_value=-60.0, max_value=60.0
+        )
+        self.add_parameter(
+            "gain_db_max", "float", 6.0,
+            display_name=tr_("Maximum gain (dB)"),
+            min_value=-60.0, max_value=60.0
+        )
+        self.add_parameter(
+            "clip_protection", "bool", False,
+            display_name=tr_("Clip protection"),
+            description=tr_("Automatically rescale audio to avoid clipping")
+        )
+
+    def execute(self) -> bool:
+        try:
+            audio_input = validate_audio_input(
+                self.get_input_data("audio"),
+                self.display_name
+            )
+        except (ValueError, TypeError) as e:
+            self.error_message = str(e)
+            return False
+
+        gain_db = self.get_parameter("gain_db")
+        random_gain = self.get_parameter("random_gain")
+        gain_db_min = self.get_parameter("gain_db_min")
+        gain_db_max = self.get_parameter("gain_db_max")
+        clip_protection = self.get_parameter("clip_protection")
+
+        if random_gain:
+            if not np.isfinite(gain_db_min) or not np.isfinite(gain_db_max):
+                self.error_message = str(
+                    tr_("Random gain bounds must be finite values")
+                )
+                return False
+            if gain_db_min > gain_db_max:
+                self.error_message = str(
+                    tr_("Minimum gain must be less than or equal to maximum gain")
+                )
+                return False
+        elif not np.isfinite(gain_db):
+            self.error_message = str(
+                tr_("Gain must be a finite value")
+            )
+            return False
+
+        def adjust_gain(audio: AudioData) -> AudioData:
+            selected_gain_db = (
+                np.random.uniform(gain_db_min, gain_db_max)
+                if random_gain else gain_db
+            )
+            gain_scale = 10 ** (selected_gain_db / 20)
+            adjusted = audio.data.astype(np.float32, copy=True) * gain_scale
+            peak = float(np.max(np.abs(adjusted))) if adjusted.size else 0.0
+
+            if peak > 1.0:
+                if clip_protection:
+                    adjusted = adjusted / peak
+                else:
+                    logger.warning(
+                        "%s clipped audio after gain adjustment (gain_db=%s, peak=%s, file=%s)",
+                        self.node_type,
+                        selected_gain_db,
+                        peak,
+                        audio.file_path or "<memory>",
+                    )
+                    adjusted = np.clip(adjusted, -1.0, 1.0)
+
+            return AudioData(
+                data=adjusted.astype(audio.data.dtype, copy=False),
+                sample_rate=audio.sample_rate,
+                file_path=audio.file_path
+            )
+
+        result = process_audio_or_list(audio_input, adjust_gain)
+        self.set_output_data("audio", result)
+        return True
+
+
+@register_node
 class TimeStretchNode(BaseNode):
     """
     时间拉伸节点
