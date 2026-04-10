@@ -536,6 +536,7 @@ class DataType(Enum):
 | 🔊 AddNoiseNode | audio | audio | noise_type, snr_db |
 | ⏱️ TimeStretchNode | audio | audio | rate_range |
 | 🎵 PitchShiftNode | audio | audio | semitones_range |
+| 🏛️ ReverbNode | audio, ir(optional) | audio | decay, wet_mix, random_wet_mix |
 | 🔀 RandomAugmentNode | audio | audio | augmentations[] |
 
 #### Feature Extraction Nodes (Feature)
