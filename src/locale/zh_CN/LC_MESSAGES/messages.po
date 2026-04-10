@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-09 18:46+0800\n"
+"POT-Creation-Date: 2026-04-10 13:38+0800\n"
 "PO-Revision-Date: 2026-02-04 17:15+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1864,15 +1864,17 @@ msgid "Settings"
 msgstr "设置"
 
 #: src/ui/dialogs/settings_dialog.py:39 src/workflow/nodes/augmentation.py:38
-#: src/workflow/nodes/augmentation.py:172
-#: src/workflow/nodes/augmentation.py:173
-#: src/workflow/nodes/augmentation.py:251
-#: src/workflow/nodes/augmentation.py:252
-#: src/workflow/nodes/augmentation.py:328
-#: src/workflow/nodes/augmentation.py:336
-#: src/workflow/nodes/augmentation.py:505
-#: src/workflow/nodes/augmentation.py:506
-#: src/workflow/nodes/augmentation.py:637 src/workflow/nodes/data_source.py:264
+#: src/workflow/nodes/augmentation.py:175
+#: src/workflow/nodes/augmentation.py:178
+#: src/workflow/nodes/augmentation.py:288
+#: src/workflow/nodes/augmentation.py:289
+#: src/workflow/nodes/augmentation.py:367
+#: src/workflow/nodes/augmentation.py:368
+#: src/workflow/nodes/augmentation.py:444
+#: src/workflow/nodes/augmentation.py:452
+#: src/workflow/nodes/augmentation.py:621
+#: src/workflow/nodes/augmentation.py:622
+#: src/workflow/nodes/augmentation.py:753 src/workflow/nodes/data_source.py:264
 #: src/workflow/nodes/data_source.py:475
 #: src/workflow/nodes/preprocessing.py:124
 #: src/workflow/nodes/preprocessing.py:127
@@ -1880,17 +1882,15 @@ msgstr "设置"
 #: src/workflow/nodes/preprocessing.py:188
 #: src/workflow/nodes/preprocessing.py:307
 #: src/workflow/nodes/preprocessing.py:308
-#: src/workflow/nodes/preprocessing.py:390
-#: src/workflow/nodes/preprocessing.py:393
-#: src/workflow/nodes/preprocessing.py:468
-#: src/workflow/nodes/preprocessing.py:471
-#: src/workflow/nodes/preprocessing.py:568
-#: src/workflow/nodes/preprocessing.py:578
-#: src/workflow/nodes/preprocessing.py:761
-#: src/workflow/nodes/preprocessing.py:762
-#: src/workflow/nodes/preprocessing.py:841
-#: src/workflow/nodes/preprocessing.py:1207
-#: src/workflow/nodes/preprocessing.py:1208
+#: src/workflow/nodes/preprocessing.py:391
+#: src/workflow/nodes/preprocessing.py:394
+#: src/workflow/nodes/preprocessing.py:491
+#: src/workflow/nodes/preprocessing.py:501
+#: src/workflow/nodes/preprocessing.py:684
+#: src/workflow/nodes/preprocessing.py:685
+#: src/workflow/nodes/preprocessing.py:764
+#: src/workflow/nodes/preprocessing.py:1130
+#: src/workflow/nodes/preprocessing.py:1131
 #: src/workflow/nodes/feature/dim1d/fft.py:35
 #: src/workflow/nodes/feature/dim1d/pitch.py:36
 #: src/workflow/nodes/feature/dim1d/spectral_flatness.py:38
@@ -3238,7 +3238,7 @@ msgstr "为音频添加噪声"
 msgid "Noisy audio"
 msgstr "带噪音频"
 
-#: src/workflow/nodes/augmentation.py:43 src/workflow/nodes/augmentation.py:507
+#: src/workflow/nodes/augmentation.py:43 src/workflow/nodes/augmentation.py:623
 msgid "Original audio"
 msgstr "原始音频"
 
@@ -3271,226 +3271,282 @@ msgid "Max SNR (dB)"
 msgstr "最大 SNR（dB）"
 
 #: src/workflow/nodes/augmentation.py:166
+msgid "Adjust gain"
+msgstr "调整增益"
+
+#: src/workflow/nodes/augmentation.py:168
+msgid "Increase or decrease audio level by a fixed or random dB amount"
+msgstr "按固定或随机 dB 值提高或降低音频电平"
+
+#: src/workflow/nodes/augmentation.py:176
+#: src/workflow/nodes/preprocessing.py:125
+#: src/workflow/nodes/preprocessing.py:392
+#: src/workflow/nodes/preprocessing.py:492
+#: src/workflow/nodes/preprocessing.py:1130
+msgid "Audio or audio list"
+msgstr "音频或音频列表"
+
+#: src/workflow/nodes/augmentation.py:183
+msgid "Gain (dB)"
+msgstr "增益（dB）"
+
+#: src/workflow/nodes/augmentation.py:188
+msgid "Random gain"
+msgstr "随机增益"
+
+#: src/workflow/nodes/augmentation.py:189
+msgid "Randomly choose gain within the specified range"
+msgstr "在指定范围内随机选择增益"
+
+#: src/workflow/nodes/augmentation.py:193
+msgid "Minimum gain (dB)"
+msgstr "最小增益（dB）"
+
+#: src/workflow/nodes/augmentation.py:198
+msgid "Maximum gain (dB)"
+msgstr "最大增益（dB）"
+
+#: src/workflow/nodes/augmentation.py:203
+msgid "Clip protection"
+msgstr "削波保护"
+
+#: src/workflow/nodes/augmentation.py:204
+msgid "Automatically rescale audio to avoid clipping"
+msgstr "自动缩放音频以避免削波"
+
+#: src/workflow/nodes/augmentation.py:226
+msgid "Random gain bounds must be finite values"
+msgstr "随机增益边界必须为有限值"
+
+#: src/workflow/nodes/augmentation.py:231
+msgid "Minimum gain must be less than or equal to maximum gain"
+msgstr "最小增益必须小于或等于最大增益"
+
+#: src/workflow/nodes/augmentation.py:236
+msgid "Gain must be a finite value"
+msgstr "增益必须为有限值"
+
+#: src/workflow/nodes/augmentation.py:282
 msgid "Time stretch"
 msgstr "时间拉伸"
 
-#: src/workflow/nodes/augmentation.py:168
+#: src/workflow/nodes/augmentation.py:284
 msgid "Change speed while preserving pitch"
 msgstr "在保持音高的同时改变速度"
 
-#: src/workflow/nodes/augmentation.py:178
+#: src/workflow/nodes/augmentation.py:294
 msgid "Stretch rate"
 msgstr "拉伸倍率"
 
-#: src/workflow/nodes/augmentation.py:179
+#: src/workflow/nodes/augmentation.py:295
 msgid "<1 slower, >1 faster"
 msgstr "<1 更慢，>1 更快"
 
-#: src/workflow/nodes/augmentation.py:184
+#: src/workflow/nodes/augmentation.py:300
 msgid "Random rate"
 msgstr "随机倍率"
 
-#: src/workflow/nodes/augmentation.py:188
+#: src/workflow/nodes/augmentation.py:304
 msgid "Min rate"
 msgstr "最小倍率"
 
-#: src/workflow/nodes/augmentation.py:193
+#: src/workflow/nodes/augmentation.py:309
 msgid "Max rate"
 msgstr "最大倍率"
 
-#: src/workflow/nodes/augmentation.py:245
+#: src/workflow/nodes/augmentation.py:361
 msgid "Pitch shift"
 msgstr "音高偏移"
 
-#: src/workflow/nodes/augmentation.py:247
+#: src/workflow/nodes/augmentation.py:363
 msgid "Change pitch while preserving speed"
 msgstr "在保持速度的同时改变音高"
 
-#: src/workflow/nodes/augmentation.py:257
+#: src/workflow/nodes/augmentation.py:373
 msgid "Semitones"
 msgstr "半音数"
 
-#: src/workflow/nodes/augmentation.py:258
+#: src/workflow/nodes/augmentation.py:374
 msgid "Positive = higher, negative = lower"
 msgstr "正值=更高，负值=更低"
 
-#: src/workflow/nodes/augmentation.py:263
+#: src/workflow/nodes/augmentation.py:379
 msgid "Random shift"
 msgstr "随机偏移"
 
-#: src/workflow/nodes/augmentation.py:267
+#: src/workflow/nodes/augmentation.py:383
 msgid "Min shift (semitones)"
 msgstr "最小偏移（半音）"
 
-#: src/workflow/nodes/augmentation.py:272
+#: src/workflow/nodes/augmentation.py:388
 msgid "Max shift (semitones)"
 msgstr "最大偏移（半音）"
 
-#: src/workflow/nodes/augmentation.py:322
+#: src/workflow/nodes/augmentation.py:438
 msgid "Reverb"
 msgstr "混响"
 
-#: src/workflow/nodes/augmentation.py:324
+#: src/workflow/nodes/augmentation.py:440
 msgid "Apply synthetic room reverb to audio"
 msgstr "对音频应用合成房间混响"
 
-#: src/workflow/nodes/augmentation.py:332
+#: src/workflow/nodes/augmentation.py:448
 msgid "Impulse response"
 msgstr "脉冲响应"
 
-#: src/workflow/nodes/augmentation.py:334
+#: src/workflow/nodes/augmentation.py:450
 msgid "Optional impulse response audio or audio list"
 msgstr "可选的脉冲响应音频或音频列表"
 
-#: src/workflow/nodes/augmentation.py:341
+#: src/workflow/nodes/augmentation.py:457
 msgid "Decay"
 msgstr "衰减"
 
-#: src/workflow/nodes/augmentation.py:342
+#: src/workflow/nodes/augmentation.py:458
 msgid "Controls how long the reverb tail lasts"
 msgstr "控制混响尾音持续的时间"
 
-#: src/workflow/nodes/augmentation.py:347
+#: src/workflow/nodes/augmentation.py:463
 msgid "Wet mix"
 msgstr "湿声混合"
 
-#: src/workflow/nodes/augmentation.py:348
+#: src/workflow/nodes/augmentation.py:464
 msgid "Blend between dry input and reverberated output"
 msgstr "在原始干声输入与混响输出之间进行混合"
 
-#: src/workflow/nodes/augmentation.py:353
+#: src/workflow/nodes/augmentation.py:469
 msgid "Random wet mix"
 msgstr "随机湿声混合"
 
-#: src/workflow/nodes/augmentation.py:354
+#: src/workflow/nodes/augmentation.py:470
 msgid "Randomly choose wet mix within the specified range"
 msgstr "在指定范围内随机选择湿声混合比例"
 
-#: src/workflow/nodes/augmentation.py:358
+#: src/workflow/nodes/augmentation.py:474
 msgid "Min wet mix"
 msgstr "最小湿声混合"
 
-#: src/workflow/nodes/augmentation.py:363
+#: src/workflow/nodes/augmentation.py:479
 msgid "Max wet mix"
 msgstr "最大湿声混合"
 
-#: src/workflow/nodes/augmentation.py:420
+#: src/workflow/nodes/augmentation.py:536
 msgid "Reverb: impulse response audio contains only silence"
 msgstr "混响：脉冲响应音频仅包含静音"
 
-#: src/workflow/nodes/augmentation.py:441
+#: src/workflow/nodes/augmentation.py:557
 msgid "Reverb impulse response"
 msgstr "混响脉冲响应"
 
-#: src/workflow/nodes/augmentation.py:499
+#: src/workflow/nodes/augmentation.py:615
 msgid "Random augment"
 msgstr "随机增强"
 
-#: src/workflow/nodes/augmentation.py:501
+#: src/workflow/nodes/augmentation.py:617
 msgid "Randomly apply multiple augmentation effects"
 msgstr "随机应用多个增强效果"
 
-#: src/workflow/nodes/augmentation.py:512
+#: src/workflow/nodes/augmentation.py:628
 msgid "Enable noise"
 msgstr "启用噪声"
 
-#: src/workflow/nodes/augmentation.py:516
+#: src/workflow/nodes/augmentation.py:632
 msgid "Enable time stretch"
 msgstr "启用时间拉伸"
 
-#: src/workflow/nodes/augmentation.py:520
+#: src/workflow/nodes/augmentation.py:636
 msgid "Enable pitch shift"
 msgstr "启用音高偏移"
 
-#: src/workflow/nodes/augmentation.py:524
+#: src/workflow/nodes/augmentation.py:640
 msgid "Enable gain change"
 msgstr "启用增益变化"
 
-#: src/workflow/nodes/augmentation.py:528
+#: src/workflow/nodes/augmentation.py:644
 msgid "Apply probability"
 msgstr "应用概率"
 
-#: src/workflow/nodes/augmentation.py:529
+#: src/workflow/nodes/augmentation.py:645
 msgid "Probability of applying each effect"
 msgstr "每个效果的应用概率"
 
-#: src/workflow/nodes/augmentation.py:631
+#: src/workflow/nodes/augmentation.py:747
 msgid "Audio slicing"
 msgstr "音频切片"
 
-#: src/workflow/nodes/augmentation.py:633
+#: src/workflow/nodes/augmentation.py:749
 msgid "Slice audio into multiple short segments to augment data"
 msgstr "将音频切分为多个短片段以增强数据"
 
-#: src/workflow/nodes/augmentation.py:641 src/workflow/nodes/control.py:128
+#: src/workflow/nodes/augmentation.py:757 src/workflow/nodes/control.py:128
 #: src/workflow/nodes/data_source.py:482
 msgid "Labels"
 msgstr "标签"
 
-#: src/workflow/nodes/augmentation.py:643
+#: src/workflow/nodes/augmentation.py:759
 msgid "Optional labels input; will be duplicated along with slices"
 msgstr "可选标签输入；会随切片一同复制"
 
-#: src/workflow/nodes/augmentation.py:645
+#: src/workflow/nodes/augmentation.py:761
 msgid "Sliced audio list"
 msgstr "切片音频列表"
 
-#: src/workflow/nodes/augmentation.py:649
+#: src/workflow/nodes/augmentation.py:765
 msgid "Sliced label list"
 msgstr "切片标签列表"
 
-#: src/workflow/nodes/augmentation.py:650
+#: src/workflow/nodes/augmentation.py:766
 msgid "Labels corresponding to sliced audio items"
 msgstr "与切片音频对应的标签"
 
-#: src/workflow/nodes/augmentation.py:656
+#: src/workflow/nodes/augmentation.py:772
 msgid "Slice duration (s)"
 msgstr "切片时长（秒）"
 
-#: src/workflow/nodes/augmentation.py:657
+#: src/workflow/nodes/augmentation.py:773
 msgid "Duration of each slice"
 msgstr "每个切片的时长"
 
-#: src/workflow/nodes/augmentation.py:662
+#: src/workflow/nodes/augmentation.py:778
 msgid "Slice mode"
 msgstr "切片模式"
 
-#: src/workflow/nodes/augmentation.py:664
+#: src/workflow/nodes/augmentation.py:780
 msgid "random: random start; sliding: sliding window"
 msgstr "random：随机起点；sliding：滑动窗口"
 
-#: src/workflow/nodes/augmentation.py:668
+#: src/workflow/nodes/augmentation.py:784
 msgid "Multiplier"
 msgstr "倍数"
 
-#: src/workflow/nodes/augmentation.py:669
+#: src/workflow/nodes/augmentation.py:785
 msgid "Number of slices to generate in random mode"
 msgstr "随机模式下生成的切片数量"
 
-#: src/workflow/nodes/augmentation.py:674
+#: src/workflow/nodes/augmentation.py:790
 msgid "Overlap"
 msgstr "重叠"
 
-#: src/workflow/nodes/augmentation.py:675
+#: src/workflow/nodes/augmentation.py:791
 msgid "Overlap ratio in sliding window mode (0-0.9)"
 msgstr "滑动窗口模式下的重叠比例（0-0.9）"
 
-#: src/workflow/nodes/augmentation.py:680
+#: src/workflow/nodes/augmentation.py:796
 msgid "Include remainder"
 msgstr "包含余段"
 
-#: src/workflow/nodes/augmentation.py:681
+#: src/workflow/nodes/augmentation.py:797
 msgid ""
 "In sliding window mode, include the final remainder shorter than a full slice"
 msgstr "滑动窗口模式下，包含最后一段短于完整切片的余段"
 
-#: src/workflow/nodes/augmentation.py:685
+#: src/workflow/nodes/augmentation.py:801
 #: src/workflow/nodes/preprocessing.py:203
-#: src/workflow/nodes/preprocessing.py:1047
+#: src/workflow/nodes/preprocessing.py:970
 msgid "Pad mode"
 msgstr "填充模式"
 
-#: src/workflow/nodes/augmentation.py:687
+#: src/workflow/nodes/augmentation.py:803
 msgid "Padding strategy for the remainder segment"
 msgstr "余段的填充策略"
 
@@ -4033,14 +4089,6 @@ msgstr "重采样"
 msgid "Resample audio to the target sample rate"
 msgstr "将音频重采样到目标采样率"
 
-#: src/workflow/nodes/preprocessing.py:125
-#: src/workflow/nodes/preprocessing.py:391
-#: src/workflow/nodes/preprocessing.py:469
-#: src/workflow/nodes/preprocessing.py:569
-#: src/workflow/nodes/preprocessing.py:1207
-msgid "Audio or audio list"
-msgstr "音频或音频列表"
-
 #: src/workflow/nodes/preprocessing.py:181
 msgid "Trim / pad"
 msgstr "裁剪/填充"
@@ -4073,141 +4121,121 @@ msgstr "方法"
 msgid "Target level (dB)"
 msgstr "目标电平（dB）"
 
-#: src/workflow/nodes/preprocessing.py:381
-msgid "Adjust gain"
-msgstr "调整增益"
-
-#: src/workflow/nodes/preprocessing.py:383
-msgid "Increase or decrease audio level by a relative dB amount"
-msgstr "按相对 dB 值提高或降低音频电平"
-
-#: src/workflow/nodes/preprocessing.py:398
-msgid "Gain (dB)"
-msgstr "增益（dB）"
-
-#: src/workflow/nodes/preprocessing.py:403
-msgid "Clip protection"
-msgstr "削波保护"
-
-#: src/workflow/nodes/preprocessing.py:404
-msgid "Automatically rescale audio to avoid clipping"
-msgstr "自动缩放音频以避免削波"
-
-#: src/workflow/nodes/preprocessing.py:459
+#: src/workflow/nodes/preprocessing.py:382
 msgid "Windowing"
 msgstr "加窗"
 
-#: src/workflow/nodes/preprocessing.py:461
+#: src/workflow/nodes/preprocessing.py:384
 msgid "Apply a window function to the full waveform"
 msgstr "对整段波形应用窗函数"
 
-#: src/workflow/nodes/preprocessing.py:478
+#: src/workflow/nodes/preprocessing.py:401
 msgid "Window type"
 msgstr "窗类型"
 
-#: src/workflow/nodes/preprocessing.py:479
+#: src/workflow/nodes/preprocessing.py:402
 msgid "Window function applied to the full waveform"
 msgstr "应用于整段波形的窗函数"
 
-#: src/workflow/nodes/preprocessing.py:484
+#: src/workflow/nodes/preprocessing.py:407
 msgid "Window length"
 msgstr "窗长"
 
-#: src/workflow/nodes/preprocessing.py:558
+#: src/workflow/nodes/preprocessing.py:481
 msgid "Spectral subtraction"
 msgstr "谱减法"
 
-#: src/workflow/nodes/preprocessing.py:560
+#: src/workflow/nodes/preprocessing.py:483
 msgid "Denoise"
 msgstr "降噪"
 
-#: src/workflow/nodes/preprocessing.py:561
+#: src/workflow/nodes/preprocessing.py:484
 msgid "Reduce stationary noise using spectral subtraction"
 msgstr "使用谱减法降低平稳噪声"
 
-#: src/workflow/nodes/preprocessing.py:574
+#: src/workflow/nodes/preprocessing.py:497
 msgid "Noise reference"
 msgstr "噪声参考"
 
-#: src/workflow/nodes/preprocessing.py:576
+#: src/workflow/nodes/preprocessing.py:499
 msgid "Optional noise-only audio or audio list"
 msgstr "可选：仅包含噪声的音频或音频列表"
 
-#: src/workflow/nodes/preprocessing.py:585
+#: src/workflow/nodes/preprocessing.py:508
 msgid "Noise duration (s)"
 msgstr "噪声时长（秒）"
 
-#: src/workflow/nodes/preprocessing.py:586
+#: src/workflow/nodes/preprocessing.py:509
 msgid "Head duration used for noise estimation when no reference is connected"
 msgstr "未连接噪声参考时，用于噪声估计的开头时长"
 
-#: src/workflow/nodes/preprocessing.py:594
+#: src/workflow/nodes/preprocessing.py:517
 msgid "Subtract alpha"
 msgstr "减法系数"
 
-#: src/workflow/nodes/preprocessing.py:595
+#: src/workflow/nodes/preprocessing.py:518
 msgid "Strength of spectral subtraction"
 msgstr "谱减法强度"
 
-#: src/workflow/nodes/preprocessing.py:603
+#: src/workflow/nodes/preprocessing.py:526
 msgid "Spectral floor"
 msgstr "频谱下限"
 
-#: src/workflow/nodes/preprocessing.py:604
+#: src/workflow/nodes/preprocessing.py:527
 msgid "Residual floor factor to avoid musical noise"
 msgstr "用于避免音乐噪声的残余下限系数"
 
-#: src/workflow/nodes/preprocessing.py:624
+#: src/workflow/nodes/preprocessing.py:547
 #, python-brace-format
 msgid "Spectral subtraction failed: {error}"
 msgstr "谱减法失败：{error}"
 
-#: src/workflow/nodes/preprocessing.py:641
+#: src/workflow/nodes/preprocessing.py:564
 #, python-brace-format
 msgid "{node}: Noise reference list length must match audio list length"
 msgstr "{node}：噪声参考列表长度必须与音频列表长度一致"
 
-#: src/workflow/nodes/preprocessing.py:658
+#: src/workflow/nodes/preprocessing.py:581
 #, python-brace-format
 msgid "{node}: Noise reference list requires audio list input"
 msgstr "{node}：噪声参考列表需要与音频列表输入配套使用"
 
-#: src/workflow/nodes/preprocessing.py:690
+#: src/workflow/nodes/preprocessing.py:613
 #, python-brace-format
 msgid "{node}: Input audio is empty"
 msgstr "{node}：输入音频为空"
 
-#: src/workflow/nodes/preprocessing.py:696
+#: src/workflow/nodes/preprocessing.py:619
 #, python-brace-format
 msgid "{node}: Noise reference sample rate must match input audio"
 msgstr "{node}：噪声参考的采样率必须与输入音频一致"
 
-#: src/workflow/nodes/preprocessing.py:708
+#: src/workflow/nodes/preprocessing.py:631
 #, python-brace-format
 msgid "{node}: Noise estimation segment is empty"
 msgstr "{node}：噪声估计片段为空"
 
-#: src/workflow/nodes/preprocessing.py:755
+#: src/workflow/nodes/preprocessing.py:678
 msgid "Trim silence"
 msgstr "去除静音"
 
-#: src/workflow/nodes/preprocessing.py:757
+#: src/workflow/nodes/preprocessing.py:680
 msgid "Remove leading and trailing silence"
 msgstr "去除首尾静音"
 
-#: src/workflow/nodes/preprocessing.py:767
+#: src/workflow/nodes/preprocessing.py:690
 msgid "Threshold (dB)"
 msgstr "阈值（dB）"
 
-#: src/workflow/nodes/preprocessing.py:768
+#: src/workflow/nodes/preprocessing.py:691
 msgid "Below this threshold is considered silence"
 msgstr "低于该阈值视为静音"
 
-#: src/workflow/nodes/preprocessing.py:773
+#: src/workflow/nodes/preprocessing.py:696
 msgid "Frame length"
 msgstr "帧长"
 
-#: src/workflow/nodes/preprocessing.py:778
+#: src/workflow/nodes/preprocessing.py:701
 #: src/workflow/nodes/feature/dim1d/pitch.py:54
 #: src/workflow/nodes/feature/dim1d/spectral_flatness.py:49
 #: src/workflow/nodes/feature/dim2d/cqt.py:55
@@ -4218,194 +4246,194 @@ msgstr "帧长"
 msgid "Hop length"
 msgstr "帧移"
 
-#: src/workflow/nodes/preprocessing.py:832
+#: src/workflow/nodes/preprocessing.py:755
 msgid "Channel mapper"
 msgstr "通道映射"
 
-#: src/workflow/nodes/preprocessing.py:834
+#: src/workflow/nodes/preprocessing.py:757
 msgid "Map selected channels to different outputs"
 msgstr "将选定通道映射到不同输出"
 
-#: src/workflow/nodes/preprocessing.py:842
+#: src/workflow/nodes/preprocessing.py:765
 msgid "Multichannel audio input"
 msgstr "多通道音频输入"
 
-#: src/workflow/nodes/preprocessing.py:844
+#: src/workflow/nodes/preprocessing.py:767
 msgid "Output 1"
 msgstr "输出 1"
 
-#: src/workflow/nodes/preprocessing.py:845
+#: src/workflow/nodes/preprocessing.py:768
 msgid "Output 2"
 msgstr "输出 2"
 
-#: src/workflow/nodes/preprocessing.py:846
+#: src/workflow/nodes/preprocessing.py:769
 msgid "Output 3"
 msgstr "输出 3"
 
-#: src/workflow/nodes/preprocessing.py:847
+#: src/workflow/nodes/preprocessing.py:770
 msgid "Output 4"
 msgstr "输出 4"
 
-#: src/workflow/nodes/preprocessing.py:852
+#: src/workflow/nodes/preprocessing.py:775
 msgid "Output 1 channels"
 msgstr "输出 1 通道"
 
-#: src/workflow/nodes/preprocessing.py:853
+#: src/workflow/nodes/preprocessing.py:776
 msgid "Channel indices (0-based), comma-separated, e.g. 0 or 0,1,2"
 msgstr "通道索引（从 0 开始），用逗号分隔，例如 0 或 0,1,2"
 
-#: src/workflow/nodes/preprocessing.py:857
+#: src/workflow/nodes/preprocessing.py:780
 msgid "Output 2 channels"
 msgstr "输出 2 通道"
 
-#: src/workflow/nodes/preprocessing.py:858
-#: src/workflow/nodes/preprocessing.py:863
-#: src/workflow/nodes/preprocessing.py:868
+#: src/workflow/nodes/preprocessing.py:781
+#: src/workflow/nodes/preprocessing.py:786
+#: src/workflow/nodes/preprocessing.py:791
 msgid "Channel indices; leave blank to disable output"
 msgstr "通道索引；留空以禁用该输出"
 
-#: src/workflow/nodes/preprocessing.py:862
+#: src/workflow/nodes/preprocessing.py:785
 msgid "Output 3 channels"
 msgstr "输出 3 通道"
 
-#: src/workflow/nodes/preprocessing.py:867
+#: src/workflow/nodes/preprocessing.py:790
 msgid "Output 4 channels"
 msgstr "输出 4 通道"
 
-#: src/workflow/nodes/preprocessing.py:1008
+#: src/workflow/nodes/preprocessing.py:931
 msgid "Channel merge"
 msgstr "通道合并"
 
-#: src/workflow/nodes/preprocessing.py:1010
+#: src/workflow/nodes/preprocessing.py:933
 msgid "Merge channels from multiple audio inputs"
 msgstr "合并多个音频输入的通道"
 
-#: src/workflow/nodes/preprocessing.py:1014
+#: src/workflow/nodes/preprocessing.py:937
 msgid "Input 1"
 msgstr "输入 1"
 
-#: src/workflow/nodes/preprocessing.py:1014
+#: src/workflow/nodes/preprocessing.py:937
 msgid "Audio input 1"
 msgstr "音频输入 1"
 
-#: src/workflow/nodes/preprocessing.py:1018
+#: src/workflow/nodes/preprocessing.py:941
 msgid "Input 2"
 msgstr "输入 2"
 
-#: src/workflow/nodes/preprocessing.py:1019
+#: src/workflow/nodes/preprocessing.py:942
 msgid "Audio input 2 (optional)"
 msgstr "音频输入 2（可选）"
 
-#: src/workflow/nodes/preprocessing.py:1025
+#: src/workflow/nodes/preprocessing.py:948
 msgid "Input 3"
 msgstr "输入 3"
 
-#: src/workflow/nodes/preprocessing.py:1026
+#: src/workflow/nodes/preprocessing.py:949
 msgid "Audio input 3 (optional)"
 msgstr "音频输入 3（可选）"
 
-#: src/workflow/nodes/preprocessing.py:1032
+#: src/workflow/nodes/preprocessing.py:955
 msgid "Input 4"
 msgstr "输入 4"
 
-#: src/workflow/nodes/preprocessing.py:1033
+#: src/workflow/nodes/preprocessing.py:956
 msgid "Audio input 4 (optional)"
 msgstr "音频输入 4（可选）"
 
-#: src/workflow/nodes/preprocessing.py:1036
+#: src/workflow/nodes/preprocessing.py:959
 msgid "Merged audio"
 msgstr "合并后的音频"
 
-#: src/workflow/nodes/preprocessing.py:1041
+#: src/workflow/nodes/preprocessing.py:964
 msgid "Length handling"
 msgstr "长度处理"
 
-#: src/workflow/nodes/preprocessing.py:1042
+#: src/workflow/nodes/preprocessing.py:965
 msgid "How to handle different input lengths"
 msgstr "如何处理不同的输入长度"
 
-#: src/workflow/nodes/preprocessing.py:1048
+#: src/workflow/nodes/preprocessing.py:971
 msgid "Padding strategy for shorter audio when using max length"
 msgstr "使用最大长度时，较短音频的填充策略"
 
-#: src/workflow/nodes/preprocessing.py:1063
+#: src/workflow/nodes/preprocessing.py:986
 msgid "At least one valid audio input is required"
 msgstr "至少需要一个有效的音频输入"
 
-#: src/workflow/nodes/preprocessing.py:1077
+#: src/workflow/nodes/preprocessing.py:1000
 msgid "All inputs must be the same type (all single audio or all audio lists)"
 msgstr "所有输入必须为同一类型（全部为单个音频或全部为音频列表）"
 
-#: src/workflow/nodes/preprocessing.py:1082
+#: src/workflow/nodes/preprocessing.py:1005
 #, python-brace-format
 msgid "Audio list lengths differ: {lengths}"
 msgstr "音频列表长度不一致：{lengths}"
 
-#: src/workflow/nodes/preprocessing.py:1102
+#: src/workflow/nodes/preprocessing.py:1025
 #, python-brace-format
 msgid "Expected AudioData, but got {type}"
 msgstr "期望 AudioData，但得到 {type}"
 
-#: src/workflow/nodes/preprocessing.py:1126
+#: src/workflow/nodes/preprocessing.py:1049
 msgid "No audio to merge"
 msgstr "没有可合并的音频"
 
-#: src/workflow/nodes/preprocessing.py:1133
+#: src/workflow/nodes/preprocessing.py:1056
 #, python-brace-format
 msgid "Sample rates differ: {rates}. Please resample first."
 msgstr "采样率不一致：{rates}。请先重采样。"
 
-#: src/workflow/nodes/preprocessing.py:1201
+#: src/workflow/nodes/preprocessing.py:1124
 msgid "Filter"
 msgstr "滤波"
 
-#: src/workflow/nodes/preprocessing.py:1203
+#: src/workflow/nodes/preprocessing.py:1126
 msgid "Apply digital filtering (lowpass/highpass/bandpass/bandstop)"
 msgstr "应用数字滤波（低通/高通/带通/带阻）"
 
-#: src/workflow/nodes/preprocessing.py:1213
+#: src/workflow/nodes/preprocessing.py:1136
 msgid "Filter type"
 msgstr "滤波类型"
 
-#: src/workflow/nodes/preprocessing.py:1214
+#: src/workflow/nodes/preprocessing.py:1137
 msgid "lowpass, highpass, bandpass, bandstop"
 msgstr "lowpass、highpass、bandpass、bandstop"
 
-#: src/workflow/nodes/preprocessing.py:1219
+#: src/workflow/nodes/preprocessing.py:1142
 msgid "Cutoff (Hz)"
 msgstr "截止频率（Hz）"
 
-#: src/workflow/nodes/preprocessing.py:1220
+#: src/workflow/nodes/preprocessing.py:1143
 msgid "Used by lowpass/highpass; low bound for bandpass/bandstop"
 msgstr "用于低通/高通；用于带通/带阻的低截止频率"
 
-#: src/workflow/nodes/preprocessing.py:1225
+#: src/workflow/nodes/preprocessing.py:1148
 msgid "High cutoff (Hz)"
 msgstr "高截止频率（Hz）"
 
-#: src/workflow/nodes/preprocessing.py:1226
+#: src/workflow/nodes/preprocessing.py:1149
 msgid "Only for bandpass/bandstop; ignored for lowpass/highpass"
 msgstr "仅用于带通/带阻；低通/高通忽略"
 
-#: src/workflow/nodes/preprocessing.py:1231
+#: src/workflow/nodes/preprocessing.py:1154
 msgid "Filter order"
 msgstr "滤波阶数"
 
-#: src/workflow/nodes/preprocessing.py:1232
+#: src/workflow/nodes/preprocessing.py:1155
 msgid "Butterworth order; higher means steeper rolloff"
 msgstr "巴特沃斯阶数；越高滚降越陡"
 
-#: src/workflow/nodes/preprocessing.py:1285
+#: src/workflow/nodes/preprocessing.py:1208
 #, python-brace-format
 msgid "Unknown filter type: {type}"
 msgstr "未知的滤波类型：{type}"
 
-#: src/workflow/nodes/preprocessing.py:1287
+#: src/workflow/nodes/preprocessing.py:1210
 #, python-brace-format
 msgid "Filter design failed: {error}"
 msgstr "滤波器设计失败：{error}"
 
-#: src/workflow/nodes/preprocessing.py:1309
+#: src/workflow/nodes/preprocessing.py:1232
 #, python-brace-format
 msgid "Filtering failed: {error}"
 msgstr "滤波失败：{error}"
