@@ -2,14 +2,19 @@
 About Dialog
 """
 
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QFont, QPixmap
+from PyQt6.QtCore import Qt, QUrl
+from PyQt6.QtGui import QDesktopServices, QFont, QPixmap
 from PyQt6.QtWidgets import (
     QDialog, QFrame, QHBoxLayout, QLabel,
     QPushButton, QVBoxLayout
 )
 
 from src.ui.i18n import tr_
+
+COMPANY_HOMEPAGE_URL = "http://www.suzhoudongyuan.com/"
+COMPANY_HOMEPAGE_LABEL = "公司主页："
+
+
 class AboutDialog(QDialog):
     """关于对话框"""
     
@@ -73,6 +78,22 @@ class AboutDialog(QDialog):
         tech_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         tech_label.setStyleSheet("color: #a6adc8; font-size: 11px;")
         layout.addWidget(tech_label)
+
+        homepage_label = QLabel(
+            f'<a href="{COMPANY_HOMEPAGE_URL}">'
+            f"{COMPANY_HOMEPAGE_LABEL}{COMPANY_HOMEPAGE_URL}"
+            "</a>"
+        )
+        homepage_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        homepage_label.setTextFormat(Qt.TextFormat.RichText)
+        homepage_label.setTextInteractionFlags(
+            Qt.TextInteractionFlag.LinksAccessibleByMouse
+            | Qt.TextInteractionFlag.LinksAccessibleByKeyboard
+        )
+        homepage_label.setOpenExternalLinks(False)
+        homepage_label.setStyleSheet("color: #89b4fa; font-size: 11px;")
+        homepage_label.linkActivated.connect(self._open_company_homepage)
+        layout.addWidget(homepage_label)
         
         layout.addStretch()
         
@@ -94,6 +115,9 @@ class AboutDialog(QDialog):
         layout.addLayout(btn_layout)
         
         self._apply_styles()
+
+    def _open_company_homepage(self, _link):
+        QDesktopServices.openUrl(QUrl(COMPANY_HOMEPAGE_URL))
     
     def _apply_styles(self):
         """应用样式"""
