@@ -33,8 +33,8 @@ msgstr ""
 msgid "Export model..."
 msgstr ""
 
-#: src/app.py:114
-msgid "Recent files"
+#: src/app.py:118
+msgid "Recent workflows"
 msgstr ""
 
 #: src/app.py:120
@@ -112,12 +112,12 @@ msgstr ""
 msgid "Failed to load model: {error}"
 msgstr ""
 
-#: src/app.py:371
-msgid "(No recent files)"
+#: src/app.py:390
+msgid "(No recent workflows)"
 msgstr ""
 
-#: src/app.py:382
-msgid "Clear recent files"
+#: src/app.py:401
+msgid "Clear recent workflows"
 msgstr ""
 
 #: src/app.py:422 src/ui/main_window.py:545 src/ui/main_window.py:599

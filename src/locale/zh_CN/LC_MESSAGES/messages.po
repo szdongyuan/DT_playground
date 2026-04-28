@@ -32,9 +32,9 @@ msgstr "加载模型..."
 msgid "Export model..."
 msgstr "导出模型..."
 
-#: src/app.py:114
-msgid "Recent files"
-msgstr "最近文件"
+#: src/app.py:118
+msgid "Recent workflows"
+msgstr "最近工作流"
 
 #: src/app.py:120
 msgid "Restart(&R)"
@@ -113,13 +113,13 @@ msgstr "错误"
 msgid "Failed to load model: {error}"
 msgstr "加载模型失败：{error}"
 
-#: src/app.py:371
-msgid "(No recent files)"
-msgstr "（无最近文件）"
+#: src/app.py:390
+msgid "(No recent workflows)"
+msgstr "（无最近工作流）"
 
-#: src/app.py:382
-msgid "Clear recent files"
-msgstr "清除最近文件"
+#: src/app.py:401
+msgid "Clear recent workflows"
+msgstr "清除最近工作流"
 
 #: src/app.py:422 src/ui/main_window.py:545 src/ui/main_window.py:599
 #: src/ui/main_window.py:604 src/ui/dialogs/dataset_dialog.py:216
