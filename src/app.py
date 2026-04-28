@@ -21,6 +21,24 @@ from src.utils.restart_manager import RestartManager
 from src.utils.config import config
 
 
+RECENT_WORKFLOWS_MENU_TEXT = "Recent workflows"
+NO_RECENT_WORKFLOWS_TEXT = "(No recent workflows)"
+CLEAR_RECENT_WORKFLOWS_TEXT = "Clear recent workflows"
+
+
+def is_recent_workflow_file(file_path: str) -> bool:
+    normalized_path = str(file_path).lower()
+    return normalized_path.endswith(".json") and not normalized_path.endswith(".model.json")
+
+
+def filter_recent_workflow_files(recent_files: list[str]) -> list[str]:
+    return [file_path for file_path in recent_files if is_recent_workflow_file(file_path)]
+
+
+def filter_non_workflow_recent_files(recent_files: list[str]) -> list[str]:
+    return [file_path for file_path in recent_files if not is_recent_workflow_file(file_path)]
+
+
 class AudioTrainingApp(QMainWindow):
     """AI声学信号训练平台主应用程序"""
     
@@ -114,8 +132,8 @@ class AudioTrainingApp(QMainWindow):
         
         file_menu.addSeparator()
         
-        # 最近文件
-        self.recent_menu = file_menu.addMenu(tr_("Recent files"))
+        # Recent workflows
+        self.recent_menu = file_menu.addMenu(tr_(RECENT_WORKFLOWS_MENU_TEXT))
         self._update_recent_menu()
         
         file_menu.addSeparator()
@@ -367,69 +385,67 @@ class AudioTrainingApp(QMainWindow):
         dialog.exec()
     
     def _update_recent_menu(self):
-        """更新最近文件菜单"""
+        """Update the recent workflows menu."""
         self.recent_menu.clear()
-        recent_files = config.get_recent_files()
+        recent_workflows = filter_recent_workflow_files(config.get_recent_files())
         
-        if not recent_files:
-            action = QAction(tr_("(No recent files)"), self)
+        if not recent_workflows:
+            action = QAction(tr_(NO_RECENT_WORKFLOWS_TEXT), self)
             action.setEnabled(False)
             self.recent_menu.addAction(action)
             return
         
-        for file_path in recent_files:
+        for file_path in recent_workflows:
             action = QAction(file_path, self)
-            action.triggered.connect(lambda checked, p=file_path: self._open_recent_file(p))
+            action.triggered.connect(lambda checked, p=file_path: self._open_recent_workflow(p))
             self.recent_menu.addAction(action)
         
         self.recent_menu.addSeparator()
-        clear_action = QAction(tr_("Clear recent files"), self)
-        clear_action.triggered.connect(self._clear_recent_files)
+        clear_action = QAction(tr_(CLEAR_RECENT_WORKFLOWS_TEXT), self)
+        clear_action.triggered.connect(self._clear_recent_workflows)
         self.recent_menu.addAction(clear_action)
     
-    def _open_recent_file(self, file_path: str):
-        """打开最近文件"""
+    def _open_recent_workflow(self, file_path: str):
+        """Open a recent workflow file."""
         import os
         if os.path.exists(file_path):
-            # 根据文件类型打开
-            if file_path.endswith('.json'):
-                # Workflow file: always open in a new workflow tab.
-                try:
-                    self.main_window._workflow_view.open_workflow_file(file_path)
-                    wf = self.main_window._workflow_view.get_workflow()
-                    if wf is not None:
-                        try:
-                            self.main_window._workflow = wf
-                        except Exception:
-                            pass
-                        try:
-                            self.main_window._workflow_controller.set_workflow(wf)
-                        except Exception:
-                            pass
-                        try:
-                            self.main_window._update_workflow_status()
-                        except Exception:
-                            pass
-                        try:
-                            config.set('session.last_workflow_path', file_path)
-                        except Exception:
-                            pass
-                    self._switch_view(0)
-                except Exception:
-                    pass
-            elif file_path.endswith(('.h5', '.keras', '.model.json')):
-                # 模型文件
-                self._load_model()
+            try:
+                self.main_window._workflow_view.open_workflow_file(file_path)
+                wf = self.main_window._workflow_view.get_workflow()
+                if wf is not None:
+                    try:
+                        self.main_window._workflow = wf
+                    except Exception:
+                        pass
+                    try:
+                        self.main_window._workflow_controller.set_workflow(wf)
+                    except Exception:
+                        pass
+                    try:
+                        self.main_window._update_workflow_status()
+                    except Exception:
+                        pass
+                    try:
+                        config.set('session.last_workflow_path', file_path)
+                    except Exception:
+                        pass
+                self._switch_view(0)
+            except Exception:
+                pass
         else:
             QMessageBox.warning(
                 self,
                 tr_("Warning"),
                 tr_("File does not exist: {path}").format(path=file_path),
             )
+
+    def _open_recent_file(self, file_path: str):
+        """Keep the old internal method name as a workflow-only wrapper."""
+        self._open_recent_workflow(file_path)
     
-    def _clear_recent_files(self):
-        """清除最近文件"""
-        config.clear_recent_files()
+    def _clear_recent_workflows(self):
+        """Clear workflow entries while keeping other recent-file history."""
+        config.set('recent.files', filter_non_workflow_recent_files(config.get_recent_files()))
         self._update_recent_menu()
     
     # === 视图操作 ===

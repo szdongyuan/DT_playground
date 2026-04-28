@@ -33,9 +33,9 @@ msgstr "Load model..."
 msgid "Export model..."
 msgstr "Export model..."
 
-#: src/app.py:114
-msgid "Recent files"
-msgstr "Recent files"
+#: src/app.py:118
+msgid "Recent workflows"
+msgstr "Recent workflows"
 
 #: src/app.py:120
 msgid "Restart(&R)"
@@ -114,13 +114,13 @@ msgstr "Error"
 msgid "Failed to load model: {error}"
 msgstr "Failed to load model: {error}"
 
-#: src/app.py:371
-msgid "(No recent files)"
-msgstr "(No recent files)"
+#: src/app.py:390
+msgid "(No recent workflows)"
+msgstr "(No recent workflows)"
 
-#: src/app.py:382
-msgid "Clear recent files"
-msgstr "Clear recent files"
+#: src/app.py:401
+msgid "Clear recent workflows"
+msgstr "Clear recent workflows"
 
 #: src/app.py:422 src/ui/main_window.py:545 src/ui/main_window.py:599
 #: src/ui/main_window.py:604 src/ui/dialogs/dataset_dialog.py:216
