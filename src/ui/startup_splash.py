@@ -13,13 +13,21 @@ from PyQt6.QtGui import QColor, QFont, QLinearGradient, QPainter, QPixmap
 from PyQt6.QtWidgets import QApplication, QLabel, QProgressBar, QSplashScreen
 
 
+def get_app_root_path() -> Path:
+    """Return the portable app root path for dev and frozen runs."""
+    if getattr(sys, "frozen", False):
+        return Path(sys.executable).resolve().parent
+    return Path(__file__).resolve().parents[2]
+
+
 def get_splash_image_path() -> Path:
     """Return the portable splash image path for dev and frozen runs."""
-    if getattr(sys, "frozen", False):
-        app_root = Path(sys.executable).resolve().parent
-    else:
-        app_root = Path(__file__).resolve().parents[2]
-    return app_root / "assets" / "splash_screen.png"
+    return get_app_root_path() / "assets" / "splash_screen.png"
+
+
+def get_app_icon_path() -> Path:
+    """Return the portable application icon path for dev and frozen runs."""
+    return get_app_root_path() / "assets" / "DTPG_logo.ico"
 
 
 class StartupSplash(QSplashScreen):
