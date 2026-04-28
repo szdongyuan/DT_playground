@@ -66,7 +66,7 @@ os.environ['QT_LOGGING_RULES'] = '*.debug=false;qt.qpa.*=false'
 # 必须先导入Qt并创建QApplication
 from PyQt6.QtWidgets import QApplication
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QFont
+from PyQt6.QtGui import QFont, QIcon
 
 
 def exception_hook(exc_type, exc_value, exc_tb):    
@@ -102,9 +102,13 @@ def main():
     # 创建QApplication
     app = QApplication(sys.argv)
 
-    from src.ui.startup_splash import StartupSplash
+    from src.ui.startup_splash import StartupSplash, get_app_icon_path
 
     splash = StartupSplash()
+    icon_path = get_app_icon_path()
+    if icon_path.exists():
+        app.setWindowIcon(QIcon(os.fspath(icon_path)))
+        splash.setWindowIcon(QIcon(os.fspath(icon_path)))
     splash.show()
     splash.set_progress(10, "Starting application...")
 

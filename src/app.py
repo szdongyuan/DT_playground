@@ -16,6 +16,7 @@ from src.ui.dialogs.export_dialog import ExportModelDialog
 from src.ui.dialogs.settings_dialog import SettingsDialog
 from src.ui.i18n import tr_
 from src.ui.main_window import MainWindow
+from src.ui.startup_splash import get_app_icon_path
 from src.utils.restart_manager import RestartManager
 from src.utils.config import config
 
@@ -48,6 +49,9 @@ class AudioTrainingApp(QMainWindow):
         """初始化用户界面"""
         self.setWindowTitle(tr_("AI Acoustic Signal Training Platform"))
         self.setMinimumSize(1280, 800)
+        icon_path = get_app_icon_path()
+        if icon_path.exists():
+            self.setWindowIcon(QIcon(str(icon_path)))
         
         # 设置主窗口内容
         self.main_window = MainWindow(self, startup_progress=self._startup_progress)
