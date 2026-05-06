@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-10 13:38+0800\n"
+"POT-Creation-Date: 2026-05-06 15:18+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,110 +17,98 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/app.py:49 src/ui/dialogs/about_dialog.py:36
+#: src/app.py:68 src/ui/dialogs/about_dialog.py:41
 msgid "AI Acoustic Signal Training Platform"
 msgstr ""
 
-#: src/app.py:97
+#: src/app.py:119
 msgid "File(&F)"
 msgstr ""
 
-#: src/app.py:100
+#: src/app.py:122
 msgid "Load model..."
 msgstr ""
 
-#: src/app.py:106
+#: src/app.py:128
 msgid "Export model..."
 msgstr ""
 
-#: src/app.py:118
-msgid "Recent workflows"
-msgstr ""
-
-#: src/app.py:120
+#: src/app.py:142
 msgid "Restart(&R)"
 msgstr ""
 
-#: src/app.py:128
+#: src/app.py:150
 msgid "Exit(&X)"
 msgstr ""
 
-#: src/app.py:134
+#: src/app.py:156
 msgid "Edit(&E)"
 msgstr ""
 
-#: src/app.py:136
+#: src/app.py:158
 msgid "Settings..."
 msgstr ""
 
-#: src/app.py:142
+#: src/app.py:164
 msgid "View(&V)"
 msgstr ""
 
-#: src/app.py:144
+#: src/app.py:166
 msgid "Workflow view"
 msgstr ""
 
-#: src/app.py:149
+#: src/app.py:171
 msgid "Model view"
 msgstr ""
 
-#: src/app.py:154
+#: src/app.py:176
 msgid "Preview view"
 msgstr ""
 
-#: src/app.py:159
+#: src/app.py:181
 msgid "Training view"
 msgstr ""
 
-#: src/app.py:165
+#: src/app.py:187
 msgid "Help(&H)"
 msgstr ""
 
-#: src/app.py:167
+#: src/app.py:189
 msgid "About..."
 msgstr ""
 
-#: src/app.py:339 src/workflow/nodes/training.py:31
+#: src/app.py:361 src/workflow/nodes/training.py:31
 msgid "Load model"
 msgstr ""
 
-#: src/app.py:341
+#: src/app.py:363
 msgid ""
 "Keras models (*.h5 *.keras);;Model definition (*.model.json);;SavedModel "
 "(*);;All files (*)"
 msgstr ""
 
-#: src/app.py:350 src/ui/dialogs/export_dialog.py:191
+#: src/app.py:372 src/ui/dialogs/export_dialog.py:191
 msgid "Success"
 msgstr ""
 
-#: src/app.py:351
+#: src/app.py:373
 #, python-brace-format
 msgid "Model loaded: {path}"
 msgstr ""
 
-#: src/app.py:356 src/ui/dialogs/export_dialog.py:208
+#: src/app.py:378 src/ui/dialogs/export_dialog.py:208
 #: src/ui/views/model_builder_view.py:339
 #: src/ui/views/model_builder_view.py:524
 msgid "Error"
 msgstr ""
 
-#: src/app.py:357 src/ui/views/model_builder_view.py:340
+#: src/app.py:379 src/ui/views/model_builder_view.py:340
 #: src/workflow/nodes/training.py:81
 #, python-brace-format
 msgid "Failed to load model: {error}"
 msgstr ""
 
-#: src/app.py:390
-msgid "(No recent workflows)"
-msgstr ""
-
-#: src/app.py:401
-msgid "Clear recent workflows"
-msgstr ""
-
-#: src/app.py:422 src/ui/main_window.py:545 src/ui/main_window.py:599
+#: src/app.py:438 src/ui/main_window.py:545 src/ui/main_window.py:599
 #: src/ui/main_window.py:604 src/ui/dialogs/dataset_dialog.py:216
 #: src/ui/dialogs/export_dialog.py:137 src/ui/dialogs/export_dialog.py:141
 #: src/ui/dialogs/export_dialog.py:145 src/ui/views/model_builder_view.py:455
@@ -128,42 +116,42 @@ msgstr ""
 msgid "Warning"
 msgstr ""
 
-#: src/app.py:423 src/audio/loader.py:58 src/workflow/nodes/data_source.py:285
+#: src/app.py:439 src/audio/loader.py:58 src/workflow/nodes/data_source.py:285
 #: src/workflow/nodes/data_source.py:351
 #, python-brace-format
 msgid "File does not exist: {path}"
 msgstr ""
 
-#: src/app.py:482
+#: src/app.py:502
 msgid "Restart required"
 msgstr ""
 
-#: src/app.py:483
+#: src/app.py:503
 msgid "Language change will take effect after restart."
 msgstr ""
 
-#: src/app.py:484
+#: src/app.py:504
 msgid "Restart now"
 msgstr ""
 
-#: src/app.py:485
+#: src/app.py:505
 msgid "Restart later"
 msgstr ""
 
-#: src/app.py:498 src/controllers/navigation_controller.py:209
+#: src/app.py:518 src/controllers/navigation_controller.py:209
 #: src/ui/main_window.py:904
 msgid "Info"
 msgstr ""
 
-#: src/app.py:499
+#: src/app.py:519
 msgid "Settings saved. Some changes require a restart to take effect."
 msgstr ""
 
-#: src/app.py:527
+#: src/app.py:547
 msgid "Confirm restart"
 msgstr ""
 
-#: src/app.py:529
+#: src/app.py:549
 msgid ""
 "A workflow/training is currently running.\n"
 "Restart will stop the current run and start a new instance.\n"
@@ -171,11 +159,11 @@ msgid ""
 "Continue?"
 msgstr ""
 
-#: src/app.py:562
+#: src/app.py:582
 msgid "Restart failed"
 msgstr ""
 
-#: src/app.py:563
+#: src/app.py:583
 msgid "Please check the latest log under the logs directory."
 msgstr ""
 
@@ -355,17 +343,6 @@ msgstr ""
 msgid ""
 "Loop node [{name}] cannot be previewed.\n"
 "Please preview a specific processing node inside the loop."
-msgstr ""
-
-#: src/controllers/navigation_controller.py:229
-msgid "Label data"
-msgstr ""
-
-#: src/controllers/navigation_controller.py:231
-#, python-brace-format
-msgid ""
-"Loaded {count} label(s).\n"
-"Label data cannot be visualized for preview."
 msgstr ""
 
 #: src/controllers/training_controller.py:94
@@ -1603,26 +1580,26 @@ msgid ""
 "Click \"Run\" to execute the workflow first."
 msgstr ""
 
-#: src/ui/dialogs/about_dialog.py:22
+#: src/ui/dialogs/about_dialog.py:27
 msgid "About"
 msgstr ""
 
-#: src/ui/dialogs/about_dialog.py:46
+#: src/ui/dialogs/about_dialog.py:51
 msgid "Version 1.0.0"
 msgstr ""
 
-#: src/ui/dialogs/about_dialog.py:60
+#: src/ui/dialogs/about_dialog.py:65
 msgid ""
 "A local training platform for learning AI acoustic signal processing.\n"
 "Supports audio visualization, feature extraction, model building, and "
 "training monitoring."
 msgstr ""
 
-#: src/ui/dialogs/about_dialog.py:71
+#: src/ui/dialogs/about_dialog.py:76
 msgid "Tech stack: Python • TensorFlow • PySide6 • Librosa"
 msgstr ""
 
-#: src/ui/dialogs/about_dialog.py:86 src/utils/dialogs.py:110
+#: src/ui/dialogs/about_dialog.py:107 src/utils/dialogs.py:110
 msgid "Close"
 msgstr ""
 
@@ -2193,41 +2170,41 @@ msgstr ""
 msgid "🔒 This layer is frozen; weights will not be updated during training."
 msgstr ""
 
-#: src/ui/model_editor/model_graph_widget.py:597
+#: src/ui/model_editor/model_graph_widget.py:599
 msgid "Add layer"
 msgstr ""
 
-#: src/ui/model_editor/model_graph_widget.py:618
-#: src/ui/node_editor/node_graph.py:815
+#: src/ui/model_editor/model_graph_widget.py:620
+#: src/ui/node_editor/node_graph.py:820
 msgid "Copy"
 msgstr ""
 
-#: src/ui/model_editor/model_graph_widget.py:622
-#: src/ui/node_editor/node_graph.py:819
+#: src/ui/model_editor/model_graph_widget.py:624
+#: src/ui/node_editor/node_graph.py:824
 msgid "Paste"
 msgstr ""
 
-#: src/ui/model_editor/model_graph_widget.py:627
+#: src/ui/model_editor/model_graph_widget.py:629
 msgid "Reset selected layer connections"
 msgstr ""
 
-#: src/ui/model_editor/model_graph_widget.py:630
+#: src/ui/model_editor/model_graph_widget.py:632
 msgid "Delete selected layers"
 msgstr ""
 
-#: src/ui/node_editor/node_graph.py:680
+#: src/ui/node_editor/node_graph.py:685
 msgid "Connection failed"
 msgstr ""
 
-#: src/ui/node_editor/node_graph.py:811
+#: src/ui/node_editor/node_graph.py:816
 msgid "Rerun from selected node"
 msgstr ""
 
-#: src/ui/node_editor/node_graph.py:824
+#: src/ui/node_editor/node_graph.py:829
 msgid "Reset selected node connections"
 msgstr ""
 
-#: src/ui/node_editor/node_graph.py:828
+#: src/ui/node_editor/node_graph.py:833
 msgid "Delete selected nodes"
 msgstr ""
 
@@ -2336,9 +2313,9 @@ msgstr ""
 #: src/ui/views/model_builder_view.py:297
 #: src/ui/views/model_builder_view.py:360
 #: src/ui/views/model_builder_view.py:596
-#: src/ui/views/workflow_tabs_view.py:129
-#: src/ui/views/workflow_tabs_view.py:589
-#: src/ui/views/workflow_tabs_view.py:624 src/ui/views/workflow_view.py:216
+#: src/ui/views/workflow_tabs_view.py:130
+#: src/ui/views/workflow_tabs_view.py:616
+#: src/ui/views/workflow_tabs_view.py:651 src/ui/views/workflow_view.py:216
 msgid "Confirm"
 msgstr ""
 
@@ -2606,55 +2583,55 @@ msgstr ""
 msgid "Save checkpoint"
 msgstr ""
 
-#: src/ui/views/workflow_tabs_view.py:130
+#: src/ui/views/workflow_tabs_view.py:131
 msgid "There are unsaved workflows. Save your changes before closing?"
 msgstr ""
 
-#: src/ui/views/workflow_tabs_view.py:131
+#: src/ui/views/workflow_tabs_view.py:132
 msgid "If you don't save, your changes will be lost."
 msgstr ""
 
-#: src/ui/views/workflow_tabs_view.py:290
-#: src/ui/views/workflow_tabs_view.py:506 src/ui/views/workflow_view.py:153
+#: src/ui/views/workflow_tabs_view.py:291
+#: src/ui/views/workflow_tabs_view.py:533 src/ui/views/workflow_view.py:153
 msgid "Open workflow"
 msgstr ""
 
-#: src/ui/views/workflow_tabs_view.py:291
+#: src/ui/views/workflow_tabs_view.py:292
 #, python-brace-format
 msgid "Failed to load workflow: {path}"
 msgstr ""
 
-#: src/ui/views/workflow_tabs_view.py:508
-#: src/ui/views/workflow_tabs_view.py:542 src/ui/views/workflow_view.py:155
+#: src/ui/views/workflow_tabs_view.py:535
+#: src/ui/views/workflow_tabs_view.py:569 src/ui/views/workflow_view.py:155
 #: src/ui/views/workflow_view.py:180
 msgid "Workflow files (*.json)"
 msgstr ""
 
-#: src/ui/views/workflow_tabs_view.py:540 src/ui/views/workflow_view.py:178
+#: src/ui/views/workflow_tabs_view.py:567 src/ui/views/workflow_view.py:178
 msgid "Save workflow"
 msgstr ""
 
-#: src/ui/views/workflow_tabs_view.py:564 src/ui/views/workflow_view.py:199
+#: src/ui/views/workflow_tabs_view.py:591 src/ui/views/workflow_view.py:199
 msgid "⏳ Stopping..."
 msgstr ""
 
-#: src/ui/views/workflow_tabs_view.py:568 src/ui/views/workflow_view.py:203
+#: src/ui/views/workflow_tabs_view.py:595 src/ui/views/workflow_view.py:203
 msgid "Stopping workflow... (waiting for current task to finish)"
 msgstr ""
 
-#: src/ui/views/workflow_tabs_view.py:590 src/ui/views/workflow_view.py:217
+#: src/ui/views/workflow_tabs_view.py:617 src/ui/views/workflow_view.py:217
 msgid "Clear the current workflow?"
 msgstr ""
 
-#: src/ui/views/workflow_tabs_view.py:606
+#: src/ui/views/workflow_tabs_view.py:633
 msgid "Running"
 msgstr ""
 
-#: src/ui/views/workflow_tabs_view.py:607
+#: src/ui/views/workflow_tabs_view.py:634
 msgid "Cannot close the running tab while a workflow is active."
 msgstr ""
 
-#: src/ui/views/workflow_tabs_view.py:621
+#: src/ui/views/workflow_tabs_view.py:648
 #, python-brace-format
 msgid "Save changes to '{name}' before closing?"
 msgstr ""
@@ -2851,41 +2828,45 @@ msgstr ""
 msgid "📋 Label list"
 msgstr ""
 
-#: src/ui/widgets/preview/label_preview.py:120
-msgid "Class name"
+#: src/ui/widgets/preview/label_preview.py:121
+msgid "Item"
 msgstr ""
 
-#: src/ui/widgets/preview/label_preview.py:120
+#: src/ui/widgets/preview/label_preview.py:122
 msgid "Label"
 msgstr ""
 
-#: src/ui/widgets/preview/label_preview.py:261
+#: src/ui/widgets/preview/label_preview.py:123
+msgid "Class name"
+msgstr ""
+
+#: src/ui/widgets/preview/label_preview.py:274
 msgid "Total labels"
 msgstr ""
 
-#: src/ui/widgets/preview/label_preview.py:262
+#: src/ui/widgets/preview/label_preview.py:275
 msgid "Classes"
 msgstr ""
 
-#: src/ui/widgets/preview/label_preview.py:263
+#: src/ui/widgets/preview/label_preview.py:276
 msgid "Most common"
 msgstr ""
 
-#: src/ui/widgets/preview/label_preview.py:264
-#: src/ui/widgets/preview/label_preview.py:266
-#: src/ui/widgets/preview/label_preview.py:267
+#: src/ui/widgets/preview/label_preview.py:277
+#: src/ui/widgets/preview/label_preview.py:279
+#: src/ui/widgets/preview/label_preview.py:280
 msgid "items"
 msgstr ""
 
-#: src/ui/widgets/preview/label_preview.py:265
+#: src/ui/widgets/preview/label_preview.py:278
 msgid "Least common"
 msgstr ""
 
-#: src/ui/widgets/preview/label_preview.py:267
+#: src/ui/widgets/preview/label_preview.py:280
 msgid "Avg per class"
 msgstr ""
 
-#: src/ui/widgets/preview/label_preview.py:343
+#: src/ui/widgets/preview/label_preview.py:364
 #, python-brace-format
 msgid "... {count} more item(s) not shown"
 msgstr ""

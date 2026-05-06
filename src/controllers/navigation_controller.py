@@ -214,27 +214,6 @@ class NavigationController(QObject):
                 ),
             )
 
-        if ctx.node_type == "label_file":
-            if ctx.has_output:
-                labels = (ctx.outputs or {}).get("labels")
-                if labels:
-                    if isinstance(labels, (list, dict)):
-                        label_count = len(labels)
-                    else:
-                        label_count = 1
-                    return NodeDoubleClickDecision(
-                        handled=True,
-                        message_box=MessageBoxSpec(
-                            level="info",
-                            title=tr_("Label data"),
-                            message=tr_(
-                                "Loaded {count} label(s).\n"
-                                "Label data cannot be visualized for preview."
-                            ).format(count=label_count),
-                        ),
-                    )
-            return NodeDoubleClickDecision(handled=True, show_not_run_tip=True)
-
         if ctx.node_type == "show_history" and ctx.has_output:
             history = (ctx.outputs or {}).get("history")
             if history is not None:
