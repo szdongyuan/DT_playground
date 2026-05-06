@@ -2,8 +2,8 @@
 Dataset Dialog
 """
 
-from PyQt6.QtCore import Qt, pyqtSignal
-from PyQt6.QtWidgets import (
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtWidgets import (
     QCheckBox, QComboBox, QDialog, QDoubleSpinBox,
     QFormLayout, QGroupBox, QHBoxLayout, QHeaderView,
     QLabel, QMessageBox, QPushButton, QSpinBox,
@@ -14,7 +14,7 @@ from src.ui.i18n import tr_
 class DatasetSplitDialog(QDialog):
     """数据集划分对话框"""
     
-    split_confirmed = pyqtSignal(dict)  # 划分确认
+    split_confirmed = Signal(dict)  # 划分确认
     
     def __init__(self, parent=None, total_samples: int = 0, labels: list = None):
         super().__init__(parent)

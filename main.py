@@ -62,11 +62,13 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # 抑制TensorFlow日志
 
 # Apply the lightest possible Qt logging suppression before splash appears.
 os.environ['QT_LOGGING_RULES'] = '*.debug=false;qt.qpa.*=false'
+# Force PyQtGraph to use the same Qt binding as the application.
+os.environ['PYQTGRAPH_QT_LIB'] = 'PySide6'
 
 # 必须先导入Qt并创建QApplication
-from PyQt6.QtWidgets import QApplication
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QFont, QIcon
+from PySide6.QtWidgets import QApplication
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QFont, QIcon
 
 
 def exception_hook(exc_type, exc_value, exc_tb):    
@@ -194,7 +196,7 @@ def main():
                 # Do not break app startup if handshake fails.
                 pass
 
-        from PyQt6.QtCore import QTimer
+        from PySide6.QtCore import QTimer
         QTimer.singleShot(0, _write_ready_file)
     
     logger.info("进入主事件循环")

@@ -9,9 +9,9 @@ import logging
 import os
 from typing import Optional
 
-from PyQt6.QtCore import Qt, QTimer, pyqtSignal
-from PyQt6.QtGui import QAction
-from PyQt6.QtWidgets import (
+from PySide6.QtCore import Qt, QTimer, Signal
+from PySide6.QtGui import QAction
+from PySide6.QtWidgets import (
     QDialog, QFileDialog, QFrame, QHBoxLayout, QLabel, QMessageBox,
     QPushButton, QSplitter, QTextEdit, QToolBar, QVBoxLayout, QWidget
 )
@@ -34,9 +34,9 @@ class ModelBuilderView(QWidget):
     整合层面板、模型画布和属性面板，提供完整的模型搭建体验。
     """
     
-    model_changed = pyqtSignal()
-    model_saved = pyqtSignal(str)  # model_path
-    build_requested = pyqtSignal()  # 请求构建模型
+    model_changed = Signal()
+    model_saved = Signal(str)  # model_path
+    build_requested = Signal()  # 请求构建模型
     
     def __init__(self, parent=None):
         super().__init__(parent)

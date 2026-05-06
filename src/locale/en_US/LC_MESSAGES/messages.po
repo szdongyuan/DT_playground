@@ -1642,8 +1642,8 @@ msgstr ""
 "training monitoring."
 
 #: src/ui/dialogs/about_dialog.py:71
-msgid "Tech stack: Python • TensorFlow • PyQt6 • Librosa"
-msgstr "Tech stack: Python • TensorFlow • PyQt6 • Librosa"
+msgid "Tech stack: Python • TensorFlow • PySide6 • Librosa"
+msgstr "Tech stack: Python • TensorFlow • PySide6 • Librosa"
 
 #: src/ui/dialogs/about_dialog.py:86 src/utils/dialogs.py:110
 msgid "Close"

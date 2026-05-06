@@ -2,9 +2,9 @@
 About Dialog
 """
 
-from PyQt6.QtCore import Qt, QUrl
-from PyQt6.QtGui import QDesktopServices, QFont, QPixmap
-from PyQt6.QtWidgets import (
+from PySide6.QtCore import Qt, QUrl
+from PySide6.QtGui import QDesktopServices, QFont, QPixmap
+from PySide6.QtWidgets import (
     QDialog, QFrame, QHBoxLayout, QLabel,
     QPushButton, QVBoxLayout
 )
@@ -73,7 +73,7 @@ class AboutDialog(QDialog):
         
         # 技术栈
         tech_label = QLabel(
-            tr_("Tech stack: Python • TensorFlow • PyQt6 • Librosa")
+            tr_("Tech stack: Python • TensorFlow • PySide6 • Librosa")
         )
         tech_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         tech_label.setStyleSheet("color: #a6adc8; font-size: 11px;")

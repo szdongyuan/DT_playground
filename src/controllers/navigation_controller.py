@@ -8,7 +8,7 @@ Responsible for navigation and switching logic between views within the applicat
 import logging
 from typing import Optional
 
-from PyQt6.QtCore import QObject, pyqtSignal
+from PySide6.QtCore import QObject, Signal
 
 from src.core.event_bus import get_event_bus
 from src.ui.i18n import tr_
@@ -31,8 +31,8 @@ class NavigationController(QObject):
     """
     
     # 控制器信号
-    view_changed = pyqtSignal(int)                   # view_index
-    preview_updated = pyqtSignal(str, str, dict)     # node_id, node_name, outputs
+    view_changed = Signal(int)                   # view_index
+    preview_updated = Signal(str, str, dict)     # node_id, node_name, outputs
     
     def __init__(self, parent=None):
         """

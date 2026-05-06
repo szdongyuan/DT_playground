@@ -1,6 +1,6 @@
 """
 PyQtGraph Compatibility Fix
-Resolves font compatibility issues between PyQtGraph and PyQt6
+Resolves font compatibility issues between PyQtGraph and PySide6
 """
 
 import sys
@@ -22,7 +22,7 @@ def install_qt_message_handler():
     必须在QApplication创建后调用
     """
     try:
-        from PyQt6.QtCore import qInstallMessageHandler, QtMsgType
+        from PySide6.QtCore import qInstallMessageHandler, QtMsgType
         
         def message_handler(msg_type, context, message):
             # 过滤字体警告

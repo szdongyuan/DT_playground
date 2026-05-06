@@ -8,7 +8,7 @@ Uses mediator pattern to decouple communication between views.
 import logging
 from typing import Any, Dict, Optional
 
-from PyQt6.QtCore import QObject, pyqtSignal
+from PySide6.QtCore import QObject, Signal
 
 
 logger = logging.getLogger(__name__)
@@ -28,7 +28,7 @@ class EventBus(QObject):
        - Broadcasting from Controller to multiple Views
        - Global state change notifications
        
-    2. **Intra-component communication**: Use pyqtSignal
+    2. **Intra-component communication**: Use Signal
        - Communication between child components within the same class
        - Direct communication between parent and child components
        - Communication between Widget and its internal elements
@@ -43,12 +43,12 @@ class EventBus(QObject):
         # Subscribe to event in TrainingView
         get_event_bus().workflow_started.connect(self._on_workflow_started)
     
-    Intra-component communication (recommended to use pyqtSignal)::
+    Intra-component communication (recommended to use Signal)::
     
         class WorkflowView(QWidget):
             # Component signals for parent to subscribe
-            workflow_changed = pyqtSignal()
-            node_selected = pyqtSignal(str)
+            workflow_changed = Signal()
+            node_selected = Signal(str)
             
             def _on_internal_change(self):
                 self.workflow_changed.emit()  # Use component signal directly
@@ -57,46 +57,46 @@ class EventBus(QObject):
     _instance: Optional['EventBus'] = None
     
     # ===== Workflow Events =====
-    workflow_run_requested = pyqtSignal()                       # Request to run workflow
-    workflow_started = pyqtSignal()                             # Workflow started execution
-    workflow_finished = pyqtSignal(bool, str)                   # Execution finished (success, message)
-    workflow_error = pyqtSignal(str)                            # Execution error (error_message)
-    workflow_saved = pyqtSignal(str)                            # Workflow saved (filepath)
-    workflow_loaded = pyqtSignal(str)                           # Workflow loaded (filepath)
+    workflow_run_requested = Signal()                       # Request to run workflow
+    workflow_started = Signal()                             # Workflow started execution
+    workflow_finished = Signal(bool, str)                   # Execution finished (success, message)
+    workflow_error = Signal(str)                            # Execution error (error_message)
+    workflow_saved = Signal(str)                            # Workflow saved (filepath)
+    workflow_loaded = Signal(str)                           # Workflow loaded (filepath)
     
     # ===== Node Events =====
-    node_selected = pyqtSignal(str)                             # Node selected (node_id)
-    node_deselected = pyqtSignal()                              # Selection cleared
-    node_started = pyqtSignal(str)                              # Node started execution (node_id)
-    node_finished = pyqtSignal(str, bool)                       # Node finished execution (node_id, success)
-    node_progress = pyqtSignal(str, float, dict)                # Node progress (node_id, progress, data)
+    node_selected = Signal(str)                             # Node selected (node_id)
+    node_deselected = Signal()                              # Selection cleared
+    node_started = Signal(str)                              # Node started execution (node_id)
+    node_finished = Signal(str, bool)                       # Node finished execution (node_id, success)
+    node_progress = Signal(str, float, dict)                # Node progress (node_id, progress, data)
     
     # ===== Breakpoint Events =====
-    breakpoint_hit = pyqtSignal(str)                            # Breakpoint triggered (node_id)
-    breakpoint_continue = pyqtSignal()                          # Continue execution
+    breakpoint_hit = Signal(str)                            # Breakpoint triggered (node_id)
+    breakpoint_continue = Signal()                          # Continue execution
     
     # ===== Preview Events =====
-    preview_requested = pyqtSignal(str, dict)                   # Preview requested (node_id, outputs)
-    preview_updated = pyqtSignal(str, str, dict)                # Preview updated (node_id, node_name, outputs)
+    preview_requested = Signal(str, dict)                   # Preview requested (node_id, outputs)
+    preview_updated = Signal(str, str, dict)                # Preview updated (node_id, node_name, outputs)
     
     # ===== Training Events =====
-    training_started = pyqtSignal(int)                          # Training started (total_epochs)
-    training_epoch_completed = pyqtSignal(int, int, dict)       # Epoch completed (current, total, metrics)
-    training_finished = pyqtSignal(bool, str)                   # Training finished (success, message)
-    training_stopped = pyqtSignal()                             # Training stopped
-    training_stop_with_checkpoint = pyqtSignal(str)             # Request stop + save checkpoint (path)
+    training_started = Signal(int)                          # Training started (total_epochs)
+    training_epoch_completed = Signal(int, int, dict)       # Epoch completed (current, total, metrics)
+    training_finished = Signal(bool, str)                   # Training finished (success, message)
+    training_stopped = Signal()                             # Training stopped
+    training_stop_with_checkpoint = Signal(str)             # Request stop + save checkpoint (path)
     
     # ===== Model Events =====
-    model_loaded = pyqtSignal(object)                           # Model loaded (model)
-    model_saved = pyqtSignal(str)                               # Model saved (filepath)
-    model_built = pyqtSignal(object)                            # Model built (model)
+    model_loaded = Signal(object)                           # Model loaded (model)
+    model_saved = Signal(str)                               # Model saved (filepath)
+    model_built = Signal(object)                            # Model built (model)
     
     # ===== View Navigation Events =====
-    view_switch_requested = pyqtSignal(int)                     # View switch requested (view_index)
+    view_switch_requested = Signal(int)                     # View switch requested (view_index)
     
     # ===== Status Message Events =====
-    status_message = pyqtSignal(str)                            # Status bar message
-    status_message_temporary = pyqtSignal(str, int)             # Temporary message (message, duration_ms)
+    status_message = Signal(str)                            # Status bar message
+    status_message_temporary = Signal(str, int)             # Temporary message (message, duration_ms)
     
     def __init__(self, parent=None):
         super().__init__(parent)

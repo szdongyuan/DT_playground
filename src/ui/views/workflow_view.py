@@ -10,8 +10,8 @@ import logging
 import os
 from typing import Optional
 
-from PyQt6.QtCore import pyqtSignal
-from PyQt6.QtWidgets import QVBoxLayout, QWidget
+from PySide6.QtCore import Signal
+from PySide6.QtWidgets import QVBoxLayout, QWidget
 
 from ..i18n import tr_
 from ...controllers.workflow_controller import WorkflowController
@@ -34,12 +34,12 @@ class WorkflowView(QWidget):
     When *show_toolbar* is False only the editor is shown (useful for embedding).
     """
 
-    workflow_changed = pyqtSignal()
-    run_requested = pyqtSignal()
-    node_selected = pyqtSignal(str)
-    node_double_clicked = pyqtSignal(str)
-    run_from_node_requested = pyqtSignal(str)
-    continue_requested = pyqtSignal()
+    workflow_changed = Signal()
+    run_requested = Signal()
+    node_selected = Signal(str)
+    node_double_clicked = Signal(str)
+    run_from_node_requested = Signal(str)
+    continue_requested = Signal()
 
     def __init__(self, parent=None, *, show_toolbar: bool = True):
         super().__init__(parent)
@@ -146,7 +146,7 @@ class WorkflowView(QWidget):
         self.workflow_changed.emit()
 
     def _on_open_workflow(self):
-        from PyQt6.QtWidgets import QFileDialog
+        from PySide6.QtWidgets import QFileDialog
 
         path, _ = QFileDialog.getOpenFileName(
             self,
@@ -167,7 +167,7 @@ class WorkflowView(QWidget):
                     pass
 
     def _on_save_workflow(self):
-        from PyQt6.QtWidgets import QFileDialog
+        from PySide6.QtWidgets import QFileDialog
 
         workflow = self._editor.get_workflow()
         if not workflow:
@@ -209,7 +209,7 @@ class WorkflowView(QWidget):
             self._engine.stop()
 
     def _on_clear_workflow(self):
-        from PyQt6.QtWidgets import QMessageBox
+        from PySide6.QtWidgets import QMessageBox
 
         reply = QMessageBox.question(
             self,

@@ -8,8 +8,8 @@ Defines the common interface for all preview components.
 import logging
 from typing import Any, List, Optional, Type
 
-from PyQt6.QtCore import pyqtSignal
-from PyQt6.QtWidgets import QWidget
+from PySide6.QtCore import Signal
+from PySide6.QtWidgets import QWidget
 
 from src.ui.i18n import tr_
 logger = logging.getLogger(__name__)
@@ -33,7 +33,7 @@ class BasePreviewWidget(QWidget):
     icon: str = "📊"
     
     # 信号
-    data_changed = pyqtSignal()
+    data_changed = Signal()
     
     def __init__(self, parent: Optional[QWidget] = None):
         super().__init__(parent)

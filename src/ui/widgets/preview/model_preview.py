@@ -9,8 +9,8 @@ import io
 import logging
 from typing import Any, Optional
 
-from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import (
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import (
     QGroupBox, QHBoxLayout, QLabel, QSplitter, 
     QTextEdit, QVBoxLayout, QWidget
 )

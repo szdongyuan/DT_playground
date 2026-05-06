@@ -11,7 +11,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Callable, Dict, List, Optional, Set
 
-from PyQt6.QtCore import QObject, QThread, pyqtSignal
+from PySide6.QtCore import QObject, QThread, Signal
 
 from src.ui.i18n import tr_
 from .connection import Connection
@@ -59,15 +59,15 @@ class WorkflowEngine(QObject):
     """
     
     # Signal definitions
-    workflow_started = pyqtSignal()
-    workflow_finished = pyqtSignal(object)  # ExecutionResult
-    workflow_error = pyqtSignal(str)
-    node_started = pyqtSignal(str)
-    node_finished = pyqtSignal(str, bool)
-    node_progress = pyqtSignal(str, float, str)
-    progress_updated = pyqtSignal(int, int, str)
-    status_message = pyqtSignal(str)  # Status message (displayed in status bar)
-    breakpoint_hit = pyqtSignal(str)  # Breakpoint triggered signal (node_id)
+    workflow_started = Signal()
+    workflow_finished = Signal(object)  # ExecutionResult
+    workflow_error = Signal(str)
+    node_started = Signal(str)
+    node_finished = Signal(str, bool)
+    node_progress = Signal(str, float, str)
+    progress_updated = Signal(int, int, str)
+    status_message = Signal(str)  # Status message (displayed in status bar)
+    breakpoint_hit = Signal(str)  # Breakpoint triggered signal (node_id)
     
     def __init__(self, parent=None):
         super().__init__(parent)

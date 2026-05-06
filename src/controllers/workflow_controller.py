@@ -8,7 +8,7 @@ Responsible for workflow execution control, breakpoint handling, and state manag
 import logging
 from typing import Optional
 
-from PyQt6.QtCore import QObject, pyqtSignal
+from PySide6.QtCore import QObject, Signal
 
 from src.core.event_bus import get_event_bus
 from src.ui.i18n import tr_
@@ -32,10 +32,10 @@ class WorkflowController(QObject):
     """
     
     # 控制器信号（供视图订阅）
-    execution_started = pyqtSignal()
-    execution_finished = pyqtSignal(bool, str)       # success, message
-    node_state_changed = pyqtSignal(str, str)        # node_id, state
-    breakpoint_triggered = pyqtSignal(str)           # node_id
+    execution_started = Signal()
+    execution_finished = Signal(bool, str)       # success, message
+    node_state_changed = Signal(str, str)        # node_id, state
+    breakpoint_triggered = Signal(str)           # node_id
     
     def __init__(self, engine: WorkflowEngine = None, parent=None):
         """

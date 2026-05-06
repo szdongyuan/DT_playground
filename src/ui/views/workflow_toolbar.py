@@ -9,8 +9,8 @@ Communicates purely via signals -- contains no workflow / editor logic.
 
 from typing import Optional
 
-from PyQt6.QtCore import pyqtSignal
-from PyQt6.QtWidgets import (
+from PySide6.QtCore import Signal
+from PySide6.QtWidgets import (
     QFrame,
     QHBoxLayout,
     QLabel,
@@ -32,15 +32,15 @@ class WorkflowToolbar(QFrame):
     The container / parent is responsible for connecting them to actual logic.
     """
 
-    new_requested = pyqtSignal()
-    open_requested = pyqtSignal()
-    save_requested = pyqtSignal()
-    duplicate_requested = pyqtSignal()
-    run_requested = pyqtSignal()
-    stop_requested = pyqtSignal()
-    continue_requested = pyqtSignal()
-    fit_requested = pyqtSignal()
-    clear_requested = pyqtSignal()
+    new_requested = Signal()
+    open_requested = Signal()
+    save_requested = Signal()
+    duplicate_requested = Signal()
+    run_requested = Signal()
+    stop_requested = Signal()
+    continue_requested = Signal()
+    fit_requested = Signal()
+    clear_requested = Signal()
 
     def __init__(self, parent=None, *, show_duplicate: bool = False):
         super().__init__(parent)

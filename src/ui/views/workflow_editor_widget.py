@@ -9,8 +9,8 @@ Contains no toolbar, no file dialogs, no run/stop logic, no config persistence.
 import logging
 from typing import Optional
 
-from PyQt6.QtCore import Qt, pyqtSignal
-from PyQt6.QtWidgets import QSplitter, QVBoxLayout, QWidget
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtWidgets import QSplitter, QVBoxLayout, QWidget
 
 from ..node_editor import NodeGraphWidget, NodePalette, PropertyPanel
 from ..styles import Styles
@@ -28,10 +28,10 @@ class WorkflowEditorWidget(QWidget):
     and exposes editing signals / node-state APIs.
     """
 
-    workflow_changed = pyqtSignal()
-    node_selected = pyqtSignal(str)
-    node_double_clicked = pyqtSignal(str)
-    run_from_node_requested = pyqtSignal(str)
+    workflow_changed = Signal()
+    node_selected = Signal(str)
+    node_double_clicked = Signal(str)
+    run_from_node_requested = Signal(str)
 
     def __init__(self, parent=None):
         super().__init__(parent)

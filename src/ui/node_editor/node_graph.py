@@ -2,7 +2,7 @@
 """
 Node Canvas Component
 
-Node editing canvas implemented with pure PyQt6.
+Node editing canvas implemented with pure PySide6.
 
 架构说明
 --------
@@ -15,12 +15,12 @@ Node editing canvas implemented with pure PyQt6.
 import logging
 from typing import Dict, List, Optional, Tuple
 
-from PyQt6.QtCore import QPoint, QPointF, QRectF, Qt, pyqtSignal
-from PyQt6.QtGui import (
+from PySide6.QtCore import QPoint, QPointF, QRectF, Qt, Signal
+from PySide6.QtGui import (
     QAction, QBrush, QColor, QDragEnterEvent, QDropEvent,
     QFont, QKeyEvent, QMouseEvent, QPainter, QPainterPath, QPen, QWheelEvent
 )
-from PyQt6.QtWidgets import (
+from PySide6.QtWidgets import (
     QGraphicsItem, QGraphicsRectItem,
     QGraphicsTextItem, QMenu, QVBoxLayout, QWidget
 )
@@ -75,6 +75,7 @@ class NodeItem(QGraphicsRectItem):
         self.node_scene = scene
         self.input_ports: Dict[str, PortItem] = {}
         self.output_ports: Dict[str, PortItem] = {}
+        self._text_items: List[QGraphicsTextItem] = []
         
         # 执行状态 (idle, running, completed, error, waiting)
         self._execution_state: str = 'idle'
@@ -122,12 +123,14 @@ class NodeItem(QGraphicsRectItem):
             # 居中显示
             text_width = title.boundingRect().width()
             title.setPos((self.COMPACT_WIDTH - text_width) / 2, 6)
+            self._text_items.append(title)
         else:
             # 标准模式：显示图标和名称
             title = QGraphicsTextItem(f"{self.node.icon} {tr_(self.node.display_name)}", self)
             title.setDefaultTextColor(QColor("#cdd6f4"))
             title.setFont(QFont("Microsoft YaHei", 10, QFont.Weight.Bold))
             title.setPos(8, 4)
+            self._text_items.append(title)
     
     def _create_ports(self):
         """创建端口"""
@@ -164,6 +167,7 @@ class NodeItem(QGraphicsRectItem):
                 label.setDefaultTextColor(QColor("#a6adc8"))
                 label.setFont(QFont("Microsoft YaHei", 9))
                 label.setPos(12, y_offset + i * self.PORT_SPACING - 8)
+                self._text_items.append(label)
             
             # 输出端口（右侧）
             for i, (port_name, port) in enumerate(self.node.outputs.items()):
@@ -178,6 +182,7 @@ class NodeItem(QGraphicsRectItem):
                 # 右对齐
                 text_width = label.boundingRect().width()
                 label.setPos(node_width - text_width - 12, y_offset + i * self.PORT_SPACING - 8)
+                self._text_items.append(label)
     
     def paint(self, painter: QPainter, option, widget=None):
         """绘制节点"""
@@ -305,10 +310,10 @@ class NodeGraphScene(BaseGraphScene):
     继承自 BaseGraphScene，增加工作流节点特定功能。
     """
     
-    node_selected = pyqtSignal(str)
-    node_double_clicked = pyqtSignal(str)
-    connection_created = pyqtSignal(str, str, str, str)
-    workflow_changed = pyqtSignal()
+    node_selected = Signal(str)
+    node_double_clicked = Signal(str)
+    connection_created = Signal(str, str, str, str)
+    workflow_changed = Signal()
     
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -516,7 +521,7 @@ class NodeGraphView(BaseGraphView):
         """放置事件"""
         if event.mimeData().hasFormat("application/x-workflow-node"):
             node_type = bytes(event.mimeData().data("application/x-workflow-node")).decode()
-            # PyQt6 使用 position() 代替 pos()
+            # PySide6 使用 position() 代替 pos()
             pos = self.mapToScene(event.position().toPoint())
             
             # 获取父组件并添加节点
@@ -546,11 +551,11 @@ class NodeGraphWidget(QWidget):
     CLIPBOARD_KIND = "workflow_nodes"
     PASTE_OFFSET = (40.0, 40.0)
 
-    node_selected = pyqtSignal(str)
-    node_double_clicked = pyqtSignal(str)
-    run_from_node_requested = pyqtSignal(str)
-    connection_created = pyqtSignal(str, str, str, str)
-    workflow_changed = pyqtSignal()
+    node_selected = Signal(str)
+    node_double_clicked = Signal(str)
+    run_from_node_requested = Signal(str)
+    connection_created = Signal(str, str, str, str)
+    workflow_changed = Signal()
     
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -676,7 +681,7 @@ class NodeGraphWidget(QWidget):
         else:
             logger.warning(f"创建连接失败: {msg}")
             # 显示提示信息
-            from PyQt6.QtWidgets import QToolTip, QMessageBox
+            from PySide6.QtWidgets import QToolTip, QMessageBox
             QMessageBox.warning(self, tr_("Connection failed"), msg)
     
     def get_selected_node_id(self) -> Optional[str]:

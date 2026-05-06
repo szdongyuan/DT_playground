@@ -8,9 +8,9 @@ Displays all available workflow nodes with drag-and-drop to canvas support.
 import logging
 from typing import Optional
 
-from PyQt6.QtCore import QMimeData, Qt, pyqtSignal
-from PyQt6.QtGui import QDrag
-from PyQt6.QtWidgets import (
+from PySide6.QtCore import QMimeData, Qt, Signal
+from PySide6.QtGui import QDrag
+from PySide6.QtWidgets import (
     QFrame, QLabel, QLineEdit, QTreeWidget,
     QTreeWidgetItem, QVBoxLayout, QWidget
 )
@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 class NodeTreeWidget(QTreeWidget):
     """支持拖拽的节点树形控件"""
     
-    node_double_clicked = pyqtSignal(str)  # node_type
+    node_double_clicked = Signal(str)  # node_type
     
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -85,8 +85,8 @@ class NodePalette(QWidget):
     显示所有可用节点，按分类组织，支持搜索和拖拽。
     """
     
-    node_selected = pyqtSignal(str)  # node_type
-    node_add_requested = pyqtSignal(str)  # node_type
+    node_selected = Signal(str)  # node_type
+    node_add_requested = Signal(str)  # node_type
     
     def __init__(self, parent=None):
         super().__init__(parent)

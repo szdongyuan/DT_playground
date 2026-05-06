@@ -8,7 +8,7 @@ Responsible for controlling and monitoring the model training process.
 import logging
 from typing import Any, Dict, Optional
 
-from PyQt6.QtCore import QObject, pyqtSignal
+from PySide6.QtCore import QObject, Signal
 
 from src.core.event_bus import get_event_bus
 from src.services.training_params_service import TrainingParamsService
@@ -27,9 +27,9 @@ class TrainingController(QObject):
     """
     
     # 控制器信号
-    training_started = pyqtSignal(int)               # total_epochs
-    epoch_completed = pyqtSignal(int, int, dict)     # current, total, metrics
-    training_finished = pyqtSignal(bool, str)        # success, message
+    training_started = Signal(int)               # total_epochs
+    epoch_completed = Signal(int, int, dict)     # current, total, metrics
+    training_finished = Signal(bool, str)        # success, message
     
     def __init__(self, parent=None):
         """

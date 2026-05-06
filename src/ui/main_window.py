@@ -10,9 +10,9 @@ import logging
 from collections.abc import Callable
 from typing import Optional
 
-from PyQt6.QtCore import Qt, pyqtSignal, QTimer
-from PyQt6.QtGui import QAction
-from PyQt6.QtWidgets import (
+from PySide6.QtCore import Qt, Signal, QTimer
+from PySide6.QtGui import QAction
+from PySide6.QtWidgets import (
     QButtonGroup, QFrame, QHBoxLayout, QLabel, QMessageBox,
     QPushButton, QStackedWidget, QToolBar, QVBoxLayout, QWidget
 )
@@ -80,10 +80,10 @@ class MainWindow(QWidget):
     """
     
     # Signals
-    workflow_changed = pyqtSignal()
-    training_started = pyqtSignal()
-    training_stopped = pyqtSignal()
-    training_completed = pyqtSignal(dict)
+    workflow_changed = Signal()
+    training_started = Signal()
+    training_stopped = Signal()
+    training_completed = Signal(dict)
     
     def __init__(
         self,

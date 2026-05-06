@@ -11,8 +11,8 @@ import os
 from dataclasses import dataclass
 from typing import Optional
 
-from PyQt6.QtCore import pyqtSignal
-from PyQt6.QtWidgets import (
+from PySide6.QtCore import Signal
+from PySide6.QtWidgets import (
     QFileDialog,
     QMessageBox,
     QTabWidget,
@@ -23,6 +23,7 @@ from PyQt6.QtWidgets import (
 from src.controllers.workflow_controller import WorkflowController
 from src.core.event_bus import get_event_bus
 from src.ui.i18n import tr_
+from src.ui.styles import Styles
 from src.utils.config import config
 from src.workflow.workflow import Workflow
 
@@ -50,12 +51,12 @@ class WorkflowTabsView(QWidget):
     MainWindow and App can work without changes.
     """
 
-    workflow_changed = pyqtSignal()
-    run_requested = pyqtSignal()
-    node_selected = pyqtSignal(str)
-    node_double_clicked = pyqtSignal(str)
-    run_from_node_requested = pyqtSignal(str)
-    continue_requested = pyqtSignal()
+    workflow_changed = Signal()
+    run_requested = Signal()
+    node_selected = Signal(str)
+    node_double_clicked = Signal(str)
+    run_from_node_requested = Signal(str)
+    continue_requested = Signal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -364,6 +365,32 @@ class WorkflowTabsView(QWidget):
         self._tabs = QTabWidget()
         self._tabs.setDocumentMode(True)
         self._tabs.setTabsClosable(True)
+        self._tabs.setStyleSheet(f"""
+            QTabWidget::pane {{
+                border-top: 1px solid {Styles.COLORS['surface1']};
+                background: {Styles.COLORS['base']};
+            }}
+            QTabBar::tab {{
+                background: {Styles.COLORS['surface0']};
+                color: {Styles.COLORS['text']};
+                border: 1px solid {Styles.COLORS['surface1']};
+                border-bottom: none;
+                padding: 6px 12px;
+                min-width: 96px;
+            }}
+            QTabBar::tab:selected {{
+                background: {Styles.COLORS['surface2']};
+                color: {Styles.COLORS['text']};
+            }}
+            QTabBar::tab:!selected {{
+                background: {Styles.COLORS['surface0']};
+                color: {Styles.COLORS['subtext1']};
+            }}
+            QTabBar::tab:hover {{
+                background: {Styles.COLORS['surface1']};
+                color: {Styles.COLORS['text']};
+            }}
+        """)
         layout.addWidget(self._tabs)
 
     def _connect_signals(self):

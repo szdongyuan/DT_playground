@@ -4,9 +4,9 @@ Main Application Class
 
 from collections.abc import Callable
 
-from PyQt6.QtCore import Qt, QSize
-from PyQt6.QtGui import QAction, QIcon, QKeySequence
-from PyQt6.QtWidgets import (
+from PySide6.QtCore import Qt, QSize
+from PySide6.QtGui import QAction, QIcon, QKeySequence
+from PySide6.QtWidgets import (
     QFileDialog, QMainWindow, QMenu, QMenuBar,
     QMessageBox, QToolBar, QVBoxLayout, QWidget
 )

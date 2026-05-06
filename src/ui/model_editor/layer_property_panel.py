@@ -8,8 +8,8 @@ Displays and edits parameters of the selected layer.
 import logging
 from typing import Any, Dict, List, Optional
 
-from PyQt6.QtCore import Qt, pyqtSignal
-from PyQt6.QtWidgets import (
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtWidgets import (
     QCheckBox, QComboBox, QDoubleSpinBox, QFrame,
     QGroupBox, QHBoxLayout, QLabel, QLineEdit,
     QPushButton, QScrollArea, QSpinBox, QVBoxLayout, QWidget
@@ -31,9 +31,9 @@ class LayerPropertyPanel(QWidget):
     支持显示权重状态和冻结控制。
     """
     
-    parameter_changed = pyqtSignal(str, str, object)  # layer_id, param_name, value
-    compile_config_changed = pyqtSignal()  # 编译配置变化信号（保留兼容性）
-    trainable_changed = pyqtSignal(str, bool)  # layer_id, trainable 冻结状态变化信号
+    parameter_changed = Signal(str, str, object)  # layer_id, param_name, value
+    compile_config_changed = Signal()  # 编译配置变化信号（保留兼容性）
+    trainable_changed = Signal(str, bool)  # layer_id, trainable 冻结状态变化信号
     
     def __init__(self, parent=None):
         super().__init__(parent)

@@ -12,7 +12,7 @@ This is a local AI training playground application focused on **acoustic signal 
 | Category | Technology |
 |----------|------------|
 | Language | Python 3.10+ |
-| GUI Framework | PyQt6 (Catppuccin dark theme) |
+| GUI Framework | PySide6 (Catppuccin dark theme) |
 | Deep Learning | TensorFlow 2.15+ / Keras 3.0+ |
 | Audio Processing | librosa, soundfile, scipy, pydub, sounddevice |
 | Visualization | pyqtgraph, matplotlib |

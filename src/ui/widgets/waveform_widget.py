@@ -4,13 +4,13 @@ Waveform Display Widget
 
 import numpy as np
 
-from PyQt6.QtCore import Qt, pyqtSignal
-from PyQt6.QtGui import QColor, QPainter, QPen
-from PyQt6.QtWidgets import QLabel, QVBoxLayout, QWidget
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtGui import QColor, QPainter, QPen
+from PySide6.QtWidgets import QLabel, QVBoxLayout, QWidget
 
 try:
     import pyqtgraph as pg
-    from PyQt6.QtGui import QFont
+    from PySide6.QtGui import QFont
     HAS_PYQTGRAPH = True
 except ImportError:
     HAS_PYQTGRAPH = False
@@ -20,7 +20,7 @@ class WaveformWidget(QWidget):
     """波形可视化控件"""
     
     # 信号
-    region_selected = pyqtSignal(float, float)  # 选区起止时间
+    region_selected = Signal(float, float)  # 选区起止时间
     
     def __init__(self, parent=None):
         super().__init__(parent)

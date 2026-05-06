@@ -8,7 +8,7 @@ Stores structured payloads in the system clipboard as JSON text.
 import json
 from typing import Any, Dict, Optional
 
-from PyQt6.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication
 
 
 GRAPH_CLIPBOARD_VERSION = 1

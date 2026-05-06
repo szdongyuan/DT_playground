@@ -10,8 +10,8 @@ from typing import Any, Dict, List, Optional
 
 import numpy as np
 
-from PyQt6.QtCore import Qt, pyqtSignal, QTimer
-from PyQt6.QtWidgets import (
+from PySide6.QtCore import Qt, Signal, QTimer
+from PySide6.QtWidgets import (
     QFrame, QGroupBox, QHBoxLayout, QHeaderView, QLabel,
     QProgressBar, QPushButton, QSplitter, QTableWidget,
     QTableWidgetItem, QTextEdit, QVBoxLayout, QWidget
@@ -43,10 +43,10 @@ class TrainingView(QWidget):
         stop_and_save_requested: 请求停止训练并保存检查点 (path)
     """
     
-    pause_requested = pyqtSignal()
-    resume_requested = pyqtSignal()
-    stop_requested = pyqtSignal()
-    stop_and_save_requested = pyqtSignal(str)
+    pause_requested = Signal()
+    resume_requested = Signal()
+    stop_requested = Signal()
+    stop_and_save_requested = Signal(str)
     
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -427,7 +427,7 @@ class TrainingView(QWidget):
 
     def _on_stop_and_save(self):
         """Stop training and save checkpoint to a file chosen by user."""
-        from PyQt6.QtWidgets import QFileDialog
+        from PySide6.QtWidgets import QFileDialog
         from datetime import datetime
         import os
 

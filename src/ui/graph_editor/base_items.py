@@ -8,12 +8,12 @@ Provides reusable graphics item base classes for node_editor and model_editor.
 import logging
 from typing import List, Optional
 
-from PyQt6.QtCore import QPoint, QPointF, QRectF, Qt
-from PyQt6.QtGui import (
+from PySide6.QtCore import QPoint, QPointF, QRectF, Qt
+from PySide6.QtGui import (
     QBrush, QColor, QFont, QKeyEvent, QKeySequence, QMouseEvent, QPainter,
     QPainterPath, QPen, QWheelEvent
 )
-from PyQt6.QtWidgets import (
+from PySide6.QtWidgets import (
     QGraphicsEllipseItem, QGraphicsItem, QGraphicsLineItem,
     QGraphicsPathItem, QGraphicsRectItem, QGraphicsScene,
     QGraphicsView

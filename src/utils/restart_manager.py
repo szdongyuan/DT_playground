@@ -22,8 +22,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable, Optional
 
-from PyQt6.QtCore import QObject, QTimer
-from PyQt6.QtWidgets import QApplication
+from PySide6.QtCore import QObject, QTimer
+from PySide6.QtWidgets import QApplication
 
 from src.utils.config import config
 from src.ui.i18n import tr_
