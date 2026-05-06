@@ -7,7 +7,7 @@
 Organize import statements in the following order, with one blank line between groups, **alphabetically sorted within each group**:
 
 1. **Python standard library** (e.g., os, sys, json)
-2. **Third-party libraries** (e.g., numpy, tensorflow, PyQt6)
+2. **Third-party libraries** (e.g., numpy, tensorflow, PySide6)
 3. **Local modules** (e.g., src.audio, src.ui)
 
 ```python
@@ -20,7 +20,7 @@ from pathlib import Path
 # Third-party libraries
 import numpy as np
 import tensorflow as tf
-from PyQt6.QtWidgets import QWidget
+from PySide6.QtWidgets import QWidget
 
 # Local modules
 from src.audio.features import FeatureExtractor
@@ -41,10 +41,10 @@ from src.workflow.engine import WorkflowEngine
 
 ---
 
-## PyQt6 Standards
+## PySide6 Standards
 
 - UI component classes end with `Widget`/`Dialog`/`Window`
-- Define signals using `pyqtSignal`
+- Define signals using `Signal`
 - Slot functions start with `_on_` or `_handle_`
 - Use `QThread` for time-consuming operations to avoid blocking UI
 - **Unified style management**: Use the `Styles` class from `src/ui/styles.py`

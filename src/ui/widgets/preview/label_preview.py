@@ -11,8 +11,8 @@ from typing import Any, Dict, List, Optional, Union
 
 import numpy as np
 
-from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import (
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import (
     QFrame, QGroupBox, QHBoxLayout, QHeaderView, QLabel,
     QSplitter, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
 )

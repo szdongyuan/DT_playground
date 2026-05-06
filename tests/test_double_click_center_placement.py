@@ -3,7 +3,7 @@ import unittest
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
-from PyQt6.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication, QGraphicsTextItem
 
 from src.model_builder import get_all_layer_types
 from src.ui.views.model_builder_view import ModelBuilderView
@@ -66,3 +66,36 @@ class DoubleClickCenterPlacementTests(unittest.TestCase):
         layer = next(iter(widget.get_model_graph().layers.values()))
         self.assertAlmostEqual(layer.position[0], expected_center.x(), delta=2.0)
         self.assertAlmostEqual(layer.position[1], expected_center.y(), delta=2.0)
+
+    def test_workflow_node_text_items_remain_visible_after_creation(self):
+        widget = WorkflowEditorWidget()
+        self.addCleanup(widget.close)
+
+        workflow = Workflow("text_visibility_workflow")
+        widget.set_workflow(workflow)
+
+        node_id = widget._node_graph.add_node(get_all_node_types()[0], (0.0, 0.0))
+        node_item = widget._node_graph._scene.node_items[node_id]
+
+        text_items = [
+            item for item in node_item.childItems()
+            if isinstance(item, QGraphicsTextItem)
+        ]
+
+        self.assertGreaterEqual(len(text_items), 1)
+        self.assertTrue(any(item.toPlainText().strip() for item in text_items))
+
+    def test_model_layer_text_items_remain_visible_after_creation(self):
+        widget = ModelBuilderView()
+        self.addCleanup(widget.close)
+
+        layer_id = widget._graph_widget.add_layer(get_all_layer_types()[0], (0.0, 0.0))
+        layer_item = widget._graph_widget._scene.layer_items[layer_id]
+
+        text_items = [
+            item for item in layer_item.childItems()
+            if isinstance(item, QGraphicsTextItem)
+        ]
+
+        self.assertGreaterEqual(len(text_items), 1)
+        self.assertTrue(any(item.toPlainText().strip() for item in text_items))

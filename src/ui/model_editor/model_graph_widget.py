@@ -15,12 +15,12 @@ Canvas for visually editing neural network structure.
 import logging
 from typing import Dict, List, Optional
 
-from PyQt6.QtCore import QPoint, QPointF, QRectF, Qt, pyqtSignal
-from PyQt6.QtGui import (
+from PySide6.QtCore import QPoint, QPointF, QRectF, Qt, Signal
+from PySide6.QtGui import (
     QBrush, QColor, QDragEnterEvent, QDropEvent, QFont,
     QKeyEvent, QMouseEvent, QPainter, QPainterPath, QPen, QWheelEvent
 )
-from PyQt6.QtWidgets import (
+from PySide6.QtWidgets import (
     QGraphicsItem, QGraphicsRectItem,
     QGraphicsTextItem, QMenu, QVBoxLayout, QWidget
 )
@@ -60,6 +60,7 @@ class LayerItem(QGraphicsRectItem):
         super().__init__()
         self.layer = layer
         self.layer_scene = scene
+        self._text_items: List[QGraphicsTextItem] = []
         
         # 设置矩形
         self.setRect(0, 0, self.LAYER_WIDTH, self.LAYER_HEIGHT)
@@ -86,6 +87,7 @@ class LayerItem(QGraphicsRectItem):
         title.setDefaultTextColor(QColor("#cdd6f4"))
         title.setFont(QFont("Microsoft YaHei", 10, QFont.Weight.Bold))
         title.setPos(8, 4)
+        self._text_items.append(title)
     
     def _create_ports(self):
         """创建端口"""
@@ -196,10 +198,10 @@ class ModelGraphScene(BaseGraphScene):
     继承自 BaseGraphScene，增加模型层特定功能。
     """
     
-    layer_selected = pyqtSignal(str)
-    layer_double_clicked = pyqtSignal(str)
-    connection_created = pyqtSignal(str, str)
-    graph_changed = pyqtSignal()
+    layer_selected = Signal(str)
+    layer_double_clicked = Signal(str)
+    connection_created = Signal(str, str)
+    graph_changed = Signal()
     
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -350,7 +352,7 @@ class ModelGraphView(BaseGraphView):
         """放置事件"""
         if event.mimeData().hasFormat("application/x-model-layer"):
             layer_type = bytes(event.mimeData().data("application/x-model-layer")).decode()
-            # PyQt6 使用 position() 代替 pos()
+            # PySide6 使用 position() 代替 pos()
             pos = self.mapToScene(event.position().toPoint())
             
             parent = self.parent()
@@ -371,10 +373,10 @@ class ModelGraphWidget(QWidget):
     CLIPBOARD_KIND = "model_layers"
     PASTE_OFFSET = (40.0, 40.0)
 
-    layer_selected = pyqtSignal(str)
-    layer_double_clicked = pyqtSignal(str)
-    connection_created = pyqtSignal(str, str)
-    graph_changed = pyqtSignal()
+    layer_selected = Signal(str)
+    layer_double_clicked = Signal(str)
+    connection_created = Signal(str, str)
+    graph_changed = Signal()
     
     def __init__(self, parent=None):
         super().__init__(parent)

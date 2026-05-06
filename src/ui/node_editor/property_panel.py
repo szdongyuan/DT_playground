@@ -10,8 +10,8 @@ import os
 import sys
 from typing import Any, Dict, Optional
 
-from PyQt6.QtCore import Qt, pyqtSignal
-from PyQt6.QtWidgets import (
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtWidgets import (
     QCheckBox, QComboBox, QDoubleSpinBox, QFileDialog,
     QFormLayout, QFrame, QGroupBox, QHBoxLayout, QLabel,
     QLineEdit, QPushButton, QScrollArea, QSpinBox,
@@ -59,7 +59,7 @@ class PropertyPanel(QWidget):
         parameter_changed: 参数值改变 (node_id, param_name, value)
     """
     
-    parameter_changed = pyqtSignal(str, str, object)
+    parameter_changed = Signal(str, str, object)
     
     def __init__(self, parent=None):
         super().__init__(parent)

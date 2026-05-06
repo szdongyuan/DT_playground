@@ -301,7 +301,7 @@ class Styles:
     @staticmethod
     def get_color(color_str: str):
         """获取 QColor 对象"""
-        from PyQt6.QtGui import QColor
+        from PySide6.QtGui import QColor
         
         # 如果是颜色名称，从 COLORS 字典获取
         if color_str in Styles.COLORS:

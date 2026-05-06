@@ -10,8 +10,8 @@ from typing import Any, Optional
 
 import numpy as np
 
-from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import (
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import (
     QGroupBox, QHBoxLayout, QLabel, QSplitter, QVBoxLayout, QWidget
 )
 
@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 try:
     import pyqtgraph as pg
-    from PyQt6.QtGui import QFont
+    from PySide6.QtGui import QFont
     HAS_PYQTGRAPH = True
 except ImportError:
     HAS_PYQTGRAPH = False

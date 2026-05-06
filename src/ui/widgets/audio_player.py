@@ -8,9 +8,9 @@ import tempfile
 import numpy as np
 import soundfile as sf
 
-from PyQt6.QtCore import Qt, QTimer, QUrl, pyqtSignal
-from PyQt6.QtMultimedia import QAudioOutput, QMediaPlayer
-from PyQt6.QtWidgets import (
+from PySide6.QtCore import Qt, QTimer, QUrl, Signal
+from PySide6.QtMultimedia import QAudioOutput, QMediaPlayer
+from PySide6.QtWidgets import (
     QHBoxLayout, QLabel, QPushButton, QSlider,
     QStyle, QWidget
 )
@@ -20,8 +20,8 @@ class AudioPlayerWidget(QWidget):
     """音频播放控制控件"""
     
     # 信号
-    position_changed = pyqtSignal(float)  # 播放位置改变（秒）
-    playback_state_changed = pyqtSignal(bool)  # 播放状态改变
+    position_changed = Signal(float)  # 播放位置改变（秒）
+    playback_state_changed = Signal(bool)  # 播放状态改变
     
     def __init__(self, parent=None):
         super().__init__(parent)

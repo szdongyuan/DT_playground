@@ -8,9 +8,9 @@ Displays all available neural network layers with drag-and-drop to canvas suppor
 import logging
 from typing import Optional
 
-from PyQt6.QtCore import QMimeData, Qt, pyqtSignal
-from PyQt6.QtGui import QDrag
-from PyQt6.QtWidgets import (
+from PySide6.QtCore import QMimeData, Qt, Signal
+from PySide6.QtGui import QDrag
+from PySide6.QtWidgets import (
     QFrame, QLabel, QLineEdit, QTreeWidget,
     QTreeWidgetItem, QVBoxLayout, QWidget
 )
@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 class LayerTreeWidget(QTreeWidget):
     """支持拖拽的层树形控件"""
     
-    layer_double_clicked = pyqtSignal(str)  # layer_type
+    layer_double_clicked = Signal(str)  # layer_type
     
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -85,8 +85,8 @@ class LayerPalette(QWidget):
     显示所有可用层，按分类组织，支持搜索和拖拽。
     """
     
-    layer_selected = pyqtSignal(str)  # layer_type
-    layer_add_requested = pyqtSignal(str)  # layer_type
+    layer_selected = Signal(str)  # layer_type
+    layer_add_requested = Signal(str)  # layer_type
     
     def __init__(self, parent=None):
         super().__init__(parent)

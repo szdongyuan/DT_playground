@@ -12,9 +12,9 @@ from typing import Any, Optional, Type
 
 import numpy as np
 
-from PyQt6.QtCore import Qt, pyqtSignal
-from PyQt6.QtGui import QKeySequence, QShortcut
-from PyQt6.QtWidgets import (
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtGui import QKeySequence, QShortcut
+from PySide6.QtWidgets import (
     QComboBox, QFrame, QHBoxLayout, QLabel,
     QPushButton, QStackedWidget, QVBoxLayout, QWidget
 )
@@ -45,7 +45,7 @@ class PreviewView(QWidget):
         preview_requested: 请求预览指定节点 (node_id)
     """
     
-    preview_requested = pyqtSignal(str)
+    preview_requested = Signal(str)
     
     def __init__(self, parent=None):
         super().__init__(parent)

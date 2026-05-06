@@ -4,8 +4,8 @@ Model Export Dialog
 
 import os
 
-from PyQt6.QtCore import Qt, pyqtSignal
-from PyQt6.QtWidgets import (
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtWidgets import (
     QCheckBox, QComboBox, QDialog, QFileDialog,
     QFormLayout, QGroupBox, QHBoxLayout, QLabel,
     QLineEdit, QMessageBox, QProgressBar, QPushButton,
@@ -16,7 +16,7 @@ from src.ui.i18n import tr_
 class ExportModelDialog(QDialog):
     """模型导出对话框"""
     
-    export_requested = pyqtSignal(dict)  # 导出请求
+    export_requested = Signal(dict)  # 导出请求
     
     def __init__(self, parent=None, model=None):
         super().__init__(parent)

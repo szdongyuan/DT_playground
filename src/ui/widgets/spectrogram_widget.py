@@ -4,9 +4,9 @@ Spectrogram Display Widget
 
 import numpy as np
 
-from PyQt6.QtCore import Qt, pyqtSignal
-from PyQt6.QtGui import QStandardItemModel
-from PyQt6.QtWidgets import (
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtGui import QStandardItemModel
+from PySide6.QtWidgets import (
     QComboBox, QHBoxLayout, QLabel, QPushButton,
     QVBoxLayout, QWidget
 )
@@ -22,7 +22,7 @@ class SpectrogramWidget(QWidget):
     """频谱图可视化控件"""
     
     # 信号
-    feature_type_changed = pyqtSignal(str)  # 特征类型改变
+    feature_type_changed = Signal(str)  # 特征类型改变
     
     def __init__(self, parent=None):
         super().__init__(parent)

@@ -1619,7 +1619,7 @@ msgid ""
 msgstr ""
 
 #: src/ui/dialogs/about_dialog.py:71
-msgid "Tech stack: Python • TensorFlow • PyQt6 • Librosa"
+msgid "Tech stack: Python • TensorFlow • PySide6 • Librosa"
 msgstr ""
 
 #: src/ui/dialogs/about_dialog.py:86 src/utils/dialogs.py:110

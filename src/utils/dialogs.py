@@ -6,8 +6,8 @@ Provides dialogs with copyable error text and automatic logging
 import logging
 import traceback
 
-from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import (
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import (
     QApplication, QDialog, QHBoxLayout, QLabel,
     QPushButton, QTextEdit, QVBoxLayout
 )
@@ -155,7 +155,7 @@ def show_warning(parent, title: str, message: str):
     """显示警告对话框，记录日志"""
     logger.warning(f"{title}: {message}")
     
-    from PyQt6.QtWidgets import QMessageBox
+    from PySide6.QtWidgets import QMessageBox
     QMessageBox.warning(parent, title, message)
 
 
@@ -163,6 +163,6 @@ def show_info(parent, title: str, message: str):
     """显示信息对话框，记录日志"""
     logger.info(f"{title}: {message}")
     
-    from PyQt6.QtWidgets import QMessageBox
+    from PySide6.QtWidgets import QMessageBox
     QMessageBox.information(parent, title, message)
 

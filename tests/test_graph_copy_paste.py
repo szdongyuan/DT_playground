@@ -3,7 +3,7 @@ import unittest
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
-from PyQt6.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication
 
 from src.ui.views.model_builder_view import ModelBuilderView
 from src.ui.views.workflow_editor_widget import WorkflowEditorWidget

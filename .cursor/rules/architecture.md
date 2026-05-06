@@ -7,8 +7,8 @@
 | Category | Technology |
 |----------|------------|
 | Language | Python 3.10+ |
-| GUI Framework | PyQt6 (Catppuccin dark theme) |
-| Node Editor | Custom PyQt6 implementation |
+| GUI Framework | PySide6 (Catppuccin dark theme) |
+| Node Editor | Custom PySide6 implementation |
 | Deep Learning | TensorFlow 2.15+ / Keras 3.0+ |
 | Audio Processing | librosa, soundfile, scipy, pydub, sounddevice |
 | Visualization | pyqtgraph, matplotlib |
@@ -247,13 +247,13 @@ node = create_node("my_node")
 
 #### 2. Observer Pattern (via Signal/Slot)
 
-Use PyQt6 signal-slot mechanism for loosely coupled event notifications.
+Use PySide6 signal-slot mechanism for loosely coupled event notifications.
 
 ```python
 class WorkflowEngine(QObject):
     # Define signals
-    workflow_started = pyqtSignal()
-    node_progress = pyqtSignal(str, float, str)  # node_id, progress, data
+    workflow_started = Signal()
+    node_progress = Signal(str, float, str)  # node_id, progress, data
     
     def _execute_node(self, node):
         self.node_progress.emit(node.node_id, progress, data)
@@ -341,8 +341,8 @@ Decouple communication between views.
 # src/core/event_bus.py
 class EventBus(QObject):
     """Global event bus"""
-    preview_requested = pyqtSignal(str, dict)    # node_id, data
-    training_updated = pyqtSignal(int, dict)     # epoch, metrics
+    preview_requested = Signal(str, dict)    # node_id, data
+    training_updated = Signal(int, dict)     # epoch, metrics
     
     @classmethod
     def instance(cls) -> 'EventBus':
@@ -747,7 +747,7 @@ Supports importing architecture from trained Keras models for fine-tuning:
 | Scenario | Recommended Method | Description |
 |----------|-------------------|-------------|
 | Cross-component communication | EventBus | Between different views, Controller and Views |
-| Intra-component communication | pyqtSignal | Parent-child components, internal elements |
+| Intra-component communication | Signal | Parent-child components, internal elements |
 
 ### EventBus Event Categories
 
@@ -762,7 +762,7 @@ Supports importing architecture from trained Keras models for fine-tuning:
 ### Signal Flow Examples
 
 ```
-Intra-component communication (pyqtSignal):
+Intra-component communication (Signal):
   NodePalette.node_dragged → NodeGraph.add_node
   PropertyPanel.parameter_changed → BaseNode.update_parameter
 
@@ -782,7 +782,7 @@ Frontend-backend separation (View → Controller → Engine):
 │                         UI Layer (Views)                         │
 │  WorkflowView │ ModelBuilderView │ PreviewView │ TrainingView   │
 └───────────────────────────┬─────────────────────────────────────┘
-                            │ pyqtSignal (intra-component)
+                            │ Signal (intra-component)
                             ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │                     Controller Layer                             │

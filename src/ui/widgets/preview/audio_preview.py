@@ -10,8 +10,8 @@ from typing import Any, List, Optional
 
 import numpy as np
 
-from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import (
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import (
     QGroupBox, QSplitter, QVBoxLayout, QWidget
 )
 

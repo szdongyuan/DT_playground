@@ -15,7 +15,7 @@ from typing import Any, Callable, Dict, List, Optional, Tuple
 
 import numpy as np
 import tensorflow as tf
-from PyQt6.QtCore import QObject, QThread, pyqtSignal
+from PySide6.QtCore import QObject, QThread, Signal
 from tensorflow import keras
 
 # 从 callbacks 模块导入基础回调
@@ -77,12 +77,12 @@ class TrainerWorker(QThread):
     """训练工作线程"""
     
     # 信号
-    epoch_end = pyqtSignal(int, int, float, float, float, float)
-    batch_end = pyqtSignal(int, dict)
-    training_finished = pyqtSignal(dict)
-    training_error = pyqtSignal(str)
-    model_saved = pyqtSignal(str)
-    status_update = pyqtSignal(str)
+    epoch_end = Signal(int, int, float, float, float, float)
+    batch_end = Signal(int, dict)
+    training_finished = Signal(dict)
+    training_error = Signal(str)
+    model_saved = Signal(str)
+    status_update = Signal(str)
     
     def __init__(self, 
                  model: keras.Model,
@@ -263,11 +263,11 @@ class Trainer(QObject):
     """训练管理器"""
     
     # 信号
-    progress_updated = pyqtSignal(int, int, float, float, float, float)
-    training_completed = pyqtSignal(dict)
-    training_error = pyqtSignal(str)
-    status_changed = pyqtSignal(str)
-    model_saved = pyqtSignal(str)
+    progress_updated = Signal(int, int, float, float, float, float)
+    training_completed = Signal(dict)
+    training_error = Signal(str)
+    status_changed = Signal(str)
+    model_saved = Signal(str)
     
     def __init__(self, parent=None):
         super().__init__(parent)

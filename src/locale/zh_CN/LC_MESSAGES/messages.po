@@ -1639,8 +1639,8 @@ msgstr ""
 "支持音频可视化、特征提取、模型构建与训练监控。"
 
 #: src/ui/dialogs/about_dialog.py:71
-msgid "Tech stack: Python • TensorFlow • PyQt6 • Librosa"
-msgstr "技术栈：Python • TensorFlow • PyQt6 • Librosa"
+msgid "Tech stack: Python • TensorFlow • PySide6 • Librosa"
+msgstr "技术栈：Python • TensorFlow • PySide6 • Librosa"
 
 #: src/ui/dialogs/about_dialog.py:86 src/utils/dialogs.py:110
 msgid "Close"
