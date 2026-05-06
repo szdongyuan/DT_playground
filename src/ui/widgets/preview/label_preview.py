@@ -116,8 +116,12 @@ class LabelPreviewWidget(BasePreviewWidget):
         table_layout.setContentsMargins(4, 4, 4, 4)
         
         self._table = QTableWidget()
-        self._table.setColumnCount(2)
-        self._table.setHorizontalHeaderLabels([tr_("Class name"), tr_("Label")])
+        self._table.setColumnCount(3)
+        self._table.setHorizontalHeaderLabels([
+            tr_("Item"),
+            tr_("Label"),
+            tr_("Class name"),
+        ])
         self._table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         self._table.setAlternatingRowColors(True)
         self._table.setStyleSheet(f"""
@@ -226,9 +230,18 @@ class LabelPreviewWidget(BasePreviewWidget):
                 else:
                     labels = label_dict
             elif 'filename_map' in data:
-                # LabelFileNode 格式
-                label_map = data.get('filename_map', {})
-                labels = list(label_map.values())
+                # LabelFileNode metadata format
+                filename_map = data.get('filename_map', {})
+                label_map = {
+                    'filename_map': filename_map,
+                    'label_names': data.get('label_names', {}),
+                }
+                labels = list(filename_map.values())
+            elif 'label_names' in data:
+                # Class-name metadata without filenames, such as TXT label maps.
+                label_names = data.get('label_names', {})
+                label_map = {'label_names': label_names}
+                labels = list(label_names.values())
             else:
                 # 普通字典 {filename: label}
                 label_map = data
@@ -318,11 +331,15 @@ class LabelPreviewWidget(BasePreviewWidget):
         
         self._table.setRowCount(display_count)
         
-        # 如果有文件名映射，使用它
-        filenames = list(label_map.keys()) if label_map else []
+        has_metadata = bool(
+            label_map and ('filename_map' in label_map or 'label_names' in label_map)
+        )
+        filename_map = label_map.get('filename_map', {}) if has_metadata else label_map
+        label_names = label_map.get('label_names', {}) if has_metadata else {}
+        filenames = list(filename_map.keys()) if filename_map else []
+        class_names = self._build_class_name_lookup(label_names)
         
         for i in range(display_count):
-            # 类别名（如果有文件名则显示文件名）
             if i < len(filenames):
                 name = filenames[i]
             else:
@@ -335,6 +352,10 @@ class LabelPreviewWidget(BasePreviewWidget):
             value_item = QTableWidgetItem(str(label_value))
             value_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             self._table.setItem(i, 1, value_item)
+
+            class_name = class_names.get(label_value) or class_names.get(str(label_value), "")
+            class_item = QTableWidgetItem(str(class_name))
+            self._table.setItem(i, 2, class_item)
         
         # 如果数据被截断，添加提示
         if len(labels) > max_display:
@@ -347,6 +368,18 @@ class LabelPreviewWidget(BasePreviewWidget):
             hint_item.setForeground(Styles.get_color('subtext0'))
             self._table.setItem(display_count, 0, hint_item)
             self._table.setSpan(display_count, 0, 1, 3)
+
+    def _build_class_name_lookup(self, label_names: Dict) -> Dict:
+        """Build a lookup from label values to human-readable class names."""
+        lookup = {}
+        for key, value in label_names.items():
+            if isinstance(value, (int, float, np.integer, np.floating)):
+                lookup[value] = str(key)
+                lookup[str(value)] = str(key)
+            else:
+                lookup[key] = str(value)
+                lookup[str(key)] = str(value)
+        return lookup
     
     def clear(self):
         """清除显示"""

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-10 13:38+0800\n"
+"POT-Creation-Date: 2026-05-06 15:18+0800\n"
 "PO-Revision-Date: 2026-02-04 17:15+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -16,75 +16,71 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/app.py:49 src/ui/dialogs/about_dialog.py:36
+#: src/app.py:68 src/ui/dialogs/about_dialog.py:41
 msgid "AI Acoustic Signal Training Platform"
 msgstr "AI 声学信号训练平台"
 
-#: src/app.py:97
+#: src/app.py:119
 msgid "File(&F)"
 msgstr "文件(&F)"
 
-#: src/app.py:100
+#: src/app.py:122
 msgid "Load model..."
 msgstr "加载模型..."
 
-#: src/app.py:106
+#: src/app.py:128
 msgid "Export model..."
 msgstr "导出模型..."
 
-#: src/app.py:118
-msgid "Recent workflows"
-msgstr "最近工作流"
-
-#: src/app.py:120
+#: src/app.py:142
 msgid "Restart(&R)"
 msgstr "重启(&R)"
 
-#: src/app.py:128
+#: src/app.py:150
 msgid "Exit(&X)"
 msgstr "退出(&X)"
 
-#: src/app.py:134
+#: src/app.py:156
 msgid "Edit(&E)"
 msgstr "编辑(&E)"
 
-#: src/app.py:136
+#: src/app.py:158
 msgid "Settings..."
 msgstr "设置..."
 
-#: src/app.py:142
+#: src/app.py:164
 msgid "View(&V)"
 msgstr "视图(&V)"
 
-#: src/app.py:144
+#: src/app.py:166
 msgid "Workflow view"
 msgstr "工作流视图"
 
-#: src/app.py:149
+#: src/app.py:171
 msgid "Model view"
 msgstr "模型视图"
 
-#: src/app.py:154
+#: src/app.py:176
 msgid "Preview view"
 msgstr "预览视图"
 
-#: src/app.py:159
+#: src/app.py:181
 msgid "Training view"
 msgstr "训练视图"
 
-#: src/app.py:165
+#: src/app.py:187
 msgid "Help(&H)"
 msgstr "帮助(&H)"
 
-#: src/app.py:167
+#: src/app.py:189
 msgid "About..."
 msgstr "关于..."
 
-#: src/app.py:339 src/workflow/nodes/training.py:31
+#: src/app.py:361 src/workflow/nodes/training.py:31
 msgid "Load model"
 msgstr "加载模型"
 
-#: src/app.py:341
+#: src/app.py:363
 msgid ""
 "Keras models (*.h5 *.keras);;Model definition (*.model.json);;SavedModel "
 "(*);;All files (*)"
@@ -92,36 +88,28 @@ msgstr ""
 "Keras 模型 (*.h5 *.keras);;模型定义 (*.model.json);;SavedModel (*);;所有文件 "
 "(*)"
 
-#: src/app.py:350 src/ui/dialogs/export_dialog.py:191
+#: src/app.py:372 src/ui/dialogs/export_dialog.py:191
 msgid "Success"
 msgstr "成功"
 
-#: src/app.py:351
+#: src/app.py:373
 #, python-brace-format
 msgid "Model loaded: {path}"
 msgstr "模型已加载：{path}"
 
-#: src/app.py:356 src/ui/dialogs/export_dialog.py:208
+#: src/app.py:378 src/ui/dialogs/export_dialog.py:208
 #: src/ui/views/model_builder_view.py:339
 #: src/ui/views/model_builder_view.py:524
 msgid "Error"
 msgstr "错误"
 
-#: src/app.py:357 src/ui/views/model_builder_view.py:340
+#: src/app.py:379 src/ui/views/model_builder_view.py:340
 #: src/workflow/nodes/training.py:81
 #, python-brace-format
 msgid "Failed to load model: {error}"
 msgstr "加载模型失败：{error}"
 
-#: src/app.py:390
-msgid "(No recent workflows)"
-msgstr "（无最近工作流）"
-
-#: src/app.py:401
-msgid "Clear recent workflows"
-msgstr "清除最近工作流"
-
-#: src/app.py:422 src/ui/main_window.py:545 src/ui/main_window.py:599
+#: src/app.py:438 src/ui/main_window.py:545 src/ui/main_window.py:599
 #: src/ui/main_window.py:604 src/ui/dialogs/dataset_dialog.py:216
 #: src/ui/dialogs/export_dialog.py:137 src/ui/dialogs/export_dialog.py:141
 #: src/ui/dialogs/export_dialog.py:145 src/ui/views/model_builder_view.py:455
@@ -129,42 +117,42 @@ msgstr "清除最近工作流"
 msgid "Warning"
 msgstr "警告"
 
-#: src/app.py:423 src/audio/loader.py:58 src/workflow/nodes/data_source.py:285
+#: src/app.py:439 src/audio/loader.py:58 src/workflow/nodes/data_source.py:285
 #: src/workflow/nodes/data_source.py:351
 #, python-brace-format
 msgid "File does not exist: {path}"
 msgstr "文件不存在：{path}"
 
-#: src/app.py:482
+#: src/app.py:502
 msgid "Restart required"
 msgstr "需要重启"
 
-#: src/app.py:483
+#: src/app.py:503
 msgid "Language change will take effect after restart."
 msgstr "语言更改将在重启后生效。"
 
-#: src/app.py:484
+#: src/app.py:504
 msgid "Restart now"
 msgstr "立即重启"
 
-#: src/app.py:485
+#: src/app.py:505
 msgid "Restart later"
 msgstr "稍后重启"
 
-#: src/app.py:498 src/controllers/navigation_controller.py:209
+#: src/app.py:518 src/controllers/navigation_controller.py:209
 #: src/ui/main_window.py:904
 msgid "Info"
 msgstr "提示"
 
-#: src/app.py:499
+#: src/app.py:519
 msgid "Settings saved. Some changes require a restart to take effect."
 msgstr "设置已保存。部分更改需要重启后生效。"
 
-#: src/app.py:527
+#: src/app.py:547
 msgid "Confirm restart"
 msgstr "确认重启"
 
-#: src/app.py:529
+#: src/app.py:549
 msgid ""
 "A workflow/training is currently running.\n"
 "Restart will stop the current run and start a new instance.\n"
@@ -176,11 +164,11 @@ msgstr ""
 "\n"
 "是否继续？"
 
-#: src/app.py:562
+#: src/app.py:582
 msgid "Restart failed"
 msgstr "重启失败"
 
-#: src/app.py:563
+#: src/app.py:583
 msgid "Please check the latest log under the logs directory."
 msgstr "请查看 logs 目录下最新的日志。"
 
@@ -365,19 +353,6 @@ msgid ""
 msgstr ""
 "循环节点 [{name}] 无法预览。\n"
 "请在循环内部选择一个具体的处理节点进行预览。"
-
-#: src/controllers/navigation_controller.py:229
-msgid "Label data"
-msgstr "标签数据"
-
-#: src/controllers/navigation_controller.py:231
-#, python-brace-format
-msgid ""
-"Loaded {count} label(s).\n"
-"Label data cannot be visualized for preview."
-msgstr ""
-"已加载 {count} 个标签。\n"
-"标签数据无法可视化预览。"
 
 #: src/controllers/training_controller.py:94
 #, python-brace-format
@@ -1621,15 +1596,15 @@ msgstr ""
 "节点 [{name}] 尚未运行。\n"
 "请先点击“运行”执行工作流。"
 
-#: src/ui/dialogs/about_dialog.py:22
+#: src/ui/dialogs/about_dialog.py:27
 msgid "About"
 msgstr "关于"
 
-#: src/ui/dialogs/about_dialog.py:46
+#: src/ui/dialogs/about_dialog.py:51
 msgid "Version 1.0.0"
 msgstr "版本 1.0.0"
 
-#: src/ui/dialogs/about_dialog.py:60
+#: src/ui/dialogs/about_dialog.py:65
 msgid ""
 "A local training platform for learning AI acoustic signal processing.\n"
 "Supports audio visualization, feature extraction, model building, and "
@@ -1638,11 +1613,11 @@ msgstr ""
 "用于学习 AI 声学信号处理的本地训练平台。\n"
 "支持音频可视化、特征提取、模型构建与训练监控。"
 
-#: src/ui/dialogs/about_dialog.py:71
+#: src/ui/dialogs/about_dialog.py:76
 msgid "Tech stack: Python • TensorFlow • PySide6 • Librosa"
 msgstr "技术栈：Python • TensorFlow • PySide6 • Librosa"
 
-#: src/ui/dialogs/about_dialog.py:86 src/utils/dialogs.py:110
+#: src/ui/dialogs/about_dialog.py:107 src/utils/dialogs.py:110
 msgid "Close"
 msgstr "关闭"
 
@@ -2221,41 +2196,41 @@ msgstr "取消勾选以冻结该层，使其权重在训练期间不会更新。
 msgid "🔒 This layer is frozen; weights will not be updated during training."
 msgstr "🔒 该层已冻结；训练期间权重不会更新。"
 
-#: src/ui/model_editor/model_graph_widget.py:597
+#: src/ui/model_editor/model_graph_widget.py:599
 msgid "Add layer"
 msgstr "添加层"
 
-#: src/ui/model_editor/model_graph_widget.py:618
-#: src/ui/node_editor/node_graph.py:815
+#: src/ui/model_editor/model_graph_widget.py:620
+#: src/ui/node_editor/node_graph.py:820
 msgid "Copy"
 msgstr "复制"
 
-#: src/ui/model_editor/model_graph_widget.py:622
-#: src/ui/node_editor/node_graph.py:819
+#: src/ui/model_editor/model_graph_widget.py:624
+#: src/ui/node_editor/node_graph.py:824
 msgid "Paste"
 msgstr "粘贴"
 
-#: src/ui/model_editor/model_graph_widget.py:627
+#: src/ui/model_editor/model_graph_widget.py:629
 msgid "Reset selected layer connections"
 msgstr "重置所选层连接"
 
-#: src/ui/model_editor/model_graph_widget.py:630
+#: src/ui/model_editor/model_graph_widget.py:632
 msgid "Delete selected layers"
 msgstr "删除所选层"
 
-#: src/ui/node_editor/node_graph.py:680
+#: src/ui/node_editor/node_graph.py:685
 msgid "Connection failed"
 msgstr "连接失败"
 
-#: src/ui/node_editor/node_graph.py:811
+#: src/ui/node_editor/node_graph.py:816
 msgid "Rerun from selected node"
 msgstr "从所选节点重新运行"
 
-#: src/ui/node_editor/node_graph.py:824
+#: src/ui/node_editor/node_graph.py:829
 msgid "Reset selected node connections"
 msgstr "重置所选节点连接"
 
-#: src/ui/node_editor/node_graph.py:828
+#: src/ui/node_editor/node_graph.py:833
 msgid "Delete selected nodes"
 msgstr "删除所选节点"
 
@@ -2364,9 +2339,9 @@ msgstr "🗑️ 清空"
 #: src/ui/views/model_builder_view.py:297
 #: src/ui/views/model_builder_view.py:360
 #: src/ui/views/model_builder_view.py:596
-#: src/ui/views/workflow_tabs_view.py:129
-#: src/ui/views/workflow_tabs_view.py:589
-#: src/ui/views/workflow_tabs_view.py:624 src/ui/views/workflow_view.py:216
+#: src/ui/views/workflow_tabs_view.py:130
+#: src/ui/views/workflow_tabs_view.py:616
+#: src/ui/views/workflow_tabs_view.py:651 src/ui/views/workflow_view.py:216
 msgid "Confirm"
 msgstr "确认"
 
@@ -2651,55 +2626,55 @@ msgstr "已暂停"
 msgid "Save checkpoint"
 msgstr "保存检查点"
 
-#: src/ui/views/workflow_tabs_view.py:130
+#: src/ui/views/workflow_tabs_view.py:131
 msgid "There are unsaved workflows. Save your changes before closing?"
 msgstr "存在未保存的工作流。关闭前要保存更改吗？"
 
-#: src/ui/views/workflow_tabs_view.py:131
+#: src/ui/views/workflow_tabs_view.py:132
 msgid "If you don't save, your changes will be lost."
 msgstr "如果不保存，你的更改将会丢失。"
 
-#: src/ui/views/workflow_tabs_view.py:290
-#: src/ui/views/workflow_tabs_view.py:506 src/ui/views/workflow_view.py:153
+#: src/ui/views/workflow_tabs_view.py:291
+#: src/ui/views/workflow_tabs_view.py:533 src/ui/views/workflow_view.py:153
 msgid "Open workflow"
 msgstr "打开工作流"
 
-#: src/ui/views/workflow_tabs_view.py:291
+#: src/ui/views/workflow_tabs_view.py:292
 #, python-brace-format
 msgid "Failed to load workflow: {path}"
 msgstr "无法加载工作流：{path}"
 
-#: src/ui/views/workflow_tabs_view.py:508
-#: src/ui/views/workflow_tabs_view.py:542 src/ui/views/workflow_view.py:155
+#: src/ui/views/workflow_tabs_view.py:535
+#: src/ui/views/workflow_tabs_view.py:569 src/ui/views/workflow_view.py:155
 #: src/ui/views/workflow_view.py:180
 msgid "Workflow files (*.json)"
 msgstr "工作流文件 (*.json)"
 
-#: src/ui/views/workflow_tabs_view.py:540 src/ui/views/workflow_view.py:178
+#: src/ui/views/workflow_tabs_view.py:567 src/ui/views/workflow_view.py:178
 msgid "Save workflow"
 msgstr "保存工作流"
 
-#: src/ui/views/workflow_tabs_view.py:564 src/ui/views/workflow_view.py:199
+#: src/ui/views/workflow_tabs_view.py:591 src/ui/views/workflow_view.py:199
 msgid "⏳ Stopping..."
 msgstr "⏳ 正在停止..."
 
-#: src/ui/views/workflow_tabs_view.py:568 src/ui/views/workflow_view.py:203
+#: src/ui/views/workflow_tabs_view.py:595 src/ui/views/workflow_view.py:203
 msgid "Stopping workflow... (waiting for current task to finish)"
 msgstr "正在停止工作流...（等待当前任务结束）"
 
-#: src/ui/views/workflow_tabs_view.py:590 src/ui/views/workflow_view.py:217
+#: src/ui/views/workflow_tabs_view.py:617 src/ui/views/workflow_view.py:217
 msgid "Clear the current workflow?"
 msgstr "清空当前工作流？"
 
-#: src/ui/views/workflow_tabs_view.py:606
+#: src/ui/views/workflow_tabs_view.py:633
 msgid "Running"
 msgstr "正在运行"
 
-#: src/ui/views/workflow_tabs_view.py:607
+#: src/ui/views/workflow_tabs_view.py:634
 msgid "Cannot close the running tab while a workflow is active."
 msgstr "工作流处于活动状态时无法关闭运行中的标签页。"
 
-#: src/ui/views/workflow_tabs_view.py:621
+#: src/ui/views/workflow_tabs_view.py:648
 #, python-brace-format
 msgid "Save changes to '{name}' before closing?"
 msgstr "关闭前是否保存对 '{name}' 的更改？"
@@ -2896,41 +2871,45 @@ msgstr "数量"
 msgid "📋 Label list"
 msgstr "📋 标签列表"
 
-#: src/ui/widgets/preview/label_preview.py:120
-msgid "Class name"
-msgstr "类别名称"
+#: src/ui/widgets/preview/label_preview.py:121
+msgid "Item"
+msgstr "条目"
 
-#: src/ui/widgets/preview/label_preview.py:120
+#: src/ui/widgets/preview/label_preview.py:122
 msgid "Label"
 msgstr "标签"
 
-#: src/ui/widgets/preview/label_preview.py:261
+#: src/ui/widgets/preview/label_preview.py:123
+msgid "Class name"
+msgstr "类别名称"
+
+#: src/ui/widgets/preview/label_preview.py:274
 msgid "Total labels"
 msgstr "标签总数"
 
-#: src/ui/widgets/preview/label_preview.py:262
+#: src/ui/widgets/preview/label_preview.py:275
 msgid "Classes"
 msgstr "类别数"
 
-#: src/ui/widgets/preview/label_preview.py:263
+#: src/ui/widgets/preview/label_preview.py:276
 msgid "Most common"
 msgstr "最多"
 
-#: src/ui/widgets/preview/label_preview.py:264
-#: src/ui/widgets/preview/label_preview.py:266
-#: src/ui/widgets/preview/label_preview.py:267
+#: src/ui/widgets/preview/label_preview.py:277
+#: src/ui/widgets/preview/label_preview.py:279
+#: src/ui/widgets/preview/label_preview.py:280
 msgid "items"
 msgstr "项"
 
-#: src/ui/widgets/preview/label_preview.py:265
+#: src/ui/widgets/preview/label_preview.py:278
 msgid "Least common"
 msgstr "最少"
 
-#: src/ui/widgets/preview/label_preview.py:267
+#: src/ui/widgets/preview/label_preview.py:280
 msgid "Avg per class"
 msgstr "每类平均"
 
-#: src/ui/widgets/preview/label_preview.py:343
+#: src/ui/widgets/preview/label_preview.py:364
 #, python-brace-format
 msgid "... {count} more item(s) not shown"
 msgstr "... 还有 {count} 项未显示"
@@ -5097,6 +5076,26 @@ msgstr "子频带数量（输出维度为 n_bands + 1）"
 #: src/workflow/nodes/feature/dim2d/stft.py:31
 msgid "Extract STFT spectrogram"
 msgstr "提取 STFT 频谱图"
+
+#~ msgid "Recent workflows"
+#~ msgstr "最近工作流"
+
+#~ msgid "(No recent workflows)"
+#~ msgstr "（无最近工作流）"
+
+#~ msgid "Clear recent workflows"
+#~ msgstr "清除最近工作流"
+
+#~ msgid "Label data"
+#~ msgstr "标签数据"
+
+#, python-brace-format
+#~ msgid ""
+#~ "Loaded {count} label(s).\n"
+#~ "Label data cannot be visualized for preview."
+#~ msgstr ""
+#~ "已加载 {count} 个标签。\n"
+#~ "标签数据无法可视化预览。"
 
 #, python-brace-format
 #~ msgid "Preview {name} - {type}"
