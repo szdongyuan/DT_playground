@@ -10,21 +10,11 @@ Communicates purely via signals -- contains no workflow / editor logic.
 from typing import Optional
 
 from PySide6.QtCore import Signal
-from PySide6.QtWidgets import (
-    QFrame,
-    QHBoxLayout,
-    QLabel,
-    QPushButton,
-    QSizePolicy,
-    QStackedWidget,
-    QWidget,
-)
-
 from ..i18n import tr_
-from ..styles import Styles
+from ..widgets.command_toolbar import GroupedCommandToolbar, command_button
 
 
-class WorkflowToolbar(QFrame):
+class WorkflowToolbar(GroupedCommandToolbar):
     """
     Reusable workflow toolbar.
 
@@ -35,7 +25,10 @@ class WorkflowToolbar(QFrame):
     new_requested = Signal()
     open_requested = Signal()
     save_requested = Signal()
+    save_as_requested = Signal()
     duplicate_requested = Signal()
+    copy_requested = Signal()
+    delete_requested = Signal()
     run_requested = Signal()
     stop_requested = Signal()
     continue_requested = Signal()
@@ -43,14 +36,15 @@ class WorkflowToolbar(QFrame):
     clear_requested = Signal()
 
     def __init__(self, parent=None, *, show_duplicate: bool = False):
-        super().__init__(parent)
+        super().__init__("workflowCommandToolbar", parent)
         self._show_duplicate = show_duplicate
+        self._breakpoint_active = False
         self._setup_ui()
 
     # ===== Public API =====
 
     def set_title(self, text: str):
-        self._title_label.setText(f"🔧 {text}")
+        self.setToolTip(text)
 
     def set_run_controls_state(
         self,
@@ -63,148 +57,66 @@ class WorkflowToolbar(QFrame):
         self._stop_btn.setEnabled(stop_enabled)
         if stop_text is not None:
             self._stop_btn.setText(stop_text)
+        elif not self._stop_btn.text().endswith(tr_("停止")):
+            self._stop_btn.setText(tr_("⏹ 停止"))
 
     def show_breakpoint_mode(self, enabled: bool, node_name: str = ""):
-        self._run_control_stack.setCurrentIndex(1 if enabled else 0)
-        if enabled and node_name:
-            self._breakpoint_label.setText(f"🔴 {node_name}")
-        else:
-            self._breakpoint_label.setText(tr_("🔴 Paused"))
+        self._breakpoint_active = enabled
+        if enabled:
+            suffix = f" ({node_name})" if node_name else ""
+            self._run_btn.setText(tr_("⏵ 继续") + suffix)
+            self._run_btn.setEnabled(True)
+            return
+        self._run_btn.setText(tr_("▶ 运行"))
 
     # ===== UI construction =====
 
     def _setup_ui(self):
-        self.setFixedHeight(42)
-        self.setStyleSheet(f"""
-            QFrame {{
-                background: {Styles.COLORS['surface0']};
-                border-bottom: 1px solid {Styles.COLORS['surface1']};
-            }}
-        """)
-
-        layout = QHBoxLayout(self)
-        layout.setContentsMargins(12, 4, 12, 4)
-        layout.setSpacing(8)
-
-        self._title_label = QLabel("🔧 new_workflow")
-        self._title_label.setStyleSheet(f"""
-            font-size: 14px;
-            font-weight: bold;
-            color: {Styles.COLORS['text']};
-        """)
-        layout.addWidget(self._title_label)
-
-        layout.addStretch()
-
-        btn_style = f"""
-            QPushButton {{
-                background: {Styles.COLORS['surface1']};
-                border: none;
-                border-radius: 4px;
-                padding: 6px 12px;
-                color: {Styles.COLORS['text']};
-            }}
-            QPushButton:hover {{
-                background: {Styles.COLORS['surface2']};
-            }}
-        """
-
-        new_btn = QPushButton(tr_("📄 New"))
-        new_btn.setStyleSheet(btn_style)
+        new_btn = command_button(tr_("📄 新建"), "workflowToolbarButton_new", parent=self)
         new_btn.clicked.connect(self.new_requested)
-        layout.addWidget(new_btn)
-
-        open_btn = QPushButton(tr_("📂 Open"))
-        open_btn.setStyleSheet(btn_style)
+        open_btn = command_button(tr_("📂 打开"), "workflowToolbarButton_open", parent=self)
         open_btn.clicked.connect(self.open_requested)
-        layout.addWidget(open_btn)
-
-        save_btn = QPushButton(tr_("💾 Save"))
-        save_btn.setStyleSheet(btn_style)
+        save_btn = command_button(tr_("💾 保存"), "workflowToolbarButton_save", parent=self)
         save_btn.clicked.connect(self.save_requested)
-        layout.addWidget(save_btn)
+        save_as_btn = command_button(tr_("📋 另存为"), "workflowToolbarButton_save_as", parent=self)
+        save_as_btn.clicked.connect(self.save_as_requested)
+        self.add_group("file", tr_("文件"), [new_btn, open_btn, save_btn, save_as_btn])
 
-        if self._show_duplicate:
-            dup_btn = QPushButton(tr_("📑 Duplicate"))
-            dup_btn.setStyleSheet(btn_style)
-            dup_btn.clicked.connect(self.duplicate_requested)
-            layout.addWidget(dup_btn)
-
-        # Run / Stop / Breakpoint controls via QStackedWidget
-        self._run_control_stack = QStackedWidget()
-        self._run_control_stack.setFixedHeight(32)
-        self._run_control_stack.setSizePolicy(
-            QSizePolicy.Policy.Fixed,
-            QSizePolicy.Policy.Fixed,
+        copy_btn = command_button(tr_("⧉ 复制"), "workflowToolbarButton_copy", parent=self)
+        copy_btn.clicked.connect(self.copy_requested)
+        delete_btn = command_button(
+            tr_("🗑 删除"),
+            "workflowToolbarButton_delete",
+            variant="danger",
+            parent=self,
         )
-        self._run_control_stack.setStyleSheet("QStackedWidget { background: transparent; }")
+        delete_btn.clicked.connect(self.delete_requested)
+        self.add_group("edit", tr_("编辑"), [copy_btn, delete_btn])
 
-        # Page 0: normal mode (Run + Stop)
-        normal_widget = QWidget()
-        normal_widget.setStyleSheet("QWidget { background: transparent; }")
-        normal_layout = QHBoxLayout(normal_widget)
-        normal_layout.setContentsMargins(0, 0, 0, 0)
-        normal_layout.setSpacing(4)
-
-        self._run_btn = QPushButton(tr_("▶️ Run"))
-        self._run_btn.setStyleSheet(btn_style)
-        self._run_btn.clicked.connect(self.run_requested)
-        normal_layout.addWidget(self._run_btn)
-
-        self._stop_btn = QPushButton(tr_("⏹️ Stop"))
-        self._stop_btn.setStyleSheet(btn_style)
-        self._stop_btn.setEnabled(False)
+        self._run_btn = command_button(
+            tr_("▶ 运行"),
+            "workflowToolbarButton_run",
+            variant="primary",
+            parent=self,
+        )
+        self._run_btn.clicked.connect(self._emit_primary_run_action)
+        self._stop_btn = command_button(
+            tr_("⏹ 停止"),
+            "workflowToolbarButton_stop",
+            variant="danger",
+            enabled=False,
+            parent=self,
+        )
         self._stop_btn.clicked.connect(self.stop_requested)
-        normal_layout.addWidget(self._stop_btn)
+        self.add_group("run", tr_("运行"), [self._run_btn, self._stop_btn])
 
-        self._run_control_stack.addWidget(normal_widget)  # index 0
-
-        # Page 1: breakpoint mode (label + Continue)
-        breakpoint_widget = QWidget()
-        breakpoint_widget.setStyleSheet("QWidget { background: transparent; }")
-        breakpoint_layout = QHBoxLayout(breakpoint_widget)
-        breakpoint_layout.setContentsMargins(0, 0, 0, 0)
-        breakpoint_layout.setSpacing(4)
-
-        self._breakpoint_label = QLabel(tr_("🔴 Paused"))
-        self._breakpoint_label.setStyleSheet(f"""
-            QLabel {{
-                color: {Styles.COLORS['red']};
-                font-weight: bold;
-                padding: 6px 12px;
-                background: {Styles.COLORS['surface1']};
-                border-radius: 4px;
-            }}
-        """)
-        breakpoint_layout.addWidget(self._breakpoint_label)
-
-        continue_btn = QPushButton(tr_("⏵ Continue"))
-        continue_btn.setStyleSheet(f"""
-            QPushButton {{
-                background: {Styles.COLORS['green']};
-                border: none;
-                border-radius: 4px;
-                padding: 6px 12px;
-                color: {Styles.COLORS['crust']};
-                font-weight: bold;
-            }}
-            QPushButton:hover {{
-                background: {Styles.COLORS['teal']};
-            }}
-        """)
-        continue_btn.clicked.connect(self.continue_requested)
-        breakpoint_layout.addWidget(continue_btn)
-
-        self._run_control_stack.addWidget(breakpoint_widget)  # index 1
-        self._run_control_stack.setCurrentIndex(0)
-        layout.addWidget(self._run_control_stack)
-
-        fit_btn = QPushButton(tr_("🔍 Fit"))
-        fit_btn.setStyleSheet(btn_style)
+        fit_btn = command_button(tr_("⛶ 适应"), "workflowToolbarButton_fit", parent=self)
         fit_btn.clicked.connect(self.fit_requested)
-        layout.addWidget(fit_btn)
+        self.add_group("view", tr_("视图"), [fit_btn])
+        self.add_end_stretch()
 
-        clear_btn = QPushButton(tr_("🗑️ Clear"))
-        clear_btn.setStyleSheet(btn_style)
-        clear_btn.clicked.connect(self.clear_requested)
-        layout.addWidget(clear_btn)
+    def _emit_primary_run_action(self) -> None:
+        if self._breakpoint_active:
+            self.continue_requested.emit()
+        else:
+            self.run_requested.emit()

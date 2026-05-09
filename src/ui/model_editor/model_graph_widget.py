@@ -493,6 +493,14 @@ class ModelGraphWidget(QWidget):
                 layer_ids.append(item.layer.layer_id)
         return layer_ids
 
+    def copy_selected(self) -> bool:
+        """Copy selected layers using the same behavior as the context menu."""
+        return self._copy_selected()
+
+    def delete_selected(self) -> None:
+        """Delete selected layers or connections using the same behavior as the context menu."""
+        self._delete_selected()
+
     def _copy_selected(self) -> bool:
         """Copy the selected layers and their internal connections."""
         if not self.model_graph:

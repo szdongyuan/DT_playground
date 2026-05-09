@@ -53,7 +53,7 @@ def test_maximize_restore_uses_custom_state_when_qt_state_lags(monkeypatch):
         app.processEvents()
 
 
-def test_settings_action_is_moved_to_title_bar_button(monkeypatch):
+def test_settings_action_is_available_from_title_bar_without_menu_bar(monkeypatch):
     app = QApplication.instance() or QApplication([])
     window = AudioTrainingApp()
 
@@ -77,9 +77,7 @@ def test_settings_action_is_moved_to_title_bar_button(monkeypatch):
         assert settings_button is not None
         assert settings_button.text() == "⚙"
 
-        menu_bar = window.findChild(QMenuBar)
-        top_level_menu_texts = [action.text() for action in menu_bar.actions()]
-        assert all("Edit" not in text and "编辑" not in text for text in top_level_menu_texts)
+        assert window.findChild(QMenuBar) is None
 
         settings_button.click()
 

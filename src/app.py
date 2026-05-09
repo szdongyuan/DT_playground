@@ -4,11 +4,10 @@ Main Application Class
 
 from collections.abc import Callable
 
-from PySide6.QtCore import QRect, Qt, QSize
+from PySide6.QtCore import QRect, Qt
 from PySide6.QtGui import QAction, QIcon, QKeySequence
 from PySide6.QtWidgets import (
-    QFileDialog, QMainWindow, QMenu, QMenuBar,
-    QMessageBox, QToolBar, QVBoxLayout, QWidget
+    QFileDialog, QMainWindow, QMessageBox, QVBoxLayout, QWidget
 )
 
 from src.ui.dialogs.about_dialog import AboutDialog
@@ -53,7 +52,7 @@ class AudioTrainingApp(QMainWindow):
         self._normal_geometry = QRect()
         self._init_ui()
         self._report_startup_progress(84, "Main window created...")
-        self._init_menubar()
+        self._init_actions()
         self._init_toolbar()
         self._init_connections()
         self._report_startup_progress(90, "Restoring previous session...")
@@ -96,116 +95,56 @@ class AudioTrainingApp(QMainWindow):
         # 居中显示
         self._center_window()
     
-    def _init_menubar(self):
-        """初始化菜单栏"""
-        menubar = QMenuBar(self)
-        self._root_layout.insertWidget(1, menubar)
-        menubar.setStyleSheet("""
-            QMenuBar {
-                background-color: #181825;
-                color: #cdd6f4;
-                padding: 4px;
-                border-bottom: 1px solid #313244;
-            }
-            QMenuBar::item {
-                padding: 6px 12px;
-                border-radius: 4px;
-            }
-            QMenuBar::item:selected {
-                background-color: #313244;
-            }
-            QMenu {
-                background-color: #1e1e2e;
-                color: #cdd6f4;
-                border: 1px solid #45475a;
-                border-radius: 4px;
-                padding: 4px;
-            }
-            QMenu::item {
-                padding: 8px 24px;
-                border-radius: 4px;
-            }
-            QMenu::item:selected {
-                background-color: #313244;
-            }
-            QMenu::separator {
-                height: 1px;
-                background-color: #45475a;
-                margin: 4px 8px;
-            }
-        """)
-        
-        # === 文件菜单 ===
-        file_menu = menubar.addMenu(tr_("File(&F)"))
-        
-        # 加载模型
+    def _init_actions(self):
+        """Initialize application shortcuts without rendering a menu bar."""
         self.action_load_model = QAction(tr_("Load model..."), self)
         self.action_load_model.setShortcut(QKeySequence("Ctrl+L"))
         self.action_load_model.triggered.connect(self._load_model)
-        file_menu.addAction(self.action_load_model)
-        
-        # 导出模型
+        self.addAction(self.action_load_model)
+
         self.action_export_model = QAction(tr_("Export model..."), self)
         self.action_export_model.setShortcut(QKeySequence("Ctrl+E"))
         self.action_export_model.triggered.connect(self._export_model)
-        file_menu.addAction(self.action_export_model)
-        
-        file_menu.addSeparator()
-        
-        # Recent workflows
-        self.recent_menu = file_menu.addMenu(tr_(RECENT_WORKFLOWS_MENU_TEXT))
-        self._update_recent_menu()
-        
-        file_menu.addSeparator()
-        
-        # 重启应用
+        self.addAction(self.action_export_model)
+
         self.action_restart = QAction(tr_("Restart(&R)"), self)
         self.action_restart.setShortcut(QKeySequence("Ctrl+Shift+R"))
         self.action_restart.triggered.connect(self._request_restart)
-        file_menu.addAction(self.action_restart)
+        self.addAction(self.action_restart)
 
-        file_menu.addSeparator()
-
-        # 退出
         self.action_exit = QAction(tr_("Exit(&X)"), self)
         self.action_exit.setShortcut(QKeySequence("Alt+F4"))
         self.action_exit.triggered.connect(self.close)
-        file_menu.addAction(self.action_exit)
-        
+        self.addAction(self.action_exit)
+
         self.action_settings = QAction(tr_("Settings..."), self)
         self.action_settings.setShortcut(QKeySequence("Ctrl+,"))
         self.action_settings.triggered.connect(self._show_settings)
         self.addAction(self.action_settings)
-        
-        # === 视图菜单 ===
-        view_menu = menubar.addMenu(tr_("View(&V)"))
-        
+
         self.action_view_workflow = QAction(tr_("Workflow view"), self)
         self.action_view_workflow.setShortcut(QKeySequence("Ctrl+1"))
         self.action_view_workflow.triggered.connect(lambda: self._switch_view(0))
-        view_menu.addAction(self.action_view_workflow)
-        
+        self.addAction(self.action_view_workflow)
+
         self.action_view_model = QAction(tr_("Model view"), self)
         self.action_view_model.setShortcut(QKeySequence("Ctrl+2"))
         self.action_view_model.triggered.connect(lambda: self._switch_view(1))
-        view_menu.addAction(self.action_view_model)
-        
+        self.addAction(self.action_view_model)
+
         self.action_view_preview = QAction(tr_("Preview view"), self)
         self.action_view_preview.setShortcut(QKeySequence("Ctrl+3"))
         self.action_view_preview.triggered.connect(lambda: self._switch_view(2))
-        view_menu.addAction(self.action_view_preview)
-        
+        self.addAction(self.action_view_preview)
+
         self.action_view_training = QAction(tr_("Training view"), self)
         self.action_view_training.setShortcut(QKeySequence("Ctrl+4"))
         self.action_view_training.triggered.connect(lambda: self._switch_view(3))
-        view_menu.addAction(self.action_view_training)
-        
-        # === 帮助菜单 ===
-        help_menu = menubar.addMenu(tr_("Help(&H)"))
-        
+        self.addAction(self.action_view_training)
+
         self.action_about = QAction(tr_("About..."), self)
         self.action_about.triggered.connect(self._show_about)
-        help_menu.addAction(self.action_about)
+        self.addAction(self.action_about)
     
     def _init_toolbar(self):
         """初始化工具栏（已移除，功能整合到工作流视图工具栏）"""
@@ -403,6 +342,8 @@ class AudioTrainingApp(QMainWindow):
     
     def _update_recent_menu(self):
         """Update the recent workflows menu."""
+        if not hasattr(self, "recent_menu"):
+            return
         self.recent_menu.clear()
         recent_workflows = filter_recent_workflow_files(config.get_recent_files())
         
