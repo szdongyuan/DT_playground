@@ -82,8 +82,13 @@ class BaseConnectionItem(QGraphicsPathItem):
     """
     连接线图形项基类
     
-    提供贝塞尔曲线连接线的绘制和更新功能。
+    提供连接线的绘制和更新功能。
     """
+    
+    ORTHOGONAL_EXIT_LENGTH = 32.0
+    ORTHOGONAL_CORNER_RADIUS = 8.0
+    PARALLEL_ROUTE_SPACING = 10.0
+    REVERSE_ROUTE_MARGIN = 48.0
     
     def __init__(self, source_port: BasePortItem, target_port: BasePortItem,
                  line_color: str = None):
@@ -128,20 +133,186 @@ class BaseConnectionItem(QGraphicsPathItem):
             self._update_pen()
         return super().itemChange(change, value)
     
+    def _port_exit_direction(self, port: BasePortItem) -> float:
+        """Return the horizontal direction used when leaving a port."""
+        return -1.0 if port.is_input else 1.0
+    
+    def _parallel_route_offset(self) -> float:
+        """Return a small trunk offset to keep parallel routes readable."""
+        sibling_connections = [
+            conn for conn in self.source_port.connections
+            if conn.source_port is self.source_port
+            and conn.target_port is self.target_port
+        ]
+        if len(sibling_connections) <= 1:
+            return 0.0
+        
+        index = sibling_connections.index(self)
+        center = (len(sibling_connections) - 1) / 2
+        return (index - center) * self.PARALLEL_ROUTE_SPACING
+    
+    def _item_scene_bounds(self, port: BasePortItem) -> QRectF:
+        """Return the parent item bounds used for outside routing."""
+        parent = port.parentItem()
+        if parent is not None:
+            return parent.sceneBoundingRect()
+        
+        pos = port.scenePos()
+        return QRectF(pos.x(), pos.y(), 0.0, 0.0)
+    
+    def _outside_route_y(
+        self,
+        start: QPointF,
+        end: QPointF,
+        source_bounds: QRectF,
+        target_bounds: QRectF,
+        route_offset: float,
+    ) -> float:
+        """Choose the nearest outside channel above or below both items."""
+        if source_bounds.bottom() < target_bounds.top():
+            corridor_top = source_bounds.bottom()
+            corridor_bottom = target_bounds.top()
+            return (corridor_top + corridor_bottom) / 2 + route_offset
+        
+        if target_bounds.bottom() < source_bounds.top():
+            corridor_top = target_bounds.bottom()
+            corridor_bottom = source_bounds.top()
+            return (corridor_top + corridor_bottom) / 2 + route_offset
+        
+        top = min(source_bounds.top(), target_bounds.top())
+        bottom = max(source_bounds.bottom(), target_bounds.bottom())
+        above = top - self.REVERSE_ROUTE_MARGIN
+        below = bottom + self.REVERSE_ROUTE_MARGIN
+        
+        above_distance = abs(start.y() - above) + abs(end.y() - above)
+        below_distance = abs(start.y() - below) + abs(end.y() - below)
+        route_y = above if above_distance < below_distance else below
+        return route_y + route_offset
+    
+    def _reverse_route_points(
+        self,
+        start: QPointF,
+        end: QPointF,
+        route_offset: float,
+    ) -> List[QPointF]:
+        """Build an outside dogleg route for connections flowing backward."""
+        source_bounds = self._item_scene_bounds(self.source_port)
+        target_bounds = self._item_scene_bounds(self.target_port)
+        source_outer_x = max(
+            start.x() + self.ORTHOGONAL_EXIT_LENGTH,
+            source_bounds.right() + self.REVERSE_ROUTE_MARGIN,
+        )
+        target_outer_x = min(
+            end.x() - self.ORTHOGONAL_EXIT_LENGTH,
+            target_bounds.left() - self.REVERSE_ROUTE_MARGIN,
+        )
+        route_y = self._outside_route_y(
+            start,
+            end,
+            source_bounds,
+            target_bounds,
+            route_offset,
+        )
+        
+        return [
+            start,
+            QPointF(source_outer_x, start.y()),
+            QPointF(source_outer_x, route_y),
+            QPointF(target_outer_x, route_y),
+            QPointF(target_outer_x, end.y()),
+            end,
+        ]
+    
+    def _append_rounded_corner_path(
+        self,
+        path: QPainterPath,
+        points: List[QPointF],
+    ) -> None:
+        """Append a rounded orthogonal polyline to an existing path."""
+        compact_points = []
+        for point in points:
+            if not compact_points or point != compact_points[-1]:
+                compact_points.append(point)
+        
+        if len(compact_points) < 2:
+            return
+        
+        path.moveTo(compact_points[0])
+        
+        for index in range(1, len(compact_points) - 1):
+            previous = compact_points[index - 1]
+            current = compact_points[index]
+            next_point = compact_points[index + 1]
+            
+            incoming = current - previous
+            outgoing = next_point - current
+            incoming_length = abs(incoming.x()) + abs(incoming.y())
+            outgoing_length = abs(outgoing.x()) + abs(outgoing.y())
+            if (
+                (incoming.x() == 0 and outgoing.x() == 0)
+                or (incoming.y() == 0 and outgoing.y() == 0)
+            ):
+                path.lineTo(current)
+                continue
+            
+            radius = min(
+                self.ORTHOGONAL_CORNER_RADIUS,
+                incoming_length / 2,
+                outgoing_length / 2,
+            )
+            if radius <= 0:
+                path.lineTo(current)
+                continue
+            
+            incoming_unit = QPointF(
+                0.0 if incoming.x() == 0 else incoming.x() / abs(incoming.x()),
+                0.0 if incoming.y() == 0 else incoming.y() / abs(incoming.y()),
+            )
+            outgoing_unit = QPointF(
+                0.0 if outgoing.x() == 0 else outgoing.x() / abs(outgoing.x()),
+                0.0 if outgoing.y() == 0 else outgoing.y() / abs(outgoing.y()),
+            )
+            
+            corner_start = current - incoming_unit * radius
+            corner_end = current + outgoing_unit * radius
+            path.lineTo(corner_start)
+            path.quadTo(current, corner_end)
+        
+        path.lineTo(compact_points[-1])
+    
     def update_path(self):
-        """更新贝塞尔曲线路径"""
+        """Update the connection as a lightly rounded orthogonal path."""
         start = self.source_port.scenePos()
         end = self.target_port.scenePos()
         
         path = QPainterPath()
-        path.moveTo(start)
         
-        # 控制点：水平方向延伸
-        dx = abs(end.x() - start.x()) / 2
-        ctrl1 = QPointF(start.x() + dx, start.y())
-        ctrl2 = QPointF(end.x() - dx, end.y())
+        source_direction = self._port_exit_direction(self.source_port)
+        target_direction = self._port_exit_direction(self.target_port)
+        start_exit = QPointF(
+            start.x() + source_direction * self.ORTHOGONAL_EXIT_LENGTH,
+            start.y(),
+        )
+        end_entry = QPointF(
+            end.x() + target_direction * self.ORTHOGONAL_EXIT_LENGTH,
+            end.y(),
+        )
         
-        path.cubicTo(ctrl1, ctrl2, end)
+        route_offset = self._parallel_route_offset()
+        if end.x() < start.x():
+            points = self._reverse_route_points(start, end, route_offset)
+        else:
+            middle_x = (start_exit.x() + end_entry.x()) / 2 + route_offset
+            points = [
+                start,
+                start_exit,
+                QPointF(middle_x, start.y()),
+                QPointF(middle_x, end.y()),
+                end_entry,
+                end,
+            ]
+        
+        self._append_rounded_corner_path(path, points)
         self.setPath(path)
     
     def remove(self):
