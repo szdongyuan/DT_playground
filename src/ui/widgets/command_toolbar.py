@@ -5,6 +5,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QFrame, QHBoxLayout, QLabel, QPushButton, QVBoxLayout, QWidget
 
 from src.ui.styles import Styles
+from src.ui.widgets.command_toolbar_spec import ToolbarActionSpec, ToolbarGroupSpec
 
 
 class GroupedCommandToolbar(QFrame):
@@ -69,6 +70,28 @@ class GroupedCommandToolbar(QFrame):
 
     def add_end_stretch(self) -> None:
         self._layout.addStretch(1)
+
+    def build_from_spec(self, groups: tuple[ToolbarGroupSpec, ...]) -> dict[str, QPushButton]:
+        """Build toolbar groups from declarative specs and return buttons by action key."""
+        buttons_by_key: dict[str, QPushButton] = {}
+        for group in groups:
+            buttons = [self._button_from_spec(action) for action in group.actions]
+            self.add_group(group.key, group.title, buttons)
+            buttons_by_key.update(zip((action.key for action in group.actions), buttons))
+        self.add_end_stretch()
+        return buttons_by_key
+
+    def _button_from_spec(self, action: ToolbarActionSpec) -> QPushButton:
+        button = command_button(
+            action.text,
+            action.object_name,
+            variant=action.variant,
+            enabled=action.enabled,
+            parent=self,
+        )
+        if action.tooltip:
+            button.setToolTip(action.tooltip)
+        return button
 
     def _separator(self) -> QFrame:
         separator = QFrame(self)

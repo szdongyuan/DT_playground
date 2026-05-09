@@ -20,7 +20,7 @@ from ...workflow.workflow import Workflow
 from src.utils.config import config
 
 from .workflow_editor_widget import WorkflowEditorWidget
-from .workflow_toolbar import WorkflowToolbar
+from .toolbars.workflow_toolbar import WorkflowToolbar
 
 
 logger = logging.getLogger(__name__)

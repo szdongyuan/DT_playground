@@ -28,7 +28,7 @@ from src.utils.config import config
 from src.workflow.workflow import Workflow
 
 from .workflow_editor_widget import WorkflowEditorWidget
-from .workflow_toolbar import WorkflowToolbar
+from .toolbars.workflow_toolbar import WorkflowToolbar
 
 
 @dataclass

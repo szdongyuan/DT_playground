@@ -20,7 +20,7 @@ from src.ui.model_editor.layer_palette import LayerPalette
 from src.ui.model_editor.layer_property_panel import LayerPropertyPanel
 from src.ui.model_editor.model_graph_widget import ModelGraphWidget
 from src.ui.i18n import tr_
-from src.ui.widgets.command_toolbar import GroupedCommandToolbar, command_button
+from src.ui.views.toolbars.model_toolbar import ModelToolbar
 from src.ui.styles import Styles
 from src.utils.config import config
 
@@ -108,59 +108,20 @@ class ModelBuilderView(QWidget):
     
     def _create_toolbar(self, layout):
         """创建工具栏"""
-        toolbar_frame = GroupedCommandToolbar("modelCommandToolbar", self)
+        self._toolbar = ModelToolbar(self)
+        self._toolbar.new_requested.connect(self._on_new)
+        self._toolbar.open_requested.connect(self._on_open)
+        self._toolbar.save_requested.connect(self._on_save)
+        self._toolbar.save_as_requested.connect(self._on_save_as)
+        self._toolbar.copy_requested.connect(self._graph_widget.copy_selected)
+        self._toolbar.delete_requested.connect(self._graph_widget.delete_selected)
+        self._toolbar.build_requested.connect(self._on_build)
+        self._toolbar.import_keras_requested.connect(self._on_import_keras)
+        self._toolbar.fit_requested.connect(self._graph_widget.fit_to_selection)
 
         self._model_name_label = QLabel(tr_("📐 New model"), self)
         self._model_name_label.hide()
-
-        new_btn = command_button(tr_("📄 新建"), "modelToolbarButton_new", parent=toolbar_frame)
-        new_btn.clicked.connect(self._on_new)
-
-        open_btn = command_button(tr_("📂 打开"), "modelToolbarButton_open", parent=toolbar_frame)
-        open_btn.clicked.connect(self._on_open)
-
-        save_btn = command_button(tr_("💾 保存"), "modelToolbarButton_save", parent=toolbar_frame)
-        save_btn.clicked.connect(self._on_save)
-
-        save_as_btn = command_button(tr_("📋 另存为"), "modelToolbarButton_save_as", parent=toolbar_frame)
-        save_as_btn.clicked.connect(self._on_save_as)
-        toolbar_frame.add_group("file", tr_("文件"), [new_btn, open_btn, save_btn, save_as_btn])
-
-        copy_btn = command_button(tr_("⧉ 复制"), "modelToolbarButton_copy", parent=toolbar_frame)
-        copy_btn.clicked.connect(self._graph_widget.copy_selected)
-        delete_btn = command_button(
-            tr_("🗑 删除"),
-            "modelToolbarButton_delete",
-            variant="danger",
-            parent=toolbar_frame,
-        )
-        delete_btn.clicked.connect(self._graph_widget.delete_selected)
-        toolbar_frame.add_group("edit", tr_("编辑"), [copy_btn, delete_btn])
-
-        build_btn = command_button(
-            tr_("🔨 构建模型"),
-            "modelToolbarButton_build",
-            variant="primary",
-            parent=toolbar_frame,
-        )
-        build_btn.clicked.connect(self._on_build)
-
-        import_btn = command_button(
-            tr_("📥 导入Keras"),
-            "modelToolbarButton_import_keras",
-            variant="warning",
-            parent=toolbar_frame,
-        )
-        import_btn.setToolTip(tr_("Import architecture from a trained .keras/.h5 model file"))
-        import_btn.clicked.connect(self._on_import_keras)
-        toolbar_frame.add_group("model", tr_("模型"), [build_btn, import_btn])
-
-        fit_btn = command_button(tr_("⛶ 适应"), "modelToolbarButton_fit", parent=toolbar_frame)
-        fit_btn.clicked.connect(self._graph_widget.fit_to_selection)
-        toolbar_frame.add_group("view", tr_("视图"), [fit_btn])
-        toolbar_frame.add_end_stretch()
-
-        layout.addWidget(toolbar_frame)
+        layout.addWidget(self._toolbar)
     
     def _connect_signals(self):
         """连接信号"""
