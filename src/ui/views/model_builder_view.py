@@ -10,10 +10,9 @@ import os
 from typing import Optional
 
 from PySide6.QtCore import Qt, QTimer, Signal
-from PySide6.QtGui import QAction
 from PySide6.QtWidgets import (
-    QDialog, QFileDialog, QFrame, QHBoxLayout, QLabel, QMessageBox,
-    QPushButton, QSplitter, QTextEdit, QToolBar, QVBoxLayout, QWidget
+    QDialog, QFileDialog, QHBoxLayout, QLabel, QMessageBox,
+    QPushButton, QSplitter, QTextEdit, QVBoxLayout, QWidget
 )
 
 from src.model_builder.model_graph import ModelGraph
@@ -21,6 +20,7 @@ from src.ui.model_editor.layer_palette import LayerPalette
 from src.ui.model_editor.layer_property_panel import LayerPropertyPanel
 from src.ui.model_editor.model_graph_widget import ModelGraphWidget
 from src.ui.i18n import tr_
+from src.ui.widgets.command_toolbar import GroupedCommandToolbar, command_button
 from src.ui.styles import Styles
 from src.utils.config import config
 
@@ -108,131 +108,58 @@ class ModelBuilderView(QWidget):
     
     def _create_toolbar(self, layout):
         """创建工具栏"""
-        toolbar_frame = QFrame()
-        toolbar_frame.setFixedHeight(42)
-        toolbar_frame.setStyleSheet(f"""
-            QFrame {{
-                background: {Styles.COLORS['surface0']};
-                border-bottom: 1px solid {Styles.COLORS['surface1']};
-            }}
-        """)
-        
-        toolbar_layout = QHBoxLayout(toolbar_frame)
-        toolbar_layout.setContentsMargins(12, 4, 12, 4)
-        toolbar_layout.setSpacing(8)
-        
-        # 模型名称
-        self._model_name_label = QLabel(tr_("📐 New model"))
-        self._model_name_label.setStyleSheet(f"""
-            font-size: 14px;
-            font-weight: bold;
-            color: {Styles.COLORS['text']};
-        """)
-        toolbar_layout.addWidget(self._model_name_label)
-        
-        toolbar_layout.addStretch()
-        
-        # 按钮样式
-        btn_style = f"""
-            QPushButton {{
-                background: {Styles.COLORS['surface1']};
-                border: none;
-                border-radius: 4px;
-                padding: 6px 12px;
-                color: {Styles.COLORS['text']};
-            }}
-            QPushButton:hover {{
-                background: {Styles.COLORS['surface2']};
-            }}
-        """
-        
-        # 新建按钮
-        new_btn = QPushButton(tr_("📄 New"))
-        new_btn.setStyleSheet(btn_style)
+        toolbar_frame = GroupedCommandToolbar("modelCommandToolbar", self)
+
+        self._model_name_label = QLabel(tr_("📐 New model"), self)
+        self._model_name_label.hide()
+
+        new_btn = command_button(tr_("📄 新建"), "modelToolbarButton_new", parent=toolbar_frame)
         new_btn.clicked.connect(self._on_new)
-        toolbar_layout.addWidget(new_btn)
-        
-        # 打开按钮
-        open_btn = QPushButton(tr_("📂 Open"))
-        open_btn.setStyleSheet(btn_style)
+
+        open_btn = command_button(tr_("📂 打开"), "modelToolbarButton_open", parent=toolbar_frame)
         open_btn.clicked.connect(self._on_open)
-        toolbar_layout.addWidget(open_btn)
-        
-        # 保存按钮
-        save_btn = QPushButton(tr_("💾 Save"))
-        save_btn.setStyleSheet(btn_style)
+
+        save_btn = command_button(tr_("💾 保存"), "modelToolbarButton_save", parent=toolbar_frame)
         save_btn.clicked.connect(self._on_save)
-        toolbar_layout.addWidget(save_btn)
-        
-        # 另存为按钮
-        save_as_btn = QPushButton(tr_("📋 Save as"))
-        save_as_btn.setStyleSheet(btn_style)
+
+        save_as_btn = command_button(tr_("📋 另存为"), "modelToolbarButton_save_as", parent=toolbar_frame)
         save_as_btn.clicked.connect(self._on_save_as)
-        toolbar_layout.addWidget(save_as_btn)
-        
-        # 分隔1
-        separator1 = QFrame()
-        separator1.setFrameShape(QFrame.Shape.VLine)
-        separator1.setStyleSheet(f"background: {Styles.COLORS['surface2']};")
-        separator1.setFixedWidth(1)
-        toolbar_layout.addWidget(separator1)
-        
-        # 导入Keras按钮
-        import_btn = QPushButton(tr_("📥 Import Keras"))
-        import_btn.setStyleSheet(f"""
-            QPushButton {{
-                background: {Styles.COLORS['peach']};
-                border: none;
-                border-radius: 4px;
-                padding: 6px 12px;
-                color: {Styles.COLORS['crust']};
-                font-weight: bold;
-            }}
-            QPushButton:hover {{
-                background: {Styles.COLORS['yellow']};
-            }}
-        """)
+        toolbar_frame.add_group("file", tr_("文件"), [new_btn, open_btn, save_btn, save_as_btn])
+
+        copy_btn = command_button(tr_("⧉ 复制"), "modelToolbarButton_copy", parent=toolbar_frame)
+        copy_btn.clicked.connect(self._graph_widget.copy_selected)
+        delete_btn = command_button(
+            tr_("🗑 删除"),
+            "modelToolbarButton_delete",
+            variant="danger",
+            parent=toolbar_frame,
+        )
+        delete_btn.clicked.connect(self._graph_widget.delete_selected)
+        toolbar_frame.add_group("edit", tr_("编辑"), [copy_btn, delete_btn])
+
+        build_btn = command_button(
+            tr_("🔨 构建模型"),
+            "modelToolbarButton_build",
+            variant="primary",
+            parent=toolbar_frame,
+        )
+        build_btn.clicked.connect(self._on_build)
+
+        import_btn = command_button(
+            tr_("📥 导入Keras"),
+            "modelToolbarButton_import_keras",
+            variant="warning",
+            parent=toolbar_frame,
+        )
         import_btn.setToolTip(tr_("Import architecture from a trained .keras/.h5 model file"))
         import_btn.clicked.connect(self._on_import_keras)
-        toolbar_layout.addWidget(import_btn)
-        
-        # 分隔2
-        separator2 = QFrame()
-        separator2.setFrameShape(QFrame.Shape.VLine)
-        separator2.setStyleSheet(f"background: {Styles.COLORS['surface2']};")
-        separator2.setFixedWidth(1)
-        toolbar_layout.addWidget(separator2)
-        
-        # 构建按钮
-        build_btn = QPushButton(tr_("🔨 Build model"))
-        build_btn.setStyleSheet(f"""
-            QPushButton {{
-                background: {Styles.COLORS['green']};
-                border: none;
-                border-radius: 4px;
-                padding: 6px 16px;
-                color: {Styles.COLORS['crust']};
-                font-weight: bold;
-            }}
-            QPushButton:hover {{
-                background: {Styles.COLORS['teal']};
-            }}
-        """)
-        build_btn.clicked.connect(self._on_build)
-        toolbar_layout.addWidget(build_btn)
-        
-        # 适应视图按钮
-        fit_btn = QPushButton(tr_("🔍 Fit"))
-        fit_btn.setStyleSheet(btn_style)
+        toolbar_frame.add_group("model", tr_("模型"), [build_btn, import_btn])
+
+        fit_btn = command_button(tr_("⛶ 适应"), "modelToolbarButton_fit", parent=toolbar_frame)
         fit_btn.clicked.connect(self._graph_widget.fit_to_selection)
-        toolbar_layout.addWidget(fit_btn)
-        
-        # 清空按钮
-        clear_btn = QPushButton(tr_("🗑️ Clear"))
-        clear_btn.setStyleSheet(btn_style)
-        clear_btn.clicked.connect(self._on_clear)
-        toolbar_layout.addWidget(clear_btn)
-        
+        toolbar_frame.add_group("view", tr_("视图"), [fit_btn])
+        toolbar_frame.add_end_stretch()
+
         layout.addWidget(toolbar_frame)
     
     def _connect_signals(self):

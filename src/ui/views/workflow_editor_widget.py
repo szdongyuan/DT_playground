@@ -105,6 +105,12 @@ class WorkflowEditorWidget(QWidget):
     def fit_to_selection(self):
         self._node_graph.fit_to_selection()
 
+    def copy_selected(self) -> bool:
+        return self._node_graph.copy_selected()
+
+    def delete_selected(self) -> None:
+        self._node_graph.delete_selected()
+
     # ===== Internal event handlers =====
 
     def _on_add_node_from_palette(self, node_type: str):

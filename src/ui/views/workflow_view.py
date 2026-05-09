@@ -76,6 +76,9 @@ class WorkflowView(QWidget):
             self._toolbar.new_requested.connect(self._on_new_workflow)
             self._toolbar.open_requested.connect(self._on_open_workflow)
             self._toolbar.save_requested.connect(self._on_save_workflow)
+            self._toolbar.save_as_requested.connect(self._on_save_workflow_as)
+            self._toolbar.copy_requested.connect(self._editor.copy_selected)
+            self._toolbar.delete_requested.connect(self._editor.delete_selected)
             self._toolbar.run_requested.connect(self.run_requested)
             self._toolbar.stop_requested.connect(self._on_stop_workflow)
             self._toolbar.continue_requested.connect(self.continue_requested)
@@ -167,27 +170,37 @@ class WorkflowView(QWidget):
                     pass
 
     def _on_save_workflow(self):
+        self._save_workflow(force_save_as=False)
+
+    def _on_save_workflow_as(self):
+        self._save_workflow(force_save_as=True)
+
+    def _save_workflow(self, *, force_save_as: bool):
         from PySide6.QtWidgets import QFileDialog
 
         workflow = self._editor.get_workflow()
         if not workflow:
             return
 
-        path, _ = QFileDialog.getSaveFileName(
-            self,
-            tr_("Save workflow"),
-            f"workflows/{workflow.name}.json",
-            tr_("Workflow files (*.json)"),
-        )
-        if path:
-            workflow.save(path)
-            workflow._file_path = path
-            self._update_toolbar_title()
-            try:
-                config.set("session.last_workflow_path", path)
-                config.add_recent_file(path)
-            except Exception:
-                pass
+        path = getattr(workflow, "_file_path", None)
+        if force_save_as or not path:
+            path, _ = QFileDialog.getSaveFileName(
+                self,
+                tr_("Save workflow"),
+                f"workflows/{workflow.name}.json",
+                tr_("Workflow files (*.json)"),
+            )
+            if not path:
+                return
+
+        workflow.save(path)
+        workflow._file_path = path
+        self._update_toolbar_title()
+        try:
+            config.set("session.last_workflow_path", path)
+            config.add_recent_file(path)
+        except Exception:
+            pass
 
     def _on_stop_workflow(self):
         from src.core.event_bus import get_event_bus

@@ -700,6 +700,14 @@ class NodeGraphWidget(QWidget):
                 node_ids.append(item.node.node_id)
         return node_ids
 
+    def copy_selected(self) -> bool:
+        """Copy selected nodes using the same behavior as the context menu."""
+        return self._copy_selected()
+
+    def delete_selected(self) -> None:
+        """Delete selected nodes or connections using the same behavior as the context menu."""
+        self._delete_selected()
+
     def _copy_selected(self) -> bool:
         """Copy the selected nodes and their internal connections."""
         if not self.workflow:

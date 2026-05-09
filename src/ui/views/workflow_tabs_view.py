@@ -402,6 +402,9 @@ class WorkflowTabsView(QWidget):
         self._toolbar.new_requested.connect(self.new_tab)
         self._toolbar.open_requested.connect(self._open_dialog)
         self._toolbar.save_requested.connect(self._save_current)
+        self._toolbar.save_as_requested.connect(self._save_current_as)
+        self._toolbar.copy_requested.connect(self._copy_current_selection)
+        self._toolbar.delete_requested.connect(self._delete_current_selection)
         self._toolbar.duplicate_requested.connect(self.duplicate_current_tab)
         self._toolbar.run_requested.connect(self.run_requested)
         self._toolbar.stop_requested.connect(self._on_stop_workflow)
@@ -541,15 +544,21 @@ class WorkflowTabsView(QWidget):
         editor = self._current_editor()
         if not editor:
             return
-        self._save_editor(editor)
+        self._save_editor(editor, force_save_as=False)
 
-    def _save_editor(self, editor: WorkflowEditorWidget) -> bool:
+    def _save_current_as(self):
+        editor = self._current_editor()
+        if not editor:
+            return
+        self._save_editor(editor, force_save_as=True)
+
+    def _save_editor(self, editor: WorkflowEditorWidget, *, force_save_as: bool = False) -> bool:
         workflow = editor.get_workflow()
         if not workflow:
             return True
 
         file_path = getattr(workflow, "_file_path", None)
-        if file_path:
+        if file_path and not force_save_as:
             ok = workflow.save(file_path)
             if ok:
                 self._set_editor_session_file_path(editor, file_path)
@@ -583,6 +592,16 @@ class WorkflowTabsView(QWidget):
             self._refresh_all_tab_titles()
             self.persist_session_state_guarded()
         return bool(ok)
+
+    def _copy_current_selection(self):
+        editor = self._current_editor()
+        if editor:
+            editor.copy_selected()
+
+    def _delete_current_selection(self):
+        editor = self._current_editor()
+        if editor:
+            editor.delete_selected()
 
     def _on_stop_workflow(self):
         self.set_run_controls_state(
