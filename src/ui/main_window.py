@@ -11,10 +11,9 @@ from collections.abc import Callable
 from typing import Optional
 
 from PySide6.QtCore import Qt, Signal, QTimer
-from PySide6.QtGui import QAction
 from PySide6.QtWidgets import (
-    QButtonGroup, QFrame, QHBoxLayout, QLabel, QMessageBox,
-    QPushButton, QStackedWidget, QToolBar, QVBoxLayout, QWidget
+    QFrame, QHBoxLayout, QLabel, QMessageBox,
+    QStackedWidget, QVBoxLayout, QWidget
 )
 
 from src.controllers.navigation_controller import NavigationController
@@ -37,37 +36,6 @@ from src.workflow.workflow import Workflow
 logger = logging.getLogger(__name__)
 
 
-class ViewButton(QPushButton):
-    """View switch button."""
-    
-    def __init__(self, text: str, icon: str = "", parent=None):
-        super().__init__(f"{icon} {text}" if icon else text, parent)
-        self.setCheckable(True)
-        self.setMinimumWidth(100)
-        self._update_style()
-    
-    def _update_style(self):
-        self.setStyleSheet(f"""
-            QPushButton {{
-                background: transparent;
-                border: none;
-                border-radius: 6px;
-                padding: 8px 16px;
-                color: {Styles.COLORS['subtext1']};
-                font-size: 13px;
-            }}
-            QPushButton:hover {{
-                background: {Styles.COLORS['surface0']};
-                color: {Styles.COLORS['text']};
-            }}
-            QPushButton:checked {{
-                background: {Styles.COLORS['surface1']};
-                color: {Styles.COLORS['blue']};
-                font-weight: bold;
-            }}
-        """)
-
-
 class MainWindow(QWidget):
     """
     Main window widget.
@@ -84,6 +52,7 @@ class MainWindow(QWidget):
     training_started = Signal()
     training_stopped = Signal()
     training_completed = Signal(dict)
+    view_changed = Signal(int)
     
     def __init__(
         self,
@@ -137,9 +106,6 @@ class MainWindow(QWidget):
         main_layout.setContentsMargins(0, 0, 0, 0)
         main_layout.setSpacing(0)
         
-        # 顶部视图切换栏
-        self._create_view_switcher(main_layout)
-        
         # 主视图堆栈
         self._view_stack = QStackedWidget()
         main_layout.addWidget(self._view_stack)
@@ -164,62 +130,6 @@ class MainWindow(QWidget):
         
         # 状态栏
         self._create_status_bar(main_layout)
-    
-    def _create_view_switcher(self, layout):
-        """创建视图切换栏"""
-        switcher_frame = QFrame()
-        switcher_frame.setFixedHeight(50)
-        switcher_frame.setStyleSheet(f"""
-            QFrame {{
-                background: {Styles.COLORS['mantle']};
-                border-bottom: 1px solid {Styles.COLORS['surface0']};
-            }}
-        """)
-        
-        switcher_layout = QHBoxLayout(switcher_frame)
-        switcher_layout.setContentsMargins(12, 6, 12, 6)
-        switcher_layout.setSpacing(4)
-        
-        # Logo/标题
-        title = QLabel(tr_("🎵 AI Acoustic Training Platform"))
-        title.setStyleSheet(f"""
-            font-size: 15px;
-            font-weight: bold;
-            color: {Styles.COLORS['text']};
-            padding-right: 20px;
-        """)
-        switcher_layout.addWidget(title)
-        
-        # 分隔线
-        separator = QFrame()
-        separator.setFrameShape(QFrame.Shape.VLine)
-        separator.setStyleSheet(f"background: {Styles.COLORS['surface1']};")
-        separator.setFixedWidth(1)
-        switcher_layout.addWidget(separator)
-        
-        switcher_layout.addSpacing(12)
-        
-        # 视图按钮组
-        self._view_buttons = QButtonGroup(self)
-        self._view_buttons.setExclusive(True)
-        
-        self._workflow_btn = ViewButton(tr_("Workflow"), "🔧")
-        self._model_btn = ViewButton(tr_("Model"), "📐")
-        self._preview_btn = ViewButton(tr_("Preview"), "📊")
-        self._training_btn = ViewButton(tr_("Training"), "🏋️")
-        
-        self._workflow_btn.setChecked(True)
-        
-        for i, btn in enumerate([self._workflow_btn, self._model_btn, self._preview_btn, self._training_btn]):
-            self._view_buttons.addButton(btn, i)
-            switcher_layout.addWidget(btn)
-        
-        switcher_layout.addStretch()
-        
-        layout.addWidget(switcher_frame)
-        
-        # 连接视图切换
-        self._view_buttons.idClicked.connect(self._on_view_changed)
     
     def _create_status_bar(self, layout):
         """创建状态栏"""
@@ -362,9 +272,7 @@ class MainWindow(QWidget):
     def _on_controller_view_changed(self, view_index: int):
         """控制器请求视图切换"""
         self._view_stack.setCurrentIndex(view_index)
-        buttons = [self._workflow_btn, self._model_btn, self._preview_btn, self._training_btn]
-        if 0 <= view_index < len(buttons):
-            buttons[view_index].setChecked(True)
+        self.view_changed.emit(view_index)
     
     def _on_preview_updated(self, node_id: str, node_name: str, outputs: dict):
         """预览数据更新"""
@@ -458,6 +366,7 @@ class MainWindow(QWidget):
     def _on_view_changed(self, index: int):
         """视图切换"""
         self._view_stack.setCurrentIndex(index)
+        self.view_changed.emit(index)
         
         # 同步导航控制器状态，确保双击节点切换视图时状态一致
         self._navigation_controller.sync_current_view(index)
@@ -475,6 +384,10 @@ class MainWindow(QWidget):
         # 如果切换到预览视图，尝试更新当前选中节点的预览
         if index == 2 and self._selected_node_id:  # 索引2是预览视图
             self._update_preview(self._selected_node_id)
+
+    def switch_view(self, index: int):
+        """Switch to one of the primary application views."""
+        self._on_view_changed(index)
     
     def _on_workflow_changed(self):
         """工作流变化"""

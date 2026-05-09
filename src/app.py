@@ -4,7 +4,7 @@ Main Application Class
 
 from collections.abc import Callable
 
-from PySide6.QtCore import Qt, QSize
+from PySide6.QtCore import QRect, Qt, QSize
 from PySide6.QtGui import QAction, QIcon, QKeySequence
 from PySide6.QtWidgets import (
     QFileDialog, QMainWindow, QMenu, QMenuBar,
@@ -17,6 +17,7 @@ from src.ui.dialogs.settings_dialog import SettingsDialog
 from src.ui.i18n import tr_
 from src.ui.main_window import MainWindow
 from src.ui.startup_splash import get_app_icon_path
+from src.ui.title_bar import AppTitleBar
 from src.utils.restart_manager import RestartManager
 from src.utils.config import config
 
@@ -48,6 +49,8 @@ class AudioTrainingApp(QMainWindow):
         self._restart_manager: RestartManager | None = None
         self._restart_in_progress = False
         self._startup_progress = startup_progress
+        self._custom_is_maximized = False
+        self._normal_geometry = QRect()
         self._init_ui()
         self._report_startup_progress(84, "Main window created...")
         self._init_menubar()
@@ -66,26 +69,43 @@ class AudioTrainingApp(QMainWindow):
     def _init_ui(self):
         """初始化用户界面"""
         self.setWindowTitle(tr_("AI Acoustic Signal Training Platform"))
+        self.setWindowFlag(Qt.WindowType.FramelessWindowHint, True)
         self.setMinimumSize(1280, 800)
         icon_path = get_app_icon_path()
         if icon_path.exists():
             self.setWindowIcon(QIcon(str(icon_path)))
         
-        # 设置主窗口内容
+        root_widget = QWidget(self)
+        self._root_layout = QVBoxLayout(root_widget)
+        self._root_layout.setContentsMargins(0, 0, 0, 0)
+        self._root_layout.setSpacing(0)
+
+        self.title_bar = AppTitleBar(self)
+        self.title_bar.view_changed.connect(self._switch_view)
+        self.title_bar.settings_requested.connect(self._show_settings)
+        self.title_bar.minimize_requested.connect(self.showMinimized)
+        self.title_bar.maximize_restore_requested.connect(self._toggle_maximized)
+        self.title_bar.close_requested.connect(self.close)
+        self._root_layout.addWidget(self.title_bar)
+
         self.main_window = MainWindow(self, startup_progress=self._startup_progress)
-        self.setCentralWidget(self.main_window)
+        self.main_window.view_changed.connect(self.title_bar.set_current_view)
+        self._root_layout.addWidget(self.main_window)
+        self.setCentralWidget(root_widget)
         
         # 居中显示
         self._center_window()
     
     def _init_menubar(self):
         """初始化菜单栏"""
-        menubar = self.menuBar()
+        menubar = QMenuBar(self)
+        self._root_layout.insertWidget(1, menubar)
         menubar.setStyleSheet("""
             QMenuBar {
                 background-color: #181825;
                 color: #cdd6f4;
                 padding: 4px;
+                border-bottom: 1px solid #313244;
             }
             QMenuBar::item {
                 padding: 6px 12px;
@@ -152,13 +172,10 @@ class AudioTrainingApp(QMainWindow):
         self.action_exit.triggered.connect(self.close)
         file_menu.addAction(self.action_exit)
         
-        # === 编辑菜单 ===
-        edit_menu = menubar.addMenu(tr_("Edit(&E)"))
-        
         self.action_settings = QAction(tr_("Settings..."), self)
         self.action_settings.setShortcut(QKeySequence("Ctrl+,"))
         self.action_settings.triggered.connect(self._show_settings)
-        edit_menu.addAction(self.action_settings)
+        self.addAction(self.action_settings)
         
         # === 视图菜单 ===
         view_menu = menubar.addMenu(tr_("View(&V)"))
@@ -452,16 +469,26 @@ class AudioTrainingApp(QMainWindow):
     
     def _switch_view(self, index: int):
         """切换视图"""
-        self.main_window._view_stack.setCurrentIndex(index)
-        # 更新对应的视图按钮状态
-        buttons = [
-            self.main_window._workflow_btn,
-            self.main_window._model_btn,
-            self.main_window._preview_btn,
-            self.main_window._training_btn
-        ]
-        if 0 <= index < len(buttons):
-            buttons[index].setChecked(True)
+        self.main_window.switch_view(index)
+        self.title_bar.set_current_view(index)
+
+    def _toggle_maximized(self):
+        """Toggle maximized state for the frameless window."""
+        is_maximized = (
+            self._custom_is_maximized
+            or self.isMaximized()
+            or bool(self.windowState() & Qt.WindowState.WindowMaximized)
+        )
+        if is_maximized:
+            self.showNormal()
+            if self._normal_geometry.isValid():
+                self.setGeometry(self._normal_geometry)
+            self._custom_is_maximized = False
+        else:
+            if not self.isMaximized():
+                self._normal_geometry = self.geometry()
+            self.showMaximized()
+            self._custom_is_maximized = True
     
     # === 工作流操作 ===
     
