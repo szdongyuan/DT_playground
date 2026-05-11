@@ -261,43 +261,89 @@ class AudioTrainingApp(QMainWindow):
         # ===== 恢复模型编辑器 =====
         try:
             self._report_startup_progress(94, "Restoring model editor state...")
+            try:
+                self.main_window._model_builder_view.set_session_restore_in_progress(True)
+            except Exception:
+                pass
+
             model_graph = None
             model_file_path = None
+            open_model_paths = config.get("session.open_model_paths", [])
+            active_model_idx = config.get("session.active_model_tab", -1)
+            restored_model_paths: list[str] = []
+            if isinstance(open_model_paths, list):
+                for p in open_model_paths:
+                    if isinstance(p, str) and p and os.path.exists(p):
+                        restored_model_paths.append(p)
 
-            last_model_path = config.get('session.last_model_path')
-            if last_model_path and os.path.exists(last_model_path):
+            if restored_model_paths:
                 try:
-                    model_graph = ModelGraph.load(last_model_path)
-                    model_file_path = last_model_path
+                    self.main_window._model_builder_view.clear_all_tabs(ensure_one_tab=False)
                 except Exception:
-                    model_graph = None
+                    pass
 
-            if model_graph is None:
-                snapshot = config.get('session.last_model_graph_snapshot')
-                if isinstance(snapshot, dict):
+                for p in restored_model_paths:
                     try:
-                        model_graph = ModelGraph.from_dict(snapshot)
-                        model_file_path = None
+                        self.main_window._model_builder_view.open_model_file(p)
+                    except Exception:
+                        pass
+
+                try:
+                    count = int(self.main_window._model_builder_view._tabs.count())
+                except Exception:
+                    count = 0
+                if count > 0:
+                    try:
+                        idx = int(active_model_idx)
+                    except Exception:
+                        idx = -1
+                    if idx < 0 or idx >= count:
+                        idx = 0
+                    try:
+                        self.main_window._model_builder_view._tabs.setCurrentIndex(idx)
+                    except Exception:
+                        pass
+            else:
+                last_model_path = config.get('session.last_model_path')
+                if last_model_path and os.path.exists(last_model_path):
+                    try:
+                        model_graph = ModelGraph.load(last_model_path)
+                        model_file_path = last_model_path
                     except Exception:
                         model_graph = None
 
-            if model_graph is not None:
-                try:
-                    self.main_window._model_builder_view.set_model_graph(
-                        model_graph,
-                        file_path=model_file_path
-                    )
-                except Exception:
-                    # 不阻断启动；最差情况保持默认模型
-                    pass
+                if model_graph is None:
+                    snapshot = config.get('session.last_model_graph_snapshot')
+                    if isinstance(snapshot, dict):
+                        try:
+                            model_graph = ModelGraph.from_dict(snapshot)
+                            model_file_path = None
+                        except Exception:
+                            model_graph = None
 
-            if model_file_path:
-                try:
-                    config.add_recent_file(model_file_path)
-                except Exception:
-                    pass
+                if model_graph is not None:
+                    try:
+                        self.main_window._model_builder_view.set_model_graph(
+                            model_graph,
+                            file_path=model_file_path
+                        )
+                    except Exception:
+                        # Startup restore should not block the app; the default model remains usable.
+                        pass
+
+                if model_file_path:
+                    try:
+                        config.add_recent_file(model_file_path)
+                    except Exception:
+                        pass
         except Exception:
             pass
+        finally:
+            try:
+                self.main_window._model_builder_view.set_session_restore_in_progress(False)
+                self.main_window._model_builder_view.persist_session_state_guarded()
+            except Exception:
+                pass
         self._report_startup_progress(95, "Startup state restored...")
     
     def _center_window(self):

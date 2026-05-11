@@ -7,12 +7,13 @@ Provides visual drag-and-drop neural network model building interface.
 
 import logging
 import os
+from dataclasses import dataclass
 from typing import Optional
 
 from PySide6.QtCore import Qt, QTimer, Signal
 from PySide6.QtWidgets import (
     QDialog, QFileDialog, QHBoxLayout, QLabel, QMessageBox,
-    QPushButton, QSplitter, QTextEdit, QVBoxLayout, QWidget
+    QPushButton, QSplitter, QTabWidget, QTextEdit, QToolButton, QVBoxLayout, QWidget
 )
 
 from src.model_builder.model_graph import ModelGraph
@@ -25,6 +26,14 @@ from src.ui.styles import Styles
 from src.utils.config import config
 
 logger = logging.getLogger(__name__)
+
+
+@dataclass
+class _ModelTab:
+    graph_widget: ModelGraphWidget
+    model_graph: ModelGraph
+    file_path: Optional[str] = None
+    source_keras_model: object = None
 
 
 class ModelBuilderView(QWidget):
@@ -44,6 +53,7 @@ class ModelBuilderView(QWidget):
         self._model_graph: Optional[ModelGraph] = None
         self._current_file_path: Optional[str] = None
         self._source_keras_model = None  # 导入的 Keras 模型引用（用于权重迁移）
+        self._session_restore_in_progress: bool = True
 
         # 快照持久化防抖（避免每次拖拽/编辑都写磁盘）
         self._snapshot_timer = QTimer(self)
@@ -62,49 +72,136 @@ class ModelBuilderView(QWidget):
         """
         外部注入/恢复模型图（用于启动恢复或外部加载）。
         """
-        self._model_graph = model_graph
-        self._current_file_path = file_path
-        self._source_keras_model = None
+        if self._tabs.count() == 0:
+            self._add_model_tab(model_graph=model_graph, file_path=file_path, make_current=True)
+            return
 
-        self._graph_widget.set_model_graph(self._model_graph)
+        tab = self._current_tab()
+        if not tab:
+            self._add_model_tab(model_graph=model_graph, file_path=file_path, make_current=True)
+            return
+
+        tab.model_graph = model_graph
+        tab.file_path = file_path
+        tab.source_keras_model = None
+        tab.graph_widget.set_model_graph(model_graph)
+        self._sync_current_model_state()
         self._property_panel.set_layer(None)
-        self._property_panel.set_compile_config(self._model_graph.compile_config)
-        self._update_title()
+        self._property_panel.set_compile_config(model_graph.compile_config)
+        self._refresh_all_tab_titles()
+
+    def set_session_restore_in_progress(self, enabled: bool) -> None:
+        self._session_restore_in_progress = bool(enabled)
+
+    def persist_session_state(self) -> None:
+        self.persist_session_state_guarded()
+
+    def persist_session_state_guarded(self, *, force: bool = False) -> None:
+        if self._session_restore_in_progress and not force:
+            return
+
+        paths: list[str] = []
+        active = -1
+        current = self._tabs.currentIndex() if hasattr(self, "_tabs") else -1
+        for index in range(self._tabs.count()):
+            tab = self._get_tab(index)
+            if tab is None or not tab.file_path:
+                continue
+            path = os.path.abspath(tab.file_path)
+            if not os.path.exists(path):
+                continue
+            if index == current:
+                active = len(paths)
+            paths.append(path)
+
+        try:
+            config.set("session.open_model_paths", paths)
+            config.set("session.active_model_tab", active)
+        except Exception:
+            pass
+
+    def clear_all_tabs(self, *, ensure_one_tab: bool = True) -> None:
+        while self._tabs.count() > 0:
+            widget = self._tabs.widget(0)
+            self._tabs.removeTab(0)
+            if widget is not None:
+                widget.deleteLater()
+
+        if ensure_one_tab:
+            self._add_model_tab(model_graph=ModelGraph("new_model"), file_path=None, make_current=True)
+        else:
+            self._sync_current_model_state()
+
+        self.persist_session_state_guarded()
+
+    def open_model_file(self, path: str):
+        model_graph = ModelGraph.load(path)
+        self._add_model_tab(model_graph=model_graph, file_path=path, make_current=True)
+        try:
+            config.set("session.last_model_path", path)
+            config.add_recent_file(path)
+        except Exception:
+            pass
+        self.persist_session_state_guarded()
     
     def _setup_ui(self):
         """初始化UI"""
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(0)
-        
-        # 主区域（三栏布局）- 先创建，因为工具栏需要引用这些组件
-        main_splitter = QSplitter(Qt.Orientation.Horizontal)
-        
-        # 左侧：层面板
+
+        self._graph_widget: Optional[ModelGraphWidget] = None
+        self._create_toolbar(layout)
+
+        self._workspace_splitter = QSplitter(Qt.Orientation.Horizontal)
+        self._workspace_splitter.setHandleWidth(2)
+        self._workspace_splitter.setStyleSheet(f"""
+            QSplitter::handle {{
+                background: {Styles.COLORS['surface1']};
+            }}
+        """)
+
         self._layer_palette = LayerPalette()
         self._layer_palette.setMinimumWidth(200)
         self._layer_palette.setMaximumWidth(280)
-        main_splitter.addWidget(self._layer_palette)
-        
-        # 中间：模型画布
-        self._graph_widget = ModelGraphWidget()
-        main_splitter.addWidget(self._graph_widget)
-        
-        # 右侧：属性面板
+        self._workspace_splitter.addWidget(self._layer_palette)
+
+        self._canvas_column = QWidget()
+        canvas_layout = QVBoxLayout(self._canvas_column)
+        canvas_layout.setContentsMargins(8, 8, 8, 8)
+        canvas_layout.setSpacing(0)
+        self._canvas_column.setStyleSheet(f"""
+            QWidget {{
+                background: {Styles.COLORS['mantle']};
+                border: 1px solid {Styles.COLORS['surface1']};
+            }}
+            QTabWidget, QTabBar, QWidget > QWidget {{
+                border: none;
+            }}
+        """)
+
+        self._tabs = QTabWidget()
+        self._tabs.setDocumentMode(True)
+        self._tabs.setTabsClosable(True)
+        self._tabs.setStyleSheet(Styles.canvas_tab_widget())
+        self._new_tab_button = QToolButton()
+        self._new_tab_button.setText("+")
+        self._new_tab_button.setToolTip(tr_("New model"))
+        self._new_tab_button.clicked.connect(self._on_new)
+        self._tabs.setCornerWidget(self._new_tab_button)
+        canvas_layout.addWidget(self._tabs)
+        self._workspace_splitter.addWidget(self._canvas_column)
+
         self._property_panel = LayerPropertyPanel()
         self._property_panel.setMinimumWidth(250)
         self._property_panel.setMaximumWidth(350)
-        main_splitter.addWidget(self._property_panel)
-        
-        # 设置拉伸比例
-        main_splitter.setStretchFactor(0, 0)
-        main_splitter.setStretchFactor(1, 1)
-        main_splitter.setStretchFactor(2, 0)
-        
-        # 工具栏 - 放在主区域之上
-        self._create_toolbar(layout)
-        
-        layout.addWidget(main_splitter)
+        self._workspace_splitter.addWidget(self._property_panel)
+        self._workspace_splitter.setSizes([220, 720, 300])
+        self._workspace_splitter.setStretchFactor(0, 0)
+        self._workspace_splitter.setStretchFactor(1, 1)
+        self._workspace_splitter.setStretchFactor(2, 0)
+
+        layout.addWidget(self._workspace_splitter)
     
     def _create_toolbar(self, layout):
         """创建工具栏"""
@@ -113,11 +210,11 @@ class ModelBuilderView(QWidget):
         self._toolbar.open_requested.connect(self._on_open)
         self._toolbar.save_requested.connect(self._on_save)
         self._toolbar.save_as_requested.connect(self._on_save_as)
-        self._toolbar.copy_requested.connect(self._graph_widget.copy_selected)
-        self._toolbar.delete_requested.connect(self._graph_widget.delete_selected)
+        self._toolbar.copy_requested.connect(self._copy_current_selection)
+        self._toolbar.delete_requested.connect(self._delete_current_selection)
         self._toolbar.build_requested.connect(self._on_build)
         self._toolbar.import_keras_requested.connect(self._on_import_keras)
-        self._toolbar.fit_requested.connect(self._graph_widget.fit_to_selection)
+        self._toolbar.fit_requested.connect(self._fit_current)
 
         self._model_name_label = QLabel(tr_("📐 New model"), self)
         self._model_name_label.hide()
@@ -125,23 +222,111 @@ class ModelBuilderView(QWidget):
     
     def _connect_signals(self):
         """连接信号"""
-        # 层面板信号
         self._layer_palette.layer_add_requested.connect(self._on_add_layer)
-        
-        # 画布信号
-        self._graph_widget.layer_selected.connect(self._on_layer_selected)
-        self._graph_widget.graph_changed.connect(self._on_graph_changed)
-        
-        # 属性面板信号
         self._property_panel.parameter_changed.connect(self._on_parameter_changed)
         self._property_panel.compile_config_changed.connect(self._on_compile_config_changed)
+        self._tabs.currentChanged.connect(self._on_current_tab_changed)
+        self._tabs.tabCloseRequested.connect(self._on_tab_close_requested)
     
     def _create_default_model(self):
         """创建默认模型"""
-        self._model_graph = ModelGraph("new_model")
-        self._graph_widget.set_model_graph(self._model_graph)
+        self._add_model_tab(model_graph=ModelGraph("new_model"), file_path=None, make_current=True)
         self._property_panel.set_compile_config(self._model_graph.compile_config)
         self._update_title()
+
+    def _add_model_tab(
+        self,
+        *,
+        model_graph: Optional[ModelGraph] = None,
+        file_path: Optional[str] = None,
+        source_keras_model=None,
+        make_current: bool = True,
+    ) -> int:
+        graph = model_graph or ModelGraph("new_model")
+        graph_widget = ModelGraphWidget()
+        graph_widget.set_model_graph(graph)
+        graph_widget.layer_selected.connect(self._on_layer_selected)
+        graph_widget.graph_changed.connect(self._on_graph_changed)
+
+        tab = _ModelTab(
+            graph_widget=graph_widget,
+            model_graph=graph,
+            file_path=file_path,
+            source_keras_model=source_keras_model,
+        )
+        graph_widget.setProperty("model_tab", tab)
+        idx = self._tabs.addTab(graph_widget, "")
+        self._update_tab_title(idx)
+
+        if make_current:
+            self._tabs.setCurrentIndex(idx)
+            self._sync_current_model_state()
+            self._property_panel.set_layer(None)
+            self._property_panel.set_compile_config(graph.compile_config)
+            self.model_changed.emit()
+            self.persist_session_state_guarded()
+        return idx
+
+    def _get_tab(self, index: int) -> Optional[_ModelTab]:
+        widget = self._tabs.widget(index)
+        if isinstance(widget, ModelGraphWidget):
+            tab = widget.property("model_tab")
+            if isinstance(tab, _ModelTab):
+                return tab
+        return None
+
+    def _current_tab(self) -> Optional[_ModelTab]:
+        return self._get_tab(self._tabs.currentIndex())
+
+    def _sync_current_model_state(self) -> None:
+        tab = self._current_tab()
+        if tab is None:
+            self._model_graph = None
+            self._current_file_path = None
+            self._source_keras_model = None
+            self._graph_widget = None
+            return
+
+        self._model_graph = tab.model_graph
+        self._current_file_path = tab.file_path
+        self._source_keras_model = tab.source_keras_model
+        self._graph_widget = tab.graph_widget
+
+    def _model_display_name(self, model_graph: Optional[ModelGraph], file_path: Optional[str]) -> str:
+        if file_path:
+            filename = os.path.basename(file_path)
+            return filename.replace(".model.json", "").replace(".json", "")
+        if model_graph and model_graph.name:
+            return model_graph.name
+        return "new_model"
+
+    def _tab_title_for_model(self, tab: Optional[_ModelTab]) -> str:
+        if tab is None:
+            return "new_model"
+        title = self._model_display_name(tab.model_graph, tab.file_path)
+        if getattr(tab.model_graph, "is_dirty", False):
+            return f"{title} *"
+        return title
+
+    def _update_tab_title(self, index: int) -> None:
+        if 0 <= index < self._tabs.count():
+            self._tabs.setTabText(index, self._tab_title_for_model(self._get_tab(index)))
+
+    def _refresh_all_tab_titles(self) -> None:
+        for index in range(self._tabs.count()):
+            self._update_tab_title(index)
+        self._update_title()
+
+    def _is_pristine_empty_tab(self, tab: Optional[_ModelTab]) -> bool:
+        if tab is None:
+            return False
+        graph = tab.model_graph
+        return bool(
+            not tab.file_path
+            and not getattr(graph, "is_dirty", False)
+            and not getattr(graph, "layers", {})
+            and not getattr(graph, "connections", [])
+        )
     
     def _on_add_layer(self, layer_type: str):
         """添加层"""
@@ -158,6 +343,9 @@ class ModelBuilderView(QWidget):
     
     def _on_graph_changed(self):
         """模型图变化"""
+        tab = self._current_tab()
+        if tab is not None:
+            tab.model_graph = tab.graph_widget.get_model_graph() or tab.model_graph
         self._update_title()
         self.model_changed.emit()
         self._schedule_persist_snapshot()
@@ -179,23 +367,7 @@ class ModelBuilderView(QWidget):
     
     def _on_new(self):
         """新建模型"""
-        if self._model_graph and self._model_graph.is_dirty:
-            reply = QMessageBox.question(
-                self,
-                tr_("Confirm"),
-                tr_("The current model has unsaved changes. Continue?"),
-                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
-            )
-            if reply == QMessageBox.StandardButton.No:
-                return
-        
-        self._graph_widget.clear()
-        self._model_graph = ModelGraph("new_model")
-        self._graph_widget.set_model_graph(self._model_graph)
-        self._current_file_path = None
-        self._property_panel.set_layer(None)
-        self._property_panel.set_compile_config(self._model_graph.compile_config)
-        self._update_title()
+        self._add_model_tab(model_graph=ModelGraph("new_model"), file_path=None, make_current=True)
     
     def _on_open(self):
         """打开模型"""
@@ -208,12 +380,19 @@ class ModelBuilderView(QWidget):
         
         if file_path:
             try:
-                self._model_graph = ModelGraph.load(file_path)
-                self._graph_widget.set_model_graph(self._model_graph)
-                self._current_file_path = file_path
+                model_graph = ModelGraph.load(file_path)
+                current_tab = self._current_tab()
+                if self._is_pristine_empty_tab(current_tab) and current_tab is not None:
+                    current_tab.model_graph = model_graph
+                    current_tab.file_path = file_path
+                    current_tab.source_keras_model = None
+                    current_tab.graph_widget.set_model_graph(model_graph)
+                    self._sync_current_model_state()
+                else:
+                    self._add_model_tab(model_graph=model_graph, file_path=file_path, make_current=True)
                 self._property_panel.set_layer(None)
                 self._property_panel.set_compile_config(self._model_graph.compile_config)
-                self._update_title()
+                self._refresh_all_tab_titles()
                 logger.info(f"模型已加载: {file_path}")
 
                 try:
@@ -221,6 +400,7 @@ class ModelBuilderView(QWidget):
                     config.add_recent_file(file_path)
                 except Exception:
                     pass
+                self.persist_session_state_guarded()
             except Exception as e:
                 QMessageBox.critical(
                     self,
@@ -264,17 +444,23 @@ class ModelBuilderView(QWidget):
             
             # 解析为 ModelGraph
             parser = KerasModelParser()
-            self._model_graph = parser.parse(keras_model)
-            
-            # 保存 Keras 模型引用（用于后续可能的权重迁移）
-            self._source_keras_model = keras_model
-            
-            # 更新 UI
-            self._graph_widget.set_model_graph(self._model_graph)
-            self._current_file_path = None  # 导入的模型需要另存为
+            imported_graph = parser.parse(keras_model)
+            tab = self._current_tab()
+            if tab is None:
+                self._add_model_tab(
+                    model_graph=imported_graph,
+                    source_keras_model=keras_model,
+                    make_current=True,
+                )
+            else:
+                tab.model_graph = imported_graph
+                tab.file_path = None
+                tab.source_keras_model = keras_model
+                tab.graph_widget.set_model_graph(imported_graph)
+                self._sync_current_model_state()
             self._property_panel.set_layer(None)
             self._property_panel.set_compile_config(self._model_graph.compile_config)
-            self._update_title()
+            self._refresh_all_tab_titles()
             
             # 获取模型摘要
             summary = parser.get_model_summary(keras_model)
@@ -366,9 +552,8 @@ class ModelBuilderView(QWidget):
             file_path += '.model.json'
         
         self._save_to_path(file_path)
-        self._current_file_path = file_path
     
-    def _save_to_path(self, file_path: str):
+    def _save_to_path(self, file_path: str) -> bool:
         """保存模型到指定路径"""
         try:
             # 确保目录存在
@@ -391,7 +576,13 @@ class ModelBuilderView(QWidget):
             self._model_graph.name = sanitized_name or 'model'
             
             self._model_graph.save(file_path)
-            self._update_title()
+            tab = self._current_tab()
+            if tab is not None:
+                tab.model_graph = self._model_graph
+                tab.file_path = file_path
+                tab.source_keras_model = self._source_keras_model
+            self._current_file_path = file_path
+            self._refresh_all_tab_titles()
             self.model_saved.emit(file_path)
 
             try:
@@ -399,6 +590,7 @@ class ModelBuilderView(QWidget):
                 config.add_recent_file(file_path)
             except Exception:
                 pass
+            self.persist_session_state_guarded()
             
             QMessageBox.information(
                 self,
@@ -406,6 +598,7 @@ class ModelBuilderView(QWidget):
                 tr_("Model saved to:\n{path}").format(path=file_path),
             )
             logger.info(f"模型已保存: {file_path}")
+            return True
         except Exception as e:
             QMessageBox.critical(
                 self,
@@ -413,6 +606,7 @@ class ModelBuilderView(QWidget):
                 tr_("Failed to save model: {error}").format(error=str(e)),
             )
             logger.exception("保存模型失败")
+            return False
     
     def _on_build(self):
         """构建模型"""
@@ -491,15 +685,94 @@ class ModelBuilderView(QWidget):
         self._graph_widget.clear()
         self._model_graph = ModelGraph("new_model")
         self._graph_widget.set_model_graph(self._model_graph)
+        tab = self._current_tab()
+        if tab is not None:
+            tab.model_graph = self._model_graph
+            tab.file_path = None
+            tab.source_keras_model = None
         self._property_panel.set_layer(None)
         self._property_panel.set_compile_config(self._model_graph.compile_config)
+        self._refresh_all_tab_titles()
+
+    def _on_current_tab_changed(self, index: int):
+        self._sync_current_model_state()
+        self._property_panel.set_layer(None)
+        if self._model_graph:
+            self._property_panel.set_compile_config(self._model_graph.compile_config)
+        self._update_tab_title(index)
         self._update_title()
+        self.model_changed.emit()
+        self.persist_session_state_guarded()
+
+    def _on_tab_close_requested(self, index: int):
+        tab = self._get_tab(index)
+        if tab is None:
+            return
+
+        if tab.model_graph and getattr(tab.model_graph, "is_dirty", False):
+            name = self._model_display_name(tab.model_graph, tab.file_path)
+            msg = tr_("Save changes to '{name}' before closing?").format(name=name)
+            box = QMessageBox(self)
+            box.setIcon(QMessageBox.Icon.Question)
+            box.setWindowTitle(tr_("Confirm"))
+            box.setText(msg)
+            box.setStandardButtons(
+                QMessageBox.StandardButton.Save
+                | QMessageBox.StandardButton.Discard
+                | QMessageBox.StandardButton.Cancel
+            )
+            box.setDefaultButton(QMessageBox.StandardButton.Save)
+            choice = box.exec()
+
+            if choice == QMessageBox.StandardButton.Cancel:
+                return
+            if choice == QMessageBox.StandardButton.Save:
+                self._tabs.setCurrentIndex(index)
+                if not self._save_current_tab():
+                    return
+
+        widget = tab.graph_widget
+        self._tabs.removeTab(index)
+        widget.deleteLater()
+
+        if self._tabs.count() == 0:
+            self._add_model_tab(model_graph=ModelGraph("new_model"), file_path=None, make_current=True)
+        else:
+            self._sync_current_model_state()
+            self._property_panel.set_layer(None)
+            self._refresh_all_tab_titles()
+            self.model_changed.emit()
+            self.persist_session_state_guarded()
+
+    def _copy_current_selection(self):
+        if self._graph_widget:
+            self._graph_widget.copy_selected()
+
+    def _delete_current_selection(self):
+        if self._graph_widget:
+            self._graph_widget.delete_selected()
+
+    def _fit_current(self):
+        if self._graph_widget:
+            self._graph_widget.fit_to_selection()
+
+    def _save_current_tab(self) -> bool:
+        if not self._model_graph:
+            return True
+        if self._current_file_path:
+            return self._save_to_path(self._current_file_path)
+        before = self._current_file_path
+        self._on_save_as()
+        return bool(self._current_file_path and self._current_file_path != before)
     
     def _update_title(self):
         """更新标题"""
         if self._model_graph:
             dirty_mark = " *" if self._model_graph.is_dirty else ""
             self._model_name_label.setText(f"📐 {self._model_graph.name}{dirty_mark}")
+            tab = self._current_tab()
+            if tab is not None:
+                self._update_tab_title(self._tabs.currentIndex())
 
     def _schedule_persist_snapshot(self):
         """防抖触发模型快照持久化"""

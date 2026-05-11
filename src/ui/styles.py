@@ -174,6 +174,67 @@ class Styles:
                 background-color: #585b70;
             }}
         """
+
+    @staticmethod
+    def canvas_tab_widget() -> str:
+        """Return the shared dark IDE-style tab strip used above graph canvases."""
+        return f"""
+            QTabWidget {{
+                background: {Styles.COLORS['base']};
+            }}
+            QTabWidget::pane {{
+                border: 1px solid {Styles.COLORS['surface1']};
+                border-top: 1px solid {Styles.COLORS['surface1']};
+                background: {Styles.COLORS['base']};
+            }}
+            QTabWidget::tab-bar {{
+                alignment: left;
+            }}
+            QTabBar {{
+                background: {Styles.COLORS['mantle']};
+                border-top: 1px solid rgba(88, 91, 112, 0.36);
+                border-bottom: 1px solid {Styles.COLORS['surface1']};
+            }}
+            QTabBar::tab {{
+                background: rgba(49, 50, 68, 0.72);
+                color: {Styles.COLORS['subtext1']};
+                border: 1px solid {Styles.COLORS['surface1']};
+                border-bottom: 2px solid transparent;
+                border-top-left-radius: 6px;
+                border-top-right-radius: 6px;
+                padding: 7px 14px 6px 14px;
+                margin-right: 2px;
+                min-width: 110px;
+            }}
+            QTabBar::tab:selected {{
+                background: {Styles.COLORS['surface2']};
+                color: {Styles.COLORS['text']};
+                border-color: {Styles.COLORS['blue']};
+                border-bottom: 2px solid {Styles.COLORS['blue']};
+            }}
+            QTabBar::tab:!selected {{
+                background: rgba(49, 50, 68, 0.62);
+                color: {Styles.COLORS['subtext1']};
+            }}
+            QTabBar::tab:hover {{
+                background: {Styles.COLORS['surface1']};
+                color: {Styles.COLORS['text']};
+                border-bottom: 2px solid {Styles.COLORS['lavender']};
+            }}
+            QToolButton {{
+                background: {Styles.COLORS['surface0']};
+                color: {Styles.COLORS['text']};
+                border: 1px solid {Styles.COLORS['surface1']};
+                border-radius: 5px;
+                padding: 4px 10px;
+                margin: 3px;
+                font-weight: 700;
+            }}
+            QToolButton:hover {{
+                background: {Styles.COLORS['surface1']};
+                border-color: {Styles.COLORS['blue']};
+            }}
+        """
     
     # ===== 按钮样式 =====
     BUTTON_PRIMARY = """

@@ -2,7 +2,7 @@
 Workflow Tabs View
 
 Tab container for multiple workflow editors.
-Composes WorkflowToolbar + QTabWidget(WorkflowEditorWidget * N).
+Composes WorkflowToolbar + left/right panels + center canvas document tabs.
 """
 
 from __future__ import annotations
@@ -15,7 +15,9 @@ from PySide6.QtCore import Signal
 from PySide6.QtWidgets import (
     QFileDialog,
     QMessageBox,
+    QSplitter,
     QTabWidget,
+    QToolButton,
     QVBoxLayout,
     QWidget,
 )
@@ -23,17 +25,73 @@ from PySide6.QtWidgets import (
 from src.controllers.workflow_controller import WorkflowController
 from src.core.event_bus import get_event_bus
 from src.ui.i18n import tr_
+from src.ui.node_editor import NodeGraphWidget, NodePalette, PropertyPanel
 from src.ui.styles import Styles
 from src.utils.config import config
 from src.workflow.workflow import Workflow
 
-from .workflow_editor_widget import WorkflowEditorWidget
 from .toolbars.workflow_toolbar import WorkflowToolbar
+
+
+class _WorkflowCanvasPage(QWidget):
+    """Single workflow canvas page used inside the center document tabs."""
+
+    workflow_changed = Signal()
+    node_selected = Signal(str)
+    node_double_clicked = Signal(str)
+    run_from_node_requested = Signal(str)
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(0)
+
+        self._node_graph = NodeGraphWidget()
+        layout.addWidget(self._node_graph)
+
+        self._node_graph.workflow_changed.connect(self.workflow_changed)
+        self._node_graph.node_selected.connect(self.node_selected)
+        self._node_graph.node_double_clicked.connect(self.node_double_clicked)
+        self._node_graph.run_from_node_requested.connect(self.run_from_node_requested)
+
+    def set_workflow(self, workflow: Workflow):
+        self._node_graph.set_workflow(workflow)
+
+    def get_workflow(self) -> Optional[Workflow]:
+        return self._node_graph.get_workflow()
+
+    def add_node_from_palette(self, node_type: str):
+        self._node_graph.add_node(
+            node_type,
+            self._node_graph.get_visible_viewport_center(),
+        )
+
+    def update_node_state(self, node_id: str, state: str):
+        self._node_graph.update_node_state(node_id, state)
+
+    def reset_all_node_states(self):
+        self._node_graph.reset_all_node_states()
+
+    def reset_node_states(self, node_ids: list[str]):
+        self._node_graph.reset_node_states(node_ids)
+
+    def highlight_node(self, node_id: str):
+        self._node_graph.highlight_node(node_id)
+
+    def fit_to_selection(self):
+        self._node_graph.fit_to_selection()
+
+    def copy_selected(self) -> bool:
+        return self._node_graph.copy_selected()
+
+    def delete_selected(self) -> None:
+        self._node_graph.delete_selected()
 
 
 @dataclass
 class _Tab:
-    editor: WorkflowEditorWidget
+    editor: _WorkflowCanvasPage
 
 
 @dataclass
@@ -183,6 +241,7 @@ class WorkflowTabsView(QWidget):
 
         editor.set_workflow(workflow)
         self._set_editor_session_file_path(editor, getattr(workflow, "_file_path", None))
+        self._property_panel.clear()
         self._refresh_titles()
         self.workflow_changed.emit()
 
@@ -314,6 +373,7 @@ class WorkflowTabsView(QWidget):
         if can_reuse_current and editor is not None:
             editor.set_workflow(workflow)
             self._set_editor_session_file_path(editor, path)
+            self._property_panel.clear()
             self._refresh_all_tab_titles()
             self.workflow_changed.emit()
             self.persist_session_state_guarded()
@@ -362,41 +422,62 @@ class WorkflowTabsView(QWidget):
         self._toolbar = WorkflowToolbar(show_duplicate=True)
         layout.addWidget(self._toolbar)
 
+        self._workspace_splitter = QSplitter()
+        self._workspace_splitter.setHandleWidth(2)
+        self._workspace_splitter.setStyleSheet(f"""
+            QSplitter::handle {{
+                background: {Styles.COLORS['surface1']};
+            }}
+        """)
+
+        self._node_palette = NodePalette()
+        self._node_palette.setMinimumWidth(180)
+        self._node_palette.setMaximumWidth(280)
+        self._workspace_splitter.addWidget(self._node_palette)
+
+        self._canvas_column = QWidget()
+        canvas_layout = QVBoxLayout(self._canvas_column)
+        canvas_layout.setContentsMargins(8, 8, 8, 8)
+        canvas_layout.setSpacing(0)
+        self._canvas_column.setStyleSheet(f"""
+            QWidget {{
+                background: {Styles.COLORS['mantle']};
+                border: 1px solid {Styles.COLORS['surface1']};
+            }}
+            QTabWidget, QTabBar, QWidget > QWidget {{
+                border: none;
+            }}
+        """)
+
         self._tabs = QTabWidget()
         self._tabs.setDocumentMode(True)
         self._tabs.setTabsClosable(True)
-        self._tabs.setStyleSheet(f"""
-            QTabWidget::pane {{
-                border-top: 1px solid {Styles.COLORS['surface1']};
-                background: {Styles.COLORS['base']};
-            }}
-            QTabBar::tab {{
-                background: {Styles.COLORS['surface0']};
-                color: {Styles.COLORS['text']};
-                border: 1px solid {Styles.COLORS['surface1']};
-                border-bottom: none;
-                padding: 6px 12px;
-                min-width: 96px;
-            }}
-            QTabBar::tab:selected {{
-                background: {Styles.COLORS['surface2']};
-                color: {Styles.COLORS['text']};
-            }}
-            QTabBar::tab:!selected {{
-                background: {Styles.COLORS['surface0']};
-                color: {Styles.COLORS['subtext1']};
-            }}
-            QTabBar::tab:hover {{
-                background: {Styles.COLORS['surface1']};
-                color: {Styles.COLORS['text']};
-            }}
-        """)
-        layout.addWidget(self._tabs)
+        self._tabs.setStyleSheet(Styles.canvas_tab_widget())
+        self._new_tab_button = QToolButton()
+        self._new_tab_button.setText("+")
+        self._new_tab_button.setToolTip(tr_("New workflow"))
+        self._new_tab_button.clicked.connect(self.new_tab)
+        self._tabs.setCornerWidget(self._new_tab_button)
+        canvas_layout.addWidget(self._tabs)
+        self._workspace_splitter.addWidget(self._canvas_column)
+
+        self._property_panel = PropertyPanel()
+        self._property_panel.setMinimumWidth(250)
+        self._property_panel.setMaximumWidth(350)
+        self._workspace_splitter.addWidget(self._property_panel)
+        self._workspace_splitter.setSizes([200, 700, 280])
+        self._workspace_splitter.setStretchFactor(0, 0)
+        self._workspace_splitter.setStretchFactor(1, 1)
+        self._workspace_splitter.setStretchFactor(2, 0)
+
+        layout.addWidget(self._workspace_splitter)
 
     def _connect_signals(self):
         # Tab widget signals
         self._tabs.tabCloseRequested.connect(self._on_tab_close_requested)
         self._tabs.currentChanged.connect(self._on_current_changed)
+        self._node_palette.node_add_requested.connect(self._on_add_node_from_palette)
+        self._property_panel.parameter_changed.connect(self._on_parameter_changed)
 
         # Toolbar command signals -> container logic
         self._toolbar.new_requested.connect(self.new_tab)
@@ -415,12 +496,12 @@ class WorkflowTabsView(QWidget):
     # ===== Internals =====
 
     def _add_editor_tab(self, *, workflow: Workflow, make_current: bool):
-        editor = WorkflowEditorWidget()
+        editor = _WorkflowCanvasPage()
         editor.set_workflow(workflow)
         self._set_editor_session_file_path(editor, getattr(workflow, "_file_path", None))
 
         editor.workflow_changed.connect(self._on_editor_workflow_changed)
-        editor.node_selected.connect(self.node_selected)
+        editor.node_selected.connect(self._on_node_selected)
         editor.node_double_clicked.connect(self.node_double_clicked)
         editor.run_from_node_requested.connect(self.run_from_node_requested)
 
@@ -434,15 +515,15 @@ class WorkflowTabsView(QWidget):
 
     def _get_tab(self, index: int) -> Optional[_Tab]:
         w = self._tabs.widget(index)
-        if isinstance(w, WorkflowEditorWidget):
+        if isinstance(w, _WorkflowCanvasPage):
             return _Tab(editor=w)
         return None
 
-    def _current_editor(self) -> Optional[WorkflowEditorWidget]:
+    def _current_editor(self) -> Optional[_WorkflowCanvasPage]:
         tab = self._get_tab(self._tabs.currentIndex())
         return tab.editor if tab else None
 
-    def _runtime_editor(self) -> Optional[WorkflowEditorWidget]:
+    def _runtime_editor(self) -> Optional[_WorkflowCanvasPage]:
         idx = self._running_tab_index
         if idx is not None:
             tab = self._get_tab(idx)
@@ -525,10 +606,31 @@ class WorkflowTabsView(QWidget):
 
     def _on_current_changed(self, index: int):
         self._update_tab_title(index)
+        self._property_panel.clear()
         self._refresh_titles()
         self._apply_toolbar_state_for_current_tab()
         self.workflow_changed.emit()
         self.persist_session_state_guarded()
+
+    def _on_add_node_from_palette(self, node_type: str):
+        editor = self._current_editor()
+        if editor:
+            editor.add_node_from_palette(node_type)
+
+    def _on_node_selected(self, node_id: str):
+        workflow = self.get_workflow()
+        if workflow and node_id:
+            node = workflow.get_node(node_id)
+            if node:
+                self._property_panel.set_node(node, node_id)
+                self.node_selected.emit(node_id)
+
+    def _on_parameter_changed(self, node_id: str, param_name: str, value):
+        workflow = self.get_workflow()
+        if workflow:
+            workflow._mark_dirty()
+        self._refresh_titles()
+        self.workflow_changed.emit()
 
     def _open_dialog(self):
         path, _ = QFileDialog.getOpenFileName(
@@ -552,7 +654,7 @@ class WorkflowTabsView(QWidget):
             return
         self._save_editor(editor, force_save_as=True)
 
-    def _save_editor(self, editor: WorkflowEditorWidget, *, force_save_as: bool = False) -> bool:
+    def _save_editor(self, editor: _WorkflowCanvasPage, *, force_save_as: bool = False) -> bool:
         workflow = editor.get_workflow()
         if not workflow:
             return True
@@ -642,7 +744,10 @@ class WorkflowTabsView(QWidget):
         workflow = Workflow("new_workflow")
         workflow._file_path = None  # type: ignore[attr-defined]
         editor.set_workflow(workflow)
+        self._set_editor_session_file_path(editor, None)
+        self._property_panel.clear()
         self._on_editor_workflow_changed()
+        self.persist_session_state_guarded()
 
     def _on_tab_close_requested(self, index: int):
         if self._running_tab_index is not None:
@@ -707,7 +812,7 @@ class WorkflowTabsView(QWidget):
             return p
         return None
 
-    def _set_editor_session_file_path(self, editor: WorkflowEditorWidget, file_path: object) -> None:
+    def _set_editor_session_file_path(self, editor: _WorkflowCanvasPage, file_path: object) -> None:
         """
         Persist a per-tab file path independent of Workflow internals.
 
@@ -722,7 +827,7 @@ class WorkflowTabsView(QWidget):
         except Exception:
             pass
 
-    def _get_editor_session_file_path(self, editor: WorkflowEditorWidget) -> Optional[str]:
+    def _get_editor_session_file_path(self, editor: _WorkflowCanvasPage) -> Optional[str]:
         try:
             raw = editor.property("workflow_file_path")
         except Exception:
@@ -756,8 +861,8 @@ class WorkflowTabsView(QWidget):
 
         return paths, active
 
-    def _get_dirty_editors(self) -> list[WorkflowEditorWidget]:
-        dirty: list[WorkflowEditorWidget] = []
+    def _get_dirty_editors(self) -> list[_WorkflowCanvasPage]:
+        dirty: list[_WorkflowCanvasPage] = []
         for i in range(self._tabs.count()):
             tab = self._get_tab(i)
             if not tab:

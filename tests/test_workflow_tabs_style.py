@@ -17,8 +17,10 @@ def test_workflow_tab_bar_styles_keep_inactive_tab_text_readable():
 
         assert "QTabBar::tab" in style
         assert f"color: {Styles.COLORS['text']}" in style
-        assert f"background: {Styles.COLORS['surface0']}" in style
         assert f"background: {Styles.COLORS['surface2']}" in style
+        assert "background: rgba(49, 50, 68, 0.62)" in style
+        assert f"border-bottom: 2px solid {Styles.COLORS['blue']}" in style
+        assert f"border-bottom: 1px solid {Styles.COLORS['surface1']}" in style
     finally:
         view.close()
         app.processEvents()
