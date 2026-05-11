@@ -82,6 +82,10 @@ class ConfigManager:
             'active_workflow_tab': -1,
             # 上次打开/保存的模型定义文件路径（.model.json）
             'last_model_path': None,
+            # Model definition paths reopened as tabs on startup.
+            'open_model_paths': [],
+            # Active model tab index within open_model_paths.
+            'active_model_tab': -1,
             # 模型编辑器快照（用于无可用 last_model_path 时恢复）
             'last_model_graph_snapshot': None
         }
