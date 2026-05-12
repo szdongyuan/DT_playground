@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-06 15:18+0800\n"
+"POT-Creation-Date: 2026-05-12 11:35+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,141 +17,125 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/app.py:68 src/ui/dialogs/about_dialog.py:41
+#: src/app.py:70 src/ui/dialogs/about_dialog.py:41
 msgid "AI Acoustic Signal Training Platform"
 msgstr ""
 
-#: src/app.py:119
-msgid "File(&F)"
-msgstr ""
-
-#: src/app.py:122
+#: src/app.py:100
 msgid "Load model..."
 msgstr ""
 
-#: src/app.py:128
+#: src/app.py:105
 msgid "Export model..."
 msgstr ""
 
-#: src/app.py:142
+#: src/app.py:110
 msgid "Restart(&R)"
 msgstr ""
 
-#: src/app.py:150
+#: src/app.py:115
 msgid "Exit(&X)"
 msgstr ""
 
-#: src/app.py:156
-msgid "Edit(&E)"
-msgstr ""
-
-#: src/app.py:158
+#: src/app.py:120
 msgid "Settings..."
 msgstr ""
 
-#: src/app.py:164
-msgid "View(&V)"
-msgstr ""
-
-#: src/app.py:166
+#: src/app.py:125
 msgid "Workflow view"
 msgstr ""
 
-#: src/app.py:171
+#: src/app.py:130
 msgid "Model view"
 msgstr ""
 
-#: src/app.py:176
+#: src/app.py:135
 msgid "Preview view"
 msgstr ""
 
-#: src/app.py:181
+#: src/app.py:140
 msgid "Training view"
 msgstr ""
 
-#: src/app.py:187
-msgid "Help(&H)"
-msgstr ""
-
-#: src/app.py:189
+#: src/app.py:145
 msgid "About..."
 msgstr ""
 
-#: src/app.py:361 src/workflow/nodes/training.py:31
+#: src/app.py:363 src/workflow/nodes/training.py:31
 msgid "Load model"
 msgstr ""
 
-#: src/app.py:363
+#: src/app.py:365
 msgid ""
 "Keras models (*.h5 *.keras);;Model definition (*.model.json);;SavedModel "
 "(*);;All files (*)"
 msgstr ""
 
-#: src/app.py:372 src/ui/dialogs/export_dialog.py:191
+#: src/app.py:374 src/ui/dialogs/export_dialog.py:191
 msgid "Success"
 msgstr ""
 
-#: src/app.py:373
+#: src/app.py:375
 #, python-brace-format
 msgid "Model loaded: {path}"
 msgstr ""
 
-#: src/app.py:378 src/ui/dialogs/export_dialog.py:208
-#: src/ui/views/model_builder_view.py:339
-#: src/ui/views/model_builder_view.py:524
+#: src/app.py:380 src/ui/dialogs/export_dialog.py:208
+#: src/ui/views/model_builder_view.py:407
+#: src/ui/views/model_builder_view.py:605
 msgid "Error"
 msgstr ""
 
-#: src/app.py:379 src/ui/views/model_builder_view.py:340
+#: src/app.py:381 src/ui/views/model_builder_view.py:408
 #: src/workflow/nodes/training.py:81
 #, python-brace-format
 msgid "Failed to load model: {error}"
 msgstr ""
 
-#: src/app.py:438 src/ui/main_window.py:545 src/ui/main_window.py:599
-#: src/ui/main_window.py:604 src/ui/dialogs/dataset_dialog.py:216
+#: src/app.py:442 src/ui/main_window.py:458 src/ui/main_window.py:512
+#: src/ui/main_window.py:517 src/ui/dialogs/dataset_dialog.py:216
 #: src/ui/dialogs/export_dialog.py:137 src/ui/dialogs/export_dialog.py:141
-#: src/ui/dialogs/export_dialog.py:145 src/ui/views/model_builder_view.py:455
-#: src/ui/views/model_builder_view.py:532
+#: src/ui/dialogs/export_dialog.py:145 src/ui/views/model_builder_view.py:529
+#: src/ui/views/model_builder_view.py:614
 msgid "Warning"
 msgstr ""
 
-#: src/app.py:439 src/audio/loader.py:58 src/workflow/nodes/data_source.py:285
+#: src/app.py:443 src/audio/loader.py:58 src/workflow/nodes/data_source.py:285
 #: src/workflow/nodes/data_source.py:351
 #, python-brace-format
 msgid "File does not exist: {path}"
 msgstr ""
 
-#: src/app.py:502
+#: src/app.py:516
 msgid "Restart required"
 msgstr ""
 
-#: src/app.py:503
+#: src/app.py:517
 msgid "Language change will take effect after restart."
 msgstr ""
 
-#: src/app.py:504
+#: src/app.py:518
 msgid "Restart now"
 msgstr ""
 
-#: src/app.py:505
+#: src/app.py:519
 msgid "Restart later"
 msgstr ""
 
-#: src/app.py:518 src/controllers/navigation_controller.py:209
-#: src/ui/main_window.py:904
+#: src/app.py:532 src/controllers/navigation_controller.py:209
+#: src/ui/main_window.py:817
 msgid "Info"
 msgstr ""
 
-#: src/app.py:519
+#: src/app.py:533
 msgid "Settings saved. Some changes require a restart to take effect."
 msgstr ""
 
-#: src/app.py:547
+#: src/app.py:561
 msgid "Confirm restart"
 msgstr ""
 
-#: src/app.py:549
+#: src/app.py:563
 msgid ""
 "A workflow/training is currently running.\n"
 "Restart will stop the current run and start a new instance.\n"
@@ -159,11 +143,11 @@ msgid ""
 "Continue?"
 msgstr ""
 
-#: src/app.py:582
+#: src/app.py:596
 msgid "Restart failed"
 msgstr ""
 
-#: src/app.py:583
+#: src/app.py:597
 msgid "Please check the latest log under the logs directory."
 msgstr ""
 
@@ -298,30 +282,26 @@ msgstr ""
 msgid "Unknown normalization method: {method}"
 msgstr ""
 
-#: src/controllers/navigation_controller.py:83 src/ui/main_window.py:206
-#: src/ui/main_window.py:466
+#: src/controllers/navigation_controller.py:83 src/ui/main_window.py:375
 msgid "Workflow"
 msgstr ""
 
-#: src/controllers/navigation_controller.py:83 src/ui/main_window.py:207
-#: src/ui/main_window.py:467 src/ui/dialogs/settings_dialog.py:42
-#: src/workflow/nodes/training.py:304 src/workflow/nodes/training.py:684
-#: src/workflow/nodes/training.py:1028
+#: src/controllers/navigation_controller.py:83 src/ui/main_window.py:376
+#: src/ui/dialogs/settings_dialog.py:42 src/workflow/nodes/training.py:304
+#: src/workflow/nodes/training.py:684 src/workflow/nodes/training.py:1028
 #: src/workflow/nodes/feature/ai_embedding.py:45
 msgid "Model"
 msgstr ""
 
-#: src/controllers/navigation_controller.py:83 src/ui/main_window.py:208
-#: src/ui/main_window.py:468
+#: src/controllers/navigation_controller.py:83 src/ui/main_window.py:377
 msgid "Preview"
 msgstr ""
 
-#: src/controllers/navigation_controller.py:83 src/ui/main_window.py:209
-#: src/ui/main_window.py:469
+#: src/controllers/navigation_controller.py:83 src/ui/main_window.py:378
 msgid "Training"
 msgstr ""
 
-#: src/controllers/navigation_controller.py:85 src/ui/main_window.py:472
+#: src/controllers/navigation_controller.py:85 src/ui/main_window.py:381
 #, python-brace-format
 msgid "Switched to {view} view"
 msgstr ""
@@ -331,7 +311,7 @@ msgid "Model save path"
 msgstr ""
 
 #: src/controllers/navigation_controller.py:199
-#: src/ui/views/model_builder_view.py:518
+#: src/ui/views/model_builder_view.py:598
 #, python-brace-format
 msgid ""
 "Model saved to:\n"
@@ -422,8 +402,8 @@ msgstr ""
 msgid "Workflow finished (elapsed: {seconds:.2f}s)"
 msgstr ""
 
-#: src/controllers/workflow_controller.py:229 src/ui/main_window.py:679
-#: src/ui/main_window.py:699
+#: src/controllers/workflow_controller.py:229 src/ui/main_window.py:592
+#: src/ui/main_window.py:612
 #, python-brace-format
 msgid "Execution failed: {message}"
 msgstr ""
@@ -433,8 +413,8 @@ msgstr ""
 msgid "Error: {message}"
 msgstr ""
 
-#: src/controllers/workflow_controller.py:247 src/ui/main_window.py:713
-#: src/ui/main_window.py:740 src/workflow/engine.py:402
+#: src/controllers/workflow_controller.py:247 src/ui/main_window.py:626
+#: src/ui/main_window.py:653 src/workflow/engine.py:402
 #, python-brace-format
 msgid "Running: {name}"
 msgstr ""
@@ -1456,124 +1436,120 @@ msgstr ""
 msgid "Please train the model first"
 msgstr ""
 
-#: src/ui/main_window.py:184
-msgid "🎵 AI Acoustic Training Platform"
-msgstr ""
-
-#: src/ui/main_window.py:239
+#: src/ui/main_window.py:149
 msgid "Ready"
 msgstr ""
 
-#: src/ui/main_window.py:242
+#: src/ui/main_window.py:152
 msgid "Workflow: Unsaved"
 msgstr ""
 
-#: src/ui/main_window.py:245
+#: src/ui/main_window.py:155
 msgid "GPU: Detecting..."
 msgstr ""
 
-#: src/ui/main_window.py:246
+#: src/ui/main_window.py:156
 msgid "Memory: --"
 msgstr ""
 
-#: src/ui/main_window.py:275
+#: src/ui/main_window.py:185
 #, python-brace-format
 msgid "GPU: {count} available"
 msgstr ""
 
-#: src/ui/main_window.py:281
+#: src/ui/main_window.py:191
 msgid "GPU: CPU only"
 msgstr ""
 
-#: src/ui/main_window.py:284
+#: src/ui/main_window.py:194
 msgid "GPU: Unknown"
 msgstr ""
 
-#: src/ui/main_window.py:298
+#: src/ui/main_window.py:208
 #, python-brace-format
 msgid "Memory: {used:.1f}/{total:.1f}GB"
 msgstr ""
 
-#: src/ui/main_window.py:384 src/ui/main_window.py:397
-#: src/ui/main_window.py:408 src/ui/main_window.py:573
-#: src/ui/main_window.py:627 src/ui/views/workflow_toolbar.py:154
+#: src/ui/main_window.py:292 src/ui/main_window.py:305
+#: src/ui/main_window.py:316 src/ui/main_window.py:486
+#: src/ui/main_window.py:540
 msgid "⏹️ Stop"
 msgstr ""
 
-#: src/ui/main_window.py:410 src/ui/main_window.py:686
+#: src/ui/main_window.py:318 src/ui/main_window.py:599
 msgid "Execution error"
 msgstr ""
 
-#: src/ui/main_window.py:488
+#: src/ui/main_window.py:401
 msgid "Modified"
 msgstr ""
 
-#: src/ui/main_window.py:488 src/ui/views/model_builder_view.py:517
+#: src/ui/main_window.py:401 src/ui/views/model_builder_view.py:597
 msgid "Saved"
 msgstr ""
 
-#: src/ui/main_window.py:490
+#: src/ui/main_window.py:403
 #, python-brace-format
 msgid "Workflow: {name} ({status})"
 msgstr ""
 
-#: src/ui/main_window.py:495
+#: src/ui/main_window.py:408
 msgid "Workflow: None"
 msgstr ""
 
-#: src/ui/main_window.py:535 src/ui/main_window.py:589
+#: src/ui/main_window.py:448 src/ui/main_window.py:502
 msgid "A workflow is already running. Switching to the running tab."
 msgstr ""
 
-#: src/ui/main_window.py:540 src/ui/main_window.py:594
+#: src/ui/main_window.py:453 src/ui/main_window.py:507
 msgid "A workflow is already running."
 msgstr ""
 
-#: src/ui/main_window.py:545 src/ui/main_window.py:599
+#: src/ui/main_window.py:458 src/ui/main_window.py:512
 msgid "No runnable workflow."
 msgstr ""
 
-#: src/ui/main_window.py:558 src/ui/main_window.py:614
-#: src/ui/views/model_builder_view.py:540
+#: src/ui/main_window.py:471 src/ui/main_window.py:527
+#: src/ui/views/model_builder_view.py:622
 msgid "Validation failed"
 msgstr ""
 
-#: src/ui/main_window.py:559 src/ui/main_window.py:615
+#: src/ui/main_window.py:472 src/ui/main_window.py:528
 msgid "Workflow validation failed:\n"
 msgstr ""
 
-#: src/ui/main_window.py:575 src/ui/main_window.py:629
+#: src/ui/main_window.py:488 src/ui/main_window.py:542
 msgid "Startup failed"
 msgstr ""
 
-#: src/ui/main_window.py:604
+#: src/ui/main_window.py:517
 msgid "Selected node does not exist."
 msgstr ""
 
-#: src/ui/main_window.py:661
+#: src/ui/main_window.py:574
 msgid "Running workflow..."
 msgstr ""
 
-#: src/ui/main_window.py:671
+#: src/ui/main_window.py:584
 #, python-brace-format
 msgid "Time: {seconds:.2f}s"
 msgstr ""
 
-#: src/ui/main_window.py:675 src/ui/main_window.py:695
+#: src/ui/main_window.py:588 src/ui/main_window.py:608
 msgid "Workflow completed"
 msgstr ""
 
-#: src/ui/main_window.py:685
+#: src/ui/main_window.py:598
 #, python-brace-format
 msgid "Error: {error}"
 msgstr ""
 
-#: src/ui/main_window.py:823
+#: src/ui/main_window.py:736
 #, python-brace-format
 msgid "🔴 Breakpoint paused: {name} - Click to continue"
 msgstr ""
 
-#: src/ui/main_window.py:906
+#: src/ui/main_window.py:819
 #, python-brace-format
 msgid ""
 "Node [{name}] has not been run yet.\n"
@@ -1817,17 +1793,16 @@ msgid "Settings"
 msgstr ""
 
 #: src/ui/dialogs/settings_dialog.py:39 src/workflow/nodes/augmentation.py:38
-#: src/workflow/nodes/augmentation.py:175
-#: src/workflow/nodes/augmentation.py:178
-#: src/workflow/nodes/augmentation.py:288
-#: src/workflow/nodes/augmentation.py:289
-#: src/workflow/nodes/augmentation.py:367
-#: src/workflow/nodes/augmentation.py:368
-#: src/workflow/nodes/augmentation.py:444
-#: src/workflow/nodes/augmentation.py:452
-#: src/workflow/nodes/augmentation.py:621
-#: src/workflow/nodes/augmentation.py:622
-#: src/workflow/nodes/augmentation.py:753 src/workflow/nodes/data_source.py:264
+#: src/workflow/nodes/augmentation.py:40 src/workflow/nodes/augmentation.py:108
+#: src/workflow/nodes/augmentation.py:236
+#: src/workflow/nodes/augmentation.py:239
+#: src/workflow/nodes/augmentation.py:349
+#: src/workflow/nodes/augmentation.py:350
+#: src/workflow/nodes/augmentation.py:428
+#: src/workflow/nodes/augmentation.py:429
+#: src/workflow/nodes/augmentation.py:505
+#: src/workflow/nodes/augmentation.py:513
+#: src/workflow/nodes/augmentation.py:689 src/workflow/nodes/data_source.py:264
 #: src/workflow/nodes/data_source.py:475
 #: src/workflow/nodes/preprocessing.py:124
 #: src/workflow/nodes/preprocessing.py:127
@@ -2170,25 +2145,25 @@ msgstr ""
 msgid "🔒 This layer is frozen; weights will not be updated during training."
 msgstr ""
 
-#: src/ui/model_editor/model_graph_widget.py:599
+#: src/ui/model_editor/model_graph_widget.py:607
 msgid "Add layer"
 msgstr ""
 
-#: src/ui/model_editor/model_graph_widget.py:620
-#: src/ui/node_editor/node_graph.py:820
+#: src/ui/model_editor/model_graph_widget.py:628
+#: src/ui/node_editor/node_graph.py:828
 msgid "Copy"
 msgstr ""
 
-#: src/ui/model_editor/model_graph_widget.py:624
-#: src/ui/node_editor/node_graph.py:824
+#: src/ui/model_editor/model_graph_widget.py:632
+#: src/ui/node_editor/node_graph.py:832
 msgid "Paste"
 msgstr ""
 
-#: src/ui/model_editor/model_graph_widget.py:629
+#: src/ui/model_editor/model_graph_widget.py:637
 msgid "Reset selected layer connections"
 msgstr ""
 
-#: src/ui/model_editor/model_graph_widget.py:632
+#: src/ui/model_editor/model_graph_widget.py:640
 msgid "Delete selected layers"
 msgstr ""
 
@@ -2196,15 +2171,15 @@ msgstr ""
 msgid "Connection failed"
 msgstr ""
 
-#: src/ui/node_editor/node_graph.py:816
+#: src/ui/node_editor/node_graph.py:824
 msgid "Rerun from selected node"
 msgstr ""
 
-#: src/ui/node_editor/node_graph.py:829
+#: src/ui/node_editor/node_graph.py:837
 msgid "Reset selected node connections"
 msgstr ""
 
-#: src/ui/node_editor/node_graph.py:833
+#: src/ui/node_editor/node_graph.py:841
 msgid "Delete selected nodes"
 msgstr ""
 
@@ -2270,85 +2245,49 @@ msgstr ""
 msgid "📤 Outputs:"
 msgstr ""
 
-#: src/ui/views/model_builder_view.py:125
+#: src/ui/views/model_builder_view.py:189
+msgid "New model"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:219
 msgid "📐 New model"
 msgstr ""
 
-#: src/ui/views/model_builder_view.py:150 src/ui/views/workflow_toolbar.py:112
-msgid "📄 New"
-msgstr ""
-
-#: src/ui/views/model_builder_view.py:156 src/ui/views/workflow_toolbar.py:117
-msgid "📂 Open"
-msgstr ""
-
-#: src/ui/views/model_builder_view.py:162 src/ui/views/workflow_toolbar.py:122
-msgid "💾 Save"
-msgstr ""
-
-#: src/ui/views/model_builder_view.py:168
-msgid "📋 Save as"
-msgstr ""
-
-#: src/ui/views/model_builder_view.py:181
-msgid "📥 Import Keras"
-msgstr ""
-
-#: src/ui/views/model_builder_view.py:195
-msgid "Import architecture from a trained .keras/.h5 model file"
-msgstr ""
-
-#: src/ui/views/model_builder_view.py:207
-msgid "🔨 Build model"
-msgstr ""
-
-#: src/ui/views/model_builder_view.py:225 src/ui/views/workflow_toolbar.py:202
-msgid "🔍 Fit"
-msgstr ""
-
-#: src/ui/views/model_builder_view.py:231 src/ui/views/workflow_toolbar.py:207
-msgid "🗑️ Clear"
-msgstr ""
-
-#: src/ui/views/model_builder_view.py:297
-#: src/ui/views/model_builder_view.py:360
-#: src/ui/views/model_builder_view.py:596
-#: src/ui/views/workflow_tabs_view.py:130
-#: src/ui/views/workflow_tabs_view.py:616
-#: src/ui/views/workflow_tabs_view.py:651 src/ui/views/workflow_view.py:216
-msgid "Confirm"
-msgstr ""
-
-#: src/ui/views/model_builder_view.py:298
-msgid "The current model has unsaved changes. Continue?"
-msgstr ""
-
-#: src/ui/views/model_builder_view.py:316
+#: src/ui/views/model_builder_view.py:376
 msgid "Open model"
 msgstr ""
 
-#: src/ui/views/model_builder_view.py:318
-#: src/ui/views/model_builder_view.py:470
+#: src/ui/views/model_builder_view.py:378
+#: src/ui/views/model_builder_view.py:544
 msgid "Model files (*.model.json);;All files (*)"
 msgstr ""
 
-#: src/ui/views/model_builder_view.py:348
+#: src/ui/views/model_builder_view.py:416
 msgid "Import Keras model"
 msgstr ""
 
-#: src/ui/views/model_builder_view.py:350
+#: src/ui/views/model_builder_view.py:418
 msgid "Keras models (*.keras *.h5);;All files (*)"
 msgstr ""
 
-#: src/ui/views/model_builder_view.py:361
+#: src/ui/views/model_builder_view.py:428
+#: src/ui/views/model_builder_view.py:678
+#: src/ui/views/model_builder_view.py:717
+#: src/ui/views/workflow_tabs_view.py:188
+#: src/ui/views/workflow_tabs_view.py:737
+#: src/ui/views/workflow_tabs_view.py:775 src/ui/views/workflow_view.py:229
+msgid "Confirm"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:429
 msgid "The current model has unsaved changes. Continue importing?"
 msgstr ""
 
-#: src/ui/views/model_builder_view.py:372
+#: src/ui/views/model_builder_view.py:440
 msgid "📐 Importing..."
 msgstr ""
 
-#: src/ui/views/model_builder_view.py:399
+#: src/ui/views/model_builder_view.py:473
 #, python-brace-format
 msgid ""
 "\n"
@@ -2357,18 +2296,18 @@ msgid ""
 "{layers}"
 msgstr ""
 
-#: src/ui/views/model_builder_view.py:405
+#: src/ui/views/model_builder_view.py:479
 #, python-brace-format
 msgid ""
 "\n"
 "Frozen layers: {count}"
 msgstr ""
 
-#: src/ui/views/model_builder_view.py:412
+#: src/ui/views/model_builder_view.py:486
 msgid "Import succeeded"
 msgstr ""
 
-#: src/ui/views/model_builder_view.py:414
+#: src/ui/views/model_builder_view.py:488
 msgid ""
 "Model imported: {name}\n"
 "\n"
@@ -2378,39 +2317,39 @@ msgid ""
 "Non-trainable params: {non_trainable_params:,}"
 msgstr ""
 
-#: src/ui/views/model_builder_view.py:435
+#: src/ui/views/model_builder_view.py:509
 msgid "Import failed"
 msgstr ""
 
-#: src/ui/views/model_builder_view.py:436
+#: src/ui/views/model_builder_view.py:510
 #, python-brace-format
 msgid ""
 "Failed to import model:\n"
 "{error}"
 msgstr ""
 
-#: src/ui/views/model_builder_view.py:455
+#: src/ui/views/model_builder_view.py:529
 msgid "No model to save."
 msgstr ""
 
-#: src/ui/views/model_builder_view.py:468
+#: src/ui/views/model_builder_view.py:542
 msgid "Save model as"
 msgstr ""
 
-#: src/ui/views/model_builder_view.py:525 src/workflow/nodes/training.py:283
+#: src/ui/views/model_builder_view.py:606 src/workflow/nodes/training.py:283
 #, python-brace-format
 msgid "Failed to save model: {error}"
 msgstr ""
 
-#: src/ui/views/model_builder_view.py:532
+#: src/ui/views/model_builder_view.py:614
 msgid "No model to build."
 msgstr ""
 
-#: src/ui/views/model_builder_view.py:541
+#: src/ui/views/model_builder_view.py:623
 msgid "Model validation failed:\n"
 msgstr ""
 
-#: src/ui/views/model_builder_view.py:554
+#: src/ui/views/model_builder_view.py:636
 #, python-brace-format
 msgid ""
 "Optimizer: {optimizer} (lr={lr})\n"
@@ -2418,40 +2357,46 @@ msgid ""
 "Metrics: {metrics}"
 msgstr ""
 
-#: src/ui/views/model_builder_view.py:565
+#: src/ui/views/model_builder_view.py:647
 msgid "Using default compile config"
 msgstr ""
 
-#: src/ui/views/model_builder_view.py:586
+#: src/ui/views/model_builder_view.py:668
 msgid "Build failed"
 msgstr ""
 
-#: src/ui/views/model_builder_view.py:587
+#: src/ui/views/model_builder_view.py:669
 #, python-brace-format
 msgid "Model build failed: {error}"
 msgstr ""
 
-#: src/ui/views/model_builder_view.py:597
+#: src/ui/views/model_builder_view.py:679
 msgid "Clear all layers?"
 msgstr ""
 
-#: src/ui/views/model_builder_view.py:651
+#: src/ui/views/model_builder_view.py:714
+#: src/ui/views/workflow_tabs_view.py:772
+#, python-brace-format
+msgid "Save changes to '{name}' before closing?"
+msgstr ""
+
+#: src/ui/views/model_builder_view.py:812
 msgid "✅ Model built successfully"
 msgstr ""
 
-#: src/ui/views/model_builder_view.py:660
+#: src/ui/views/model_builder_view.py:821
 msgid "🎉 Model built and compiled successfully!"
 msgstr ""
 
-#: src/ui/views/model_builder_view.py:672
+#: src/ui/views/model_builder_view.py:833
 msgid "Compile config"
 msgstr ""
 
-#: src/ui/views/model_builder_view.py:696
+#: src/ui/views/model_builder_view.py:857
 msgid "Model architecture"
 msgstr ""
 
-#: src/ui/views/model_builder_view.py:741
+#: src/ui/views/model_builder_view.py:902
 msgid "OK"
 msgstr ""
 
@@ -2583,73 +2528,144 @@ msgstr ""
 msgid "Save checkpoint"
 msgstr ""
 
-#: src/ui/views/workflow_tabs_view.py:131
+#: src/ui/views/workflow_tabs_view.py:189
 msgid "There are unsaved workflows. Save your changes before closing?"
 msgstr ""
 
-#: src/ui/views/workflow_tabs_view.py:132
+#: src/ui/views/workflow_tabs_view.py:190
 msgid "If you don't save, your changes will be lost."
 msgstr ""
 
-#: src/ui/views/workflow_tabs_view.py:291
-#: src/ui/views/workflow_tabs_view.py:533 src/ui/views/workflow_view.py:153
+#: src/ui/views/workflow_tabs_view.py:350
+#: src/ui/views/workflow_tabs_view.py:638 src/ui/views/workflow_view.py:156
 msgid "Open workflow"
 msgstr ""
 
-#: src/ui/views/workflow_tabs_view.py:292
+#: src/ui/views/workflow_tabs_view.py:351
 #, python-brace-format
 msgid "Failed to load workflow: {path}"
 msgstr ""
 
-#: src/ui/views/workflow_tabs_view.py:535
-#: src/ui/views/workflow_tabs_view.py:569 src/ui/views/workflow_view.py:155
-#: src/ui/views/workflow_view.py:180
+#: src/ui/views/workflow_tabs_view.py:458
+msgid "New workflow"
+msgstr ""
+
+#: src/ui/views/workflow_tabs_view.py:640
+#: src/ui/views/workflow_tabs_view.py:680 src/ui/views/workflow_view.py:158
+#: src/ui/views/workflow_view.py:191
 msgid "Workflow files (*.json)"
 msgstr ""
 
-#: src/ui/views/workflow_tabs_view.py:567 src/ui/views/workflow_view.py:178
+#: src/ui/views/workflow_tabs_view.py:678 src/ui/views/workflow_view.py:189
 msgid "Save workflow"
 msgstr ""
 
-#: src/ui/views/workflow_tabs_view.py:591 src/ui/views/workflow_view.py:199
+#: src/ui/views/workflow_tabs_view.py:712 src/ui/views/workflow_view.py:212
 msgid "⏳ Stopping..."
 msgstr ""
 
-#: src/ui/views/workflow_tabs_view.py:595 src/ui/views/workflow_view.py:203
+#: src/ui/views/workflow_tabs_view.py:716 src/ui/views/workflow_view.py:216
 msgid "Stopping workflow... (waiting for current task to finish)"
 msgstr ""
 
-#: src/ui/views/workflow_tabs_view.py:617 src/ui/views/workflow_view.py:217
+#: src/ui/views/workflow_tabs_view.py:738 src/ui/views/workflow_view.py:230
 msgid "Clear the current workflow?"
 msgstr ""
 
-#: src/ui/views/workflow_tabs_view.py:633
+#: src/ui/views/workflow_tabs_view.py:757
 msgid "Running"
 msgstr ""
 
-#: src/ui/views/workflow_tabs_view.py:634
+#: src/ui/views/workflow_tabs_view.py:758
 msgid "Cannot close the running tab while a workflow is active."
 msgstr ""
 
-#: src/ui/views/workflow_tabs_view.py:648
-#, python-brace-format
-msgid "Save changes to '{name}' before closing?"
+#: src/ui/views/toolbars/model_toolbar.py:14
+#: src/ui/views/toolbars/workflow_toolbar.py:16
+msgid "文件"
 msgstr ""
 
-#: src/ui/views/workflow_toolbar.py:72 src/ui/views/workflow_toolbar.py:169
-msgid "🔴 Paused"
+#: src/ui/views/toolbars/model_toolbar.py:16
+#: src/ui/views/toolbars/workflow_toolbar.py:18
+msgid "📄 新建"
 msgstr ""
 
-#: src/ui/views/workflow_toolbar.py:128
-msgid "📑 Duplicate"
+#: src/ui/views/toolbars/model_toolbar.py:17
+#: src/ui/views/toolbars/workflow_toolbar.py:19
+msgid "📂 打开"
 msgstr ""
 
-#: src/ui/views/workflow_toolbar.py:149
-msgid "▶️ Run"
+#: src/ui/views/toolbars/model_toolbar.py:18
+#: src/ui/views/toolbars/workflow_toolbar.py:20
+msgid "💾 保存"
 msgstr ""
 
-#: src/ui/views/workflow_toolbar.py:181
-msgid "⏵ Continue"
+#: src/ui/views/toolbars/model_toolbar.py:19
+#: src/ui/views/toolbars/workflow_toolbar.py:21
+msgid "📋 另存为"
+msgstr ""
+
+#: src/ui/views/toolbars/model_toolbar.py:24
+#: src/ui/views/toolbars/workflow_toolbar.py:26
+msgid "编辑"
+msgstr ""
+
+#: src/ui/views/toolbars/model_toolbar.py:26
+#: src/ui/views/toolbars/workflow_toolbar.py:28
+msgid "⧉ 复制"
+msgstr ""
+
+#: src/ui/views/toolbars/model_toolbar.py:29
+#: src/ui/views/toolbars/workflow_toolbar.py:31
+msgid "🗑 删除"
+msgstr ""
+
+#: src/ui/views/toolbars/model_toolbar.py:37
+msgid "模型"
+msgstr ""
+
+#: src/ui/views/toolbars/model_toolbar.py:41
+msgid "🔨 构建模型"
+msgstr ""
+
+#: src/ui/views/toolbars/model_toolbar.py:47
+msgid "📥 导入Keras"
+msgstr ""
+
+#: src/ui/views/toolbars/model_toolbar.py:50
+msgid "Import architecture from a trained .keras/.h5 model file"
+msgstr ""
+
+#: src/ui/views/toolbars/model_toolbar.py:56
+#: src/ui/views/toolbars/workflow_toolbar.py:58
+msgid "视图"
+msgstr ""
+
+#: src/ui/views/toolbars/model_toolbar.py:57
+#: src/ui/views/toolbars/workflow_toolbar.py:59
+msgid "⛶ 适应"
+msgstr ""
+
+#: src/ui/views/toolbars/workflow_toolbar.py:39
+msgid "运行"
+msgstr ""
+
+#: src/ui/views/toolbars/workflow_toolbar.py:43
+#: src/ui/views/toolbars/workflow_toolbar.py:113
+msgid "▶ 运行"
+msgstr ""
+
+#: src/ui/views/toolbars/workflow_toolbar.py:49
+#: src/ui/views/toolbars/workflow_toolbar.py:104
+msgid "⏹ 停止"
+msgstr ""
+
+#: src/ui/views/toolbars/workflow_toolbar.py:103
+msgid "停止"
+msgstr ""
+
+#: src/ui/views/toolbars/workflow_toolbar.py:110
+msgid "⏵ 继续"
 msgstr ""
 
 #: src/ui/widgets/spectrogram_widget.py:42
@@ -3161,58 +3177,84 @@ msgid "Node '{node}' input port '{port}' is not connected"
 msgstr ""
 
 #: src/workflow/nodes/augmentation.py:32
-msgid "Add noise"
+msgid "Sample expansion"
 msgstr ""
 
 #: src/workflow/nodes/augmentation.py:34
-msgid "Add noise to audio"
+msgid "Duplicate audio and labels together for sample expansion"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:39
-msgid "Noisy audio"
+#: src/workflow/nodes/augmentation.py:39 src/workflow/nodes/augmentation.py:41
+#: src/workflow/nodes/control.py:128 src/workflow/nodes/data_source.py:482
+msgid "Labels"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:43 src/workflow/nodes/augmentation.py:623
-msgid "Original audio"
+#: src/workflow/nodes/augmentation.py:46 src/workflow/nodes/augmentation.py:707
+msgid "Multiplier"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:44
-msgid "Use as target when training denoising models"
+#: src/workflow/nodes/augmentation.py:47
+msgid "Number of duplicated samples to create per input item"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:50
-msgid "Noise type"
-msgstr ""
-
-#: src/workflow/nodes/augmentation.py:55
-msgid "SNR (dB)"
-msgstr ""
-
-#: src/workflow/nodes/augmentation.py:60
-msgid "Random SNR"
-msgstr ""
-
-#: src/workflow/nodes/augmentation.py:61
-msgid "Randomly choose SNR within the specified range"
-msgstr ""
-
-#: src/workflow/nodes/augmentation.py:65
-msgid "Min SNR (dB)"
+#: src/workflow/nodes/augmentation.py:63
+#, python-brace-format
+msgid "{node}: labels input is required"
 msgstr ""
 
 #: src/workflow/nodes/augmentation.py:70
+msgid "Multiplier must be a positive integer"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:78
+msgid "Audio and label counts must match for sample expansion"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:102
+msgid "Add noise"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:104
+msgid "Add noise to audio"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:109
+msgid "Noisy audio"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:114
+msgid "Noise type"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:119
+msgid "SNR (dB)"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:124
+msgid "Random SNR"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:125
+msgid "Randomly choose SNR within the specified range"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:129
+msgid "Min SNR (dB)"
+msgstr ""
+
+#: src/workflow/nodes/augmentation.py:134
 msgid "Max SNR (dB)"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:166
+#: src/workflow/nodes/augmentation.py:227
 msgid "Adjust gain"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:168
+#: src/workflow/nodes/augmentation.py:229
 msgid "Increase or decrease audio level by a fixed or random dB amount"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:176
+#: src/workflow/nodes/augmentation.py:237
 #: src/workflow/nodes/preprocessing.py:125
 #: src/workflow/nodes/preprocessing.py:392
 #: src/workflow/nodes/preprocessing.py:492
@@ -3220,267 +3262,214 @@ msgstr ""
 msgid "Audio or audio list"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:183
+#: src/workflow/nodes/augmentation.py:244
 msgid "Gain (dB)"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:188
+#: src/workflow/nodes/augmentation.py:249
 msgid "Random gain"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:189
+#: src/workflow/nodes/augmentation.py:250
 msgid "Randomly choose gain within the specified range"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:193
+#: src/workflow/nodes/augmentation.py:254
 msgid "Minimum gain (dB)"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:198
+#: src/workflow/nodes/augmentation.py:259
 msgid "Maximum gain (dB)"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:203
+#: src/workflow/nodes/augmentation.py:264
 msgid "Clip protection"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:204
+#: src/workflow/nodes/augmentation.py:265
 msgid "Automatically rescale audio to avoid clipping"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:226
+#: src/workflow/nodes/augmentation.py:287
 msgid "Random gain bounds must be finite values"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:231
+#: src/workflow/nodes/augmentation.py:292
 msgid "Minimum gain must be less than or equal to maximum gain"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:236
+#: src/workflow/nodes/augmentation.py:297
 msgid "Gain must be a finite value"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:282
+#: src/workflow/nodes/augmentation.py:343
 msgid "Time stretch"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:284
+#: src/workflow/nodes/augmentation.py:345
 msgid "Change speed while preserving pitch"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:294
+#: src/workflow/nodes/augmentation.py:355
 msgid "Stretch rate"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:295
+#: src/workflow/nodes/augmentation.py:356
 msgid "<1 slower, >1 faster"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:300
+#: src/workflow/nodes/augmentation.py:361
 msgid "Random rate"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:304
+#: src/workflow/nodes/augmentation.py:365
 msgid "Min rate"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:309
+#: src/workflow/nodes/augmentation.py:370
 msgid "Max rate"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:361
+#: src/workflow/nodes/augmentation.py:422
 msgid "Pitch shift"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:363
+#: src/workflow/nodes/augmentation.py:424
 msgid "Change pitch while preserving speed"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:373
+#: src/workflow/nodes/augmentation.py:434
 msgid "Semitones"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:374
+#: src/workflow/nodes/augmentation.py:435
 msgid "Positive = higher, negative = lower"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:379
+#: src/workflow/nodes/augmentation.py:440
 msgid "Random shift"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:383
+#: src/workflow/nodes/augmentation.py:444
 msgid "Min shift (semitones)"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:388
+#: src/workflow/nodes/augmentation.py:449
 msgid "Max shift (semitones)"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:438
+#: src/workflow/nodes/augmentation.py:499
 msgid "Reverb"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:440
+#: src/workflow/nodes/augmentation.py:501
 msgid "Apply synthetic room reverb to audio"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:448
+#: src/workflow/nodes/augmentation.py:509
 msgid "Impulse response"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:450
+#: src/workflow/nodes/augmentation.py:511
 msgid "Optional impulse response audio or audio list"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:457
+#: src/workflow/nodes/augmentation.py:518
 msgid "Decay"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:458
+#: src/workflow/nodes/augmentation.py:519
 msgid "Controls how long the reverb tail lasts"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:463
+#: src/workflow/nodes/augmentation.py:524
 msgid "Wet mix"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:464
+#: src/workflow/nodes/augmentation.py:525
 msgid "Blend between dry input and reverberated output"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:469
+#: src/workflow/nodes/augmentation.py:530
 msgid "Random wet mix"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:470
+#: src/workflow/nodes/augmentation.py:531
 msgid "Randomly choose wet mix within the specified range"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:474
+#: src/workflow/nodes/augmentation.py:535
 msgid "Min wet mix"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:479
+#: src/workflow/nodes/augmentation.py:540
 msgid "Max wet mix"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:536
+#: src/workflow/nodes/augmentation.py:597
 msgid "Reverb: impulse response audio contains only silence"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:557
+#: src/workflow/nodes/augmentation.py:618
 msgid "Reverb impulse response"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:615
-msgid "Random augment"
-msgstr ""
-
-#: src/workflow/nodes/augmentation.py:617
-msgid "Randomly apply multiple augmentation effects"
-msgstr ""
-
-#: src/workflow/nodes/augmentation.py:628
-msgid "Enable noise"
-msgstr ""
-
-#: src/workflow/nodes/augmentation.py:632
-msgid "Enable time stretch"
-msgstr ""
-
-#: src/workflow/nodes/augmentation.py:636
-msgid "Enable pitch shift"
-msgstr ""
-
-#: src/workflow/nodes/augmentation.py:640
-msgid "Enable gain change"
-msgstr ""
-
-#: src/workflow/nodes/augmentation.py:644
-msgid "Apply probability"
-msgstr ""
-
-#: src/workflow/nodes/augmentation.py:645
-msgid "Probability of applying each effect"
-msgstr ""
-
-#: src/workflow/nodes/augmentation.py:747
+#: src/workflow/nodes/augmentation.py:683
 msgid "Audio slicing"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:749
+#: src/workflow/nodes/augmentation.py:685
 msgid "Slice audio into multiple short segments to augment data"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:757 src/workflow/nodes/control.py:128
-#: src/workflow/nodes/data_source.py:482
-msgid "Labels"
+#: src/workflow/nodes/augmentation.py:690
+msgid "Sliced audio"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:759
-msgid "Optional labels input; will be duplicated along with slices"
-msgstr ""
-
-#: src/workflow/nodes/augmentation.py:761
-msgid "Sliced audio list"
-msgstr ""
-
-#: src/workflow/nodes/augmentation.py:765
-msgid "Sliced label list"
-msgstr ""
-
-#: src/workflow/nodes/augmentation.py:766
-msgid "Labels corresponding to sliced audio items"
-msgstr ""
-
-#: src/workflow/nodes/augmentation.py:772
+#: src/workflow/nodes/augmentation.py:695
 msgid "Slice duration (s)"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:773
+#: src/workflow/nodes/augmentation.py:696
 msgid "Duration of each slice"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:778
+#: src/workflow/nodes/augmentation.py:701
 msgid "Slice mode"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:780
+#: src/workflow/nodes/augmentation.py:703
 msgid "random: random start; sliding: sliding window"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:784
-msgid "Multiplier"
-msgstr ""
-
-#: src/workflow/nodes/augmentation.py:785
+#: src/workflow/nodes/augmentation.py:708
 msgid "Number of slices to generate in random mode"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:790
+#: src/workflow/nodes/augmentation.py:713
 msgid "Overlap"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:791
+#: src/workflow/nodes/augmentation.py:714
 msgid "Overlap ratio in sliding window mode (0-0.9)"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:796
+#: src/workflow/nodes/augmentation.py:719
 msgid "Include remainder"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:797
+#: src/workflow/nodes/augmentation.py:720
 msgid ""
 "In sliding window mode, include the final remainder shorter than a full slice"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:801
+#: src/workflow/nodes/augmentation.py:724
 #: src/workflow/nodes/preprocessing.py:203
 #: src/workflow/nodes/preprocessing.py:970
 msgid "Pad mode"
 msgstr ""
 
-#: src/workflow/nodes/augmentation.py:803
+#: src/workflow/nodes/augmentation.py:726
 msgid "Padding strategy for the remainder segment"
 msgstr ""
 

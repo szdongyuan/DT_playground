@@ -21,6 +21,76 @@ logger = logging.getLogger(__name__)
 
 
 @register_node
+class SampleExpansionNode(BaseNode):
+    """
+    Sample expansion node.
+
+    Duplicates audio and labels together so their item order remains aligned.
+    """
+
+    node_type = "sample_expansion"
+    display_name = tr_("Sample expansion")
+    category = NodeCategory.AUGMENTATION
+    description = tr_("Duplicate audio and labels together for sample expansion")
+    icon = "📈"
+
+    def _setup_ports(self):
+        self.add_input("audio", DataType.AUDIO, tr_("Audio"))
+        self.add_input("labels", DataType.LABEL, tr_("Labels"))
+        self.add_output("audio", DataType.AUDIO, tr_("Audio"))
+        self.add_output("labels", DataType.LABEL, tr_("Labels"))
+
+    def _setup_parameters(self):
+        self.add_parameter(
+            "multiplier", "int", 2,
+            display_name=tr_("Multiplier"),
+            description=tr_("Number of duplicated samples to create per input item"),
+            min_value=1, max_value=100
+        )
+
+    def execute(self) -> bool:
+        try:
+            audio_input = validate_audio_input(
+                self.get_input_data("audio"),
+                self.display_name
+            )
+        except (ValueError, TypeError) as e:
+            self.error_message = str(e)
+            return False
+
+        labels_input = self.get_input_data("labels")
+        if labels_input is None:
+            self.error_message = tr_("{node}: labels input is required").format(
+                node=self.display_name
+            )
+            return False
+
+        multiplier = self.get_parameter("multiplier")
+        if not isinstance(multiplier, int) or multiplier < 1:
+            self.error_message = tr_("Multiplier must be a positive integer")
+            return False
+
+        audio_items = audio_input if isinstance(audio_input, list) else [audio_input]
+        label_items = labels_input if isinstance(labels_input, list) else [labels_input]
+
+        if len(audio_items) != len(label_items):
+            self.error_message = tr_(
+                "Audio and label counts must match for sample expansion"
+            )
+            return False
+
+        expanded_audio = []
+        expanded_labels = []
+        for audio, label in zip(audio_items, label_items):
+            expanded_audio.extend([audio] * multiplier)
+            expanded_labels.extend([label] * multiplier)
+
+        self.set_output_data("audio", expanded_audio)
+        self.set_output_data("labels", expanded_labels)
+        return True
+
+
+@register_node
 class AddNoiseNode(BaseNode):
     """
     添加噪声节点
@@ -37,12 +107,6 @@ class AddNoiseNode(BaseNode):
     def _setup_ports(self):
         self.add_input("audio", DataType.AUDIO, tr_("Audio"))
         self.add_output("audio", DataType.AUDIO, tr_("Noisy audio"))
-        self.add_output(
-            "original",
-            DataType.AUDIO,
-            tr_("Original audio"),
-            description=tr_("Use as target when training denoising models"),
-        )
     
     def _setup_parameters(self):
         self.add_parameter(
@@ -105,9 +169,6 @@ class AddNoiseNode(BaseNode):
         
         noise_type = self.get_parameter("noise_type")
         random_snr = self.get_parameter("random_snr")
-        
-        # 保存原始音频
-        self.set_output_data("original", audio_input)
         
         def add_noise(audio: AudioData) -> AudioData:
             # 确定SNR
@@ -604,128 +665,6 @@ class ReverbNode(BaseNode):
 
 
 @register_node
-class RandomAugmentNode(BaseNode):
-    """
-    随机增强节点
-    
-    随机应用多种增强效果。
-    """
-    
-    node_type = "random_augment"
-    display_name = tr_("Random augment")
-    category = NodeCategory.AUGMENTATION
-    description = tr_("Randomly apply multiple augmentation effects")
-    icon = "🔀"
-    
-    def _setup_ports(self):
-        self.add_input("audio", DataType.AUDIO, tr_("Audio"))
-        self.add_output("audio", DataType.AUDIO, tr_("Audio"))
-        self.add_output("original", DataType.AUDIO, tr_("Original audio"))
-    
-    def _setup_parameters(self):
-        self.add_parameter(
-            "enable_noise", "bool", True,
-            display_name=tr_("Enable noise")
-        )
-        self.add_parameter(
-            "enable_stretch", "bool", True,
-            display_name=tr_("Enable time stretch")
-        )
-        self.add_parameter(
-            "enable_pitch", "bool", True,
-            display_name=tr_("Enable pitch shift")
-        )
-        self.add_parameter(
-            "enable_gain", "bool", True,
-            display_name=tr_("Enable gain change")
-        )
-        self.add_parameter(
-            "probability", "float", 0.5,
-            display_name=tr_("Apply probability"),
-            description=tr_("Probability of applying each effect"),
-            min_value=0.0, max_value=1.0
-        )
-    
-    def execute(self) -> bool:
-        try:
-            audio_input = validate_audio_input(
-                self.get_input_data("audio"),
-                self.display_name
-            )
-        except (ValueError, TypeError) as e:
-            self.error_message = str(e)
-            return False
-        
-        # 保存原始音频
-        self.set_output_data("original", audio_input)
-        
-        enable_noise = self.get_parameter("enable_noise")
-        enable_stretch = self.get_parameter("enable_stretch")
-        enable_pitch = self.get_parameter("enable_pitch")
-        enable_gain = self.get_parameter("enable_gain")
-        probability = self.get_parameter("probability")
-        
-        def random_augment(audio: AudioData) -> AudioData:
-            sr = audio.sample_rate
-            
-            # 预先确定哪些增强会被应用（所有通道使用相同的决策）
-            apply_noise = enable_noise and np.random.random() < probability
-            apply_stretch = enable_stretch and np.random.random() < probability
-            apply_pitch = enable_pitch and np.random.random() < probability
-            apply_gain = enable_gain and np.random.random() < probability
-            
-            # 预先生成随机参数（所有通道使用相同参数）
-            snr_db = np.random.uniform(15, 35) if apply_noise else 0
-            stretch_rate = np.random.uniform(0.9, 1.1) if apply_stretch else 1.0
-            pitch_semitones = np.random.uniform(-3, 3) if apply_pitch else 0
-            gain = 10 ** (np.random.uniform(-6, 6) / 20) if apply_gain else 1.0
-            
-            # 对每个通道分别处理
-            def augment_channel(ch_data: np.ndarray) -> np.ndarray:
-                data = ch_data.copy()
-                
-                # 添加噪声
-                if apply_noise:
-                    noise = np.random.randn(len(data))
-                    signal_power = np.mean(data ** 2)
-                    noise_power = np.mean(noise ** 2)
-                    target_noise_power = signal_power / (10 ** (snr_db / 10))
-                    if noise_power > 0:
-                        noise = noise * np.sqrt(target_noise_power / noise_power)
-                    data = data + noise
-                
-                # 时间拉伸
-                if apply_stretch:
-                    data = librosa.effects.time_stretch(data, rate=stretch_rate)
-                
-                # 音高偏移
-                if apply_pitch:
-                    data = librosa.effects.pitch_shift(data, sr=sr, n_steps=pitch_semitones)
-                
-                # 增益变化
-                if apply_gain:
-                    data = data * gain
-                
-                # 归一化防止削波
-                max_val = np.max(np.abs(data))
-                if max_val > 1.0:
-                    data = data / max_val
-                
-                return data.astype(np.float32)
-            
-            augmented = process_channels(audio.data, augment_channel)
-            return AudioData(
-                data=augmented,
-                sample_rate=sr,
-                file_path=audio.file_path
-            )
-        
-        result = process_audio_or_list(audio_input, random_augment)
-        self.set_output_data("audio", result)
-        return True
-
-
-@register_node
 class AudioSliceNode(BaseNode):
     """
     音频切片节点
@@ -738,9 +677,6 @@ class AudioSliceNode(BaseNode):
     - 随机切片：随机起始位置，指定扩充倍数
     - 滑动窗口：固定步长滑动，可设置重叠率
     
-    标签处理：
-    - 如果提供了标签输入，每个音频对应的标签会被复制到其所有切片上
-    - 确保输出的标签数量与切片数量一致
     """
     
     node_type = "audio_slice"
@@ -751,20 +687,7 @@ class AudioSliceNode(BaseNode):
     
     def _setup_ports(self):
         self.add_input("audio", DataType.AUDIO, tr_("Audio"))
-        self.add_input(
-            "labels",
-            DataType.LABEL,
-            tr_("Labels"),
-            required=False,
-            description=tr_("Optional labels input; will be duplicated along with slices"),
-        )
-        self.add_output("audio", DataType.AUDIO, tr_("Sliced audio list"))
-        self.add_output(
-            "labels",
-            DataType.LABEL,
-            tr_("Sliced label list"),
-            description=tr_("Labels corresponding to sliced audio items"),
-        )
+        self.add_output("audio", DataType.AUDIO, tr_("Sliced audio"))
     
     def _setup_parameters(self):
         self.add_parameter(
@@ -812,9 +735,6 @@ class AudioSliceNode(BaseNode):
         except (ValueError, TypeError) as e:
             self.error_message = str(e)
             return False
-        
-        # 获取标签输入（可选）
-        labels_input = self.get_input_data("labels")
         
         slice_duration = self.get_parameter("slice_duration")
         slice_mode = self.get_parameter("slice_mode")
@@ -927,54 +847,17 @@ class AudioSliceNode(BaseNode):
         
         # 处理单个音频或音频列表
         all_slices = []
-        slice_counts = []  # 记录每个原始音频生成的切片数量
         
         if isinstance(audio_input, list):
             # 输入是列表，对每个音频切片后展平
             for audio in audio_input:
                 slices = slice_audio(audio)
-                slice_counts.append(len(slices))
                 all_slices.extend(slices)
             result = all_slices
         else:
             result = slice_audio(audio_input)
-            slice_counts.append(len(result))
-        
-        # 处理标签同步扩充
-        output_labels = None
-        if labels_input is not None:
-            # 将标签转换为列表形式
-            if not isinstance(labels_input, list):
-                labels_list = [labels_input]
-            else:
-                labels_list = labels_input
-            
-            # 验证标签数量与音频数量匹配
-            expected_audio_count = len(audio_input) if isinstance(audio_input, list) else 1
-            if len(labels_list) != expected_audio_count:
-                logger.warning(
-                    f"标签数量 ({len(labels_list)}) 与音频数量 ({expected_audio_count}) 不匹配，"
-                    f"将尝试按比例对应"
-                )
-                # 如果标签数量与音频不匹配但比例正确，尝试调整
-                if len(labels_list) == 1:
-                    # 单个标签应用到所有切片
-                    labels_list = labels_list * expected_audio_count
-            
-            # 按切片数量复制标签
-            output_labels = []
-            for i, count in enumerate(slice_counts):
-                if i < len(labels_list):
-                    label = labels_list[i]
-                    output_labels.extend([label] * count)
-                else:
-                    # 标签不足时使用最后一个标签
-                    output_labels.extend([labels_list[-1]] * count)
-            
-            logger.info(f"标签同步扩充完成: {len(labels_list)} 个标签 → {len(output_labels)} 个标签")
         
         logger.info(f"数据切片完成: 生成 {len(result)} 个切片 (每个 {slice_duration}s)")
         self.set_output_data("audio", result)
-        self.set_output_data("labels", output_labels)
         return True
 
