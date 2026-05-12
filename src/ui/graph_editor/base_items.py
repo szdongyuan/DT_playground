@@ -6,7 +6,7 @@ Provides reusable graphics item base classes for node_editor and model_editor.
 """
 
 import logging
-from typing import List, Optional
+from typing import Iterable, List, Optional
 
 from PySide6.QtCore import QPoint, QPointF, QRectF, Qt
 from PySide6.QtGui import (
@@ -437,6 +437,30 @@ class BaseGraphView(QGraphicsView):
         # 平移状态
         self._is_panning = False
         self._last_pan_pos = QPoint()
+
+    def fit_items_to_origin(self, movable_items: Iterable[QGraphicsItem]):
+        """Fit graph content and rebase movable items so the content center is the origin."""
+        items = list(movable_items)
+        if not items:
+            self.resetTransform()
+            self.centerOn(0, 0)
+            return
+
+        scene = self.scene()
+        content_rect = scene.itemsBoundingRect()
+        if content_rect.isNull() or content_rect.isEmpty():
+            self.resetTransform()
+            self.centerOn(0, 0)
+            return
+
+        offset = content_rect.center()
+        for item in items:
+            item.setPos(item.pos() - offset)
+
+        rebased_rect = scene.itemsBoundingRect()
+        self.resetTransform()
+        self.fitInView(rebased_rect, Qt.AspectRatioMode.KeepAspectRatio)
+        self.centerOn(0, 0)
     
     def wheelEvent(self, event: QWheelEvent):
         """鼠标滚轮缩放"""
