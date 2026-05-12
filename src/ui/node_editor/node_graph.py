@@ -15,7 +15,7 @@ Node editing canvas implemented with pure PySide6.
 import logging
 from typing import Dict, List, Optional, Tuple
 
-from PySide6.QtCore import QPoint, QPointF, QRectF, Qt, Signal
+from PySide6.QtCore import QPoint, QPointF, QRectF, Qt, QTimer, Signal
 from PySide6.QtGui import (
     QAction, QBrush, QColor, QDragEnterEvent, QDropEvent,
     QFont, QKeyEvent, QMouseEvent, QPainter, QPainterPath, QPen, QWheelEvent
@@ -550,6 +550,9 @@ class NodeGraphWidget(QWidget):
     
     CLIPBOARD_KIND = "workflow_nodes"
     PASTE_OFFSET = (40.0, 40.0)
+    AUTO_FIT_RETRY_MS = 50
+    MIN_AUTO_FIT_VIEWPORT_WIDTH = 160
+    MIN_AUTO_FIT_VIEWPORT_HEIGHT = 120
 
     node_selected = Signal(str)
     node_double_clicked = Signal(str)
@@ -562,6 +565,10 @@ class NodeGraphWidget(QWidget):
         
         self.workflow: Optional[Workflow] = None
         self._paste_serial = 0
+        self._initial_fit_pending = False
+        self._initial_fit_timer = QTimer(self)
+        self._initial_fit_timer.setSingleShot(True)
+        self._initial_fit_timer.timeout.connect(self._run_initial_fit_when_ready)
         
         self._setup_ui()
         self._connect_signals()
@@ -591,6 +598,47 @@ class NodeGraphWidget(QWidget):
         """设置工作流"""
         self.workflow = workflow
         self._sync_from_workflow()
+        self._request_initial_fit()
+
+    def showEvent(self, event):
+        """Run pending startup fit after the canvas becomes visible."""
+        super().showEvent(event)
+        self._schedule_initial_fit_if_pending()
+
+    def resizeEvent(self, event):
+        """Retry pending startup fit once layout gives the canvas a real size."""
+        super().resizeEvent(event)
+        self._schedule_initial_fit_if_pending()
+
+    def _request_initial_fit(self):
+        """Schedule initial fit without using an undersized hidden viewport."""
+        self._initial_fit_pending = True
+        self._schedule_initial_fit_if_pending()
+
+    def _schedule_initial_fit_if_pending(self):
+        if self._initial_fit_pending and not self._initial_fit_timer.isActive():
+            self._initial_fit_timer.start(0)
+
+    def _is_initial_fit_viewport_ready(self) -> bool:
+        size = self._view.viewport().size()
+        return (
+            self.isVisible()
+            and self._view.isVisible()
+            and size.width() >= self.MIN_AUTO_FIT_VIEWPORT_WIDTH
+            and size.height() >= self.MIN_AUTO_FIT_VIEWPORT_HEIGHT
+        )
+
+    def _run_initial_fit_when_ready(self):
+        if not self._initial_fit_pending:
+            return
+
+        if self._is_initial_fit_viewport_ready():
+            self._initial_fit_pending = False
+            self.fit_to_selection()
+            return
+
+        if self.isVisible():
+            self._initial_fit_timer.start(self.AUTO_FIT_RETRY_MS)
     
     def get_workflow(self) -> Optional[Workflow]:
         """获取工作流"""
@@ -910,8 +958,8 @@ class NodeGraphWidget(QWidget):
         self.workflow = None
     
     def fit_to_selection(self):
-        """适应选中内容"""
-        self._view.fitInView(self._scene.itemsBoundingRect(), Qt.AspectRatioMode.KeepAspectRatio)
+        """Fit graph content and recalibrate the canvas origin."""
+        self._view.fit_items_to_origin(self._scene.node_items.values())
     
     def center_on(self, node_id: str):
         """居中显示指定节点"""
