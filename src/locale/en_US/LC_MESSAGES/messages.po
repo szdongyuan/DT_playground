@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-12 11:35+0800\n"
+"POT-Creation-Date: 2026-05-13 17:54+0800\n"
 "PO-Revision-Date: 2026-02-04 17:15+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -102,8 +102,8 @@ msgstr "Failed to load model: {error}"
 msgid "Warning"
 msgstr "Warning"
 
-#: src/app.py:443 src/audio/loader.py:58 src/workflow/nodes/data_source.py:285
-#: src/workflow/nodes/data_source.py:351
+#: src/app.py:443 src/audio/loader.py:58 src/workflow/nodes/data_source.py:298
+#: src/workflow/nodes/data_source.py:364
 #, python-brace-format
 msgid "File does not exist: {path}"
 msgstr "File does not exist: {path}"
@@ -273,7 +273,7 @@ msgstr "Raw data"
 msgid "Unsupported audio format: {ext}"
 msgstr "Unsupported audio format: {ext}"
 
-#: src/audio/loader.py:89 src/workflow/nodes/data_source.py:301
+#: src/audio/loader.py:89 src/workflow/nodes/data_source.py:314
 #, python-brace-format
 msgid "Failed to load audio: {error}"
 msgstr "Failed to load audio: {error}"
@@ -1827,8 +1827,8 @@ msgstr "Settings"
 #: src/workflow/nodes/augmentation.py:429
 #: src/workflow/nodes/augmentation.py:505
 #: src/workflow/nodes/augmentation.py:513
-#: src/workflow/nodes/augmentation.py:689 src/workflow/nodes/data_source.py:264
-#: src/workflow/nodes/data_source.py:475
+#: src/workflow/nodes/augmentation.py:689 src/workflow/nodes/data_source.py:277
+#: src/workflow/nodes/data_source.py:488
 #: src/workflow/nodes/preprocessing.py:124
 #: src/workflow/nodes/preprocessing.py:127
 #: src/workflow/nodes/preprocessing.py:187
@@ -2132,12 +2132,12 @@ msgid "Optional, for identifying the layer"
 msgstr "Optional, for identifying the layer"
 
 #: src/ui/model_editor/layer_property_panel.py:149
-#: src/ui/node_editor/property_panel.py:124
+#: src/ui/node_editor/property_panel.py:125
 msgid "Type:"
 msgstr "Type:"
 
 #: src/ui/model_editor/layer_property_panel.py:161
-#: src/ui/node_editor/property_panel.py:131
+#: src/ui/node_editor/property_panel.py:132
 msgid "Parameters"
 msgstr "Parameters"
 
@@ -2175,41 +2175,41 @@ msgstr ""
 msgid "🔒 This layer is frozen; weights will not be updated during training."
 msgstr "🔒 This layer is frozen; weights will not be updated during training."
 
-#: src/ui/model_editor/model_graph_widget.py:607
+#: src/ui/model_editor/model_graph_widget.py:655
 msgid "Add layer"
 msgstr "Add layer"
 
-#: src/ui/model_editor/model_graph_widget.py:628
-#: src/ui/node_editor/node_graph.py:828
+#: src/ui/model_editor/model_graph_widget.py:676
+#: src/ui/node_editor/node_graph.py:876
 msgid "Copy"
 msgstr "Copy"
 
-#: src/ui/model_editor/model_graph_widget.py:632
-#: src/ui/node_editor/node_graph.py:832
+#: src/ui/model_editor/model_graph_widget.py:680
+#: src/ui/node_editor/node_graph.py:880
 msgid "Paste"
 msgstr "Paste"
 
-#: src/ui/model_editor/model_graph_widget.py:637
+#: src/ui/model_editor/model_graph_widget.py:685
 msgid "Reset selected layer connections"
 msgstr "Reset selected layer connections"
 
-#: src/ui/model_editor/model_graph_widget.py:640
+#: src/ui/model_editor/model_graph_widget.py:688
 msgid "Delete selected layers"
 msgstr "Delete selected layers"
 
-#: src/ui/node_editor/node_graph.py:685
+#: src/ui/node_editor/node_graph.py:733
 msgid "Connection failed"
 msgstr "Connection failed"
 
-#: src/ui/node_editor/node_graph.py:824
+#: src/ui/node_editor/node_graph.py:872
 msgid "Rerun from selected node"
 msgstr "Rerun from selected node"
 
-#: src/ui/node_editor/node_graph.py:837
+#: src/ui/node_editor/node_graph.py:885
 msgid "Reset selected node connections"
 msgstr "Reset selected node connections"
 
-#: src/ui/node_editor/node_graph.py:841
+#: src/ui/node_editor/node_graph.py:889
 msgid "Delete selected nodes"
 msgstr "Delete selected nodes"
 
@@ -2225,53 +2225,61 @@ msgstr "🔍 Search nodes..."
 msgid "Drag or double-click to add a node"
 msgstr "Drag or double-click to add a node"
 
-#: src/ui/node_editor/property_panel.py:80
-#: src/ui/node_editor/property_panel.py:150
+#: src/ui/node_editor/property_panel.py:81
+#: src/ui/node_editor/property_panel.py:151
 msgid "Properties"
 msgstr "Properties"
 
-#: src/ui/node_editor/property_panel.py:113
+#: src/ui/node_editor/property_panel.py:114
 msgid "Node Info"
 msgstr "Node Info"
 
-#: src/ui/node_editor/property_panel.py:123
+#: src/ui/node_editor/property_panel.py:124
 msgid "Name:"
 msgstr "Name:"
 
-#: src/ui/node_editor/property_panel.py:125
+#: src/ui/node_editor/property_panel.py:126
 msgid "Category:"
 msgstr "Category:"
 
-#: src/ui/node_editor/property_panel.py:126
+#: src/ui/node_editor/property_panel.py:127
 msgid "Description:"
 msgstr "Description:"
 
-#: src/ui/node_editor/property_panel.py:137
+#: src/ui/node_editor/property_panel.py:138
 msgid "Ports"
 msgstr "Ports"
 
-#: src/ui/node_editor/property_panel.py:173
+#: src/ui/node_editor/property_panel.py:175
 #, python-brace-format
 msgid "Properties - {name}"
 msgstr "Properties - {name}"
 
-#: src/ui/node_editor/property_panel.py:181
+#: src/ui/node_editor/property_panel.py:183
 msgid "No description"
 msgstr "No description"
 
-#: src/ui/node_editor/property_panel.py:337
+#: src/ui/node_editor/property_panel.py:324
+msgid "First N in order"
+msgstr "First N in order"
+
+#: src/ui/node_editor/property_panel.py:325
+msgid "Random N"
+msgstr "Random N"
+
+#: src/ui/node_editor/property_panel.py:368
 msgid "Select file"
 msgstr "Select file"
 
-#: src/ui/node_editor/property_panel.py:357
+#: src/ui/node_editor/property_panel.py:388
 msgid "Select folder"
 msgstr "Select folder"
 
-#: src/ui/node_editor/property_panel.py:379
+#: src/ui/node_editor/property_panel.py:410
 msgid "📥 Inputs:"
 msgstr "📥 Inputs:"
 
-#: src/ui/node_editor/property_panel.py:394
+#: src/ui/node_editor/property_panel.py:425
 msgid "📤 Outputs:"
 msgstr "📤 Outputs:"
 
@@ -3241,7 +3249,7 @@ msgid "Duplicate audio and labels together for sample expansion"
 msgstr "Duplicate audio and labels together for sample expansion"
 
 #: src/workflow/nodes/augmentation.py:39 src/workflow/nodes/augmentation.py:41
-#: src/workflow/nodes/control.py:128 src/workflow/nodes/data_source.py:482
+#: src/workflow/nodes/control.py:128 src/workflow/nodes/data_source.py:495
 msgid "Labels"
 msgstr "Labels"
 
@@ -3807,215 +3815,225 @@ msgstr "Shape inconsistent: {count} inconsistent items"
 msgid "⚠️ Shape validation warning: {count} inconsistent items"
 msgstr "⚠️ Shape validation warning: {count} inconsistent items"
 
-#: src/workflow/nodes/data_source.py:74 src/workflow/nodes/feature/base.py:64
+#: src/workflow/nodes/data_source.py:75 src/workflow/nodes/feature/base.py:64
 #, python-brace-format
 msgid "Channel index {idx} out of range (total {channels} channels)"
 msgstr "Channel index {idx} out of range (total {channels} channels)"
 
-#: src/workflow/nodes/data_source.py:117
+#: src/workflow/nodes/data_source.py:118
 msgid "Audio folder"
 msgstr "Audio folder"
 
-#: src/workflow/nodes/data_source.py:119
+#: src/workflow/nodes/data_source.py:120
 msgid "Load audio files from a folder, optionally auto-label by subfolder"
 msgstr "Load audio files from a folder, optionally auto-label by subfolder"
 
-#: src/workflow/nodes/data_source.py:125
+#: src/workflow/nodes/data_source.py:128
 msgid "Audio list"
 msgstr "Audio list"
 
-#: src/workflow/nodes/data_source.py:126 src/workflow/nodes/data_source.py:320
+#: src/workflow/nodes/data_source.py:129 src/workflow/nodes/data_source.py:333
 msgid "Label list"
 msgstr "Label list"
 
-#: src/workflow/nodes/data_source.py:127
+#: src/workflow/nodes/data_source.py:130
 msgid "File path list"
 msgstr "File path list"
 
-#: src/workflow/nodes/data_source.py:132
+#: src/workflow/nodes/data_source.py:135
 msgid "Folder path"
 msgstr "Folder path"
 
-#: src/workflow/nodes/data_source.py:133
+#: src/workflow/nodes/data_source.py:136
 msgid "Directory containing audio files"
 msgstr "Directory containing audio files"
 
-#: src/workflow/nodes/data_source.py:138
+#: src/workflow/nodes/data_source.py:141
 msgid "Recursive scan"
 msgstr "Recursive scan"
 
-#: src/workflow/nodes/data_source.py:139
+#: src/workflow/nodes/data_source.py:142
 msgid "Scan subfolders"
 msgstr "Scan subfolders"
 
-#: src/workflow/nodes/data_source.py:143
+#: src/workflow/nodes/data_source.py:146
 msgid "Auto label"
 msgstr "Auto label"
 
-#: src/workflow/nodes/data_source.py:144
+#: src/workflow/nodes/data_source.py:147
 msgid "Auto-generate labels from subfolder names"
 msgstr "Auto-generate labels from subfolder names"
 
-#: src/workflow/nodes/data_source.py:148 src/workflow/nodes/data_source.py:276
+#: src/workflow/nodes/data_source.py:151 src/workflow/nodes/data_source.py:289
 #: src/workflow/nodes/preprocessing.py:132
 msgid "Target sample rate"
 msgstr "Target sample rate"
 
-#: src/workflow/nodes/data_source.py:149
+#: src/workflow/nodes/data_source.py:152
 msgid "Resample to this sample rate when loading"
 msgstr "Resample to this sample rate when loading"
 
-#: src/workflow/nodes/data_source.py:154
+#: src/workflow/nodes/data_source.py:157
 msgid "Max files"
 msgstr "Max files"
 
-#: src/workflow/nodes/data_source.py:155
-msgid "Maximum number of files to load (0 = no limit)"
-msgstr "Maximum number of files to load (0 = no limit)"
+#: src/workflow/nodes/data_source.py:158
+msgid "Maximum number of files to load"
+msgstr "Maximum number of files to load"
 
-#: src/workflow/nodes/data_source.py:162
+#: src/workflow/nodes/data_source.py:163
+msgid "Selection mode"
+msgstr "Selection mode"
+
+#: src/workflow/nodes/data_source.py:164
+msgid ""
+"Choose files by order or random sampling when max files is greater than 0"
+msgstr ""
+"Choose files by order or random sampling when max files is greater than 0"
+
+#: src/workflow/nodes/data_source.py:171
 #, python-brace-format
 msgid "Directory does not exist: {path}"
 msgstr "Directory does not exist: {path}"
 
-#: src/workflow/nodes/data_source.py:195
+#: src/workflow/nodes/data_source.py:208
 #, python-brace-format
 msgid "Loading {count} audio files..."
 msgstr "Loading {count} audio files..."
 
-#: src/workflow/nodes/data_source.py:231
+#: src/workflow/nodes/data_source.py:244
 msgid "No valid audio files found"
 msgstr "No valid audio files found"
 
-#: src/workflow/nodes/data_source.py:241
+#: src/workflow/nodes/data_source.py:254
 #, python-brace-format
 msgid "Audio loaded: {files} files, {classes} classes"
 msgstr "Audio loaded: {files} files, {classes} classes"
 
-#: src/workflow/nodes/data_source.py:258
+#: src/workflow/nodes/data_source.py:271
 msgid "Audio file"
 msgstr "Audio file"
 
-#: src/workflow/nodes/data_source.py:260
+#: src/workflow/nodes/data_source.py:273
 msgid "Load a single audio file"
 msgstr "Load a single audio file"
 
-#: src/workflow/nodes/data_source.py:269 src/workflow/nodes/data_source.py:326
+#: src/workflow/nodes/data_source.py:282 src/workflow/nodes/data_source.py:339
 msgid "File path"
 msgstr "File path"
 
-#: src/workflow/nodes/data_source.py:270
+#: src/workflow/nodes/data_source.py:283
 msgid "Audio file path"
 msgstr "Audio file path"
 
-#: src/workflow/nodes/data_source.py:314
+#: src/workflow/nodes/data_source.py:327
 msgid "Label file"
 msgstr "Label file"
 
-#: src/workflow/nodes/data_source.py:316
+#: src/workflow/nodes/data_source.py:329
 msgid "Load labels from CSV/JSON/TXT"
 msgstr "Load labels from CSV/JSON/TXT"
 
-#: src/workflow/nodes/data_source.py:321
+#: src/workflow/nodes/data_source.py:334
 msgid "Label map"
 msgstr "Label map"
 
-#: src/workflow/nodes/data_source.py:332
+#: src/workflow/nodes/data_source.py:345
 msgid "File format"
 msgstr "File format"
 
-#: src/workflow/nodes/data_source.py:337
+#: src/workflow/nodes/data_source.py:350
 msgid "Filename column"
 msgstr "Filename column"
 
-#: src/workflow/nodes/data_source.py:338
+#: src/workflow/nodes/data_source.py:351
 msgid "Column name for filename in CSV"
 msgstr "Column name for filename in CSV"
 
-#: src/workflow/nodes/data_source.py:342
+#: src/workflow/nodes/data_source.py:355
 msgid "Label column"
 msgstr "Label column"
 
-#: src/workflow/nodes/data_source.py:343
+#: src/workflow/nodes/data_source.py:356
 msgid "Column name for label in CSV"
 msgstr "Column name for label in CSV"
 
-#: src/workflow/nodes/data_source.py:382
+#: src/workflow/nodes/data_source.py:395
 #, python-brace-format
 msgid "Failed to load labels: {error}"
 msgstr "Failed to load labels: {error}"
 
-#: src/workflow/nodes/data_source.py:436
+#: src/workflow/nodes/data_source.py:449
 msgid "Unsupported JSON format"
 msgstr "Unsupported JSON format"
 
-#: src/workflow/nodes/data_source.py:466
+#: src/workflow/nodes/data_source.py:479
 msgid "Save audio"
 msgstr "Save audio"
 
-#: src/workflow/nodes/data_source.py:468
+#: src/workflow/nodes/data_source.py:481
 msgid "Save audio as WAV files, optionally save labels JSON"
 msgstr "Save audio as WAV files, optionally save labels JSON"
 
-#: src/workflow/nodes/data_source.py:477
+#: src/workflow/nodes/data_source.py:490
 msgid "Audio data to save (single item or list)"
 msgstr "Audio data to save (single item or list)"
 
-#: src/workflow/nodes/data_source.py:484
+#: src/workflow/nodes/data_source.py:497
 msgid "Optional labels corresponding to audio items"
 msgstr "Optional labels corresponding to audio items"
 
-#: src/workflow/nodes/data_source.py:490
+#: src/workflow/nodes/data_source.py:503
 msgid "Output folder"
 msgstr "Output folder"
 
-#: src/workflow/nodes/data_source.py:491
+#: src/workflow/nodes/data_source.py:504
 msgid "Target folder to save audio files"
 msgstr "Target folder to save audio files"
 
-#: src/workflow/nodes/data_source.py:496
+#: src/workflow/nodes/data_source.py:509
 msgid "Filename prefix"
 msgstr "Filename prefix"
 
-#: src/workflow/nodes/data_source.py:497
+#: src/workflow/nodes/data_source.py:510
 msgid "Prefix for output audio filenames"
 msgstr "Prefix for output audio filenames"
 
-#: src/workflow/nodes/data_source.py:501
+#: src/workflow/nodes/data_source.py:514
 msgid "Save labels file"
 msgstr "Save labels file"
 
-#: src/workflow/nodes/data_source.py:502
+#: src/workflow/nodes/data_source.py:515
 msgid "When labels are provided, save labels.json"
 msgstr "When labels are provided, save labels.json"
 
-#: src/workflow/nodes/data_source.py:506
+#: src/workflow/nodes/data_source.py:519
 msgid "Overwrite existing files"
 msgstr "Overwrite existing files"
 
-#: src/workflow/nodes/data_source.py:507
+#: src/workflow/nodes/data_source.py:520
 msgid "Overwrite files if they already exist"
 msgstr "Overwrite files if they already exist"
 
-#: src/workflow/nodes/data_source.py:523
+#: src/workflow/nodes/data_source.py:536
 msgid "Please select an output folder"
 msgstr "Please select an output folder"
 
-#: src/workflow/nodes/data_source.py:530
+#: src/workflow/nodes/data_source.py:543
 #, python-brace-format
 msgid "Unable to create output folder: {error}"
 msgstr "Unable to create output folder: {error}"
 
-#: src/workflow/nodes/data_source.py:537
+#: src/workflow/nodes/data_source.py:550
 msgid "No input audio data"
 msgstr "No input audio data"
 
-#: src/workflow/nodes/data_source.py:545
+#: src/workflow/nodes/data_source.py:558
 #, python-brace-format
 msgid "Unsupported audio data type: {type}"
 msgstr "Unsupported audio data type: {type}"
 
-#: src/workflow/nodes/data_source.py:562
+#: src/workflow/nodes/data_source.py:575
 #, python-brace-format
 msgid ""
 "Label count ({labels}) does not match audio count ({audio}); items will be "
@@ -4024,21 +4042,21 @@ msgstr ""
 "Label count ({labels}) does not match audio count ({audio}); items will be "
 "paired in order and extras will be ignored"
 
-#: src/workflow/nodes/data_source.py:567
+#: src/workflow/nodes/data_source.py:580
 #, python-brace-format
 msgid "Saving {count} audio files..."
 msgstr "Saving {count} audio files..."
 
-#: src/workflow/nodes/data_source.py:618
+#: src/workflow/nodes/data_source.py:631
 msgid "No audio files were saved successfully"
 msgstr "No audio files were saved successfully"
 
-#: src/workflow/nodes/data_source.py:622
+#: src/workflow/nodes/data_source.py:635
 #, python-brace-format
 msgid "Audio saved: {files} files"
 msgstr "Audio saved: {files} files"
 
-#: src/workflow/nodes/data_source.py:624
+#: src/workflow/nodes/data_source.py:637
 #, python-brace-format
 msgid ", labels: {count}"
 msgstr ", labels: {count}"

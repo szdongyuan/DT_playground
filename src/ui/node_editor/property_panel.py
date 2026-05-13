@@ -67,6 +67,7 @@ class PropertyPanel(QWidget):
         self._current_node: Optional[BaseNode] = None
         self._current_node_id: Optional[str] = None
         self._widgets: Dict[str, QWidget] = {}
+        self._labels: Dict[str, QLabel] = {}
         
         self._setup_ui()
     
@@ -163,6 +164,7 @@ class PropertyPanel(QWidget):
         self._current_node = node
         self._current_node_id = node_id
         self._widgets.clear()
+        self._labels.clear()
         
         if not node:
             self._show_empty_state()
@@ -208,8 +210,11 @@ class PropertyPanel(QWidget):
                 # 创建标签
                 label = QLabel(tr_(param.display_name) + ":")
                 label.setToolTip(tr_(param.description) if param.description else "")
+                self._labels[param_name] = label
                 
                 self._params_layout.addRow(label, widget)
+
+        self._refresh_parameter_dependencies()
     
     def _create_param_widget(self, param: NodeParameter, value: Any) -> Optional[QWidget]:
         """创建参数编辑控件"""
@@ -256,7 +261,7 @@ class PropertyPanel(QWidget):
             widget = QComboBox()
             if param.choices:
                 for choice in param.choices:
-                    widget.addItem(str(choice), choice)
+                    widget.addItem(self._get_choice_display_text(param, choice), choice)
                 if value in param.choices:
                     widget.setCurrentIndex(param.choices.index(value))
             widget.currentIndexChanged.connect(
@@ -311,6 +316,31 @@ class PropertyPanel(QWidget):
             widget.setStyleSheet(Styles.FORM_CONTROLS)
         
         return widget
+
+    def _get_choice_display_text(self, param: NodeParameter, choice: Any) -> str:
+        """Return the user-visible text for a choice value."""
+        if param.name == "selection_mode":
+            display_text = {
+                "first_n": tr_("First N in order"),
+                "random_n": tr_("Random N"),
+            }.get(choice, str(choice))
+            return display_text
+        return tr_(str(choice))
+    
+    def _refresh_parameter_dependencies(self):
+        """Refresh UI state for parameter dependencies."""
+        if not self._current_node or self._current_node.node_type != "audio_folder":
+            return
+
+        max_files = self._current_node.get_parameter("max_files") or 0
+        selection_enabled = max_files > 0
+
+        selection_widget = self._widgets.get("selection_mode")
+        selection_label = self._labels.get("selection_mode")
+        if selection_widget:
+            selection_widget.setVisible(selection_enabled)
+        if selection_label:
+            selection_label.setVisible(selection_enabled)
     
     def _on_param_changed(self, param_name: str, value: Any):
         """参数值改变回调"""
@@ -318,6 +348,7 @@ class PropertyPanel(QWidget):
             success, msg = self._current_node.set_parameter(param_name, value)
             if success:
                 self.parameter_changed.emit(self._current_node_id, param_name, value)
+                self._refresh_parameter_dependencies()
             else:
                 logger.warning(f"设置参数失败: {msg}")
     
@@ -408,5 +439,6 @@ class PropertyPanel(QWidget):
         self._current_node = None
         self._current_node_id = None
         self._widgets.clear()
+        self._labels.clear()
         self._show_empty_state()
 
