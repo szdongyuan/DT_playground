@@ -9,6 +9,7 @@ import csv
 import json
 import logging
 import os
+import random
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -120,6 +121,8 @@ class AudioFolderNode(BaseNode):
     icon = "📂"
     
     SUPPORTED_FORMATS = {'.wav', '.mp3', '.flac', '.ogg', '.m4a', '.aac'}
+    SELECTION_FIRST_N = "first_n"
+    SELECTION_RANDOM_N = "random_n"
     
     def _setup_ports(self):
         self.add_output("audio", DataType.AUDIO, tr_("Audio list"))
@@ -152,8 +155,14 @@ class AudioFolderNode(BaseNode):
         self.add_parameter(
             "max_files", "int", 0,
             display_name=tr_("Max files"),
-            description=tr_("Maximum number of files to load (0 = no limit)"),
+            description=tr_("Maximum number of files to load"),
             min_value=0
+        )
+        self.add_parameter(
+            "selection_mode", "choice", self.SELECTION_FIRST_N,
+            display_name=tr_("Selection mode"),
+            description=tr_("Choose files by order or random sampling when max files is greater than 0"),
+            choices=[self.SELECTION_FIRST_N, self.SELECTION_RANDOM_N]
         )
     
     def execute(self) -> bool:
@@ -168,6 +177,7 @@ class AudioFolderNode(BaseNode):
         auto_label = self.get_parameter("auto_label")
         target_sr = self.get_parameter("target_sr")
         max_files = self.get_parameter("max_files")
+        selection_mode = self.get_parameter("selection_mode")
         
         audio_list = []
         labels = []
@@ -177,9 +187,9 @@ class AudioFolderNode(BaseNode):
         # 扫描文件
         root_path = Path(folder_path)
         if recursive:
-            files = list(root_path.rglob("*"))
+            files = sorted(root_path.rglob("*"))
         else:
-            files = list(root_path.glob("*"))
+            files = sorted(root_path.glob("*"))
         
         # 过滤音频文件
         audio_files = [
@@ -189,7 +199,10 @@ class AudioFolderNode(BaseNode):
         
         # 限制数量
         if max_files > 0:
-            audio_files = audio_files[:max_files]
+            if selection_mode == self.SELECTION_RANDOM_N and max_files < len(audio_files):
+                audio_files = random.sample(audio_files, max_files)
+            else:
+                audio_files = audio_files[:max_files]
         
         logger.info(f"找到 {len(audio_files)} 个音频文件")
         self.report_status(tr_("Loading {count} audio files...").format(count=len(audio_files)))

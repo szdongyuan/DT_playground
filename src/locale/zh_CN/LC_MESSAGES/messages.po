@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-12 11:35+0800\n"
+"POT-Creation-Date: 2026-05-13 17:54+0800\n"
 "PO-Revision-Date: 2026-02-04 17:15+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -101,8 +101,8 @@ msgstr "加载模型失败：{error}"
 msgid "Warning"
 msgstr "警告"
 
-#: src/app.py:443 src/audio/loader.py:58 src/workflow/nodes/data_source.py:285
-#: src/workflow/nodes/data_source.py:351
+#: src/app.py:443 src/audio/loader.py:58 src/workflow/nodes/data_source.py:298
+#: src/workflow/nodes/data_source.py:364
 #, python-brace-format
 msgid "File does not exist: {path}"
 msgstr "文件不存在：{path}"
@@ -272,7 +272,7 @@ msgstr "原始数据"
 msgid "Unsupported audio format: {ext}"
 msgstr "不支持的音频格式：{ext}"
 
-#: src/audio/loader.py:89 src/workflow/nodes/data_source.py:301
+#: src/audio/loader.py:89 src/workflow/nodes/data_source.py:314
 #, python-brace-format
 msgid "Failed to load audio: {error}"
 msgstr "加载音频失败：{error}"
@@ -1824,8 +1824,8 @@ msgstr "设置"
 #: src/workflow/nodes/augmentation.py:429
 #: src/workflow/nodes/augmentation.py:505
 #: src/workflow/nodes/augmentation.py:513
-#: src/workflow/nodes/augmentation.py:689 src/workflow/nodes/data_source.py:264
-#: src/workflow/nodes/data_source.py:475
+#: src/workflow/nodes/augmentation.py:689 src/workflow/nodes/data_source.py:277
+#: src/workflow/nodes/data_source.py:488
 #: src/workflow/nodes/preprocessing.py:124
 #: src/workflow/nodes/preprocessing.py:127
 #: src/workflow/nodes/preprocessing.py:187
@@ -2129,12 +2129,12 @@ msgid "Optional, for identifying the layer"
 msgstr "可选，用于标识该层"
 
 #: src/ui/model_editor/layer_property_panel.py:149
-#: src/ui/node_editor/property_panel.py:124
+#: src/ui/node_editor/property_panel.py:125
 msgid "Type:"
 msgstr "类型："
 
 #: src/ui/model_editor/layer_property_panel.py:161
-#: src/ui/node_editor/property_panel.py:131
+#: src/ui/node_editor/property_panel.py:132
 msgid "Parameters"
 msgstr "参数"
 
@@ -2171,41 +2171,41 @@ msgstr "取消勾选以冻结该层，使其权重在训练期间不会更新。
 msgid "🔒 This layer is frozen; weights will not be updated during training."
 msgstr "🔒 该层已冻结；训练期间权重不会更新。"
 
-#: src/ui/model_editor/model_graph_widget.py:607
+#: src/ui/model_editor/model_graph_widget.py:655
 msgid "Add layer"
 msgstr "添加层"
 
-#: src/ui/model_editor/model_graph_widget.py:628
-#: src/ui/node_editor/node_graph.py:828
+#: src/ui/model_editor/model_graph_widget.py:676
+#: src/ui/node_editor/node_graph.py:876
 msgid "Copy"
 msgstr "复制"
 
-#: src/ui/model_editor/model_graph_widget.py:632
-#: src/ui/node_editor/node_graph.py:832
+#: src/ui/model_editor/model_graph_widget.py:680
+#: src/ui/node_editor/node_graph.py:880
 msgid "Paste"
 msgstr "粘贴"
 
-#: src/ui/model_editor/model_graph_widget.py:637
+#: src/ui/model_editor/model_graph_widget.py:685
 msgid "Reset selected layer connections"
 msgstr "重置所选层连接"
 
-#: src/ui/model_editor/model_graph_widget.py:640
+#: src/ui/model_editor/model_graph_widget.py:688
 msgid "Delete selected layers"
 msgstr "删除所选层"
 
-#: src/ui/node_editor/node_graph.py:685
+#: src/ui/node_editor/node_graph.py:733
 msgid "Connection failed"
 msgstr "连接失败"
 
-#: src/ui/node_editor/node_graph.py:824
+#: src/ui/node_editor/node_graph.py:872
 msgid "Rerun from selected node"
 msgstr "从所选节点重新运行"
 
-#: src/ui/node_editor/node_graph.py:837
+#: src/ui/node_editor/node_graph.py:885
 msgid "Reset selected node connections"
 msgstr "重置所选节点连接"
 
-#: src/ui/node_editor/node_graph.py:841
+#: src/ui/node_editor/node_graph.py:889
 msgid "Delete selected nodes"
 msgstr "删除所选节点"
 
@@ -2221,53 +2221,61 @@ msgstr "🔍 搜索节点..."
 msgid "Drag or double-click to add a node"
 msgstr "拖拽或双击以添加节点"
 
-#: src/ui/node_editor/property_panel.py:80
-#: src/ui/node_editor/property_panel.py:150
+#: src/ui/node_editor/property_panel.py:81
+#: src/ui/node_editor/property_panel.py:151
 msgid "Properties"
 msgstr "属性"
 
-#: src/ui/node_editor/property_panel.py:113
+#: src/ui/node_editor/property_panel.py:114
 msgid "Node Info"
 msgstr "节点信息"
 
-#: src/ui/node_editor/property_panel.py:123
+#: src/ui/node_editor/property_panel.py:124
 msgid "Name:"
 msgstr "名称："
 
-#: src/ui/node_editor/property_panel.py:125
+#: src/ui/node_editor/property_panel.py:126
 msgid "Category:"
 msgstr "分类："
 
-#: src/ui/node_editor/property_panel.py:126
+#: src/ui/node_editor/property_panel.py:127
 msgid "Description:"
 msgstr "描述："
 
-#: src/ui/node_editor/property_panel.py:137
+#: src/ui/node_editor/property_panel.py:138
 msgid "Ports"
 msgstr "端口"
 
-#: src/ui/node_editor/property_panel.py:173
+#: src/ui/node_editor/property_panel.py:175
 #, python-brace-format
 msgid "Properties - {name}"
 msgstr "属性 - {name}"
 
-#: src/ui/node_editor/property_panel.py:181
+#: src/ui/node_editor/property_panel.py:183
 msgid "No description"
 msgstr "无描述"
 
-#: src/ui/node_editor/property_panel.py:337
+#: src/ui/node_editor/property_panel.py:324
+msgid "First N in order"
+msgstr "顺序前 N 个"
+
+#: src/ui/node_editor/property_panel.py:325
+msgid "Random N"
+msgstr "随机 N 个"
+
+#: src/ui/node_editor/property_panel.py:368
 msgid "Select file"
 msgstr "选择文件"
 
-#: src/ui/node_editor/property_panel.py:357
+#: src/ui/node_editor/property_panel.py:388
 msgid "Select folder"
 msgstr "选择文件夹"
 
-#: src/ui/node_editor/property_panel.py:379
+#: src/ui/node_editor/property_panel.py:410
 msgid "📥 Inputs:"
 msgstr "📥 输入："
 
-#: src/ui/node_editor/property_panel.py:394
+#: src/ui/node_editor/property_panel.py:425
 msgid "📤 Outputs:"
 msgstr "📤 输出："
 
@@ -3233,7 +3241,7 @@ msgid "Duplicate audio and labels together for sample expansion"
 msgstr "同步复制音频和标签以扩增样本"
 
 #: src/workflow/nodes/augmentation.py:39 src/workflow/nodes/augmentation.py:41
-#: src/workflow/nodes/control.py:128 src/workflow/nodes/data_source.py:482
+#: src/workflow/nodes/control.py:128 src/workflow/nodes/data_source.py:495
 msgid "Labels"
 msgstr "标签"
 
@@ -3798,215 +3806,224 @@ msgstr "形状不一致：{count} 个不一致项"
 msgid "⚠️ Shape validation warning: {count} inconsistent items"
 msgstr "⚠️ 形状校验警告：{count} 个不一致项"
 
-#: src/workflow/nodes/data_source.py:74 src/workflow/nodes/feature/base.py:64
+#: src/workflow/nodes/data_source.py:75 src/workflow/nodes/feature/base.py:64
 #, python-brace-format
 msgid "Channel index {idx} out of range (total {channels} channels)"
 msgstr "通道索引 {idx} 超出范围（共 {channels} 个通道）"
 
-#: src/workflow/nodes/data_source.py:117
+#: src/workflow/nodes/data_source.py:118
 msgid "Audio folder"
 msgstr "音频文件夹"
 
-#: src/workflow/nodes/data_source.py:119
+#: src/workflow/nodes/data_source.py:120
 msgid "Load audio files from a folder, optionally auto-label by subfolder"
 msgstr "从文件夹加载音频文件，可选按子文件夹自动打标签"
 
-#: src/workflow/nodes/data_source.py:125
+#: src/workflow/nodes/data_source.py:128
 msgid "Audio list"
 msgstr "音频列表"
 
-#: src/workflow/nodes/data_source.py:126 src/workflow/nodes/data_source.py:320
+#: src/workflow/nodes/data_source.py:129 src/workflow/nodes/data_source.py:333
 msgid "Label list"
 msgstr "标签列表"
 
-#: src/workflow/nodes/data_source.py:127
+#: src/workflow/nodes/data_source.py:130
 msgid "File path list"
 msgstr "文件路径列表"
 
-#: src/workflow/nodes/data_source.py:132
+#: src/workflow/nodes/data_source.py:135
 msgid "Folder path"
 msgstr "文件夹路径"
 
-#: src/workflow/nodes/data_source.py:133
+#: src/workflow/nodes/data_source.py:136
 msgid "Directory containing audio files"
 msgstr "包含音频文件的目录"
 
-#: src/workflow/nodes/data_source.py:138
+#: src/workflow/nodes/data_source.py:141
 msgid "Recursive scan"
 msgstr "递归扫描"
 
-#: src/workflow/nodes/data_source.py:139
+#: src/workflow/nodes/data_source.py:142
 msgid "Scan subfolders"
 msgstr "扫描子文件夹"
 
-#: src/workflow/nodes/data_source.py:143
+#: src/workflow/nodes/data_source.py:146
 msgid "Auto label"
 msgstr "自动标签"
 
-#: src/workflow/nodes/data_source.py:144
+#: src/workflow/nodes/data_source.py:147
 msgid "Auto-generate labels from subfolder names"
 msgstr "根据子文件夹名称自动生成标签"
 
-#: src/workflow/nodes/data_source.py:148 src/workflow/nodes/data_source.py:276
+#: src/workflow/nodes/data_source.py:151 src/workflow/nodes/data_source.py:289
 #: src/workflow/nodes/preprocessing.py:132
 msgid "Target sample rate"
 msgstr "目标采样率"
 
-#: src/workflow/nodes/data_source.py:149
+#: src/workflow/nodes/data_source.py:152
 msgid "Resample to this sample rate when loading"
 msgstr "加载时重采样到该采样率"
 
-#: src/workflow/nodes/data_source.py:154
+#: src/workflow/nodes/data_source.py:157
 msgid "Max files"
 msgstr "最大文件数"
 
-#: src/workflow/nodes/data_source.py:155
-msgid "Maximum number of files to load (0 = no limit)"
-msgstr "最多加载的文件数量（0=不限制）"
+#: src/workflow/nodes/data_source.py:158
+msgid "Maximum number of files to load"
+msgstr "最多加载的文件数量"
 
-#: src/workflow/nodes/data_source.py:162
+#: src/workflow/nodes/data_source.py:163
+msgid "Selection mode"
+msgstr "选取方式"
+
+#: src/workflow/nodes/data_source.py:164
+msgid ""
+"Choose files by order or random sampling when max files is greater than 0"
+msgstr "当最大文件数大于 0 时，按顺序或随机抽样选取文件"
+
+#: src/workflow/nodes/data_source.py:171
 #, python-brace-format
 msgid "Directory does not exist: {path}"
 msgstr "目录不存在：{path}"
 
-#: src/workflow/nodes/data_source.py:195
+#: src/workflow/nodes/data_source.py:208
 #, python-brace-format
 msgid "Loading {count} audio files..."
 msgstr "正在加载 {count} 个音频文件..."
 
-#: src/workflow/nodes/data_source.py:231
+#: src/workflow/nodes/data_source.py:244
 msgid "No valid audio files found"
 msgstr "未找到有效的音频文件"
 
-#: src/workflow/nodes/data_source.py:241
+#: src/workflow/nodes/data_source.py:254
 #, python-brace-format
 msgid "Audio loaded: {files} files, {classes} classes"
 msgstr "音频已加载：{files} 个文件，{classes} 个类别"
 
-#: src/workflow/nodes/data_source.py:258
+#: src/workflow/nodes/data_source.py:271
 msgid "Audio file"
 msgstr "音频文件"
 
-#: src/workflow/nodes/data_source.py:260
+#: src/workflow/nodes/data_source.py:273
 msgid "Load a single audio file"
 msgstr "加载单个音频文件"
 
-#: src/workflow/nodes/data_source.py:269 src/workflow/nodes/data_source.py:326
+#: src/workflow/nodes/data_source.py:282 src/workflow/nodes/data_source.py:339
 msgid "File path"
 msgstr "文件路径"
 
-#: src/workflow/nodes/data_source.py:270
+#: src/workflow/nodes/data_source.py:283
 msgid "Audio file path"
 msgstr "音频文件路径"
 
-#: src/workflow/nodes/data_source.py:314
+#: src/workflow/nodes/data_source.py:327
 msgid "Label file"
 msgstr "标签文件"
 
-#: src/workflow/nodes/data_source.py:316
+#: src/workflow/nodes/data_source.py:329
 msgid "Load labels from CSV/JSON/TXT"
 msgstr "从 CSV/JSON/TXT 加载标签"
 
-#: src/workflow/nodes/data_source.py:321
+#: src/workflow/nodes/data_source.py:334
 msgid "Label map"
 msgstr "标签映射"
 
-#: src/workflow/nodes/data_source.py:332
+#: src/workflow/nodes/data_source.py:345
 msgid "File format"
 msgstr "文件格式"
 
-#: src/workflow/nodes/data_source.py:337
+#: src/workflow/nodes/data_source.py:350
 msgid "Filename column"
 msgstr "文件名列"
 
-#: src/workflow/nodes/data_source.py:338
+#: src/workflow/nodes/data_source.py:351
 msgid "Column name for filename in CSV"
 msgstr "CSV 中表示文件名的列名"
 
-#: src/workflow/nodes/data_source.py:342
+#: src/workflow/nodes/data_source.py:355
 msgid "Label column"
 msgstr "标签列"
 
-#: src/workflow/nodes/data_source.py:343
+#: src/workflow/nodes/data_source.py:356
 msgid "Column name for label in CSV"
 msgstr "CSV 中表示标签的列名"
 
-#: src/workflow/nodes/data_source.py:382
+#: src/workflow/nodes/data_source.py:395
 #, python-brace-format
 msgid "Failed to load labels: {error}"
 msgstr "加载标签失败：{error}"
 
-#: src/workflow/nodes/data_source.py:436
+#: src/workflow/nodes/data_source.py:449
 msgid "Unsupported JSON format"
 msgstr "不支持的 JSON 格式"
 
-#: src/workflow/nodes/data_source.py:466
+#: src/workflow/nodes/data_source.py:479
 msgid "Save audio"
 msgstr "保存音频"
 
-#: src/workflow/nodes/data_source.py:468
+#: src/workflow/nodes/data_source.py:481
 msgid "Save audio as WAV files, optionally save labels JSON"
 msgstr "将音频保存为 WAV 文件，可选保存标签 JSON"
 
-#: src/workflow/nodes/data_source.py:477
+#: src/workflow/nodes/data_source.py:490
 msgid "Audio data to save (single item or list)"
 msgstr "要保存的音频数据（单个或列表）"
 
-#: src/workflow/nodes/data_source.py:484
+#: src/workflow/nodes/data_source.py:497
 msgid "Optional labels corresponding to audio items"
 msgstr "可选：与音频对应的标签"
 
-#: src/workflow/nodes/data_source.py:490
+#: src/workflow/nodes/data_source.py:503
 msgid "Output folder"
 msgstr "输出文件夹"
 
-#: src/workflow/nodes/data_source.py:491
+#: src/workflow/nodes/data_source.py:504
 msgid "Target folder to save audio files"
 msgstr "保存音频文件的目标文件夹"
 
-#: src/workflow/nodes/data_source.py:496
+#: src/workflow/nodes/data_source.py:509
 msgid "Filename prefix"
 msgstr "文件名前缀"
 
-#: src/workflow/nodes/data_source.py:497
+#: src/workflow/nodes/data_source.py:510
 msgid "Prefix for output audio filenames"
 msgstr "输出音频文件名的前缀"
 
-#: src/workflow/nodes/data_source.py:501
+#: src/workflow/nodes/data_source.py:514
 msgid "Save labels file"
 msgstr "保存标签文件"
 
-#: src/workflow/nodes/data_source.py:502
+#: src/workflow/nodes/data_source.py:515
 msgid "When labels are provided, save labels.json"
 msgstr "提供标签时，保存 labels.json"
 
-#: src/workflow/nodes/data_source.py:506
+#: src/workflow/nodes/data_source.py:519
 msgid "Overwrite existing files"
 msgstr "覆盖已有文件"
 
-#: src/workflow/nodes/data_source.py:507
+#: src/workflow/nodes/data_source.py:520
 msgid "Overwrite files if they already exist"
 msgstr "若文件已存在则覆盖"
 
-#: src/workflow/nodes/data_source.py:523
+#: src/workflow/nodes/data_source.py:536
 msgid "Please select an output folder"
 msgstr "请选择输出文件夹"
 
-#: src/workflow/nodes/data_source.py:530
+#: src/workflow/nodes/data_source.py:543
 #, python-brace-format
 msgid "Unable to create output folder: {error}"
 msgstr "无法创建输出文件夹：{error}"
 
-#: src/workflow/nodes/data_source.py:537
+#: src/workflow/nodes/data_source.py:550
 msgid "No input audio data"
 msgstr "没有输入音频数据"
 
-#: src/workflow/nodes/data_source.py:545
+#: src/workflow/nodes/data_source.py:558
 #, python-brace-format
 msgid "Unsupported audio data type: {type}"
 msgstr "不支持的音频数据类型：{type}"
 
-#: src/workflow/nodes/data_source.py:562
+#: src/workflow/nodes/data_source.py:575
 #, python-brace-format
 msgid ""
 "Label count ({labels}) does not match audio count ({audio}); items will be "
@@ -4014,21 +4031,21 @@ msgid ""
 msgstr ""
 "标签数量（{labels}）与音频数量（{audio}）不匹配；将按顺序配对，多余项会被忽略"
 
-#: src/workflow/nodes/data_source.py:567
+#: src/workflow/nodes/data_source.py:580
 #, python-brace-format
 msgid "Saving {count} audio files..."
 msgstr "正在保存 {count} 个音频文件..."
 
-#: src/workflow/nodes/data_source.py:618
+#: src/workflow/nodes/data_source.py:631
 msgid "No audio files were saved successfully"
 msgstr "没有任何音频文件成功保存"
 
-#: src/workflow/nodes/data_source.py:622
+#: src/workflow/nodes/data_source.py:635
 #, python-brace-format
 msgid "Audio saved: {files} files"
 msgstr "音频已保存：{files} 个文件"
 
-#: src/workflow/nodes/data_source.py:624
+#: src/workflow/nodes/data_source.py:637
 #, python-brace-format
 msgid ", labels: {count}"
 msgstr "，标签：{count}"
