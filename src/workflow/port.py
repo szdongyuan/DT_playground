@@ -27,6 +27,9 @@ class DataType(Enum):
     
     # Label data - supports single or list
     LABEL = "label"
+
+    # Dataset bundle - supports structured records, task specs, and lineage
+    DATASET = "dataset"
     
     # Model related
     MODEL = "model"               # Keras/TensorFlow model
