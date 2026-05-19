@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-18 18:04+0800\n"
+"POT-Creation-Date: 2026-05-13 17:54+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -100,8 +100,8 @@ msgstr ""
 msgid "Warning"
 msgstr ""
 
-#: src/app.py:443 src/audio/loader.py:58 src/workflow/nodes/data_source.py:388
-#: src/workflow/nodes/data_source.py:454
+#: src/app.py:443 src/audio/loader.py:58 src/workflow/nodes/data_source.py:298
+#: src/workflow/nodes/data_source.py:364
 #, python-brace-format
 msgid "File does not exist: {path}"
 msgstr ""
@@ -267,7 +267,7 @@ msgstr ""
 msgid "Unsupported audio format: {ext}"
 msgstr ""
 
-#: src/audio/loader.py:89 src/workflow/nodes/data_source.py:404
+#: src/audio/loader.py:89 src/workflow/nodes/data_source.py:314
 #, python-brace-format
 msgid "Failed to load audio: {error}"
 msgstr ""
@@ -1802,8 +1802,8 @@ msgstr ""
 #: src/workflow/nodes/augmentation.py:429
 #: src/workflow/nodes/augmentation.py:505
 #: src/workflow/nodes/augmentation.py:513
-#: src/workflow/nodes/augmentation.py:689 src/workflow/nodes/data_source.py:367
-#: src/workflow/nodes/data_source.py:578
+#: src/workflow/nodes/augmentation.py:689 src/workflow/nodes/data_source.py:277
+#: src/workflow/nodes/data_source.py:488
 #: src/workflow/nodes/preprocessing.py:124
 #: src/workflow/nodes/preprocessing.py:127
 #: src/workflow/nodes/preprocessing.py:187
@@ -3193,7 +3193,7 @@ msgid "Duplicate audio and labels together for sample expansion"
 msgstr ""
 
 #: src/workflow/nodes/augmentation.py:39 src/workflow/nodes/augmentation.py:41
-#: src/workflow/nodes/control.py:128 src/workflow/nodes/data_source.py:585
+#: src/workflow/nodes/control.py:128 src/workflow/nodes/data_source.py:495
 msgid "Labels"
 msgstr ""
 
@@ -3758,249 +3758,245 @@ msgstr ""
 msgid "⚠️ Shape validation warning: {count} inconsistent items"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:84 src/workflow/nodes/feature/base.py:64
+#: src/workflow/nodes/data_source.py:75 src/workflow/nodes/feature/base.py:64
 #, python-brace-format
 msgid "Channel index {idx} out of range (total {channels} channels)"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:127
+#: src/workflow/nodes/data_source.py:118
 msgid "Audio folder"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:129
+#: src/workflow/nodes/data_source.py:120
 msgid "Load audio files from a folder, optionally auto-label by subfolder"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:137
+#: src/workflow/nodes/data_source.py:128
 msgid "Audio list"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:138 src/workflow/nodes/data_source.py:423
+#: src/workflow/nodes/data_source.py:129 src/workflow/nodes/data_source.py:333
 msgid "Label list"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:139
+#: src/workflow/nodes/data_source.py:130
 msgid "File path list"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:140
-msgid "Dataset bundle"
-msgstr ""
-
-#: src/workflow/nodes/data_source.py:145
+#: src/workflow/nodes/data_source.py:135
 msgid "Folder path"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:146
+#: src/workflow/nodes/data_source.py:136
 msgid "Directory containing audio files"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:151
+#: src/workflow/nodes/data_source.py:141
 msgid "Recursive scan"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:152
+#: src/workflow/nodes/data_source.py:142
 msgid "Scan subfolders"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:156
+#: src/workflow/nodes/data_source.py:146
 msgid "Auto label"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:157
+#: src/workflow/nodes/data_source.py:147
 msgid "Auto-generate labels from subfolder names"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:161 src/workflow/nodes/data_source.py:379
+#: src/workflow/nodes/data_source.py:151 src/workflow/nodes/data_source.py:289
 #: src/workflow/nodes/preprocessing.py:132
 msgid "Target sample rate"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:162
+#: src/workflow/nodes/data_source.py:152
 msgid "Resample to this sample rate when loading"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:167
+#: src/workflow/nodes/data_source.py:157
 msgid "Max files"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:168
+#: src/workflow/nodes/data_source.py:158
 msgid "Maximum number of files to load"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:173
+#: src/workflow/nodes/data_source.py:163
 msgid "Selection mode"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:174
+#: src/workflow/nodes/data_source.py:164
 msgid ""
 "Choose files by order or random sampling when max files is greater than 0"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:181
+#: src/workflow/nodes/data_source.py:171
 #, python-brace-format
 msgid "Directory does not exist: {path}"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:220
+#: src/workflow/nodes/data_source.py:208
 #, python-brace-format
 msgid "Loading {count} audio files..."
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:281
+#: src/workflow/nodes/data_source.py:244
 msgid "No valid audio files found"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:344
+#: src/workflow/nodes/data_source.py:254
 #, python-brace-format
 msgid "Audio loaded: {files} files, {classes} classes"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:361
+#: src/workflow/nodes/data_source.py:271
 msgid "Audio file"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:363
+#: src/workflow/nodes/data_source.py:273
 msgid "Load a single audio file"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:372 src/workflow/nodes/data_source.py:429
+#: src/workflow/nodes/data_source.py:282 src/workflow/nodes/data_source.py:339
 msgid "File path"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:373
+#: src/workflow/nodes/data_source.py:283
 msgid "Audio file path"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:417
+#: src/workflow/nodes/data_source.py:327
 msgid "Label file"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:419
+#: src/workflow/nodes/data_source.py:329
 msgid "Load labels from CSV/JSON/TXT"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:424
+#: src/workflow/nodes/data_source.py:334
 msgid "Label map"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:435
+#: src/workflow/nodes/data_source.py:345
 msgid "File format"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:440
+#: src/workflow/nodes/data_source.py:350
 msgid "Filename column"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:441
+#: src/workflow/nodes/data_source.py:351
 msgid "Column name for filename in CSV"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:445
+#: src/workflow/nodes/data_source.py:355
 msgid "Label column"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:446
+#: src/workflow/nodes/data_source.py:356
 msgid "Column name for label in CSV"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:485
+#: src/workflow/nodes/data_source.py:395
 #, python-brace-format
 msgid "Failed to load labels: {error}"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:539
+#: src/workflow/nodes/data_source.py:449
 msgid "Unsupported JSON format"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:569
+#: src/workflow/nodes/data_source.py:479
 msgid "Save audio"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:571
+#: src/workflow/nodes/data_source.py:481
 msgid "Save audio as WAV files, optionally save labels JSON"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:580
+#: src/workflow/nodes/data_source.py:490
 msgid "Audio data to save (single item or list)"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:587
+#: src/workflow/nodes/data_source.py:497
 msgid "Optional labels corresponding to audio items"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:593
+#: src/workflow/nodes/data_source.py:503
 msgid "Output folder"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:594
+#: src/workflow/nodes/data_source.py:504
 msgid "Target folder to save audio files"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:599
+#: src/workflow/nodes/data_source.py:509
 msgid "Filename prefix"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:600
+#: src/workflow/nodes/data_source.py:510
 msgid "Prefix for output audio filenames"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:604
+#: src/workflow/nodes/data_source.py:514
 msgid "Save labels file"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:605
+#: src/workflow/nodes/data_source.py:515
 msgid "When labels are provided, save labels.json"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:609
+#: src/workflow/nodes/data_source.py:519
 msgid "Overwrite existing files"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:610
+#: src/workflow/nodes/data_source.py:520
 msgid "Overwrite files if they already exist"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:626
+#: src/workflow/nodes/data_source.py:536
 msgid "Please select an output folder"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:633
+#: src/workflow/nodes/data_source.py:543
 #, python-brace-format
 msgid "Unable to create output folder: {error}"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:640
+#: src/workflow/nodes/data_source.py:550
 msgid "No input audio data"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:648
+#: src/workflow/nodes/data_source.py:558
 #, python-brace-format
 msgid "Unsupported audio data type: {type}"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:665
+#: src/workflow/nodes/data_source.py:575
 #, python-brace-format
 msgid ""
 "Label count ({labels}) does not match audio count ({audio}); items will be "
 "paired in order and extras will be ignored"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:670
+#: src/workflow/nodes/data_source.py:580
 #, python-brace-format
 msgid "Saving {count} audio files..."
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:721
+#: src/workflow/nodes/data_source.py:631
 msgid "No audio files were saved successfully"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:725
+#: src/workflow/nodes/data_source.py:635
 #, python-brace-format
 msgid "Audio saved: {files} files"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:727
+#: src/workflow/nodes/data_source.py:637
 #, python-brace-format
 msgid ", labels: {count}"
 msgstr ""

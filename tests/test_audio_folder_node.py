@@ -5,9 +5,7 @@ from unittest.mock import patch
 
 import numpy as np
 
-from src.workflow.dataset import DatasetBundle, TaskType
 from src.workflow.node_base import create_node
-from src.workflow.port import DataType
 
 
 class AudioFolderNodeTests(unittest.TestCase):
@@ -36,8 +34,6 @@ class AudioFolderNodeTests(unittest.TestCase):
         self.assertIn("selection_mode", node.parameters)
         self.assertEqual(node.get_parameter("selection_mode"), "first_n")
         self.assertEqual(node.parameters["selection_mode"].choices, ["first_n", "random_n"])
-        self.assertIn("dataset", node.outputs)
-        self.assertEqual(node.outputs["dataset"].data_type, DataType.DATASET)
 
     def test_max_files_zero_loads_all_audio_files(self):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -99,54 +95,6 @@ class AudioFolderNodeTests(unittest.TestCase):
             self.assertEqual(file_paths, [str(path) for path in selected_files])
             self.assertEqual([item.file_path for item in audio], file_paths)
             self.assertEqual(labels, [0, 1])
-
-    def test_audio_folder_emits_dataset_bundle_aligned_with_legacy_outputs(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
-            root = Path(tmpdir)
-            expected_files = self._create_audio_tree(root)[:2]
-            node = create_node("audio_folder")
-            node.set_parameter("folder_path", str(root))
-            node.set_parameter("max_files", 2)
-            node.set_parameter("selection_mode", "first_n")
-
-            with patch("src.workflow.nodes.data_source.librosa.load", side_effect=self._fake_librosa_load):
-                self.assertTrue(node.execute(), msg=getattr(node, "error_message", ""))
-
-            audio = node.outputs["audio"].data
-            labels = node.outputs["labels"].data
-            file_paths = node.outputs["file_paths"].data
-            dataset = node.outputs["dataset"].data
-
-            self.assertIsInstance(dataset, DatasetBundle)
-            self.assertEqual(dataset.task_spec.task_type, TaskType.CLASSIFICATION)
-            self.assertTrue(dataset.task_spec.target_required)
-            self.assertEqual(dataset.stats.total_records, len(expected_files))
-            self.assertEqual(len(dataset.records), len(expected_files))
-            self.assertEqual([record.input for record in dataset.records], audio)
-            self.assertEqual([record.target for record in dataset.records], labels)
-            self.assertEqual([record.metadata["file_path"] for record in dataset.records], file_paths)
-            self.assertEqual([record.record_id for record in dataset.records], file_paths)
-            self.assertEqual(dataset.lineage.sources, [str(root)])
-
-    def test_audio_folder_dataset_does_not_fabricate_targets_when_auto_label_is_disabled(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
-            root = Path(tmpdir)
-            expected_files = self._create_audio_tree(root)[:2]
-            node = create_node("audio_folder")
-            node.set_parameter("folder_path", str(root))
-            node.set_parameter("max_files", 2)
-            node.set_parameter("selection_mode", "first_n")
-            node.set_parameter("auto_label", False)
-
-            with patch("src.workflow.nodes.data_source.librosa.load", side_effect=self._fake_librosa_load):
-                self.assertTrue(node.execute(), msg=getattr(node, "error_message", ""))
-
-            dataset = node.outputs["dataset"].data
-
-            self.assertEqual(len(dataset.records), len(expected_files))
-            self.assertEqual([record.target for record in dataset.records], [None, None])
-            self.assertFalse(dataset.task_spec.target_required)
-            self.assertEqual(node.outputs["labels"].data, [0, 0])
 
 
 if __name__ == "__main__":

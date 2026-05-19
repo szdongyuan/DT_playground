@@ -18,15 +18,6 @@ import librosa
 import numpy as np
 import soundfile as sf
 
-from ..dataset import (
-    DataRecord,
-    DatasetBundle,
-    DatasetLineage,
-    DatasetSchema,
-    DatasetStats,
-    TaskSpec,
-    TaskType,
-)
 from ..node_base import BaseNode, NodeCategory, register_node
 from ..port import DataType
 from src.ui.i18n import tr_
@@ -137,7 +128,6 @@ class AudioFolderNode(BaseNode):
         self.add_output("audio", DataType.AUDIO, tr_("Audio list"))
         self.add_output("labels", DataType.LABEL, tr_("Label list"))
         self.add_output("file_paths", DataType.ANY, tr_("File path list"))
-        self.add_output("dataset", DataType.DATASET, tr_("Dataset bundle"))
     
     def _setup_parameters(self):
         self.add_parameter(
@@ -192,9 +182,7 @@ class AudioFolderNode(BaseNode):
         audio_list = []
         labels = []
         file_paths = []
-        records = []
         label_map = {}  # 子目录名 -> 标签索引
-        class_counts = {}
         
         # 扫描文件
         root_path = Path(folder_path)
@@ -234,8 +222,6 @@ class AudioFolderNode(BaseNode):
                 file_paths.append(str(file_path))
                 
                 # 生成标签
-                record_target = None
-                label_name = None
                 if auto_label:
                     # 使用相对于根目录的父目录名作为标签
                     rel_path = file_path.relative_to(root_path)
@@ -246,32 +232,9 @@ class AudioFolderNode(BaseNode):
                     
                     if label_name not in label_map:
                         label_map[label_name] = len(label_map)
-                    record_target = label_map[label_name]
-                    labels.append(record_target)
-                    class_counts[label_name] = class_counts.get(label_name, 0) + 1
+                    labels.append(label_map[label_name])
                 else:
                     labels.append(0)
-
-                relative_path = str(file_path.relative_to(root_path))
-                metadata = {
-                    "file_path": str(file_path),
-                    "relative_path": relative_path,
-                    "sample_rate": audio.sample_rate,
-                    "duration": audio.duration,
-                    "channels": audio.channels,
-                    "samples": audio.samples,
-                }
-                if label_name is not None:
-                    metadata["label_name"] = label_name
-
-                records.append(
-                    DataRecord(
-                        record_id=str(file_path),
-                        input=audio,
-                        target=record_target,
-                        metadata=metadata,
-                    )
-                )
                     
             except Exception as e:
                 logger.warning(f"加载音频失败 {file_path}: {e}")
@@ -282,62 +245,9 @@ class AudioFolderNode(BaseNode):
             return False
         
         # 设置输出
-        dataset = DatasetBundle(
-            records=records,
-            schema=DatasetSchema(
-                input_schema={
-                    "kind": "audio",
-                    "layout": "channels_first",
-                    "shape": ["channels", "samples"],
-                },
-                target_schema={
-                    "kind": "class_index",
-                    "label_map": dict(label_map),
-                } if auto_label else {},
-                metadata_schema={
-                    "file_path": "str",
-                    "relative_path": "str",
-                    "sample_rate": "int",
-                    "duration": "float",
-                    "channels": "int",
-                    "samples": "int",
-                },
-            ),
-            task_spec=TaskSpec(
-                task_type=TaskType.CLASSIFICATION,
-                target_required=bool(auto_label),
-                input_schema={
-                    "kind": "audio",
-                    "layout": "channels_first",
-                },
-                target_schema={
-                    "kind": "class_index",
-                    "label_map": dict(label_map),
-                } if auto_label else {},
-                metric_hints=["accuracy"] if auto_label else [],
-            ),
-            stats=DatasetStats(
-                total_records=len(records),
-                class_counts=class_counts,
-            ),
-            lineage=DatasetLineage(
-                sources=[str(root_path)],
-                transforms=[
-                    {
-                        "node_type": self.node_type,
-                        "target_sr": target_sr,
-                        "recursive": recursive,
-                        "auto_label": auto_label,
-                        "max_files": max_files,
-                        "selection_mode": selection_mode,
-                    }
-                ],
-            ),
-        )
         self.set_output_data("audio", audio_list)
         self.set_output_data("labels", labels)
         self.set_output_data("file_paths", file_paths)
-        self.set_output_data("dataset", dataset)
         
         logger.info(f"加载完成: {len(audio_list)} 个音频, {len(label_map)} 个类别")
         self.report_status(
