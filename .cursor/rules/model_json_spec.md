@@ -31,7 +31,11 @@
 | description | string | ✅ | Model description |
 | created_at | string | ✅ | ISO 8601 timestamp |
 | modified_at | string | ✅ | ISO 8601 timestamp |
-| compile_config | object | ✅ | Compile configuration (redundant field, actually read from Output layer) |
+| compile_config | object | ✅ | Legacy/root compile configuration; used as fallback when no Output layer provides compile settings |
+
+Root metadata is accepted leniently on load: missing `description`, `created_at`, or
+`modified_at` values are filled with defaults by the loader. AI-generated files should
+still include them for readability and repeatability.
 
 ### 1.2 Compile Configuration (compile_config)
 
@@ -49,13 +53,19 @@
 
 **Metric Options**: `accuracy`, `mae`, `mse`, `rmse`, `precision`, `recall`, `auc`, `cosine_similarity`
 
+**Compile precedence**:
+
+1. If an `output` layer exists, runtime model compilation reads optimizer, learning rate, loss, and metrics from that layer's `parameters`.
+2. The root `compile_config` remains part of the saved format for compatibility and fallback.
+3. Saved files can contain a stale root `compile_config` if Output layer settings were changed; prefer keeping both in sync when generating JSON.
+
 ---
 
 ## 2. Node Layout Specification ⭐ Important
 
 ### 2.0 Core Layout Principles 🚨 Must Read
 
-> **⛔ Do NOT arrange all nodes in a single straight line!** This is very unfriendly to users.
+> **⛔ Do NOT arrange all nodes in a single straight line when authoring JSON manually.** This is very unfriendly to users.
 >
 > **✅ Must fully utilize the 2D canvas**, making the network structure clear at a glance.
 
@@ -66,10 +76,15 @@
 3. **Vertical Layering**: Use Y-axis to express network depth or stage changes
 4. **Compact Layout**: Closely related nodes can have smaller spacing (e.g., 120px), larger spacing between stages
 
+Layout rules in this section are authoring guidance for generated `.model.json` files.
+The current serializer/validator does not enforce multi-row layout, semantic IDs, or
+connection ordering. Imported Keras models are initially arranged in a single row by
+`KerasModelParser` and may need manual cleanup.
+
 ### 2.1 Node Dimensions
 
-- **Node width**: ~120px
-- **Node height**: ~60-80px
+- **Node width**: ~180px (`LayerItem.LAYER_WIDTH`)
+- **Node height**: ~60px (`LayerItem.LAYER_HEIGHT`)
 - **Port diameter**: ~12px
 
 ### 2.2 Spacing Specification
@@ -251,7 +266,8 @@ def calculate_unet_position(layer_index: int, total_encoder: int, total_decoder:
   "position": [x, y],
   "parameters": {...},
   "layer_name": "optional_keras_layer_name",
-  "trainable": true
+  "trainable": true,
+  "has_weights": true
 }
 ```
 
@@ -263,6 +279,7 @@ def calculate_unet_position(layer_index: int, total_encoder: int, total_decoder:
 | parameters | object | ✅ | - | Layer parameters |
 | layer_name | string | ❌ | `""` | Keras layer name (optional) |
 | trainable | bool | ❌ | `true` | Whether layer is trainable |
+| has_weights | bool | ❌ | `false` | Whether an imported layer has weights; serialized only when true |
 
 ### 3.2 Trainability Specification 🔧
 
@@ -286,6 +303,27 @@ Examples:
 - "dense_out", "output_01"
 ```
 
+The application can also generate default layer IDs as 8-character UUID hex strings.
+Semantic IDs are preferred for hand-authored or AI-generated JSON because they make
+connections easier to inspect.
+
+### 3.4 Tuple-like Parameter Format
+
+For 2D shapes, reshape targets, pooling sizes, strides, and permutation dimensions,
+the current implementation stores tuple-like values as strings, not JSON arrays.
+
+```json
+{
+  "parameters": {
+    "shape": "(100, 40)",
+    "kernel_size": "(3, 3)",
+    "strides": "(1, 1)",
+    "target_shape": "(64, 1)",
+    "dims": "(2, 1)"
+  }
+}
+```
+
 ---
 
 ## 4. Available Layer Types Quick Reference
@@ -294,7 +332,7 @@ Examples:
 
 | type | Display Name | Parameters |
 |------|--------------|------------|
-| `input` | Input Layer | `shape`: "(H, W)" or "(L, C)", `dtype`: "float32" |
+| `input` | Input Layer | `shape`: "(H, W)" or "(L, C)", `dtype`: "float32", optional `name` |
 | `output` | Output Layer | `activation` (none/linear/sigmoid/softmax/tanh/relu), `optimizer`, `learning_rate`, `loss`, `metrics` |
 
 ### 4.2 Core Layers
@@ -308,11 +346,16 @@ Examples:
 
 | type | Display Name | Main Parameters |
 |------|--------------|-----------------|
-| `conv1d` | Conv1D | `filters`, `kernel_size`, `strides`, `padding`, `activation` |
-| `conv2d` | Conv2D | `filters`, `kernel_size`: "(H,W)", `strides`, `padding` |
+| `conv1d` | Conv1D | `filters`, `kernel_size`, `strides`, `padding` (`valid`/`same`/`causal`), `activation`, `use_bias` |
+| `conv2d` | Conv2D | `filters`, `kernel_size`: "(H,W)", `strides`: "(H,W)", `padding`, `activation`, `use_bias` |
 | `conv1d_transpose` | Conv1DTranspose | Same as conv1d (for upsampling) |
 | `conv2d_transpose` | Conv2DTranspose | Same as conv2d (for upsampling) |
 | `separable_conv1d` | SeparableConv1D | `filters`, `kernel_size`, `strides`, `padding` |
+
+Activation parameter values follow each layer implementation. Dense layers use lowercase
+`"none"` for no activation; Conv2D-family UI defaults may use `"None"` for no activation.
+Prefer explicit activation layers when the visual graph should show Conv/BN/Activation
+as separate stages.
 
 ### 4.4 Pooling Layers
 
@@ -368,17 +411,17 @@ Examples:
 
 | type | Display Name | Main Parameters |
 |------|--------------|-----------------|
-| `lstm` | LSTM | `units`, `return_sequences`, `bidirectional`, `dropout` |
-| `gru` | GRU | `units`, `return_sequences`, `bidirectional`, `dropout` |
-| `simple_rnn` | SimpleRNN | `units`, `return_sequences`, `dropout` |
+| `lstm` | LSTM | `units`, `return_sequences`, `return_state`, `activation`, `recurrent_activation`, `bidirectional`, `dropout`, `recurrent_dropout` |
+| `gru` | GRU | `units`, `return_sequences`, `activation`, `bidirectional`, `dropout`, `recurrent_dropout` |
+| `simple_rnn` | SimpleRNN | `units`, `return_sequences`, `activation`, `dropout` |
 
 ### 4.10 Attention Layers
 
 | type | Display Name | Main Parameters |
 |------|--------------|-----------------|
-| `multi_head_attention` | MultiHeadAttention | `num_heads`, `key_dim`, `value_dim`, `dropout` |
-| `transformer_encoder` | TransformerEncoder | `num_heads`, `key_dim`, `ff_dim`, `dropout_rate`, `activation` |
-| `transformer_decoder` | TransformerDecoder | `num_heads`, `key_dim`, `ff_dim`, `dropout_rate` |
+| `multi_head_attention` | MultiHeadAttention | `num_heads`, `key_dim`, `value_dim`, `dropout`, `use_bias` |
+| `transformer_encoder` | TransformerEncoder | `num_heads`, `key_dim`, `ff_dim`, `dropout_rate`, `activation`, `epsilon`, `pre_norm` |
+| `transformer_decoder` | TransformerDecoder | `num_heads`, `key_dim`, `ff_dim`, `dropout_rate`, `activation` |
 | `positional_encoding` | PositionalEncoding | `max_length`, `encoding_type`, `dropout_rate` |
 | `attention` | Attention | `use_scale`, `score_mode`, `dropout` |
 | `additive_attention` | AdditiveAttention | `use_scale`, `dropout` |
@@ -425,6 +468,32 @@ Arrange in topological order for readability:
   ...
 ]
 ```
+
+The serializer writes connections in insertion order. Topological ordering is strongly
+recommended for hand-authored JSON but is not currently enforced during load or save.
+
+### 5.3 Output Layer Requirement
+
+An explicit `output` layer is recommended because it stores the compile settings used
+by training. The current graph validator only requires at least one terminal layer, so
+a graph ending in `dense` or `softmax` can still validate and build. In that case,
+runtime compilation falls back to root `compile_config`.
+
+### 5.4 Keras Import Notes
+
+`KerasModelParser` maps Keras model layers into model builder layer types where possible.
+Some parser mappings are not currently registered layer types and will be skipped during
+import:
+
+| Keras Layer | Parser Type | Current Status |
+|-------------|-------------|----------------|
+| `SeparableConv2D` | `separable_conv2d` | Not registered |
+| `DepthwiseConv2D` | `depthwise_conv2d` | Not registered |
+| `Bidirectional` | `bidirectional` | Not registered as a standalone layer; LSTM/GRU have a `bidirectional` parameter |
+| `AveragePooling2D` | `avg_pooling2d` | Not registered |
+
+Imported layers with weights are marked with `has_weights: true`; trainability is stored
+with `trainable: false` only when a layer is frozen.
 
 ---
 
@@ -522,10 +591,12 @@ Before generating model JSON, please check:
 **Structure Specification**
 - [ ] All layer IDs unique and semantic
 - [ ] Input layer shape matches task
-- [ ] Output layer contains correct loss and metrics
-- [ ] Connections in topological order
+- [ ] Output layer contains correct loss and metrics, or root `compile_config` is intentionally used as fallback
+- [ ] Root `compile_config` is kept in sync with Output layer parameters when both are present
+- [ ] Connections in topological order for readability
 - [ ] No cyclic connections
 - [ ] Parameter values within valid ranges
+- [ ] Tuple-like 2D parameters are strings, e.g. `"(3, 3)"`, not JSON arrays
 
 **Trainability**
 - [ ] By default all layers trainable (no need to explicitly set trainable)
@@ -676,4 +747,4 @@ Row 3 (y=200): Dense1 → Dropout → Dense2 → Output
 
 ---
 
-*Last Updated: 2026-01-21*
+*Last Updated: 2026-05-24*

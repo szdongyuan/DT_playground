@@ -6,11 +6,11 @@
 
 ```mermaid
 flowchart TD
-    A[User requests modification] --> B[Read WORKFLOW.md]
+    A[User requests modification] --> B[Read git_workflow.md]
     B --> C["Step 1: Sync code (git fetch)"]
     C --> D{Uncommitted changes or conflicts?}
-    D -->|Yes| E[Prompt user to resolve]
-    D -->|No| F["Step 2: Create feature branch"]
+    D -->|Yes| E[Preserve user changes and discuss if blocking]
+    D -->|No| F["Step 2: Create task branch"]
     F --> G["Step 3: Confirm change plan with user"]
     G --> H{User approved?}
     H -->|No| I[Adjust plan]
@@ -35,44 +35,55 @@ Before making any changes, ensure the local repository is up to date.
 
 ```bash
 # Fetch latest changes from remote
-git fetch origin develop
+git fetch origin
 
 # Check current status
 git status
 
-# If on a stale branch, pull latest develop
-git checkout develop
-git pull origin develop
+# Create new work from the remote base, usually origin/develop
 ```
 
 **If uncommitted changes exist:**
-- Prompt the user to either commit, stash, or discard changes before proceeding.
+- Do not discard or overwrite them.
+- If they are unrelated and do not block the new branch, keep them intact.
+- If they block branch creation or editing, ask the user how to proceed.
 
 **If merge conflicts exist:**
 - Notify the user and assist in resolving conflicts before continuing.
 
 ---
 
-### Step 2: Create Feature Branch
+### Step 2: Create Task Branch
 
 Create a new branch following the naming convention.
 
 **Branch Naming Format:**
 ```
-feature/<username>/<feature-description>
+{type}/{issue_id?}_{short_description}
 ```
 
+**Branch Types:**
+| Type | Use For |
+|------|---------|
+| `feature` | New functionality |
+| `bugfix` | Bug fixes |
+| `hotfix` | Urgent fixes |
+| `refactor` | Refactoring |
+| `docs` | Documentation updates |
+| `test` | Test additions or changes |
+
 **Examples:**
-- `feature/gyy/add-audio-preprocessing`
-- `feature/john/fix-training-callback`
-- `feature/alice/refactor-workflow-engine`
+- `docs/TASK2026052401_cursor_rules_refresh`
+- `feature/FEAT2026050601_label_file_preview`
+- `bugfix/BUG2026050901_training_callback_error`
 
 **Commands:**
 ```bash
-# Create and switch to new branch from develop
-git checkout develop
-git checkout -b feature/<username>/<description>
+# Create and switch to new branch from the remote develop base
+git checkout -b {branch_name} origin/develop
 ```
+
+Use the `git_creating_branch` skill for the detailed branch creation procedure.
 
 ---
 
@@ -81,7 +92,7 @@ git checkout -b feature/<username>/<description>
 Before implementing any changes, the AI agent must:
 
 1. **Analyze the request** - Understand what the user wants to achieve
-2. **Create a plan** - Use Cursor's Plan Mode / `create_plan` tool
+2. **Create a plan when needed** - Use Cursor Plan Mode for broad, ambiguous, or cross-cutting changes
 3. **Present the plan** - Show the user:
    - Files to be modified
    - Summary of changes
@@ -101,6 +112,7 @@ Follow the project's coding standards defined in [coding_standards.md](../rules/
 - Write docstrings in English
 - Follow the import order convention
 - Respect the MVC + Controller architecture
+- Keep procedural task details in skills and durable project constraints in rules
 
 ---
 
@@ -117,13 +129,14 @@ pytest tests/
 pytest tests/test_<module>.py
 ```
 
-For UI changes, use browser tools to verify functionality if applicable.
+For desktop PySide6 UI changes, prefer automated offscreen Qt tests or manual app verification. Browser tools are not the primary verification path for this desktop application.
 
 ---
 
 ### Step 6: Commit Changes
 
 Use **Conventional Commits** format for all commit messages.
+Commit messages must be written in English.
 
 **Format:**
 ```
@@ -163,11 +176,12 @@ If yes:
 
 **Push to remote:**
 ```bash
-git push -u origin feature/<username>/<description>
+git push -u origin <branch>
 ```
 
 **Create Pull Request:**
 - Target branch: `develop`
+- Use GitHub CLI (`gh pr create`) when creating PRs from the agent
 - Use the PR template below
 
 ---
@@ -221,6 +235,19 @@ If any sensitive information is detected, alert the user immediately.
 
 ---
 
+## Protected Branches
+
+Do not commit or push directly to protected long-lived branches:
+
+- `main`
+- `master`
+- `develop`
+- `release/*`
+
+Use a personal/task branch and open a PR instead.
+
+---
+
 ## Conflict Resolution
 
 If conflicts are detected during sync or merge:
@@ -240,20 +267,15 @@ If conflicts are detected during sync or merge:
 If changes need to be reverted:
 
 ```bash
-# Discard uncommitted changes
-git checkout -- .
-
 # Revert last commit (keep changes staged)
 git reset --soft HEAD~1
-
-# Revert last commit (discard changes)
-git reset --hard HEAD~1
 
 # Revert a specific commit
 git revert <commit-hash>
 ```
 
-Always confirm with the user before performing any destructive operations.
+Never discard uncommitted changes, run `git checkout --`, or run `git reset --hard`
+unless the user explicitly requests that exact destructive operation after being warned.
 
 ---
 
@@ -261,8 +283,8 @@ Always confirm with the user before performing any destructive operations.
 
 | Action | Command |
 |--------|---------|
-| Sync code | `git fetch origin develop` |
-| Create branch | `git checkout -b feature/<user>/<desc>` |
+| Sync code | `git fetch origin` |
+| Create branch | `git checkout -b docs/TASK2026052401_description origin/develop` |
 | Stage all | `git add .` |
 | Commit | `git commit -m "type(scope): message"` |
 | Push | `git push -u origin <branch>` |
@@ -274,7 +296,10 @@ Always confirm with the user before performing any destructive operations.
 
 ## Related Documents
 
-- [rules.mdc](../rules.mdc) - Project rules entry point
+- [rules.mdc](../rules/rules.mdc) - Project rules entry point
 - [architecture.md](../rules/architecture.md) - Project architecture documentation
 - [coding_standards.md](../rules/coding_standards.md) - Coding standards
 - [model_json_spec.md](../rules/model_json_spec.md) - Model JSON specification
+- [git_creating_branch](../skills/git_creating_branch/SKILL.md) - Branch creation procedure
+- [git_pushing_changes](../skills/git_pushing_changes/SKILL.md) - Commit and push procedure
+- [git_creating_pr](../skills/git_creating_pr/SKILL.md) - Pull request creation procedure

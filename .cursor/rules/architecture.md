@@ -9,9 +9,10 @@
 | Language | Python 3.10+ |
 | GUI Framework | PySide6 (Catppuccin dark theme) |
 | Node Editor | Custom PySide6 implementation |
-| Deep Learning | TensorFlow 2.15+ / Keras 3.0+ |
-| Audio Processing | librosa, soundfile, scipy, pydub, sounddevice |
+| Deep Learning | TensorFlow 2.17+ / Keras |
+| Audio Processing | librosa, soundfile, scipy, resampy, sounddevice |
 | Visualization | pyqtgraph, matplotlib |
+| i18n | gettext catalogs under `src/locale/` |
 
 ## Core Concepts
 
@@ -49,11 +50,11 @@ The platform uses a **node-based workflow** architecture, where users define com
 
 ```
 DT_playground/
-├── main.py                     # Application entry (logging config, Qt init, global exception handling)
+├── main.py                     # Application entry (logging, Qt init, splash, i18n bootstrap, restart handshake)
 ├── requirements.txt            # Dependency list
 ├── .cursor/
-│   ├── rules.mdc              # Cursor AI rules entry point
 │   ├── rules/                 # Rule documents
+│   │   ├── rules.mdc          # Cursor AI rules entry point
 │   │   ├── architecture.md    # This file
 │   │   ├── coding_standards.md # Coding standards
 │   │   └── model_json_spec.md # Model JSON specification
@@ -66,9 +67,8 @@ DT_playground/
 ├── models/                     # Saved trained models
 ├── resources/
 │   └── styles/
-│       └── dark_theme.qss     # QSS stylesheet
-├── tests/
-│   └── __init__.py
+│       └── dark_theme.qss     # Legacy/optional QSS stylesheet; runtime styles are mostly programmatic
+├── tests/                      # Automated tests (pytest and unittest style)
 └── src/                        # Source code
     ├── __init__.py
     ├── app.py                  # AudioTrainingApp main application class
@@ -83,7 +83,9 @@ DT_playground/
     │   ├── __init__.py
     │   ├── workflow_controller.py   # WorkflowController (manages Engine lifecycle)
     │   ├── training_controller.py   # TrainingController
-    │   └── navigation_controller.py # NavigationController (view navigation)
+    │   ├── navigation_controller.py # NavigationController (view navigation)
+    │   ├── navigation_dto.py        # Navigation DTOs
+    │   └── view_types.py            # View type enum/constants
     │
     ├── workflow/               # Workflow engine
     │   ├── __init__.py
@@ -97,7 +99,11 @@ DT_playground/
     │       ├── data_source.py      # Data source nodes
     │       ├── preprocessing.py    # Preprocessing nodes
     │       ├── augmentation.py     # Data augmentation nodes
-    │       ├── feature.py          # Feature extraction nodes
+    │       ├── feature/            # Feature extraction node package
+    │       │   ├── base.py         # FeatureData and feature helpers
+    │       │   ├── ai_embedding.py # AI feature extraction node
+    │       │   ├── dim1d/          # 1D feature nodes
+    │       │   └── dim2d/          # 2D feature nodes
     │       ├── training.py         # Training nodes
     │       └── control.py          # Control nodes
     │
@@ -139,19 +145,28 @@ DT_playground/
     │
     ├── ui/                     # UI module
     │   ├── __init__.py
-    │   ├── main_window.py      # MainWindow
+    │   ├── main_window.py      # Embedded main content widget
     │   ├── styles.py           # Styles unified style management
+    │   ├── i18n.py             # gettext helpers
+    │   ├── startup_splash.py   # Startup splash and app icon path helpers
+    │   ├── title_bar.py        # Custom frameless title bar
     │   │
     │   ├── views/              # View module
     │   │   ├── __init__.py
     │   │   ├── workflow_view.py
+    │   │   ├── workflow_tabs_view.py
+    │   │   ├── workflow_editor_widget.py
     │   │   ├── model_builder_view.py
     │   │   ├── preview_view.py
-    │   │   └── training_view.py
+    │   │   ├── training_view.py
+    │   │   └── toolbars/
+    │   │       ├── workflow_toolbar.py
+    │   │       └── model_toolbar.py
     │   │
     │   ├── graph_editor/       # Graph editor base classes
     │   │   ├── __init__.py
-    │   │   └── base_items.py
+    │   │   ├── base_items.py
+    │   │   └── clipboard.py
     │   │
     │   ├── node_editor/        # Node editor components
     │   │   ├── __init__.py
@@ -167,9 +182,12 @@ DT_playground/
     │   │
     │   ├── widgets/            # Custom widgets
     │   │   ├── __init__.py
+    │   │   ├── command_toolbar.py
+    │   │   ├── command_toolbar_spec.py
     │   │   ├── waveform_widget.py
     │   │   ├── spectrogram_widget.py
-    │   │   └── audio_player.py
+    │   │   ├── audio_player.py
+    │   │   └── preview/        # Preview widgets for audio/features/model/metrics/labels
     │   │
     │   └── dialogs/            # Dialogs
     │       ├── __init__.py
@@ -184,12 +202,24 @@ DT_playground/
     │   ├── spectrogram.py
     │   └── metrics.py
     │
+    ├── services/               # Application services
+    │   ├── __init__.py
+    │   ├── system_info_service.py
+    │   └── training_params_service.py
+    │
+    ├── locale/                 # gettext catalogs
+    │   ├── messages.pot
+    │   ├── en_US/LC_MESSAGES/messages.po
+    │   └── zh_CN/LC_MESSAGES/messages.po
+    │
     └── utils/                  # Utility module
         ├── __init__.py
-        ├── config.py           # ConfigManager singleton
+        ├── config.py           # ConfigManager singleton and module-level config
         ├── dataset_manager.py  # DatasetManager
         ├── audio_utils.py
+        ├── dialogs.py
         ├── file_utils.py
+        ├── restart_manager.py
         └── pyqtgraph_fix.py
 ```
 
@@ -215,6 +245,7 @@ DT_playground/
 ┌─────────────────────────▼───────────────────────────────────┐
 │                    Service/Engine Layer                      │
 │  src/workflow/engine.py    src/training/trainer.py          │
+│  src/services/                                                │
 └─────────────────────────┬───────────────────────────────────┘
                           │
 ┌─────────────────────────▼───────────────────────────────────┐
@@ -311,9 +342,8 @@ class ConfigManager:
             cls._instance = super().__new__(cls)
         return cls._instance
 
-# Get config (recommend using function instead of direct instance access)
-def get_config() -> ConfigManager:
-    return ConfigManager()
+# Module-level singleton used by application code
+config = ConfigManager()
 ```
 
 #### 6. Composite Pattern
@@ -521,6 +551,7 @@ class DataType(Enum):
 | 📂 AudioFolderNode | audio | Load all audio in directory (List[AudioData]) |
 | 📄 LabelFileNode | labels | Load CSV/JSON label file |
 | 🎵 AudioFileNode | audio | Load single audio file (AudioData) |
+| 💾 SaveAudioNode | audio | Save audio data to disk |
 
 #### Preprocessing Nodes (Preprocessing)
 | Node | Input | Output | Parameters |
@@ -528,16 +559,23 @@ class DataType(Enum):
 | 📏 ResampleNode | audio | audio | target_sr |
 | ✂️ TrimPadNode | audio | audio | duration, mode |
 | 📊 NormalizeNode | audio | audio | method (peak/rms) |
+| 🪟 WindowingNode | audio | audio | window_size, hop_size |
+| 🧹 SpectralSubtractionNode | audio | audio | noise reduction parameters |
 | 🎚️ SilenceTrimNode | audio | audio | threshold_db |
+| 🔀 ChannelMapperNode | audio | audio | channel mapping |
+| 🔗 ChannelMergeNode | audio | audio | merge method |
+| 🎛️ FilterNode | audio | audio | filter type and cutoff |
 
 #### Data Augmentation Nodes (Augmentation)
 | Node | Input | Output | Parameters |
 |------|-------|--------|------------|
 | 🔊 AddNoiseNode | audio | audio | noise_type, snr_db |
+| 📈 SampleExpansionNode | audio | audio | expansion strategy |
+| 🔉 AdjustGainNode | audio | audio | gain_db |
 | ⏱️ TimeStretchNode | audio | audio | rate_range |
 | 🎵 PitchShiftNode | audio | audio | semitones_range |
 | 🏛️ ReverbNode | audio, ir(optional) | audio | decay, wet_mix, random_wet_mix |
-| 🔀 RandomAugmentNode | audio | audio | augmentations[] |
+| ✂️ AudioSliceNode | audio | audio | slice duration/overlap |
 
 #### Feature Extraction Nodes (Feature)
 | Node | Input | Output | Parameters |
@@ -545,7 +583,13 @@ class DataType(Enum):
 | 📈 MelSpectrogramNode | audio | feature_2d | n_mels, hop_length |
 | 📊 MFCCNode | audio | feature_2d | n_mfcc, include_delta |
 | 🎼 STFTNode | audio | feature_2d | n_fft, hop_length |
+| 🎹 CQTNode | audio | feature_2d | bins_per_octave, n_bins |
+| 🌈 SpectralContrastNode | audio | feature_2d | n_bands |
 | 📉 StatisticsNode | audio | feature_1d | features[] |
+| 📊 FFTNode | audio | feature_1d | n_fft |
+| 🎵 PitchNode | audio | feature_1d | method |
+| 📐 SpectralFlatnessNode | audio | feature_1d | n_fft, hop_length |
+| 🤖 AIFeatureExtractionNode | audio | feature | embedding/model options |
 
 #### Training Nodes (Training)
 | Node | Input Ports | Output Ports | Description |
@@ -554,6 +598,9 @@ class DataType(Enum):
 | 📤 SaveModelNode | model | model_path | Save model |
 | 🏋️ TrainerNode | input, target, model | trained_model | Execute training |
 | 📊 EvaluatorNode | model, data | metrics | Evaluate model |
+| 📈 ShowHistoryNode | history | preview | Visualize training curves |
+| 📋 ShowMetricsNode | metrics | preview | Display evaluation metrics |
+| 🔮 PredictNode | model, data | predictions | Run prediction |
 
 #### Control Nodes (Control)
 | Node | Input | Output | Description |
@@ -561,6 +608,9 @@ class DataType(Enum):
 | ◇ PassthroughNode | in | out | Passthrough node |
 | 🔄 LoopNode | data | item | Loop over dataset |
 | ✂️ SplitNode | data | train, val, test | Dataset split |
+| 🔗 MergeNode | inputs | data | Merge streams |
+| ⏸ BreakpointNode | data | data | Pause workflow execution |
+| ✅ ValidateShapeNode | data | data | Validate tensor/audio shape |
 
 ### Unified Parameter Class
 
@@ -584,7 +634,8 @@ class Parameter:
     """Unified parameter definition"""
     name: str
     param_type: ParamType
-    default: Any
+    default_value: Any
+    display_name: str = ""
     description: str = ""
     min_value: Optional[float] = None
     max_value: Optional[float] = None
@@ -626,9 +677,9 @@ class BaseNode:
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│  Menu Bar  │  File  │  Edit  │  View  │  Workflow  │  Help  │    │
+│  Custom Title Bar / App Shell (AudioTrainingApp)                 │
 ├─────────────────────────────────────────────────────────────────┤
-│  Toolbar  │ New │ Open │ Save │ ─── │ Run │ Stop │ ─── │ View Switch │
+│  Grouped Toolbars: workflow and model actions                    │
 ├──────────┬──────────────────────────────────────────┬───────────┤
 │          │                                          │           │
 │  Node    │           Main View Area                 │  Property │
@@ -649,13 +700,18 @@ class BaseNode:
 └──────────┴──────────────────────────────────────────┴───────────┘
 ```
 
+`AudioTrainingApp` (`src/app.py`) is the frameless `QMainWindow` shell. `MainWindow`
+(`src/ui/main_window.py`) is the embedded content widget. Workflow editing is routed
+through `WorkflowTabsView`, with each tab backed by a `WorkflowEditorWidget`.
+
 ### View Descriptions
 
 | View | Components | Function |
 |------|------------|----------|
-| WorkflowView | NodeGraph + Nodes | Drag-and-drop workflow editing |
+| WorkflowTabsView | WorkflowEditorWidget + tabs | Multi-tab workflow editing |
+| WorkflowView | WorkflowEditorWidget wrapper | Single workflow editing surface |
 | ModelBuilderView | ModelGraph + Layer Nodes | Visual drag-and-drop neural network building |
-| PreviewView | WaveformWidget + SpectrogramWidget | Preview audio/feature data |
+| PreviewView | Preview widgets | Preview audio, features, model data, metrics, and labels |
 | TrainingView | TrainingPanel + MetricsChart | Training progress and metrics monitoring |
 
 ### Graph Editor Base Classes
@@ -672,12 +728,28 @@ The workflow editor and model editor share common graph editing UI base classes 
 
 **Reusable Features**:
 - Node/port rendering and interaction
-- Connection line drawing (Bezier curves)
+- Connection line drawing (rounded orthogonal segments)
 - Grid background drawing
 - Mouse wheel zoom
 - Middle-button pan
 - Drag-drop support
 - Selection highlighting
+- Clipboard copy/paste helpers
+
+### i18n Architecture
+
+User-facing UI text uses gettext:
+
+| Component | Location | Responsibility |
+|-----------|----------|----------------|
+| Runtime helpers | `src/ui/i18n.py` | `tr_`, `ngettext`, `pgettext`, and locale installation |
+| Catalog source | `src/locale/messages.pot` | Extracted message template |
+| Translations | `src/locale/<lang>/LC_MESSAGES/messages.po` | Editable translations |
+| Compiled catalogs | `src/locale/<lang>/LC_MESSAGES/messages.mo` | Runtime gettext files |
+| Tooling | `tools/i18n.ps1` | Extract, merge, compile workflow |
+
+Source code should use English msgids wrapped with `tr_(...)`; Simplified Chinese is
+provided by the `zh_CN` catalog rather than hardcoded in Python.
 
 ### Model Builder
 
@@ -780,7 +852,7 @@ Frontend-backend separation (View → Controller → Engine):
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                         UI Layer (Views)                         │
-│  WorkflowView │ ModelBuilderView │ PreviewView │ TrainingView   │
+│  WorkflowTabsView │ ModelBuilderView │ PreviewView │ TrainingView│
 └───────────────────────────┬─────────────────────────────────────┘
                             │ Signal (intra-component)
                             ▼
@@ -794,7 +866,7 @@ Frontend-backend separation (View → Controller → Engine):
                             ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │                     Engine/Service Layer                         │
-│  WorkflowEngine │ FeatureExtractor │ TrainerWorker              │
+│  WorkflowEngine │ TrainerWorker │ src/services/                 │
 │  - Pure business logic, no UI dependency                        │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -818,6 +890,7 @@ During workflow execution, nodes display different state markers:
 | completed | Green border | ✅ | Execution complete |
 | error | Red border | ❌ | Execution failed |
 | waiting | Blue border | ⏸️ | Waiting at breakpoint |
+| skipped | Muted/disabled decoration | - | Execution skipped |
 
 ---
 
@@ -877,14 +950,8 @@ Styles.COLORS['green']  # #a6e3a1
 Styles.COLORS['red']    # #f38ba8
 
 # Node colors (by category)
-Styles.NODE_COLORS = {
-    'data_source': '#89b4fa',    # Blue
-    'preprocessing': '#a6e3a1',  # Green
-    'augmentation': '#f9e2af',   # Yellow
-    'feature': '#cba6f7',        # Purple
-    'training': '#f38ba8',       # Red
-    'control': '#94e2d5',        # Cyan
-}
+# Workflow node category colors are defined by NodeCategory.color
+# in src/workflow/node_base.py.
 ```
 
 ---
@@ -938,4 +1005,4 @@ def execute(self) -> bool:
 
 ---
 
-*Last Updated: 2026-01-24*
+*Last Updated: 2026-05-24*
