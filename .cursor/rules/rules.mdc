@@ -1,4 +1,5 @@
 ---
+description: Core project context and links for the AI Acoustic Signal Training Platform
 alwaysApply: true
 ---
 # AI Acoustic Signal Training Platform - Cursor Rules
@@ -13,9 +14,10 @@ This is a local AI training playground application focused on **acoustic signal 
 |----------|------------|
 | Language | Python 3.10+ |
 | GUI Framework | PySide6 (Catppuccin dark theme) |
-| Deep Learning | TensorFlow 2.15+ / Keras 3.0+ |
-| Audio Processing | librosa, soundfile, scipy, pydub, sounddevice |
+| Deep Learning | TensorFlow 2.17+ / Keras |
+| Audio Processing | librosa, soundfile, scipy, resampy, sounddevice |
 | Visualization | pyqtgraph, matplotlib |
+| i18n | gettext catalogs under `src/locale/` |
 
 ---
 
@@ -27,21 +29,30 @@ This is a local AI training playground application focused on **acoustic signal 
 
 | Document | Description | When to Use |
 |----------|-------------|-------------|
-| [architecture.md](./rules/architecture.md) | Project architecture, directory structure, node system, UI design, design patterns | Before modifying code structure |
-| [coding_standards.md](./rules/coding_standards.md) | Import rules, naming conventions, framework-specific standards | When writing code |
-| [model_json_spec.md](./rules/model_json_spec.md) | Model JSON format specification, layer definitions, layout rules | When generating model files |
+| [architecture.md](./architecture.md) | Project architecture, directory structure, node system, UI design, design patterns | Before modifying code structure |
+| [coding_standards.md](./coding_standards.md) | Import rules, naming conventions, framework-specific standards | When writing code |
+| [model_json_spec.md](./model_json_spec.md) | Model JSON format specification, layer definitions, layout rules | When generating model files |
 
 ### Workflows
 
 | Document | Description | When to Use |
 |----------|-------------|-------------|
-| [git_workflow.md](./workflows/git_workflow.md) | Git branching, commit conventions, PR process | Before making code changes |
+| [git_workflow.md](../workflows/git_workflow.md) | Git branching, commit conventions, PR process | Before making code changes |
 
 ### Skills
 
-| Directory | Description |
-|-----------|-------------|
-| [skills/](./skills/) | Reusable skill definitions for specific tasks |
+| Skill | When to Use |
+|-------|-------------|
+| [code_implementing_features](../skills/code_implementing_features/SKILL.md) | Implementing features or documentation changes after issue/branch setup |
+| [code_fixing_bugs](../skills/code_fixing_bugs/SKILL.md) | Debugging or fixing defects |
+| [project_managing_i18n](../skills/project_managing_i18n/SKILL.md) | Adding or changing user-visible UI text |
+| [git_creating_branch](../skills/git_creating_branch/SKILL.md) | Starting work on a new local branch |
+| [git_pushing_changes](../skills/git_pushing_changes/SKILL.md) | Committing and pushing changes |
+| [git_creating_pr](../skills/git_creating_pr/SKILL.md) | Creating pull requests |
+| [test_running](../skills/test_running/SKILL.md) | Running project tests |
+| [test_writing](../skills/test_writing/SKILL.md) | Writing pytest or unittest tests |
+
+Rules capture durable project facts and constraints. Skills capture step-by-step task procedures; prefer linking to a skill instead of copying long procedural workflows into rules.
 
 ---
 
@@ -51,7 +62,9 @@ This is a local AI training playground application focused on **acoustic signal 
 
 ```
 DT_playground/
-├── main.py                     # Application entry point
+├── main.py                     # Application entry point, logging, splash, i18n bootstrap
+├── requirements.txt            # Runtime dependency list
+├── resources/                  # Icons and optional style assets
 ├── src/
 │   ├── app.py                  # Main application class
 │   ├── core/                   # Core abstraction layer
@@ -61,15 +74,18 @@ DT_playground/
 │   ├── model_builder/          # Visual model builder
 │   ├── training/               # Training module
 │   ├── ui/                     # UI module
+│   ├── services/               # Application services
+│   ├── locale/                 # gettext catalogs
 │   ├── visualization/          # Visualization
 │   └── utils/                  # Utilities
 ├── audio_data/                 # Audio data
 ├── models/                     # Saved models
 ├── workflows/                  # Workflow files
-└── logs/                       # Runtime logs
+├── logs/                       # Runtime logs
+└── tests/                      # Automated tests
 ```
 
-> **Detailed Structure**: See [architecture.md](./rules/architecture.md)
+> **Detailed Structure**: See [architecture.md](./architecture.md)
 
 ---
 
@@ -128,10 +144,11 @@ DT_playground/
 
 ### Software UI
 - **Default UI language**: Chinese (Simplified)
-- **User-facing strings**: Chinese
-- **UI labels, tooltips, and messages**: Chinese
+- **Source UI strings**: English gettext msgids wrapped with `tr_(...)`
+- **Translations**: Chinese and English catalogs under `src/locale/`
+- **UI labels, tooltips, and messages**: Do not hardcode Chinese in Python unless explicitly intentional; update gettext catalogs for user-facing text changes
 
 ---
 
-*For detailed coding standards, see [coding_standards.md](./rules/coding_standards.md)*
-*For architecture details, see [architecture.md](./rules/architecture.md)*
+*For detailed coding standards, see [coding_standards.md](./coding_standards.md)*
+*For architecture details, see [architecture.md](./architecture.md)*

@@ -38,6 +38,7 @@ from src.workflow.engine import WorkflowEngine
 - Use `snake_case` for variable names
 - Use `PascalCase` for class names
 - Use `UPPER_SNAKE_CASE` for constants
+- New comments and docstrings must be written in English. Existing Chinese comments/docstrings may be migrated opportunistically when touching nearby code.
 
 ---
 
@@ -48,6 +49,7 @@ from src.workflow.engine import WorkflowEngine
 - Slot functions start with `_on_` or `_handle_`
 - Use `QThread` for time-consuming operations to avoid blocking UI
 - **Unified style management**: Use the `Styles` class from `src/ui/styles.py`
+- Workflow and model editor UI should reuse shared graph editor items from `src/ui/graph_editor/` where practical.
 
 ```python
 from src.ui.styles import Styles
@@ -59,12 +61,28 @@ group.setStyleSheet(Styles.group_box(Styles.COLORS['blue']))
 
 ---
 
+## UI Text and i18n
+
+- Use English source msgids wrapped with `tr_(...)` from `src.ui.i18n` for user-facing strings.
+- Use `ngettext()` for plural text and `pgettext()` when a short msgid needs context.
+- Do not hardcode Simplified Chinese in Python UI code unless the string is intentionally not localized.
+- Update gettext catalogs under `src/locale/` when adding, changing, or removing user-facing strings.
+- Use the `project_managing_i18n` skill for the procedural extract, merge, translate, and compile workflow.
+
+```python
+from src.ui.i18n import tr_
+
+button.setText(tr_("Open workflow"))
+```
+
+---
+
 ## TensorFlow Standards
 
 - Build models using Keras Sequential or Functional API
 - Use custom Callbacks for training process to interact with UI
-- Use `tf.data.Dataset` for data pipeline processing
-- Save models using SavedModel format
+- Use `tf.data.Dataset` when it fits the data pipeline; the current audio training path also uses Keras `Sequence` generators.
+- Save trained models in the format expected by the caller (`.keras`, `.h5`, or SavedModel when explicitly needed).
 
 ---
 
@@ -121,9 +139,29 @@ N_MFCC = 20              # Number of MFCC coefficients
 ## Testing Requirements
 
 - Write unit tests for core functionality
-- Use `pytest-qt` for UI testing
+- The current UI test pattern uses `QT_QPA_PLATFORM=offscreen` and a manual `QApplication.instance() or QApplication([])` setup.
+- Tests currently mix pytest functions and `unittest.TestCase`; follow the surrounding file style unless creating a new focused pytest test.
 - Test audio processing module independently
+- Use the `test_running` and `test_writing` skills for procedural testing guidance.
+
+```python
+import os
+
+from PySide6.QtWidgets import QApplication
+
+os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
+app = QApplication.instance() or QApplication([])
+```
 
 ---
 
-*Last Updated: 2026-01-24*
+## Dependencies and Tooling
+
+- Runtime dependencies are declared in `requirements.txt`.
+- Current core versions include TensorFlow `>=2.17.0`, PySide6 `>=6.6.0`, NumPy `>=1.26,<2.0`, librosa, soundfile, scipy, resampy, sounddevice, matplotlib, and pyqtgraph.
+- Do not document optional or unused packages as required dependencies unless they are added to `requirements.txt`.
+- No project-level pytest configuration file is currently present; add one only as a deliberate tooling change.
+
+---
+
+*Last Updated: 2026-05-24*
