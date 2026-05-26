@@ -467,6 +467,286 @@ class LabelFileNode(BaseNode):
 
 
 @register_node
+class TargetFileNode(BaseNode):
+    """
+    Generic supervised target file node.
+
+    Loads target values without assuming classification labels. Business target
+    semantics are intentionally left to downstream workflow nodes.
+    """
+
+    node_type = "target_file"
+    display_name = tr_("Target file")
+    category = NodeCategory.DATA_SOURCE
+    description = tr_("Load generic supervised targets from CSV/JSON/TXT")
+    icon = "🎯"
+
+    TARGET_KINDS = ["auto", "continuous", "categorical", "array", "sequence"]
+    DTYPES = ["auto", "float32", "int64", "str"]
+    OUTPUT_FORMATS = ["list", "numpy", "map"]
+
+    def _setup_ports(self):
+        self.add_output("targets", DataType.ANY, tr_("Target list"))
+        self.add_output("target_map", DataType.ANY, tr_("Target map"))
+        self.add_output("target_metadata", DataType.ANY, tr_("Target metadata"))
+
+    def _setup_parameters(self):
+        self.add_parameter(
+            "file_path", "file", "",
+            display_name=tr_("File path"),
+            file_filter="Target Files (*.csv *.json *.txt)",
+            default_directory="audio_data",
+        )
+        self.add_parameter(
+            "format", "choice", "auto",
+            display_name=tr_("File format"),
+            choices=["auto", "csv", "json", "txt"],
+        )
+        self.add_parameter(
+            "filename_column", "str", "filename",
+            display_name=tr_("Filename column"),
+            description=tr_("Column name for filename in CSV"),
+        )
+        self.add_parameter(
+            "target_columns", "str", "target",
+            display_name=tr_("Target columns"),
+            description=tr_("Comma-separated target column names in CSV"),
+        )
+        self.add_parameter(
+            "target_kind", "choice", "auto",
+            display_name=tr_("Target kind"),
+            choices=self.TARGET_KINDS,
+            description=tr_("Machine-learning target shape, not business type"),
+        )
+        self.add_parameter(
+            "dtype", "choice", "auto",
+            display_name=tr_("Data type"),
+            choices=self.DTYPES,
+        )
+        self.add_parameter(
+            "output_format", "choice", "list",
+            display_name=tr_("Output format"),
+            choices=self.OUTPUT_FORMATS,
+        )
+
+    def execute(self) -> bool:
+        file_path = self.get_parameter("file_path")
+        file_format = self._resolve_format(file_path, self.get_parameter("format"))
+
+        if not file_path or not os.path.isfile(file_path):
+            self.error_message = tr_("File does not exist: {path}").format(path=file_path)
+            return False
+
+        try:
+            if file_format == "csv":
+                raw_targets, target_map, columns = self._load_csv(file_path)
+            elif file_format == "json":
+                raw_targets, target_map, columns = self._load_json(file_path)
+            else:
+                raw_targets, target_map, columns = self._load_txt(file_path)
+
+            kind = self._resolve_kind(raw_targets)
+            targets, target_map, dtype, extra_metadata = self._normalize_targets(
+                raw_targets,
+                target_map,
+                kind,
+            )
+            metadata = {
+                "kind": kind,
+                "shape": self._target_shape(targets),
+                "columns": columns,
+                "dtype": dtype,
+                "source": str(file_path),
+                "count": len(targets),
+            }
+            metadata.update(extra_metadata)
+
+            self.set_output_data("targets", self._format_targets(targets, target_map, dtype))
+            self.set_output_data("target_map", target_map)
+            self.set_output_data("target_metadata", metadata)
+
+            logger.info(f"Loaded targets: {len(targets)} items, kind={kind}, dtype={dtype}")
+            return True
+        except Exception as e:
+            self.error_message = tr_("Failed to load targets: {error}").format(error=str(e))
+            return False
+
+    def _resolve_format(self, file_path: str, file_format: str) -> str:
+        if file_format != "auto":
+            return file_format
+        ext = Path(file_path).suffix.lower() if file_path else ""
+        if ext == ".csv":
+            return "csv"
+        if ext == ".json":
+            return "json"
+        return "txt"
+
+    def _load_csv(self, file_path: str) -> Tuple[List, Dict, List[str]]:
+        filename_col = self.get_parameter("filename_column")
+        columns = self._parse_target_columns()
+
+        targets = []
+        target_map = {}
+        with open(file_path, 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                target = self._row_target(row, columns)
+                targets.append(target)
+
+                filename = row.get(filename_col, "")
+                if filename:
+                    target_map[filename] = target
+
+        return targets, target_map, columns
+
+    def _load_json(self, file_path: str) -> Tuple[List, Dict, List[str]]:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+
+        if isinstance(data, list):
+            return data, {}, []
+        if isinstance(data, dict):
+            if "targets" in data:
+                targets = data["targets"]
+                target_map = data.get("target_map", {})
+                if not isinstance(targets, list):
+                    raise ValueError(tr_("Structured JSON targets must be a list"))
+                if not isinstance(target_map, dict):
+                    raise ValueError(tr_("Structured JSON target_map must be an object"))
+                columns = data.get("columns", [])
+                if not isinstance(columns, list):
+                    columns = []
+                return targets, target_map, columns
+            return list(data.values()), dict(data), []
+        raise ValueError(tr_("Unsupported JSON format"))
+
+    def _load_txt(self, file_path: str) -> Tuple[List, Dict, List[str]]:
+        targets = []
+        with open(file_path, 'r', encoding='utf-8') as f:
+            for line in f:
+                value = line.strip()
+                if value:
+                    targets.append(value)
+        return targets, {}, []
+
+    def _parse_target_columns(self) -> List[str]:
+        value = self.get_parameter("target_columns") or "target"
+        columns = [item.strip() for item in value.split(",") if item.strip()]
+        if not columns:
+            raise ValueError(tr_("At least one target column is required"))
+        return columns
+
+    def _row_target(self, row: Dict[str, str], columns: List[str]):
+        values = []
+        for column in columns:
+            if column not in row:
+                raise ValueError(tr_("Missing target column: {column}").format(column=column))
+            values.append(row[column])
+        return values[0] if len(values) == 1 else values
+
+    def _resolve_kind(self, raw_targets: List) -> str:
+        kind = self.get_parameter("target_kind")
+        if kind != "auto":
+            return kind
+
+        if not raw_targets:
+            return "continuous"
+        first = raw_targets[0]
+        if isinstance(first, (list, tuple, dict)):
+            return "array"
+        if self._is_numeric(first):
+            return "continuous"
+        return "categorical"
+
+    def _normalize_targets(
+        self,
+        raw_targets: List,
+        target_map: Dict,
+        kind: str,
+    ) -> Tuple[List, Dict, str, Dict]:
+        if kind == "categorical":
+            return self._normalize_categorical(raw_targets, target_map)
+
+        dtype = self._resolve_dtype(kind)
+        targets = [self._convert_value(value, dtype) for value in raw_targets]
+        normalized_map = {
+            key: self._convert_value(value, dtype)
+            for key, value in target_map.items()
+        }
+        return targets, normalized_map, dtype, {}
+
+    def _normalize_categorical(self, raw_targets: List, target_map: Dict) -> Tuple[List, Dict, str, Dict]:
+        category_mapping = {}
+
+        def category_id(value):
+            key = self._category_key(value)
+            if key not in category_mapping:
+                category_mapping[key] = len(category_mapping)
+            return category_mapping[key]
+
+        targets = [category_id(value) for value in raw_targets]
+        normalized_map = {
+            key: category_id(value)
+            for key, value in target_map.items()
+        }
+        return targets, normalized_map, "int64", {"category_mapping": category_mapping}
+
+    def _resolve_dtype(self, kind: str) -> str:
+        dtype = self.get_parameter("dtype")
+        if kind == "continuous" and dtype == "str":
+            raise ValueError(tr_("Continuous targets require numeric dtype"))
+        if dtype != "auto":
+            return dtype
+        if kind in ("continuous", "array", "sequence"):
+            return "float32"
+        return "str"
+
+    def _convert_value(self, value, dtype: str):
+        if isinstance(value, list):
+            return [self._convert_value(item, dtype) for item in value]
+        if isinstance(value, tuple):
+            return [self._convert_value(item, dtype) for item in value]
+        if dtype == "float32":
+            return float(value)
+        if dtype == "int64":
+            return int(value)
+        if dtype == "str":
+            return str(value)
+        return value
+
+    def _format_targets(self, targets: List, target_map: Dict, dtype: str):
+        output_format = self.get_parameter("output_format")
+        if output_format == "numpy":
+            np_dtype = np.float32 if dtype == "float32" else np.int64 if dtype == "int64" else None
+            return np.array(targets, dtype=np_dtype)
+        if output_format == "map":
+            return target_map
+        return targets
+
+    def _target_shape(self, targets: List) -> List[int]:
+        if not targets:
+            return [0]
+        first = targets[0]
+        if isinstance(first, list):
+            return [len(targets), len(first)]
+        return [len(targets)]
+
+    def _is_numeric(self, value) -> bool:
+        if isinstance(value, list):
+            return all(self._is_numeric(item) for item in value)
+        try:
+            float(value)
+            return True
+        except (TypeError, ValueError):
+            return False
+
+    def _category_key(self, value) -> str:
+        if isinstance(value, list):
+            return json.dumps(value, ensure_ascii=False)
+        return str(value)
+
+
+@register_node
 class SaveAudioNode(BaseNode):
     """
     保存音频节点
