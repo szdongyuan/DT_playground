@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-13 17:54+0800\n"
+"POT-Creation-Date: 2026-05-26 17:53+0800\n"
 "PO-Revision-Date: 2026-02-04 17:15+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -102,7 +102,7 @@ msgid "Warning"
 msgstr "警告"
 
 #: src/app.py:443 src/audio/loader.py:58 src/workflow/nodes/data_source.py:298
-#: src/workflow/nodes/data_source.py:364
+#: src/workflow/nodes/data_source.py:364 src/workflow/nodes/data_source.py:537
 #, python-brace-format
 msgid "File does not exist: {path}"
 msgstr "文件不存在：{path}"
@@ -1033,6 +1033,7 @@ msgid "Input data shape, e.g. (128,) or (128, 64) or (32, 32, 3)"
 msgstr "输入数据形状，例如 (128,) 或 (128, 64) 或 (32, 32, 3)"
 
 #: src/model_builder/layers/input_layers.py:29
+#: src/workflow/nodes/data_source.py:523
 msgid "Data type"
 msgstr "数据类型"
 
@@ -1825,7 +1826,7 @@ msgstr "设置"
 #: src/workflow/nodes/augmentation.py:505
 #: src/workflow/nodes/augmentation.py:513
 #: src/workflow/nodes/augmentation.py:689 src/workflow/nodes/data_source.py:277
-#: src/workflow/nodes/data_source.py:488
+#: src/workflow/nodes/data_source.py:768
 #: src/workflow/nodes/preprocessing.py:124
 #: src/workflow/nodes/preprocessing.py:127
 #: src/workflow/nodes/preprocessing.py:187
@@ -3241,7 +3242,7 @@ msgid "Duplicate audio and labels together for sample expansion"
 msgstr "同步复制音频和标签以扩增样本"
 
 #: src/workflow/nodes/augmentation.py:39 src/workflow/nodes/augmentation.py:41
-#: src/workflow/nodes/control.py:128 src/workflow/nodes/data_source.py:495
+#: src/workflow/nodes/control.py:128 src/workflow/nodes/data_source.py:775
 msgid "Labels"
 msgstr "标签"
 
@@ -3909,6 +3910,7 @@ msgid "Load a single audio file"
 msgstr "加载单个音频文件"
 
 #: src/workflow/nodes/data_source.py:282 src/workflow/nodes/data_source.py:339
+#: src/workflow/nodes/data_source.py:496
 msgid "File path"
 msgstr "文件路径"
 
@@ -3928,15 +3930,15 @@ msgstr "从 CSV/JSON/TXT 加载标签"
 msgid "Label map"
 msgstr "标签映射"
 
-#: src/workflow/nodes/data_source.py:345
+#: src/workflow/nodes/data_source.py:345 src/workflow/nodes/data_source.py:502
 msgid "File format"
 msgstr "文件格式"
 
-#: src/workflow/nodes/data_source.py:350
+#: src/workflow/nodes/data_source.py:350 src/workflow/nodes/data_source.py:507
 msgid "Filename column"
 msgstr "文件名列"
 
-#: src/workflow/nodes/data_source.py:351
+#: src/workflow/nodes/data_source.py:351 src/workflow/nodes/data_source.py:508
 msgid "Column name for filename in CSV"
 msgstr "CSV 中表示文件名的列名"
 
@@ -3953,77 +3955,143 @@ msgstr "CSV 中表示标签的列名"
 msgid "Failed to load labels: {error}"
 msgstr "加载标签失败：{error}"
 
-#: src/workflow/nodes/data_source.py:449
+#: src/workflow/nodes/data_source.py:449 src/workflow/nodes/data_source.py:621
 msgid "Unsupported JSON format"
 msgstr "不支持的 JSON 格式"
 
 #: src/workflow/nodes/data_source.py:479
+msgid "Target file"
+msgstr "目标文件"
+
+#: src/workflow/nodes/data_source.py:481
+msgid "Load generic supervised targets from CSV/JSON/TXT"
+msgstr "从 CSV/JSON/TXT 加载通用监督目标"
+
+#: src/workflow/nodes/data_source.py:489
+msgid "Target list"
+msgstr "目标列表"
+
+#: src/workflow/nodes/data_source.py:490
+msgid "Target map"
+msgstr "目标映射"
+
+#: src/workflow/nodes/data_source.py:491
+msgid "Target metadata"
+msgstr "目标元数据"
+
+#: src/workflow/nodes/data_source.py:512
+msgid "Target columns"
+msgstr "目标列"
+
+#: src/workflow/nodes/data_source.py:513
+msgid "Comma-separated target column names in CSV"
+msgstr "CSV 中以逗号分隔的目标列名"
+
+#: src/workflow/nodes/data_source.py:517
+msgid "Target kind"
+msgstr "目标形态"
+
+#: src/workflow/nodes/data_source.py:519
+msgid "Machine-learning target shape, not business type"
+msgstr "机器学习目标形态，不是业务类型"
+
+#: src/workflow/nodes/data_source.py:528
+msgid "Output format"
+msgstr "输出格式"
+
+#: src/workflow/nodes/data_source.py:571
+#, python-brace-format
+msgid "Failed to load targets: {error}"
+msgstr "加载目标失败：{error}"
+
+#: src/workflow/nodes/data_source.py:613
+msgid "Structured JSON targets must be a list"
+msgstr "结构化 JSON 的 targets 必须是列表"
+
+#: src/workflow/nodes/data_source.py:615
+msgid "Structured JSON target_map must be an object"
+msgstr "结构化 JSON 的 target_map 必须是对象"
+
+#: src/workflow/nodes/data_source.py:636
+msgid "At least one target column is required"
+msgstr "至少需要一个目标列"
+
+#: src/workflow/nodes/data_source.py:643
+#, python-brace-format
+msgid "Missing target column: {column}"
+msgstr "缺少目标列：{column}"
+
+#: src/workflow/nodes/data_source.py:697
+msgid "Continuous targets require numeric dtype"
+msgstr "连续目标需要数值 dtype"
+
+#: src/workflow/nodes/data_source.py:759
 msgid "Save audio"
 msgstr "保存音频"
 
-#: src/workflow/nodes/data_source.py:481
+#: src/workflow/nodes/data_source.py:761
 msgid "Save audio as WAV files, optionally save labels JSON"
 msgstr "将音频保存为 WAV 文件，可选保存标签 JSON"
 
-#: src/workflow/nodes/data_source.py:490
+#: src/workflow/nodes/data_source.py:770
 msgid "Audio data to save (single item or list)"
 msgstr "要保存的音频数据（单个或列表）"
 
-#: src/workflow/nodes/data_source.py:497
+#: src/workflow/nodes/data_source.py:777
 msgid "Optional labels corresponding to audio items"
 msgstr "可选：与音频对应的标签"
 
-#: src/workflow/nodes/data_source.py:503
+#: src/workflow/nodes/data_source.py:783
 msgid "Output folder"
 msgstr "输出文件夹"
 
-#: src/workflow/nodes/data_source.py:504
+#: src/workflow/nodes/data_source.py:784
 msgid "Target folder to save audio files"
 msgstr "保存音频文件的目标文件夹"
 
-#: src/workflow/nodes/data_source.py:509
+#: src/workflow/nodes/data_source.py:789
 msgid "Filename prefix"
 msgstr "文件名前缀"
 
-#: src/workflow/nodes/data_source.py:510
+#: src/workflow/nodes/data_source.py:790
 msgid "Prefix for output audio filenames"
 msgstr "输出音频文件名的前缀"
 
-#: src/workflow/nodes/data_source.py:514
+#: src/workflow/nodes/data_source.py:794
 msgid "Save labels file"
 msgstr "保存标签文件"
 
-#: src/workflow/nodes/data_source.py:515
+#: src/workflow/nodes/data_source.py:795
 msgid "When labels are provided, save labels.json"
 msgstr "提供标签时，保存 labels.json"
 
-#: src/workflow/nodes/data_source.py:519
+#: src/workflow/nodes/data_source.py:799
 msgid "Overwrite existing files"
 msgstr "覆盖已有文件"
 
-#: src/workflow/nodes/data_source.py:520
+#: src/workflow/nodes/data_source.py:800
 msgid "Overwrite files if they already exist"
 msgstr "若文件已存在则覆盖"
 
-#: src/workflow/nodes/data_source.py:536
+#: src/workflow/nodes/data_source.py:816
 msgid "Please select an output folder"
 msgstr "请选择输出文件夹"
 
-#: src/workflow/nodes/data_source.py:543
+#: src/workflow/nodes/data_source.py:823
 #, python-brace-format
 msgid "Unable to create output folder: {error}"
 msgstr "无法创建输出文件夹：{error}"
 
-#: src/workflow/nodes/data_source.py:550
+#: src/workflow/nodes/data_source.py:830
 msgid "No input audio data"
 msgstr "没有输入音频数据"
 
-#: src/workflow/nodes/data_source.py:558
+#: src/workflow/nodes/data_source.py:838
 #, python-brace-format
 msgid "Unsupported audio data type: {type}"
 msgstr "不支持的音频数据类型：{type}"
 
-#: src/workflow/nodes/data_source.py:575
+#: src/workflow/nodes/data_source.py:855
 #, python-brace-format
 msgid ""
 "Label count ({labels}) does not match audio count ({audio}); items will be "
@@ -4031,21 +4099,21 @@ msgid ""
 msgstr ""
 "标签数量（{labels}）与音频数量（{audio}）不匹配；将按顺序配对，多余项会被忽略"
 
-#: src/workflow/nodes/data_source.py:580
+#: src/workflow/nodes/data_source.py:860
 #, python-brace-format
 msgid "Saving {count} audio files..."
 msgstr "正在保存 {count} 个音频文件..."
 
-#: src/workflow/nodes/data_source.py:631
+#: src/workflow/nodes/data_source.py:911
 msgid "No audio files were saved successfully"
 msgstr "没有任何音频文件成功保存"
 
-#: src/workflow/nodes/data_source.py:635
+#: src/workflow/nodes/data_source.py:915
 #, python-brace-format
 msgid "Audio saved: {files} files"
 msgstr "音频已保存：{files} 个文件"
 
-#: src/workflow/nodes/data_source.py:637
+#: src/workflow/nodes/data_source.py:917
 #, python-brace-format
 msgid ", labels: {count}"
 msgstr "，标签：{count}"
