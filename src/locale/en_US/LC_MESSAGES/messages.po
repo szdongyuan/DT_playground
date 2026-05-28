@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-28 09:01+0800\n"
+"POT-Creation-Date: 2026-05-28 11:55+0800\n"
 "PO-Revision-Date: 2026-02-04 17:15+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -571,7 +571,7 @@ msgstr "Reshape"
 msgid "Activation"
 msgstr "Activation"
 
-#: src/model_builder/layer_base.py:56 src/workflow/nodes/control.py:547
+#: src/model_builder/layer_base.py:56 src/workflow/nodes/control.py:610
 msgid "Merge"
 msgstr "Merge"
 
@@ -3250,7 +3250,7 @@ msgid "Duplicate audio and labels together for sample expansion"
 msgstr "Duplicate audio and labels together for sample expansion"
 
 #: src/workflow/nodes/augmentation.py:39 src/workflow/nodes/augmentation.py:41
-#: src/workflow/nodes/control.py:128 src/workflow/nodes/data_source.py:775
+#: src/workflow/nodes/data_source.py:775
 msgid "Labels"
 msgstr "Labels"
 
@@ -3571,7 +3571,7 @@ msgstr "0 means no limit"
 msgid "No data list provided"
 msgstr "No data list provided"
 
-#: src/workflow/nodes/control.py:83 src/workflow/nodes/control.py:779
+#: src/workflow/nodes/control.py:83 src/workflow/nodes/control.py:842
 msgid "Data list is empty"
 msgstr "Data list is empty"
 
@@ -3583,333 +3583,346 @@ msgstr "Split dataset"
 msgid "Split data into train/val/test sets"
 msgstr "Split data into train/val/test sets"
 
-#: src/workflow/nodes/control.py:127 src/workflow/nodes/control.py:289
-#: src/workflow/nodes/control.py:657 src/workflow/nodes/control.py:658
+#: src/workflow/nodes/control.py:127 src/workflow/nodes/control.py:352
+#: src/workflow/nodes/control.py:720 src/workflow/nodes/control.py:721
 msgid "Data"
 msgstr "Data"
 
-#: src/workflow/nodes/control.py:129 src/workflow/nodes/training.py:305
+#: src/workflow/nodes/control.py:128 src/workflow/nodes/control.py:354
+msgid "Targets"
+msgstr "Targets"
+
+#: src/workflow/nodes/control.py:129 src/workflow/nodes/data_source.py:491
+msgid "Target metadata"
+msgstr "Target metadata"
+
+#: src/workflow/nodes/control.py:130 src/workflow/nodes/training.py:305
 msgid "Train data"
 msgstr "Train data"
 
-#: src/workflow/nodes/control.py:130
-msgid "Train labels"
-msgstr "Train labels"
+#: src/workflow/nodes/control.py:131 src/workflow/nodes/training.py:306
+msgid "Train targets"
+msgstr "Train targets"
 
-#: src/workflow/nodes/control.py:131 src/workflow/nodes/training.py:307
+#: src/workflow/nodes/control.py:132 src/workflow/nodes/training.py:307
 msgid "Validation data"
 msgstr "Validation data"
 
-#: src/workflow/nodes/control.py:132
-msgid "Validation labels"
-msgstr "Validation labels"
+#: src/workflow/nodes/control.py:133 src/workflow/nodes/training.py:308
+msgid "Validation targets"
+msgstr "Validation targets"
 
-#: src/workflow/nodes/control.py:133 src/workflow/nodes/training.py:685
+#: src/workflow/nodes/control.py:134 src/workflow/nodes/training.py:685
 msgid "Test data"
 msgstr "Test data"
 
-#: src/workflow/nodes/control.py:134
-msgid "Test labels"
-msgstr "Test labels"
+#: src/workflow/nodes/control.py:135 src/workflow/nodes/training.py:686
+msgid "Test targets"
+msgstr "Test targets"
 
-#: src/workflow/nodes/control.py:139
+#: src/workflow/nodes/control.py:140
 msgid "Train ratio"
 msgstr "Train ratio"
 
-#: src/workflow/nodes/control.py:144
+#: src/workflow/nodes/control.py:145
 msgid "Validation ratio"
 msgstr "Validation ratio"
 
-#: src/workflow/nodes/control.py:149
+#: src/workflow/nodes/control.py:150
 msgid "Test ratio"
 msgstr "Test ratio"
 
-#: src/workflow/nodes/control.py:154
+#: src/workflow/nodes/control.py:155
 msgid "Shuffle"
 msgstr "Shuffle"
 
-#: src/workflow/nodes/control.py:158
+#: src/workflow/nodes/control.py:159
 msgid "Stratify"
 msgstr "Stratify"
 
-#: src/workflow/nodes/control.py:159
+#: src/workflow/nodes/control.py:160
 msgid "Keep class proportions"
 msgstr "Keep class proportions"
 
-#: src/workflow/nodes/control.py:163
+#: src/workflow/nodes/control.py:164
 msgid "Random seed"
 msgstr "Random seed"
 
-#: src/workflow/nodes/control.py:172 src/workflow/nodes/control.py:771
+#: src/workflow/nodes/control.py:174 src/workflow/nodes/control.py:834
 msgid "No data provided"
 msgstr "No data provided"
 
-#: src/workflow/nodes/control.py:254
+#: src/workflow/nodes/control.py:206
+#, python-brace-format
+msgid "Target count ({targets}) does not match data count ({data})"
+msgstr "Target count ({targets}) does not match data count ({data})"
+
+#: src/workflow/nodes/control.py:278
 #, python-brace-format
 msgid "Split complete: train={train}, val={val}, test={test}"
 msgstr "Split complete: train={train}, val={val}, test={test}"
 
-#: src/workflow/nodes/control.py:264
+#: src/workflow/nodes/control.py:288
 #, python-brace-format
 msgid "Split failed: {error}"
 msgstr "Split failed: {error}"
 
-#: src/workflow/nodes/control.py:279
+#: src/workflow/nodes/control.py:294
+msgid "Split targets must be an ordered target list, not a mapping"
+msgstr "Split targets must be an ordered target list, not a mapping"
+
+#: src/workflow/nodes/control.py:342
 msgid "Align targets"
 msgstr "Align targets"
 
-#: src/workflow/nodes/control.py:281
+#: src/workflow/nodes/control.py:344
 msgid "Align data and targets by file name or path"
 msgstr "Align data and targets by file name or path"
 
-#: src/workflow/nodes/control.py:290
+#: src/workflow/nodes/control.py:353
 msgid "File paths"
 msgstr "File paths"
 
-#: src/workflow/nodes/control.py:291 src/workflow/nodes/data_source.py:490
+#: src/workflow/nodes/control.py:355 src/workflow/nodes/data_source.py:490
 msgid "Target map"
 msgstr "Target map"
 
-#: src/workflow/nodes/control.py:292
-msgid "Targets"
-msgstr "Targets"
-
-#: src/workflow/nodes/control.py:293
+#: src/workflow/nodes/control.py:356
 msgid "Aligned data"
 msgstr "Aligned data"
 
-#: src/workflow/nodes/control.py:294
+#: src/workflow/nodes/control.py:357
 msgid "Aligned targets"
 msgstr "Aligned targets"
 
-#: src/workflow/nodes/control.py:295
+#: src/workflow/nodes/control.py:358
 msgid "Aligned file paths"
 msgstr "Aligned file paths"
 
-#: src/workflow/nodes/control.py:296
+#: src/workflow/nodes/control.py:359
 msgid "Alignment report"
 msgstr "Alignment report"
 
-#: src/workflow/nodes/control.py:301
+#: src/workflow/nodes/control.py:364
 msgid "Match mode"
 msgstr "Match mode"
 
-#: src/workflow/nodes/control.py:306
+#: src/workflow/nodes/control.py:369
 msgid "Missing target policy"
 msgstr "Missing target policy"
 
-#: src/workflow/nodes/control.py:311
+#: src/workflow/nodes/control.py:374
 msgid "Duplicate target policy"
 msgstr "Duplicate target policy"
 
-#: src/workflow/nodes/control.py:316
+#: src/workflow/nodes/control.py:379
 msgid "Fill value"
 msgstr "Fill value"
 
-#: src/workflow/nodes/control.py:317
+#: src/workflow/nodes/control.py:380
 msgid "Target value used when missing_policy is fill"
 msgstr "Target value used when missing_policy is fill"
 
-#: src/workflow/nodes/control.py:329
+#: src/workflow/nodes/control.py:392
 msgid "No file paths provided"
 msgstr "No file paths provided"
 
-#: src/workflow/nodes/control.py:334
+#: src/workflow/nodes/control.py:397
 #, python-brace-format
 msgid "Data count ({data}) does not match file path count ({paths})"
 msgstr "Data count ({data}) does not match file path count ({paths})"
 
-#: src/workflow/nodes/control.py:345
+#: src/workflow/nodes/control.py:408
 msgid "No target_map or targets provided"
 msgstr "No target_map or targets provided"
 
-#: src/workflow/nodes/control.py:359
+#: src/workflow/nodes/control.py:422
 msgid "target_map must be a dictionary"
 msgstr "target_map must be a dictionary"
 
-#: src/workflow/nodes/control.py:396
+#: src/workflow/nodes/control.py:459
 #, python-brace-format
 msgid "Missing targets for file paths: {paths}"
 msgstr "Missing targets for file paths: {paths}"
 
-#: src/workflow/nodes/control.py:431
+#: src/workflow/nodes/control.py:494
 #, python-brace-format
 msgid "Target count ({targets}) does not match file path count ({paths})"
 msgstr "Target count ({targets}) does not match file path count ({paths})"
 
-#: src/workflow/nodes/control.py:479
+#: src/workflow/nodes/control.py:542
 #, python-brace-format
 msgid "Duplicate target keys after {mode} matching: {keys}"
 msgstr "Duplicate target keys after {mode} matching: {keys}"
 
-#: src/workflow/nodes/control.py:498
+#: src/workflow/nodes/control.py:561
 #, python-brace-format
 msgid "Duplicate file path keys after {mode} matching: {keys}"
 msgstr "Duplicate file path keys after {mode} matching: {keys}"
 
-#: src/workflow/nodes/control.py:528
+#: src/workflow/nodes/control.py:591
 #, python-brace-format
 msgid "No {name} provided"
 msgstr "No {name} provided"
 
-#: src/workflow/nodes/control.py:549
+#: src/workflow/nodes/control.py:612
 msgid "Merge multiple data sources"
 msgstr "Merge multiple data sources"
 
-#: src/workflow/nodes/control.py:553
+#: src/workflow/nodes/control.py:616
 msgid "Data 1"
 msgstr "Data 1"
 
-#: src/workflow/nodes/control.py:554 src/workflow/nodes/control.py:661
-#: src/workflow/nodes/control.py:662
+#: src/workflow/nodes/control.py:617 src/workflow/nodes/control.py:724
+#: src/workflow/nodes/control.py:725
 msgid "Data 2"
 msgstr "Data 2"
 
-#: src/workflow/nodes/control.py:555
+#: src/workflow/nodes/control.py:618
 msgid "Data 3"
 msgstr "Data 3"
 
-#: src/workflow/nodes/control.py:556
+#: src/workflow/nodes/control.py:619
 msgid "Data 4"
 msgstr "Data 4"
 
-#: src/workflow/nodes/control.py:557
+#: src/workflow/nodes/control.py:620
 msgid "Merged data"
 msgstr "Merged data"
 
-#: src/workflow/nodes/control.py:562
+#: src/workflow/nodes/control.py:625
 msgid "Merge mode"
 msgstr "Merge mode"
 
-#: src/workflow/nodes/control.py:582
+#: src/workflow/nodes/control.py:645
 msgid "No valid data provided"
 msgstr "No valid data provided"
 
-#: src/workflow/nodes/control.py:617
+#: src/workflow/nodes/control.py:680
 msgid "Passthrough"
 msgstr "Passthrough"
 
-#: src/workflow/nodes/control.py:619
+#: src/workflow/nodes/control.py:682
 msgid "Pass data through without modification"
 msgstr "Pass data through without modification"
 
-#: src/workflow/nodes/control.py:626
+#: src/workflow/nodes/control.py:689
 msgid "In"
 msgstr "In"
 
-#: src/workflow/nodes/control.py:627
+#: src/workflow/nodes/control.py:690
 msgid "Out"
 msgstr "Out"
 
-#: src/workflow/nodes/control.py:647
+#: src/workflow/nodes/control.py:710
 msgid "Breakpoint"
 msgstr "Breakpoint"
 
-#: src/workflow/nodes/control.py:649
+#: src/workflow/nodes/control.py:712
 msgid "Pause workflow execution to inspect data"
 msgstr "Pause workflow execution to inspect data"
 
-#: src/workflow/nodes/control.py:667
+#: src/workflow/nodes/control.py:730
 msgid "Enable breakpoint"
 msgstr "Enable breakpoint"
 
-#: src/workflow/nodes/control.py:668
+#: src/workflow/nodes/control.py:731
 msgid "Pause execution at this node"
 msgstr "Pause execution at this node"
 
-#: src/workflow/nodes/control.py:672
+#: src/workflow/nodes/control.py:735
 msgid "Breakpoint description"
 msgstr "Breakpoint description"
 
-#: src/workflow/nodes/control.py:673
+#: src/workflow/nodes/control.py:736
 msgid "Describe the purpose of this breakpoint"
 msgstr "Describe the purpose of this breakpoint"
 
-#: src/workflow/nodes/control.py:690
+#: src/workflow/nodes/control.py:753
 #, python-brace-format
 msgid "Breakpoint: {desc}"
 msgstr "Breakpoint: {desc}"
 
-#: src/workflow/nodes/control.py:692
+#: src/workflow/nodes/control.py:755
 msgid "Breakpoint triggered"
 msgstr "Breakpoint triggered"
 
-#: src/workflow/nodes/control.py:713
+#: src/workflow/nodes/control.py:776
 msgid "Validate shape"
 msgstr "Validate shape"
 
-#: src/workflow/nodes/control.py:715
+#: src/workflow/nodes/control.py:778
 msgid "Validate shape consistency in a batch"
 msgstr "Validate shape consistency in a batch"
 
-#: src/workflow/nodes/control.py:719
+#: src/workflow/nodes/control.py:782
 msgid "Batch data"
 msgstr "Batch data"
 
-#: src/workflow/nodes/control.py:720
+#: src/workflow/nodes/control.py:783
 msgid "Validated data"
 msgstr "Validated data"
 
-#: src/workflow/nodes/control.py:721
+#: src/workflow/nodes/control.py:784
 msgid "Is valid"
 msgstr "Is valid"
 
-#: src/workflow/nodes/control.py:722
+#: src/workflow/nodes/control.py:785
 msgid "Shape info"
 msgstr "Shape info"
 
-#: src/workflow/nodes/control.py:727
+#: src/workflow/nodes/control.py:790
 msgid "Strict mode"
 msgstr "Strict mode"
 
-#: src/workflow/nodes/control.py:728
+#: src/workflow/nodes/control.py:791
 msgid "Stop workflow on inconsistency (otherwise warn only)"
 msgstr "Stop workflow on inconsistency (otherwise warn only)"
 
-#: src/workflow/nodes/control.py:732
+#: src/workflow/nodes/control.py:795
 msgid "Ignore batch dimension"
 msgstr "Ignore batch dimension"
 
-#: src/workflow/nodes/control.py:733
+#: src/workflow/nodes/control.py:796
 msgid "Ignore differences in the first dimension (batch dimension)"
 msgstr "Ignore differences in the first dimension (batch dimension)"
 
-#: src/workflow/nodes/control.py:830
+#: src/workflow/nodes/control.py:893
 #, python-brace-format
 msgid "✅ Shape validation passed: {count} items, shape: {shape}"
 msgstr "✅ Shape validation passed: {count} items, shape: {shape}"
 
-#: src/workflow/nodes/control.py:854
+#: src/workflow/nodes/control.py:917
 #, python-brace-format
 msgid "❌ Shape validation failed: {count} inconsistent items"
 msgstr "❌ Shape validation failed: {count} inconsistent items"
 
-#: src/workflow/nodes/control.py:857
+#: src/workflow/nodes/control.py:920
 #, python-brace-format
 msgid "   Expected shape: {shape}"
 msgstr "   Expected shape: {shape}"
 
-#: src/workflow/nodes/control.py:858
+#: src/workflow/nodes/control.py:921
 #, python-brace-format
 msgid "   Shape distribution: {dist}"
 msgstr "   Shape distribution: {dist}"
 
-#: src/workflow/nodes/control.py:864
+#: src/workflow/nodes/control.py:927
 #, python-brace-format
 msgid "   - Index {index}: expected {expected}, got {actual}"
 msgstr "   - Index {index}: expected {expected}, got {actual}"
 
-#: src/workflow/nodes/control.py:873
+#: src/workflow/nodes/control.py:936
 #, python-brace-format
 msgid "   ... and {count} more"
 msgstr "   ... and {count} more"
 
-#: src/workflow/nodes/control.py:887
+#: src/workflow/nodes/control.py:950
 #, python-brace-format
 msgid "Shape inconsistent: {count} inconsistent items"
 msgstr "Shape inconsistent: {count} inconsistent items"
 
-#: src/workflow/nodes/control.py:894
+#: src/workflow/nodes/control.py:957
 #, python-brace-format
 msgid "⚠️ Shape validation warning: {count} inconsistent items"
 msgstr "⚠️ Shape validation warning: {count} inconsistent items"
@@ -4078,10 +4091,6 @@ msgstr "Load generic supervised targets from CSV/JSON/TXT"
 #: src/workflow/nodes/data_source.py:489
 msgid "Target list"
 msgstr "Target list"
-
-#: src/workflow/nodes/data_source.py:491
-msgid "Target metadata"
-msgstr "Target metadata"
 
 #: src/workflow/nodes/data_source.py:512
 msgid "Target columns"
@@ -4746,14 +4755,6 @@ msgstr "Trainer"
 msgid "Run model training with model config or overridden parameters"
 msgstr "Run model training with model config or overridden parameters"
 
-#: src/workflow/nodes/training.py:306
-msgid "Train targets"
-msgstr "Train targets"
-
-#: src/workflow/nodes/training.py:308
-msgid "Validation targets"
-msgstr "Validation targets"
-
 #: src/workflow/nodes/training.py:310 src/workflow/nodes/training.py:879
 msgid "Training history"
 msgstr "Training history"
@@ -4854,10 +4855,6 @@ msgstr "Evaluator"
 #: src/workflow/nodes/training.py:680
 msgid "Evaluate model performance"
 msgstr "Evaluate model performance"
-
-#: src/workflow/nodes/training.py:686
-msgid "Test targets"
-msgstr "Test targets"
 
 #: src/workflow/nodes/training.py:711
 msgid "No test data provided"
@@ -5269,6 +5266,22 @@ msgstr "Number of sub-bands (output dimension is n_bands + 1)"
 #: src/workflow/nodes/feature/dim2d/stft.py:31
 msgid "Extract STFT spectrogram"
 msgstr "Extract STFT spectrogram"
+
+#~ msgid "Train labels"
+#~ msgstr "Train labels"
+
+#~ msgid "Validation labels"
+#~ msgstr "Validation labels"
+
+#~ msgid "Test labels"
+#~ msgstr "Test labels"
+
+#~ msgid "SplitNode cannot use both labels and targets at the same time"
+#~ msgstr "SplitNode cannot use both labels and targets at the same time"
+
+#, python-brace-format
+#~ msgid "Label count ({labels}) does not match data count ({data})"
+#~ msgstr "Label count ({labels}) does not match data count ({data})"
 
 #~ msgid "File(&F)"
 #~ msgstr "File(&F)"

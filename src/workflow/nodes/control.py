@@ -125,13 +125,14 @@ class SplitNode(BaseNode):
     
     def _setup_ports(self):
         self.add_input("data", DataType.ANY, tr_("Data"))
-        self.add_input("labels", DataType.LABEL, tr_("Labels"), required=False)
+        self.add_input("targets", DataType.ANY, tr_("Targets"), required=False)
+        self.add_input("target_metadata", DataType.ANY, tr_("Target metadata"), required=False)
         self.add_output("train_data", DataType.ANY, tr_("Train data"))
-        self.add_output("train_labels", DataType.LABEL, tr_("Train labels"))
+        self.add_output("train_targets", DataType.ANY, tr_("Train targets"))
         self.add_output("val_data", DataType.ANY, tr_("Validation data"))
-        self.add_output("val_labels", DataType.LABEL, tr_("Validation labels"))
+        self.add_output("val_targets", DataType.ANY, tr_("Validation targets"))
         self.add_output("test_data", DataType.ANY, tr_("Test data"))
-        self.add_output("test_labels", DataType.LABEL, tr_("Test labels"))
+        self.add_output("test_targets", DataType.ANY, tr_("Test targets"))
     
     def _setup_parameters(self):
         self.add_parameter(
@@ -166,7 +167,8 @@ class SplitNode(BaseNode):
     
     def execute(self) -> bool:
         data = self.get_input_data("data")
-        labels = self.get_input_data("labels")
+        targets = self.get_input_data("targets")
+        target_metadata = self.get_input_data("target_metadata") or {}
         
         if data is None:
             self.error_message = tr_("No data provided")
@@ -191,16 +193,33 @@ class SplitNode(BaseNode):
         
         n_samples = len(data)
         indices = np.arange(n_samples)
-        
-        if labels is not None:
-            if not isinstance(labels, (list, np.ndarray)):
-                labels = list(labels)
-            labels = np.array(labels)
+
+        target_values = None
+        if targets is not None:
+            try:
+                target_values = self._to_indexable_targets(targets)
+            except ValueError as e:
+                self.error_message = str(e)
+                return False
+            if len(target_values) != n_samples:
+                self.error_message = tr_(
+                    "Target count ({targets}) does not match data count ({data})"
+                ).format(targets=len(target_values), data=n_samples)
+                return False
+
+        target_kind = self._target_kind(target_metadata)
+        use_target_stratify = (
+            target_values is not None
+            and stratify
+            and shuffle
+            and target_kind == "categorical"
+            and self._can_stratify_targets(target_values, test_ratio)
+        )
         
         try:
             # 第一次分割：分出测试集
             if test_ratio > 0:
-                stratify_arr = labels if (stratify and labels is not None) else None
+                stratify_arr = self._stratify_array(target_values, stratify, use_target_stratify)
                 train_val_idx, test_idx = train_test_split(
                     indices,
                     test_size=test_ratio,
@@ -216,7 +235,12 @@ class SplitNode(BaseNode):
             if val_ratio > 0:
                 # 调整验证集比例（相对于剩余数据）
                 adjusted_val_ratio = val_ratio / (train_ratio + val_ratio)
-                stratify_arr = labels[train_val_idx] if (stratify and labels is not None) else None
+                full_stratify_arr = self._stratify_array(target_values, stratify, use_target_stratify)
+                stratify_arr = None
+                if full_stratify_arr is not None:
+                    candidate = full_stratify_arr[train_val_idx]
+                    if self._can_stratify_targets(candidate, adjusted_val_ratio):
+                        stratify_arr = candidate
                 train_idx, val_idx = train_test_split(
                     train_val_idx,
                     test_size=adjusted_val_ratio,
@@ -232,24 +256,24 @@ class SplitNode(BaseNode):
             train_data = [data[i] for i in train_idx]
             val_data = [data[i] for i in val_idx] if len(val_idx) > 0 else []
             test_data = [data[i] for i in test_idx] if len(test_idx) > 0 else []
-            
-            # 提取标签
-            if labels is not None:
-                train_labels = labels[train_idx].tolist()
-                val_labels = labels[val_idx].tolist() if len(val_idx) > 0 else []
-                test_labels = labels[test_idx].tolist() if len(test_idx) > 0 else []
+
+            # 提取通用目标
+            if target_values is not None:
+                train_targets = self._take_targets(target_values, train_idx)
+                val_targets = self._take_targets(target_values, val_idx) if len(val_idx) > 0 else []
+                test_targets = self._take_targets(target_values, test_idx) if len(test_idx) > 0 else []
             else:
-                train_labels = []
-                val_labels = []
-                test_labels = []
+                train_targets = []
+                val_targets = []
+                test_targets = []
             
             # 设置输出
             self.set_output_data("train_data", train_data)
-            self.set_output_data("train_labels", train_labels)
+            self.set_output_data("train_targets", train_targets)
             self.set_output_data("val_data", val_data)
-            self.set_output_data("val_labels", val_labels)
+            self.set_output_data("val_targets", val_targets)
             self.set_output_data("test_data", test_data)
-            self.set_output_data("test_labels", test_labels)
+            self.set_output_data("test_targets", test_targets)
             
             msg = tr_("Split complete: train={train}, val={val}, test={test}").format(
                 train=len(train_data),
@@ -264,6 +288,45 @@ class SplitNode(BaseNode):
             self.error_message = tr_("Split failed: {error}").format(error=str(e))
             logger.exception("数据分割异常")
             return False
+
+    def _to_indexable_targets(self, targets):
+        if isinstance(targets, dict):
+            raise ValueError(tr_("Split targets must be an ordered target list, not a mapping"))
+        if isinstance(targets, np.ndarray):
+            return targets
+        if isinstance(targets, list):
+            return targets
+        if isinstance(targets, tuple):
+            return list(targets)
+        return list(targets) if hasattr(targets, '__iter__') else [targets]
+
+    def _take_targets(self, targets, indices):
+        if isinstance(targets, np.ndarray):
+            return targets[indices].tolist()
+        return [targets[i] for i in indices]
+
+    def _target_kind(self, target_metadata: Any) -> str:
+        if isinstance(target_metadata, dict):
+            return str(target_metadata.get("kind", "auto"))
+        return "auto"
+
+    def _stratify_array(self, target_values, stratify: bool, use_target_stratify: bool):
+        if not stratify:
+            return None
+        if use_target_stratify:
+            return np.array(target_values)
+        return None
+
+    def _can_stratify_targets(self, target_values, test_size: float) -> bool:
+        values, counts = np.unique(np.array(target_values), return_counts=True)
+        if len(values) < 2 or np.min(counts) < 2:
+            return False
+
+        n_samples = len(target_values)
+        n_test = int(np.ceil(n_samples * test_size))
+        n_train = n_samples - n_test
+        n_classes = len(values)
+        return n_train >= n_classes and n_test >= n_classes
 
 
 @register_node
