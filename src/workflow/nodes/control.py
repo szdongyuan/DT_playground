@@ -6,7 +6,7 @@ Provides workflow control functionality: loops, data splitting, etc.
 """
 
 import logging
-from typing import Any, List, Tuple
+from typing import Any, Dict, List, Tuple
 
 import numpy as np
 from sklearn.model_selection import train_test_split
@@ -264,6 +264,275 @@ class SplitNode(BaseNode):
             self.error_message = tr_("Split failed: {error}").format(error=str(e))
             logger.exception("数据分割异常")
             return False
+
+
+@register_node
+class AlignTargetsNode(BaseNode):
+    """
+    Align sample data and target values by file path keys.
+
+    The node only compares path strings. It does not inspect audio/features or
+    interpret target values.
+    """
+
+    node_type = "align_targets"
+    display_name = tr_("Align targets")
+    category = NodeCategory.CONTROL
+    description = tr_("Align data and targets by file name or path")
+    icon = "🎯"
+
+    MATCH_MODES = ["basename", "relative_path", "full_path", "stem"]
+    MISSING_POLICIES = ["error", "drop", "fill"]
+    DUPLICATE_POLICIES = ["error", "first", "last"]
+
+    def _setup_ports(self):
+        self.add_input("data", DataType.ANY, tr_("Data"), required=False)
+        self.add_input("file_paths", DataType.ANY, tr_("File paths"))
+        self.add_input("targets", DataType.ANY, tr_("Targets"), required=False)
+        self.add_input("target_map", DataType.ANY, tr_("Target map"), required=False)
+        self.add_output("aligned_data", DataType.ANY, tr_("Aligned data"))
+        self.add_output("aligned_targets", DataType.ANY, tr_("Aligned targets"))
+        self.add_output("aligned_file_paths", DataType.ANY, tr_("Aligned file paths"))
+        self.add_output("alignment_report", DataType.ANY, tr_("Alignment report"))
+
+    def _setup_parameters(self):
+        self.add_parameter(
+            "match_mode", "choice", "basename",
+            display_name=tr_("Match mode"),
+            choices=self.MATCH_MODES,
+        )
+        self.add_parameter(
+            "missing_policy", "choice", "error",
+            display_name=tr_("Missing target policy"),
+            choices=self.MISSING_POLICIES,
+        )
+        self.add_parameter(
+            "duplicate_policy", "choice", "error",
+            display_name=tr_("Duplicate target policy"),
+            choices=self.DUPLICATE_POLICIES,
+        )
+        self.add_parameter(
+            "fill_value", "str", "",
+            display_name=tr_("Fill value"),
+            description=tr_("Target value used when missing_policy is fill"),
+        )
+
+    def execute(self) -> bool:
+        try:
+            file_paths = self._as_list(self.get_input_data("file_paths"), "file_paths")
+            data = self.get_input_data("data")
+            data_list = None if data is None else self._as_list(data, "data")
+            target_map = self.get_input_data("target_map")
+            targets = self.get_input_data("targets")
+
+            if not file_paths:
+                self.error_message = tr_("No file paths provided")
+                return False
+
+            if data_list is not None and len(data_list) != len(file_paths):
+                self.error_message = tr_(
+                    "Data count ({data}) does not match file path count ({paths})"
+                ).format(data=len(data_list), paths=len(file_paths))
+                return False
+
+            self._validate_unique_file_path_keys(file_paths)
+
+            if target_map is not None:
+                aligned = self._align_from_map(file_paths, data_list, target_map)
+            elif targets is not None:
+                aligned = self._align_from_ordered_targets(file_paths, data_list, targets)
+            else:
+                self.error_message = tr_("No target_map or targets provided")
+                return False
+
+            self.set_output_data("aligned_data", aligned["data"])
+            self.set_output_data("aligned_targets", aligned["targets"])
+            self.set_output_data("aligned_file_paths", aligned["file_paths"])
+            self.set_output_data("alignment_report", aligned["report"])
+            return True
+        except Exception as e:
+            self.error_message = str(e)
+            return False
+
+    def _align_from_map(self, file_paths: List, data_list: List, target_map: Dict) -> Dict[str, Any]:
+        if not isinstance(target_map, dict):
+            raise ValueError(tr_("target_map must be a dictionary"))
+
+        normalized_map, duplicates, source_keys = self._normalize_target_map(target_map)
+        missing_policy = self.get_parameter("missing_policy")
+        fill_value = self.get_parameter("fill_value")
+
+        aligned_data = []
+        aligned_targets = []
+        aligned_paths = []
+        missing_paths = []
+        dropped_count = 0
+        filled_count = 0
+        used_keys = set()
+
+        for index, file_path in enumerate(file_paths):
+            normalized_key = self._match_key(file_path)
+            if normalized_key in normalized_map:
+                used_keys.add(normalized_key)
+                aligned_paths.append(file_path)
+                aligned_targets.append(normalized_map[normalized_key])
+                if data_list is not None:
+                    aligned_data.append(data_list[index])
+            elif missing_policy == "error":
+                missing_paths.append(file_path)
+            elif missing_policy == "drop":
+                missing_paths.append(file_path)
+                dropped_count += 1
+            else:
+                missing_paths.append(file_path)
+                filled_count += 1
+                aligned_paths.append(file_path)
+                aligned_targets.append(fill_value)
+                if data_list is not None:
+                    aligned_data.append(data_list[index])
+
+        if missing_policy == "error" and missing_paths:
+            raise ValueError(
+                tr_("Missing targets for file paths: {paths}").format(
+                    paths=", ".join(str(path) for path in missing_paths)
+                )
+            )
+
+        unused_target_keys = []
+        for normalized_key, keys in source_keys.items():
+            if normalized_key not in used_keys:
+                unused_target_keys.extend(keys)
+
+        report = self._base_report(len(file_paths))
+        report.update({
+            "matched_count": len(aligned_targets) - filled_count,
+            "missing_count": len(missing_paths),
+            "duplicate_count": len(duplicates),
+            "dropped_count": dropped_count,
+            "filled_count": filled_count,
+            "unused_count": len(unused_target_keys),
+            "missing_file_paths": missing_paths,
+            "duplicate_target_keys": duplicates,
+            "unused_target_keys": unused_target_keys,
+            "ordered_mode": False,
+        })
+
+        return {
+            "data": aligned_data,
+            "targets": aligned_targets,
+            "file_paths": aligned_paths,
+            "report": report,
+        }
+
+    def _align_from_ordered_targets(self, file_paths: List, data_list: List, targets) -> Dict[str, Any]:
+        target_list = self._as_list(targets, "targets")
+        if len(target_list) != len(file_paths):
+            raise ValueError(
+                tr_("Target count ({targets}) does not match file path count ({paths})").format(
+                    targets=len(target_list),
+                    paths=len(file_paths),
+                )
+            )
+
+        report = self._base_report(len(file_paths))
+        report.update({
+            "matched_count": len(target_list),
+            "missing_count": 0,
+            "duplicate_count": 0,
+            "dropped_count": 0,
+            "filled_count": 0,
+            "unused_count": 0,
+            "missing_file_paths": [],
+            "duplicate_target_keys": [],
+            "unused_target_keys": [],
+            "ordered_mode": True,
+        })
+
+        return {
+            "data": data_list or [],
+            "targets": target_list,
+            "file_paths": file_paths,
+            "report": report,
+        }
+
+    def _normalize_target_map(self, target_map: Dict) -> Tuple[Dict[str, Any], List[str], Dict[str, List[str]]]:
+        duplicate_policy = self.get_parameter("duplicate_policy")
+        normalized_map = {}
+        duplicates = []
+        source_keys = {}
+
+        for key, value in target_map.items():
+            normalized_key = self._match_key(key)
+            source_keys.setdefault(normalized_key, []).append(key)
+            if normalized_key in normalized_map:
+                if normalized_key not in duplicates:
+                    duplicates.append(normalized_key)
+                if duplicate_policy == "error":
+                    continue
+                if duplicate_policy == "last":
+                    normalized_map[normalized_key] = value
+            else:
+                normalized_map[normalized_key] = value
+
+        if duplicates and duplicate_policy == "error":
+            raise ValueError(
+                tr_("Duplicate target keys after {mode} matching: {keys}").format(
+                    mode=self.get_parameter("match_mode"),
+                    keys=", ".join(duplicates),
+                )
+            )
+
+        return normalized_map, duplicates, source_keys
+
+    def _validate_unique_file_path_keys(self, file_paths: List):
+        seen = set()
+        duplicates = []
+        for file_path in file_paths:
+            normalized_key = self._match_key(file_path)
+            if normalized_key in seen and normalized_key not in duplicates:
+                duplicates.append(normalized_key)
+            seen.add(normalized_key)
+
+        if duplicates:
+            raise ValueError(
+                tr_("Duplicate file path keys after {mode} matching: {keys}").format(
+                    mode=self.get_parameter("match_mode"),
+                    keys=", ".join(duplicates),
+                )
+            )
+
+    def _base_report(self, total_samples: int) -> Dict[str, Any]:
+        return {
+            "total_samples": total_samples,
+            "match_mode": self.get_parameter("match_mode"),
+            "missing_policy": self.get_parameter("missing_policy"),
+            "duplicate_policy": self.get_parameter("duplicate_policy"),
+        }
+
+    def _match_key(self, path_value) -> str:
+        path = str(path_value).replace("\\", "/").rstrip("/")
+        match_mode = self.get_parameter("match_mode")
+
+        if match_mode == "full_path":
+            return path
+        if match_mode == "relative_path":
+            return path[2:] if path.startswith("./") else path
+
+        basename = path.rsplit("/", 1)[-1]
+        if match_mode == "stem":
+            return basename.rsplit(".", 1)[0] if "." in basename else basename
+        return basename
+
+    def _as_list(self, value, name: str) -> List:
+        if value is None:
+            raise ValueError(tr_("No {name} provided").format(name=name))
+        if isinstance(value, np.ndarray):
+            return list(value)
+        if isinstance(value, list):
+            return value
+        if isinstance(value, tuple):
+            return list(value)
+        return [value]
 
 
 @register_node
