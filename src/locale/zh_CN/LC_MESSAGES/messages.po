@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-28 09:01+0800\n"
+"POT-Creation-Date: 2026-05-28 11:55+0800\n"
 "PO-Revision-Date: 2026-02-04 17:15+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -570,7 +570,7 @@ msgstr "形状变换"
 msgid "Activation"
 msgstr "激活"
 
-#: src/model_builder/layer_base.py:56 src/workflow/nodes/control.py:547
+#: src/model_builder/layer_base.py:56 src/workflow/nodes/control.py:610
 msgid "Merge"
 msgstr "合并"
 
@@ -3242,7 +3242,7 @@ msgid "Duplicate audio and labels together for sample expansion"
 msgstr "同步复制音频和标签以扩增样本"
 
 #: src/workflow/nodes/augmentation.py:39 src/workflow/nodes/augmentation.py:41
-#: src/workflow/nodes/control.py:128 src/workflow/nodes/data_source.py:775
+#: src/workflow/nodes/data_source.py:775
 msgid "Labels"
 msgstr "标签"
 
@@ -3562,7 +3562,7 @@ msgstr "0 表示不限制"
 msgid "No data list provided"
 msgstr "未提供数据列表"
 
-#: src/workflow/nodes/control.py:83 src/workflow/nodes/control.py:779
+#: src/workflow/nodes/control.py:83 src/workflow/nodes/control.py:842
 msgid "Data list is empty"
 msgstr "数据列表为空"
 
@@ -3574,333 +3574,346 @@ msgstr "划分数据集"
 msgid "Split data into train/val/test sets"
 msgstr "将数据划分为训练/验证/测试集"
 
-#: src/workflow/nodes/control.py:127 src/workflow/nodes/control.py:289
-#: src/workflow/nodes/control.py:657 src/workflow/nodes/control.py:658
+#: src/workflow/nodes/control.py:127 src/workflow/nodes/control.py:352
+#: src/workflow/nodes/control.py:720 src/workflow/nodes/control.py:721
 msgid "Data"
 msgstr "数据"
 
-#: src/workflow/nodes/control.py:129 src/workflow/nodes/training.py:305
+#: src/workflow/nodes/control.py:128 src/workflow/nodes/control.py:354
+msgid "Targets"
+msgstr "目标"
+
+#: src/workflow/nodes/control.py:129 src/workflow/nodes/data_source.py:491
+msgid "Target metadata"
+msgstr "目标元数据"
+
+#: src/workflow/nodes/control.py:130 src/workflow/nodes/training.py:305
 msgid "Train data"
 msgstr "训练数据"
 
-#: src/workflow/nodes/control.py:130
-msgid "Train labels"
-msgstr "训练标签"
+#: src/workflow/nodes/control.py:131 src/workflow/nodes/training.py:306
+msgid "Train targets"
+msgstr "训练目标"
 
-#: src/workflow/nodes/control.py:131 src/workflow/nodes/training.py:307
+#: src/workflow/nodes/control.py:132 src/workflow/nodes/training.py:307
 msgid "Validation data"
 msgstr "验证数据"
 
-#: src/workflow/nodes/control.py:132
-msgid "Validation labels"
-msgstr "验证标签"
+#: src/workflow/nodes/control.py:133 src/workflow/nodes/training.py:308
+msgid "Validation targets"
+msgstr "验证目标"
 
-#: src/workflow/nodes/control.py:133 src/workflow/nodes/training.py:685
+#: src/workflow/nodes/control.py:134 src/workflow/nodes/training.py:685
 msgid "Test data"
 msgstr "测试数据"
 
-#: src/workflow/nodes/control.py:134
-msgid "Test labels"
-msgstr "测试标签"
+#: src/workflow/nodes/control.py:135 src/workflow/nodes/training.py:686
+msgid "Test targets"
+msgstr "测试目标"
 
-#: src/workflow/nodes/control.py:139
+#: src/workflow/nodes/control.py:140
 msgid "Train ratio"
 msgstr "训练比例"
 
-#: src/workflow/nodes/control.py:144
+#: src/workflow/nodes/control.py:145
 msgid "Validation ratio"
 msgstr "验证比例"
 
-#: src/workflow/nodes/control.py:149
+#: src/workflow/nodes/control.py:150
 msgid "Test ratio"
 msgstr "测试比例"
 
-#: src/workflow/nodes/control.py:154
+#: src/workflow/nodes/control.py:155
 msgid "Shuffle"
 msgstr "打乱"
 
-#: src/workflow/nodes/control.py:158
+#: src/workflow/nodes/control.py:159
 msgid "Stratify"
 msgstr "分层抽样"
 
-#: src/workflow/nodes/control.py:159
+#: src/workflow/nodes/control.py:160
 msgid "Keep class proportions"
 msgstr "保持类别比例"
 
-#: src/workflow/nodes/control.py:163
+#: src/workflow/nodes/control.py:164
 msgid "Random seed"
 msgstr "随机种子"
 
-#: src/workflow/nodes/control.py:172 src/workflow/nodes/control.py:771
+#: src/workflow/nodes/control.py:174 src/workflow/nodes/control.py:834
 msgid "No data provided"
 msgstr "未提供数据"
 
-#: src/workflow/nodes/control.py:254
+#: src/workflow/nodes/control.py:206
+#, python-brace-format
+msgid "Target count ({targets}) does not match data count ({data})"
+msgstr "目标数量（{targets}）与数据数量（{data}）不一致"
+
+#: src/workflow/nodes/control.py:278
 #, python-brace-format
 msgid "Split complete: train={train}, val={val}, test={test}"
 msgstr "划分完成：训练={train}，验证={val}，测试={test}"
 
-#: src/workflow/nodes/control.py:264
+#: src/workflow/nodes/control.py:288
 #, python-brace-format
 msgid "Split failed: {error}"
 msgstr "划分失败：{error}"
 
-#: src/workflow/nodes/control.py:279
+#: src/workflow/nodes/control.py:294
+msgid "Split targets must be an ordered target list, not a mapping"
+msgstr "划分目标必须是有序目标列表，不能是映射"
+
+#: src/workflow/nodes/control.py:342
 msgid "Align targets"
 msgstr "对齐目标"
 
-#: src/workflow/nodes/control.py:281
+#: src/workflow/nodes/control.py:344
 msgid "Align data and targets by file name or path"
 msgstr "按文件名或路径对齐数据和目标"
 
-#: src/workflow/nodes/control.py:290
+#: src/workflow/nodes/control.py:353
 msgid "File paths"
 msgstr "文件路径列表"
 
-#: src/workflow/nodes/control.py:291 src/workflow/nodes/data_source.py:490
+#: src/workflow/nodes/control.py:355 src/workflow/nodes/data_source.py:490
 msgid "Target map"
 msgstr "目标映射"
 
-#: src/workflow/nodes/control.py:292
-msgid "Targets"
-msgstr "目标"
-
-#: src/workflow/nodes/control.py:293
+#: src/workflow/nodes/control.py:356
 msgid "Aligned data"
 msgstr "已对齐数据"
 
-#: src/workflow/nodes/control.py:294
+#: src/workflow/nodes/control.py:357
 msgid "Aligned targets"
 msgstr "已对齐目标"
 
-#: src/workflow/nodes/control.py:295
+#: src/workflow/nodes/control.py:358
 msgid "Aligned file paths"
 msgstr "已对齐文件路径"
 
-#: src/workflow/nodes/control.py:296
+#: src/workflow/nodes/control.py:359
 msgid "Alignment report"
 msgstr "对齐报告"
 
-#: src/workflow/nodes/control.py:301
+#: src/workflow/nodes/control.py:364
 msgid "Match mode"
 msgstr "匹配模式"
 
-#: src/workflow/nodes/control.py:306
+#: src/workflow/nodes/control.py:369
 msgid "Missing target policy"
 msgstr "缺失目标策略"
 
-#: src/workflow/nodes/control.py:311
+#: src/workflow/nodes/control.py:374
 msgid "Duplicate target policy"
 msgstr "重复目标策略"
 
-#: src/workflow/nodes/control.py:316
+#: src/workflow/nodes/control.py:379
 msgid "Fill value"
 msgstr "填充值"
 
-#: src/workflow/nodes/control.py:317
+#: src/workflow/nodes/control.py:380
 msgid "Target value used when missing_policy is fill"
 msgstr "missing_policy 为 fill 时使用的目标值"
 
-#: src/workflow/nodes/control.py:329
+#: src/workflow/nodes/control.py:392
 msgid "No file paths provided"
 msgstr "未提供文件路径"
 
-#: src/workflow/nodes/control.py:334
+#: src/workflow/nodes/control.py:397
 #, python-brace-format
 msgid "Data count ({data}) does not match file path count ({paths})"
 msgstr "数据数量（{data}）与文件路径数量（{paths}）不一致"
 
-#: src/workflow/nodes/control.py:345
+#: src/workflow/nodes/control.py:408
 msgid "No target_map or targets provided"
 msgstr "未提供 target_map 或 targets"
 
-#: src/workflow/nodes/control.py:359
+#: src/workflow/nodes/control.py:422
 msgid "target_map must be a dictionary"
 msgstr "target_map 必须是字典"
 
-#: src/workflow/nodes/control.py:396
+#: src/workflow/nodes/control.py:459
 #, python-brace-format
 msgid "Missing targets for file paths: {paths}"
 msgstr "以下文件路径缺少目标：{paths}"
 
-#: src/workflow/nodes/control.py:431
+#: src/workflow/nodes/control.py:494
 #, python-brace-format
 msgid "Target count ({targets}) does not match file path count ({paths})"
 msgstr "目标数量（{targets}）与文件路径数量（{paths}）不一致"
 
-#: src/workflow/nodes/control.py:479
+#: src/workflow/nodes/control.py:542
 #, python-brace-format
 msgid "Duplicate target keys after {mode} matching: {keys}"
 msgstr "按 {mode} 匹配后存在重复目标键：{keys}"
 
-#: src/workflow/nodes/control.py:498
+#: src/workflow/nodes/control.py:561
 #, python-brace-format
 msgid "Duplicate file path keys after {mode} matching: {keys}"
 msgstr "按 {mode} 匹配后存在重复文件路径键：{keys}"
 
-#: src/workflow/nodes/control.py:528
+#: src/workflow/nodes/control.py:591
 #, python-brace-format
 msgid "No {name} provided"
 msgstr "未提供 {name}"
 
-#: src/workflow/nodes/control.py:549
+#: src/workflow/nodes/control.py:612
 msgid "Merge multiple data sources"
 msgstr "合并多个数据源"
 
-#: src/workflow/nodes/control.py:553
+#: src/workflow/nodes/control.py:616
 msgid "Data 1"
 msgstr "数据 1"
 
-#: src/workflow/nodes/control.py:554 src/workflow/nodes/control.py:661
-#: src/workflow/nodes/control.py:662
+#: src/workflow/nodes/control.py:617 src/workflow/nodes/control.py:724
+#: src/workflow/nodes/control.py:725
 msgid "Data 2"
 msgstr "数据 2"
 
-#: src/workflow/nodes/control.py:555
+#: src/workflow/nodes/control.py:618
 msgid "Data 3"
 msgstr "数据 3"
 
-#: src/workflow/nodes/control.py:556
+#: src/workflow/nodes/control.py:619
 msgid "Data 4"
 msgstr "数据 4"
 
-#: src/workflow/nodes/control.py:557
+#: src/workflow/nodes/control.py:620
 msgid "Merged data"
 msgstr "合并后的数据"
 
-#: src/workflow/nodes/control.py:562
+#: src/workflow/nodes/control.py:625
 msgid "Merge mode"
 msgstr "合并模式"
 
-#: src/workflow/nodes/control.py:582
+#: src/workflow/nodes/control.py:645
 msgid "No valid data provided"
 msgstr "未提供有效数据"
 
-#: src/workflow/nodes/control.py:617
+#: src/workflow/nodes/control.py:680
 msgid "Passthrough"
 msgstr "透传"
 
-#: src/workflow/nodes/control.py:619
+#: src/workflow/nodes/control.py:682
 msgid "Pass data through without modification"
 msgstr "不做修改地透传数据"
 
-#: src/workflow/nodes/control.py:626
+#: src/workflow/nodes/control.py:689
 msgid "In"
 msgstr "输入"
 
-#: src/workflow/nodes/control.py:627
+#: src/workflow/nodes/control.py:690
 msgid "Out"
 msgstr "输出"
 
-#: src/workflow/nodes/control.py:647
+#: src/workflow/nodes/control.py:710
 msgid "Breakpoint"
 msgstr "断点"
 
-#: src/workflow/nodes/control.py:649
+#: src/workflow/nodes/control.py:712
 msgid "Pause workflow execution to inspect data"
 msgstr "暂停工作流执行以检查数据"
 
-#: src/workflow/nodes/control.py:667
+#: src/workflow/nodes/control.py:730
 msgid "Enable breakpoint"
 msgstr "启用断点"
 
-#: src/workflow/nodes/control.py:668
+#: src/workflow/nodes/control.py:731
 msgid "Pause execution at this node"
 msgstr "在此节点暂停执行"
 
-#: src/workflow/nodes/control.py:672
+#: src/workflow/nodes/control.py:735
 msgid "Breakpoint description"
 msgstr "断点说明"
 
-#: src/workflow/nodes/control.py:673
+#: src/workflow/nodes/control.py:736
 msgid "Describe the purpose of this breakpoint"
 msgstr "描述此断点的用途"
 
-#: src/workflow/nodes/control.py:690
+#: src/workflow/nodes/control.py:753
 #, python-brace-format
 msgid "Breakpoint: {desc}"
 msgstr "断点：{desc}"
 
-#: src/workflow/nodes/control.py:692
+#: src/workflow/nodes/control.py:755
 msgid "Breakpoint triggered"
 msgstr "断点已触发"
 
-#: src/workflow/nodes/control.py:713
+#: src/workflow/nodes/control.py:776
 msgid "Validate shape"
 msgstr "形状校验"
 
-#: src/workflow/nodes/control.py:715
+#: src/workflow/nodes/control.py:778
 msgid "Validate shape consistency in a batch"
 msgstr "校验批次内形状一致性"
 
-#: src/workflow/nodes/control.py:719
+#: src/workflow/nodes/control.py:782
 msgid "Batch data"
 msgstr "批数据"
 
-#: src/workflow/nodes/control.py:720
+#: src/workflow/nodes/control.py:783
 msgid "Validated data"
 msgstr "已校验数据"
 
-#: src/workflow/nodes/control.py:721
+#: src/workflow/nodes/control.py:784
 msgid "Is valid"
 msgstr "是否有效"
 
-#: src/workflow/nodes/control.py:722
+#: src/workflow/nodes/control.py:785
 msgid "Shape info"
 msgstr "形状信息"
 
-#: src/workflow/nodes/control.py:727
+#: src/workflow/nodes/control.py:790
 msgid "Strict mode"
 msgstr "严格模式"
 
-#: src/workflow/nodes/control.py:728
+#: src/workflow/nodes/control.py:791
 msgid "Stop workflow on inconsistency (otherwise warn only)"
 msgstr "发现不一致时停止工作流（否则仅警告）"
 
-#: src/workflow/nodes/control.py:732
+#: src/workflow/nodes/control.py:795
 msgid "Ignore batch dimension"
 msgstr "忽略 batch 维度"
 
-#: src/workflow/nodes/control.py:733
+#: src/workflow/nodes/control.py:796
 msgid "Ignore differences in the first dimension (batch dimension)"
 msgstr "忽略第一维（batch 维度）的差异"
 
-#: src/workflow/nodes/control.py:830
+#: src/workflow/nodes/control.py:893
 #, python-brace-format
 msgid "✅ Shape validation passed: {count} items, shape: {shape}"
 msgstr "✅ 形状校验通过：{count} 项，形状：{shape}"
 
-#: src/workflow/nodes/control.py:854
+#: src/workflow/nodes/control.py:917
 #, python-brace-format
 msgid "❌ Shape validation failed: {count} inconsistent items"
 msgstr "❌ 形状校验失败：{count} 个不一致项"
 
-#: src/workflow/nodes/control.py:857
+#: src/workflow/nodes/control.py:920
 #, python-brace-format
 msgid "   Expected shape: {shape}"
 msgstr "   期望形状：{shape}"
 
-#: src/workflow/nodes/control.py:858
+#: src/workflow/nodes/control.py:921
 #, python-brace-format
 msgid "   Shape distribution: {dist}"
 msgstr "   形状分布：{dist}"
 
-#: src/workflow/nodes/control.py:864
+#: src/workflow/nodes/control.py:927
 #, python-brace-format
 msgid "   - Index {index}: expected {expected}, got {actual}"
 msgstr "   - 索引 {index}：期望 {expected}，实际 {actual}"
 
-#: src/workflow/nodes/control.py:873
+#: src/workflow/nodes/control.py:936
 #, python-brace-format
 msgid "   ... and {count} more"
 msgstr "   ... 以及另外 {count} 项"
 
-#: src/workflow/nodes/control.py:887
+#: src/workflow/nodes/control.py:950
 #, python-brace-format
 msgid "Shape inconsistent: {count} inconsistent items"
 msgstr "形状不一致：{count} 个不一致项"
 
-#: src/workflow/nodes/control.py:894
+#: src/workflow/nodes/control.py:957
 #, python-brace-format
 msgid "⚠️ Shape validation warning: {count} inconsistent items"
 msgstr "⚠️ 形状校验警告：{count} 个不一致项"
@@ -4068,10 +4081,6 @@ msgstr "从 CSV/JSON/TXT 加载通用监督目标"
 #: src/workflow/nodes/data_source.py:489
 msgid "Target list"
 msgstr "目标列表"
-
-#: src/workflow/nodes/data_source.py:491
-msgid "Target metadata"
-msgstr "目标元数据"
 
 #: src/workflow/nodes/data_source.py:512
 msgid "Target columns"
@@ -4731,14 +4740,6 @@ msgstr "训练器"
 msgid "Run model training with model config or overridden parameters"
 msgstr "使用模型配置或覆盖参数运行模型训练"
 
-#: src/workflow/nodes/training.py:306
-msgid "Train targets"
-msgstr "训练目标"
-
-#: src/workflow/nodes/training.py:308
-msgid "Validation targets"
-msgstr "验证目标"
-
 #: src/workflow/nodes/training.py:310 src/workflow/nodes/training.py:879
 msgid "Training history"
 msgstr "训练历史"
@@ -4836,10 +4837,6 @@ msgstr "评估器"
 #: src/workflow/nodes/training.py:680
 msgid "Evaluate model performance"
 msgstr "评估模型性能"
-
-#: src/workflow/nodes/training.py:686
-msgid "Test targets"
-msgstr "测试目标"
 
 #: src/workflow/nodes/training.py:711
 msgid "No test data provided"
@@ -5247,6 +5244,22 @@ msgstr "子频带数量（输出维度为 n_bands + 1）"
 #: src/workflow/nodes/feature/dim2d/stft.py:31
 msgid "Extract STFT spectrogram"
 msgstr "提取 STFT 频谱图"
+
+#~ msgid "Train labels"
+#~ msgstr "训练标签"
+
+#~ msgid "Validation labels"
+#~ msgstr "验证标签"
+
+#~ msgid "Test labels"
+#~ msgstr "测试标签"
+
+#~ msgid "SplitNode cannot use both labels and targets at the same time"
+#~ msgstr "SplitNode 不能同时使用 labels 和 targets"
+
+#, python-brace-format
+#~ msgid "Label count ({labels}) does not match data count ({data})"
+#~ msgstr "标签数量（{labels}）与数据数量（{data}）不一致"
 
 #~ msgid "File(&F)"
 #~ msgstr "文件(&F)"
