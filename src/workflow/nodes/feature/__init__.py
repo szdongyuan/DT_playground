@@ -32,8 +32,9 @@ from .dim2d import (
     SpectralContrastNode,
 )
 
-# Import AI feature node
+# Import AI feature nodes
 from .ai_embedding import AIFeatureExtractionNode
+from .grad_cam import GradCAMNode
 
 __all__ = [
     # Base
@@ -52,4 +53,5 @@ __all__ = [
     'SpectralContrastNode',
     # AI node
     'AIFeatureExtractionNode',
+    'GradCAMNode',
 ]

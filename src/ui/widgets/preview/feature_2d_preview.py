@@ -59,9 +59,9 @@ class Feature2DPreviewWidget(BasePreviewWidget):
         layout.addWidget(splitter)
         
         # 热力图
-        heatmap_group = QGroupBox(tr_("2D feature heatmap"))
-        heatmap_group.setStyleSheet(Styles.group_box(Styles.COLORS['purple']))
-        heatmap_layout = QVBoxLayout(heatmap_group)
+        self._heatmap_group = QGroupBox(tr_("2D feature heatmap"))
+        self._heatmap_group.setStyleSheet(Styles.group_box(Styles.COLORS['purple']))
+        heatmap_layout = QVBoxLayout(self._heatmap_group)
         heatmap_layout.setContentsMargins(4, 4, 4, 4)
         
         if HAS_PYQTGRAPH:
@@ -93,7 +93,7 @@ class Feature2DPreviewWidget(BasePreviewWidget):
             """)
             heatmap_layout.addWidget(placeholder)
         
-        splitter.addWidget(heatmap_group)
+        splitter.addWidget(self._heatmap_group)
         
         # 时间维度均值曲线
         curve_group = QGroupBox(tr_("Mean over time"))
@@ -191,11 +191,12 @@ class Feature2DPreviewWidget(BasePreviewWidget):
             
             # 更新数据信息
             self._update_data_info(
-                f"🗺️ FEATURE_2D  shape={array.shape}  ch={channels}  "
+                f"{self._feature_icon(feature_type)} FEATURE_2D  shape={array.shape}  ch={channels}  "
                 f"dtype={array.dtype}  type={feature_type}"
             )
             
             if HAS_PYQTGRAPH:
+                self._apply_colormap(feature_type)
                 # 显示热力图
                 # 转置使时间为x轴，频率为y轴
                 self._image_view.setImage(
@@ -209,7 +210,8 @@ class Feature2DPreviewWidget(BasePreviewWidget):
                 self._curve_widget.setXRange(0, len(mean_curve))
             
             # 更新统计信息
-            self._update_stats(display_array)
+            self._update_title(feature_type)
+            self._update_stats(display_array, feature_type)
             
             self.data_changed.emit()
             return True
@@ -218,14 +220,48 @@ class Feature2DPreviewWidget(BasePreviewWidget):
             logger.error(f"设置特征数据失败: {e}")
             return False
     
-    def _update_stats(self, array: np.ndarray):
+    def _feature_icon(self, feature_type: str) -> str:
+        if feature_type == "grad_cam":
+            return "🔥"
+        if feature_type == "grad_cam_overlay":
+            return "🧩"
+        return "🗺️"
+
+    def _update_title(self, feature_type: str):
+        if feature_type == "grad_cam":
+            self._heatmap_group.setTitle(tr_("Grad-CAM heatmap"))
+        elif feature_type == "grad_cam_overlay":
+            self._heatmap_group.setTitle(tr_("Grad-CAM overlay"))
+        else:
+            self._heatmap_group.setTitle(tr_("2D feature heatmap"))
+
+    def _apply_colormap(self, feature_type: str):
+        if not HAS_PYQTGRAPH:
+            return
+        colormap_name = "viridis"
+        if feature_type == "grad_cam":
+            colormap_name = "inferno"
+        elif feature_type == "grad_cam_overlay":
+            colormap_name = "magma"
+        try:
+            self._image_view.setColorMap(pg.colormap.get(colormap_name))
+        except Exception:
+            self._image_view.setColorMap(pg.colormap.get("viridis"))
+
+    def _update_stats(self, array: np.ndarray, feature_type: str = ""):
         """更新统计信息"""
         if array.size == 0:
             self._stats_label.setText(tr_("No data"))
             return
+        note = ""
+        if feature_type == "grad_cam":
+            note = tr_("  Note: higher values indicate stronger class evidence.\n")
+        elif feature_type == "grad_cam_overlay":
+            note = tr_("  Note: normalized source feature blended with Grad-CAM intensity.\n")
         
         stats_text = (
-            tr_("  Shape: {h} × {w} (features × frames)\n").format(h=array.shape[0], w=array.shape[1])
+            note
+            + tr_("  Shape: {h} × {w} (features × frames)\n").format(h=array.shape[0], w=array.shape[1])
             + tr_("  Elements: {n:,}\n").format(n=int(array.size))
             + tr_("  Min: {value:.6f}\n").format(value=float(np.min(array)))
             + tr_("  Max: {value:.6f}\n").format(value=float(np.max(array)))
@@ -238,6 +274,7 @@ class Feature2DPreviewWidget(BasePreviewWidget):
         """清除显示"""
         self._current_data = None
         self._data_info = ""
+        self._heatmap_group.setTitle(tr_("2D feature heatmap"))
         if HAS_PYQTGRAPH:
             self._image_view.clear()
             self._mean_curve.clear()
