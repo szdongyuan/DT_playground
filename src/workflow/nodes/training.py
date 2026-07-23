@@ -16,6 +16,55 @@ from src.ui.i18n import tr_
 logger = logging.getLogger(__name__)
 
 
+def _target_validation_reason(
+    task_kind: str,
+    targets,
+    target_metadata: dict | None = None,
+) -> str | None:
+    """Return a stable reason code when targets do not match a task."""
+    import numpy as np
+
+    metadata = target_metadata if isinstance(target_metadata, dict) else {}
+    target_kind = str(metadata.get("kind", "auto")).lower()
+    values = np.asarray(targets)
+
+    if values.size == 0:
+        return "empty"
+
+    if task_kind == "classification":
+        if target_kind in {"continuous", "array", "sequence"}:
+            return "classification"
+        if target_kind == "categorical":
+            return None
+        if values.ndim == 1:
+            if np.issubdtype(values.dtype, np.number):
+                finite = values[np.isfinite(values)]
+                is_integer_like = finite.size == values.size and np.allclose(
+                    finite,
+                    np.round(finite),
+                )
+                if not is_integer_like:
+                    return "classification"
+            return None
+        if values.ndim == 2 and values.shape[1] > 1:
+            is_one_hot = (
+                np.issubdtype(values.dtype, np.number)
+                and np.all((values >= 0) & (values <= 1))
+                and np.allclose(values.sum(axis=1), 1.0)
+            )
+            if is_one_hot:
+                return None
+        return "classification"
+
+    if task_kind == "regression":
+        if target_kind == "categorical":
+            return "regression"
+        if not np.issubdtype(values.dtype, np.number) or not np.all(np.isfinite(values)):
+            return "regression"
+
+    return None
+
+
 @register_node
 class LoadModelNode(BaseNode):
     """
@@ -30,6 +79,9 @@ class LoadModelNode(BaseNode):
     node_type = "load_model"
     display_name = tr_("Load model")
     category = NodeCategory.TRAINING
+    subcategory = tr_("Model management")
+    subcategory_order = 40
+    palette_order = 10
     description = tr_(
         "Load model files (Keras models or model editor definitions) and use the model's built-in compile configuration"
     )
@@ -166,6 +218,9 @@ class SaveModelNode(BaseNode):
     node_type = "save_model"
     display_name = tr_("Save model")
     category = NodeCategory.TRAINING
+    subcategory = tr_("Model management")
+    subcategory_order = 40
+    palette_order = 20
     description = tr_("Save the trained model to a file")
     icon = "📤"
     
@@ -299,6 +354,8 @@ class TrainerNode(BaseNode):
     category = NodeCategory.TRAINING
     description = tr_("Run model training with model config or overridden parameters")
     icon = "🏋️"
+    visible_in_palette = False
+    task_kind = "legacy"
     
     def _setup_ports(self):
         self.add_input("model", DataType.MODEL, tr_("Model"))
@@ -306,6 +363,7 @@ class TrainerNode(BaseNode):
         self.add_input("y_train", DataType.ANY, tr_("Train targets"))  # ANY supports autoencoders
         self.add_input("x_val", DataType.ANY, tr_("Validation data"), required=False)
         self.add_input("y_val", DataType.ANY, tr_("Validation targets"), required=False)
+        self.add_input("target_metadata", DataType.ANY, tr_("Target metadata"), required=False)
         
         self.add_output("history", DataType.ANY, tr_("Training history"))
         self.add_output("trained_model", DataType.MODEL, tr_("Trained model"))
@@ -372,6 +430,7 @@ class TrainerNode(BaseNode):
             y_train = self.get_input_data("y_train")
             x_val = self.get_input_data("x_val")
             y_val = self.get_input_data("y_val")
+            target_metadata = self.get_input_data("target_metadata") or {}
             
             if model is None:
                 self.error_message = tr_("No model provided")
@@ -379,6 +438,11 @@ class TrainerNode(BaseNode):
             
             if x_train is None or y_train is None:
                 self.error_message = tr_("No training data provided")
+                return False
+
+            valid_targets, target_error = self._validate_targets(y_train, target_metadata)
+            if not valid_targets:
+                self.error_message = target_error
                 return False
             
             # 转换为numpy数组（支持AudioData列表或特征列表）
@@ -403,6 +467,10 @@ class TrainerNode(BaseNode):
                         "Model is not compiled. Ensure it has compile config or disable 'Use model config'."
                     )
                     return False
+                valid_loss, loss_error = self._validate_model_loss(model)
+                if not valid_loss:
+                    self.error_message = loss_error
+                    return False
                 # 获取已编译模型的配置信息用于日志
                 optimizer_config = model.optimizer.get_config() if model.optimizer else {}
                 optimizer_name = optimizer_config.get('name', 'unknown')
@@ -424,7 +492,7 @@ class TrainerNode(BaseNode):
                 
                 # 处理 auto 损失函数
                 if loss_param == "auto":
-                    loss = CompileConfig.auto_detect_loss(Y)
+                    loss = self._resolve_auto_loss(Y, target_metadata)
                 else:
                     loss = loss_param
                 
@@ -550,6 +618,52 @@ class TrainerNode(BaseNode):
             self.error_message = tr_("Training failed: {error}").format(error=str(e))
             logger.exception("训练异常")
             return False
+
+    def _validate_targets(self, targets, target_metadata: dict | None = None):
+        """Validate target semantics for the selected trainer task."""
+        reason = _target_validation_reason(
+            self.task_kind,
+            targets,
+            target_metadata,
+        )
+        if reason == "empty":
+            return False, tr_("Training targets are empty")
+        if reason == "classification":
+            return False, tr_("Classification trainer requires categorical targets")
+        if reason == "regression":
+            return False, tr_("Regression trainer requires continuous numeric targets")
+        return True, ""
+
+    def _resolve_auto_loss(self, targets, target_metadata: dict | None = None) -> str:
+        """Resolve an automatic loss using explicit task semantics first."""
+        from src.model_builder.model_graph import CompileConfig
+
+        if self.task_kind == "regression":
+            return "mse"
+        if self.task_kind == "classification":
+            return CompileConfig.auto_detect_loss(targets)
+
+        metadata = target_metadata if isinstance(target_metadata, dict) else {}
+        target_kind = str(metadata.get("kind", "auto")).lower()
+        if target_kind in {"continuous", "array", "sequence"}:
+            return "mse"
+        return CompileConfig.auto_detect_loss(targets)
+
+    def _validate_model_loss(self, model):
+        """Reject an obviously incompatible built-in loss for task-specific nodes."""
+        loss = getattr(model, "loss", "")
+        loss_name = loss if isinstance(loss, str) else getattr(loss, "__name__", str(loss))
+        loss_name = str(loss_name).lower()
+
+        if self.task_kind == "classification" and "crossentropy" not in loss_name:
+            return False, tr_(
+                "Classification trainer requires a classification loss; disable model config to use automatic loss"
+            )
+        if self.task_kind == "regression" and "crossentropy" in loss_name:
+            return False, tr_(
+                "Regression trainer requires a regression loss; disable model config to use automatic loss"
+            )
+        return True, ""
     
     def _convert_to_array(self, data, model=None):
         """
@@ -672,6 +786,36 @@ class TrainerNode(BaseNode):
 
 
 @register_node
+class ClassificationTrainerNode(TrainerNode):
+    """Train a Keras model with categorical targets."""
+
+    node_type = "classification_trainer"
+    display_name = tr_("Classification trainer")
+    description = tr_("Train a supervised classification model with categorical targets")
+    subcategory = tr_("Model training")
+    subcategory_order = 10
+    palette_order = 10
+    icon = "🏷️"
+    visible_in_palette = True
+    task_kind = "classification"
+
+
+@register_node
+class RegressionTrainerNode(TrainerNode):
+    """Train a Keras model with continuous numeric targets."""
+
+    node_type = "regression_trainer"
+    display_name = tr_("Regression trainer")
+    description = tr_("Train a supervised regression model with continuous targets")
+    subcategory = tr_("Model training")
+    subcategory_order = 10
+    palette_order = 20
+    icon = "📈"
+    visible_in_palette = True
+    task_kind = "regression"
+
+
+@register_node
 class EvaluatorNode(BaseNode):
     """评估器节点"""
     node_type = "evaluator"
@@ -679,11 +823,19 @@ class EvaluatorNode(BaseNode):
     category = NodeCategory.TRAINING
     description = tr_("Evaluate model performance")
     icon = "📊"
+    visible_in_palette = False
+    task_kind = "legacy"
     
     def _setup_ports(self):
         self.add_input("model", DataType.MODEL, tr_("Model"))
         self.add_input("x_test", DataType.ANY, tr_("Test data"))
         self.add_input("y_test", DataType.ANY, tr_("Test targets"))
+        self.add_input(
+            "target_metadata",
+            DataType.ANY,
+            tr_("Target metadata"),
+            required=False,
+        )
         
         self.add_output("metrics", DataType.METRICS, tr_("Metrics"))
     
@@ -709,6 +861,25 @@ class EvaluatorNode(BaseNode):
             
             if x_test is None or y_test is None:
                 self.error_message = tr_("No test data provided")
+                return False
+
+            target_metadata = self.get_input_data("target_metadata")
+            target_reason = _target_validation_reason(
+                self.task_kind,
+                y_test,
+                target_metadata,
+            )
+            if target_reason is not None:
+                if target_reason == "classification":
+                    self.error_message = tr_(
+                        "Classification evaluator requires categorical targets"
+                    )
+                elif target_reason == "regression":
+                    self.error_message = tr_(
+                        "Regression evaluator requires continuous numeric targets"
+                    )
+                else:
+                    self.error_message = tr_("Evaluation targets are invalid")
                 return False
             
             # 转换为numpy数组，传入 model 参数根据模型类型自动调整数据格式
@@ -825,7 +996,8 @@ class EvaluatorNode(BaseNode):
         # 如果未来支持 PyTorch 模型，保持 NCHW 格式不变
         
         return data
-    
+
+
     def _is_keras_model(self, model) -> bool:
         """判断是否为 Keras 模型"""
         try:
@@ -867,11 +1039,40 @@ class EvaluatorNode(BaseNode):
 
 
 @register_node
+class ClassificationEvaluatorNode(EvaluatorNode):
+    """Evaluate a classification model against categorical targets."""
+
+    node_type = "classification_evaluator"
+    display_name = tr_("Classification model evaluation")
+    description = tr_("Evaluate a classification model with categorical targets")
+    subcategory = tr_("Model evaluation")
+    subcategory_order = 30
+    palette_order = 10
+    visible_in_palette = True
+    task_kind = "classification"
+
+
+@register_node
+class RegressionEvaluatorNode(EvaluatorNode):
+    """Evaluate a regression model against continuous targets."""
+
+    node_type = "regression_evaluator"
+    display_name = tr_("Regression model evaluation")
+    description = tr_("Evaluate a regression model with continuous numeric targets")
+    subcategory = tr_("Model evaluation")
+    subcategory_order = 30
+    palette_order = 20
+    visible_in_palette = True
+    task_kind = "regression"
+
+
+@register_node
 class ShowHistoryNode(BaseNode):
     """展示训练历史节点"""
     node_type = "show_history"
     display_name = tr_("Show training history")
-    category = NodeCategory.TRAINING
+    category = NodeCategory.OUTPUT
+    palette_order = 10
     description = tr_("Visualize training history curves")
     icon = "📈"
     
@@ -960,7 +1161,8 @@ class ShowMetricsNode(BaseNode):
     """展示评估指标节点"""
     node_type = "show_metrics"
     display_name = tr_("Show metrics")
-    category = NodeCategory.TRAINING
+    category = NodeCategory.OUTPUT
+    palette_order = 20
     description = tr_("Show model evaluation metrics")
     icon = "📊"
     
@@ -1023,6 +1225,8 @@ class PredictNode(BaseNode):
     category = NodeCategory.TRAINING
     description = tr_("Run prediction using a trained model")
     icon = "🔮"
+    visible_in_palette = False
+    task_kind = "legacy"
     
     def _setup_ports(self):
         self.add_input("model", DataType.MODEL, tr_("Model"))
@@ -1033,9 +1237,9 @@ class PredictNode(BaseNode):
         self.add_parameter(
             "output_type", "choice", "label",
             display_name=tr_("Output type"),
-            choices=["label", "audio", "feature_1d", "feature_2d"],
+            choices=["label", "raw", "regression", "vector", "audio", "feature_1d", "feature_2d"],
             description=tr_(
-                "Type of prediction result: label=class label, audio=audio, feature_1d=1D feature, feature_2d=2D feature"
+                "Type of prediction result: label=class label, raw=model output, regression=continuous values, vector=vector output, audio=audio, feature_1d=1D feature, feature_2d=2D feature"
             ),
         )
         self.add_parameter(
@@ -1078,11 +1282,7 @@ class PredictNode(BaseNode):
             
             predictions = model.predict(X, batch_size=batch_size, verbose=0)
             
-            # 根据输出类型处理预测结果
-            output_type = self.get_parameter("output_type")
-            result = self._process_output(predictions, input_data, output_type)
-            
-            self.set_output_data("output", result)
+            result, output_type = self._set_prediction_outputs(predictions, input_data)
             
             # 报告完成状态
             result_count = len(result) if isinstance(result, list) else 1
@@ -1100,6 +1300,13 @@ class PredictNode(BaseNode):
             self.error_message = tr_("Prediction failed: {error}").format(error=str(e))
             logger.exception("预测异常")
             return False
+
+    def _set_prediction_outputs(self, predictions, input_data):
+        """Convert raw model output and assign the legacy output port."""
+        output_type = self.get_parameter("output_type")
+        result = self._process_output(predictions, input_data, output_type)
+        self.set_output_data("output", result)
+        return result, output_type
     
     def _convert_to_array(self, data, model=None):
         """
@@ -1227,6 +1434,22 @@ class PredictNode(BaseNode):
                 # 二分类或回归，四舍五入
                 labels = np.round(predictions.flatten()).astype(int)
             return labels.tolist()
+
+        elif output_type == "raw":
+            return predictions
+
+        elif output_type == "regression":
+            predictions = np.asarray(predictions)
+            if predictions.ndim == 0:
+                return [float(predictions)]
+            if predictions.ndim == 1:
+                return predictions.astype(float).tolist()
+            if predictions.ndim == 2 and predictions.shape[-1] == 1:
+                return predictions[:, 0].astype(float).tolist()
+            return predictions.astype(float).tolist()
+
+        elif output_type == "vector":
+            return np.asarray(predictions).tolist()
         
         elif output_type == "audio":
             # 音频数据：重建 AudioData 列表
@@ -1330,3 +1553,73 @@ class PredictNode(BaseNode):
         else:
             # 默认返回原始预测结果
             return predictions
+
+
+@register_node
+class ClassificationPredictNode(PredictNode):
+    """Predict class labels while preserving the model's raw output."""
+
+    node_type = "classification_predict"
+    display_name = tr_("Classification model prediction")
+    description = tr_("Predict class labels and expose the model's raw output")
+    subcategory = tr_("Inference and decision")
+    subcategory_order = 20
+    palette_order = 10
+    visible_in_palette = True
+    task_kind = "classification"
+
+    def _setup_ports(self):
+        self.add_input("model", DataType.MODEL, tr_("Model"))
+        self.add_input("input_data", DataType.ANY, tr_("Input data"))
+        self.add_output("predicted_labels", DataType.LABEL, tr_("Predicted classes"))
+        self.add_output("raw_output", DataType.ANY, tr_("Raw model output"))
+
+    def _setup_parameters(self):
+        self.add_parameter(
+            "batch_size",
+            "int",
+            32,
+            display_name=tr_("Batch size"),
+            min_value=1,
+            description=tr_("Batch size for prediction"),
+        )
+
+    def _set_prediction_outputs(self, predictions, input_data):
+        labels = self._process_output(predictions, input_data, "label")
+        self.set_output_data("predicted_labels", labels)
+        self.set_output_data("raw_output", predictions)
+        return labels, "classification"
+
+
+@register_node
+class RegressionPredictNode(PredictNode):
+    """Predict continuous values from a regression model."""
+
+    node_type = "regression_predict"
+    display_name = tr_("Regression model prediction")
+    description = tr_("Predict continuous values from a regression model")
+    subcategory = tr_("Inference and decision")
+    subcategory_order = 20
+    palette_order = 20
+    visible_in_palette = True
+    task_kind = "regression"
+
+    def _setup_ports(self):
+        self.add_input("model", DataType.MODEL, tr_("Model"))
+        self.add_input("input_data", DataType.ANY, tr_("Input data"))
+        self.add_output("predicted_values", DataType.ANY, tr_("Predicted values"))
+
+    def _setup_parameters(self):
+        self.add_parameter(
+            "batch_size",
+            "int",
+            32,
+            display_name=tr_("Batch size"),
+            min_value=1,
+            description=tr_("Batch size for prediction"),
+        )
+
+    def _set_prediction_outputs(self, predictions, input_data):
+        values = self._process_output(predictions, input_data, "regression")
+        self.set_output_data("predicted_values", values)
+        return values, "regression"

@@ -40,6 +40,7 @@ class SplitNodeTargetsTests(unittest.TestCase):
         self.assertEqual(node.outputs["val_targets"].data, [])
         self.assertEqual(node.outputs["test_data"].data, ["d", "e"])
         self.assertEqual(node.outputs["test_targets"].data, [0.4, 0.5])
+        self.assertEqual(node.outputs["target_metadata"].data, {"kind": "continuous"})
 
     def test_continuous_targets_do_not_use_direct_stratify_by_default(self):
         node = create_node("split")

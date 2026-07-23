@@ -24,6 +24,7 @@ class DataType(Enum):
     FEATURE_1D = "feature_1d"     # 1D features (e.g., statistical features)
     FEATURE_2D = "feature_2d"     # 2D features (e.g., Mel spectrogram)
     FEATURE = "feature"           # Generic feature type (compatible with 1D and 2D)
+    FEATURE_MATRIX = "feature_matrix"  # Fixed-length samples for classical ML
     
     # Label data - supports single or list
     LABEL = "label"
@@ -31,6 +32,9 @@ class DataType(Enum):
     # Model related
     MODEL = "model"               # Keras/TensorFlow model
     METRICS = "metrics"           # Training/evaluation metrics
+    ANOMALY_MODEL = "anomaly_model"
+    ANOMALY_SCORES = "anomaly_scores"
+    ANOMALY_RESULT = "anomaly_result"
     
     # Generic
     ANY = "any"                   # Any type (for generic nodes)

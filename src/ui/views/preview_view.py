@@ -23,6 +23,7 @@ from ..i18n import tr_
 from ..styles import Styles
 from ..widgets.preview import (
     BasePreviewWidget,
+    AnomalyResultPreviewWidget,
     AudioPreviewWidget,
     Feature1DPreviewWidget,
     Feature2DPreviewWidget,
@@ -89,6 +90,7 @@ class PreviewView(QWidget):
         
         # 创建并注册各类型预览组件
         preview_classes = [
+            ('anomaly_result', AnomalyResultPreviewWidget),
             ('audio', AudioPreviewWidget),
             ('feature_1d', Feature1DPreviewWidget),
             ('feature_2d', Feature2DPreviewWidget),
@@ -384,6 +386,10 @@ class PreviewView(QWidget):
         # 按优先级检查各个预览组件
         # 顺序很重要：先检查更具体的类型
         
+        # Anomaly results own the complete ranked-result experience.
+        if AnomalyResultPreviewWidget.can_display(data):
+            return self._preview_widgets.get('anomaly_result')
+
         # 0. 检查是否是 Keras 模型
         if ModelPreviewWidget.can_display(data):
             return self._preview_widgets.get('model')

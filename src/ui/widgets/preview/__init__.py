@@ -6,6 +6,7 @@ Provides visual preview components for various data types.
 """
 
 from .base_preview import BasePreviewWidget
+from .anomaly_result_preview import AnomalyResultPreviewWidget
 from .audio_preview import AudioPreviewWidget
 from .feature_1d_preview import Feature1DPreviewWidget
 from .feature_2d_preview import Feature2DPreviewWidget
@@ -15,6 +16,7 @@ from .model_preview import ModelPreviewWidget
 
 __all__ = [
     'BasePreviewWidget',
+    'AnomalyResultPreviewWidget',
     'AudioPreviewWidget',
     'Feature1DPreviewWidget',
     'Feature2DPreviewWidget',
