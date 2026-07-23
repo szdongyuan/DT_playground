@@ -1,0 +1,328 @@
+"""
+Shared pytest fixtures and configuration.
+
+This file is automatically discovered by pytest and provides:
+- Common fixtures for all tests
+- Test configuration
+- Custom markers
+- Hooks
+"""
+
+import os
+import sys
+from pathlib import Path
+
+import pytest
+
+# Add project root to Python path
+PROJECT_ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(PROJECT_ROOT / "src"))
+
+
+# =============================================================================
+# Configuration
+# =============================================================================
+
+def pytest_configure(config):
+    """Configure custom markers."""
+    config.addinivalue_line("markers", "slow: marks tests as slow (deselect with '-m \"not slow\"')")
+    config.addinivalue_line("markers", "integration: marks tests as integration tests")
+    config.addinivalue_line("markers", "unit: marks tests as unit tests")
+
+
+def pytest_collection_modifyitems(config, items):
+    """Modify test collection based on markers."""
+    # Skip slow tests unless explicitly requested
+    if not config.getoption("--run-slow", default=False):
+        skip_slow = pytest.mark.skip(reason="need --run-slow option to run")
+        for item in items:
+            if "slow" in item.keywords:
+                item.add_marker(skip_slow)
+
+
+def pytest_addoption(parser):
+    """Add custom command line options."""
+    parser.addoption(
+        "--run-slow",
+        action="store_true",
+        default=False,
+        help="run slow tests"
+    )
+
+
+# =============================================================================
+# Common Fixtures
+# =============================================================================
+
+@pytest.fixture(scope="session")
+def app_config():
+    """
+    Provide application configuration for testing.
+
+    Scope: session - same config for entire test session.
+    """
+    return {
+        "DEBUG": True,
+        "TESTING": True,
+        "DATABASE_URL": "sqlite:///:memory:",
+        "SECRET_KEY": "test-secret-key",
+        "API_BASE_URL": "http://localhost:8000",
+    }
+
+
+@pytest.fixture(scope="session")
+def database_engine(app_config):
+    """
+    Provide database engine for session.
+
+    Creates a test database and drops it after all tests.
+    """
+    from sqlalchemy import create_engine
+
+    engine = create_engine(app_config["DATABASE_URL"])
+
+    # Create all tables
+    # Base.metadata.create_all(engine)
+
+    yield engine
+
+    # Cleanup
+    engine.dispose()
+
+
+@pytest.fixture(scope="function")
+def db_session(database_engine):
+    """
+    Provide a database session with transaction rollback.
+
+    Each test gets a fresh session that rolls back after the test.
+    """
+    from sqlalchemy.orm import sessionmaker
+
+    Session = sessionmaker(bind=database_engine)
+    session = Session()
+
+    yield session
+
+    session.rollback()
+    session.close()
+
+
+@pytest.fixture
+def mock_env(monkeypatch):
+    """
+    Provide a helper to mock environment variables.
+
+    Usage:
+        def test_something(mock_env):
+            mock_env("API_KEY", "test-key")
+            mock_env("DEBUG", "true")
+    """
+    def _mock_env(key, value):
+        monkeypatch.setenv(key, value)
+
+    return _mock_env
+
+
+@pytest.fixture
+def temp_directory(tmp_path):
+    """
+    Provide a temporary directory for file operations.
+
+    Automatically cleaned up after the test.
+    """
+    test_dir = tmp_path / "test_files"
+    test_dir.mkdir()
+    return test_dir
+
+
+@pytest.fixture
+def sample_file(temp_directory):
+    """Provide a sample file for testing."""
+    file_path = temp_directory / "sample.txt"
+    file_path.write_text("Sample content for testing")
+    return file_path
+
+
+# =============================================================================
+# HTTP Client Fixtures
+# =============================================================================
+
+@pytest.fixture
+def http_client():
+    """
+    Provide an HTTP client for API testing.
+
+    Uses httpx or requests for making HTTP calls.
+    """
+    import httpx
+
+    with httpx.Client(base_url="http://localhost:8000") as client:
+        yield client
+
+
+@pytest.fixture
+def async_http_client():
+    """Provide an async HTTP client."""
+    import httpx
+
+    async def _get_client():
+        async with httpx.AsyncClient(base_url="http://localhost:8000") as client:
+            yield client
+
+    return _get_client
+
+
+# =============================================================================
+# Mock Fixtures
+# =============================================================================
+
+@pytest.fixture
+def mock_datetime(mocker):
+    """
+    Provide a frozen datetime for testing.
+
+    Usage:
+        def test_something(mock_datetime):
+            mock_datetime(2024, 1, 15, 12, 0, 0)
+    """
+    from datetime import datetime
+
+    def _freeze(year, month, day, hour=0, minute=0, second=0):
+        frozen = datetime(year, month, day, hour, minute, second)
+        mock = mocker.patch("datetime.datetime")
+        mock.now.return_value = frozen
+        mock.utcnow.return_value = frozen
+        return frozen
+
+    return _freeze
+
+
+@pytest.fixture
+def mock_uuid(mocker):
+    """Provide a predictable UUID for testing."""
+    import uuid
+
+    fixed_uuid = uuid.UUID("12345678-1234-5678-1234-567812345678")
+    mocker.patch("uuid.uuid4", return_value=fixed_uuid)
+    return fixed_uuid
+
+
+# =============================================================================
+# Factory Fixtures
+# =============================================================================
+
+@pytest.fixture
+def user_factory(db_session):
+    """
+    Factory fixture for creating test users.
+
+    Usage:
+        def test_something(user_factory):
+            user = user_factory(name="Test User")
+            admin = user_factory(name="Admin", is_admin=True)
+    """
+    created_users = []
+
+    def _create_user(name="Test User", email=None, is_admin=False, **kwargs):
+        if email is None:
+            email = f"{name.lower().replace(' ', '_')}@test.com"
+
+        user = User(name=name, email=email, is_admin=is_admin, **kwargs)
+        db_session.add(user)
+        db_session.commit()
+        created_users.append(user)
+        return user
+
+    yield _create_user
+
+    # Cleanup created users
+    for user in created_users:
+        db_session.delete(user)
+    db_session.commit()
+
+
+@pytest.fixture
+def entity_factory(db_session):
+    """Factory fixture for creating test entities."""
+    def _create_entity(name="Test Entity", value=100, **kwargs):
+        entity = Entity(name=name, value=value, **kwargs)
+        db_session.add(entity)
+        db_session.commit()
+        return entity
+
+    return _create_entity
+
+
+# =============================================================================
+# Assertion Helpers
+# =============================================================================
+
+@pytest.fixture
+def assert_dict_contains():
+    """
+    Helper to assert a dict contains expected key-value pairs.
+
+    Usage:
+        def test_something(assert_dict_contains):
+            result = {"a": 1, "b": 2, "c": 3}
+            assert_dict_contains(result, {"a": 1, "b": 2})
+    """
+    def _assert(actual, expected):
+        for key, value in expected.items():
+            assert key in actual, f"Key '{key}' not found in {actual}"
+            assert actual[key] == value, f"Expected {key}={value}, got {actual[key]}"
+
+    return _assert
+
+
+@pytest.fixture
+def assert_raises_with_message():
+    """
+    Helper to assert an exception with specific message.
+
+    Usage:
+        def test_something(assert_raises_with_message):
+            with assert_raises_with_message(ValueError, "Invalid input"):
+                raise ValueError("Invalid input provided")
+    """
+    from contextlib import contextmanager
+
+    @contextmanager
+    def _assert(exc_type, message_contains):
+        with pytest.raises(exc_type) as exc_info:
+            yield
+        assert message_contains in str(exc_info.value)
+
+    return _assert
+
+
+# =============================================================================
+# Test Data Fixtures
+# =============================================================================
+
+@pytest.fixture
+def valid_user_data():
+    """Provide valid user registration data."""
+    return {
+        "username": "testuser",
+        "email": "test@example.com",
+        "password": "SecurePass123!",
+        "confirm_password": "SecurePass123!",
+    }
+
+
+@pytest.fixture
+def invalid_user_data():
+    """Provide various invalid user data for testing validation."""
+    return {
+        "empty_email": {"username": "test", "email": "", "password": "pass"},
+        "invalid_email": {"username": "test", "email": "not-an-email", "password": "pass"},
+        "weak_password": {"username": "test", "email": "test@example.com", "password": "123"},
+        "mismatched_passwords": {
+            "username": "test",
+            "email": "test@example.com",
+            "password": "pass1",
+            "confirm_password": "pass2",
+        },
+    }

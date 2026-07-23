@@ -1,0 +1,242 @@
+"""
+Unit tests for {{MODULE_NAME}}.
+
+Tests cover:
+- {{FEATURE_1}}
+- {{FEATURE_2}}
+- {{FEATURE_3}}
+"""
+
+import pytest
+from unittest.mock import Mock, MagicMock, patch, AsyncMock
+
+# Import the module under test
+from {{PACKAGE}}.{{MODULE}} import {{CLASS_OR_FUNCTION}}
+
+
+# =============================================================================
+# Fixtures
+# =============================================================================
+
+@pytest.fixture
+def sample_data():
+    """Provide sample test data."""
+    return {
+        "id": 1,
+        "name": "Test Item",
+        "value": 100,
+    }
+
+
+@pytest.fixture
+def mock_dependency():
+    """Provide a mocked dependency."""
+    mock = Mock()
+    mock.method.return_value = "mocked_result"
+    return mock
+
+
+@pytest.fixture
+def instance(mock_dependency):
+    """Provide an instance of the class under test with mocked dependencies."""
+    return {{CLASS_NAME}}(dependency=mock_dependency)
+
+
+# =============================================================================
+# Test Class: {{CLASS_NAME}}
+# =============================================================================
+
+class Test{{CLASS_NAME}}:
+    """Unit tests for {{CLASS_NAME}}."""
+
+    # -------------------------------------------------------------------------
+    # Happy Path Tests
+    # -------------------------------------------------------------------------
+
+    def test_method_success_with_valid_input(self, instance, sample_data):
+        """
+        Test that method succeeds with valid input.
+
+        Given: Valid input data
+        When: method is called
+        Then: Expected result is returned
+        """
+        # Arrange
+        expected = "expected_result"
+
+        # Act
+        result = instance.method(sample_data)
+
+        # Assert
+        assert result == expected
+
+    def test_method_returns_correct_type(self, instance):
+        """Test that method returns the correct type."""
+        result = instance.method(valid_input)
+
+        assert isinstance(result, ExpectedType)
+
+    # -------------------------------------------------------------------------
+    # Parametrized Tests
+    # -------------------------------------------------------------------------
+
+    @pytest.mark.parametrize("input_value,expected", [
+        ("valid_1", "result_1"),
+        ("valid_2", "result_2"),
+        ("valid_3", "result_3"),
+    ], ids=["case_1", "case_2", "case_3"])
+    def test_method_with_various_inputs(self, instance, input_value, expected):
+        """Test method with various valid inputs."""
+        result = instance.method(input_value)
+
+        assert result == expected
+
+    # -------------------------------------------------------------------------
+    # Boundary Value Tests
+    # -------------------------------------------------------------------------
+
+    def test_method_with_minimum_value(self, instance):
+        """Test method with minimum boundary value."""
+        result = instance.method(min_value)
+
+        assert result == expected_for_min
+
+    def test_method_with_maximum_value(self, instance):
+        """Test method with maximum boundary value."""
+        result = instance.method(max_value)
+
+        assert result == expected_for_max
+
+    def test_method_with_empty_input(self, instance):
+        """Test method with empty input."""
+        result = instance.method("")
+
+        assert result == expected_for_empty
+
+    # -------------------------------------------------------------------------
+    # Error Handling Tests
+    # -------------------------------------------------------------------------
+
+    def test_method_raises_error_for_invalid_input(self, instance):
+        """Test that method raises ValueError for invalid input."""
+        with pytest.raises(ValueError, match="Invalid input"):
+            instance.method(invalid_input)
+
+    def test_method_raises_error_for_none_input(self, instance):
+        """Test that method raises TypeError for None input."""
+        with pytest.raises(TypeError):
+            instance.method(None)
+
+    # -------------------------------------------------------------------------
+    # Mock Verification Tests
+    # -------------------------------------------------------------------------
+
+    def test_method_calls_dependency_correctly(self, instance, mock_dependency):
+        """Test that method calls dependency with correct arguments."""
+        instance.method("input")
+
+        mock_dependency.method.assert_called_once_with("expected_arg")
+
+    def test_method_handles_dependency_failure(self, instance, mock_dependency):
+        """Test that method handles dependency failure gracefully."""
+        mock_dependency.method.side_effect = RuntimeError("Dependency failed")
+
+        with pytest.raises(RuntimeError):
+            instance.method("input")
+
+
+# =============================================================================
+# Test Functions (for standalone functions)
+# =============================================================================
+
+class Test{{FUNCTION_NAME}}:
+    """Unit tests for {{FUNCTION_NAME}} function."""
+
+    def test_function_with_valid_input(self):
+        """Test function with valid input."""
+        result = {{FUNCTION_NAME}}(valid_input)
+
+        assert result == expected
+
+    @pytest.mark.parametrize("input,expected", [
+        (input_1, output_1),
+        (input_2, output_2),
+    ])
+    def test_function_parametrized(self, input, expected):
+        """Test function with multiple inputs."""
+        result = {{FUNCTION_NAME}}(input)
+
+        assert result == expected
+
+
+# =============================================================================
+# Tests with External Mocks
+# =============================================================================
+
+class TestWithExternalMocks:
+    """Tests that require mocking external dependencies."""
+
+    @patch("{{PACKAGE}}.{{MODULE}}.external_service")
+    def test_with_patched_service(self, mock_service):
+        """Test with patched external service."""
+        mock_service.call.return_value = "mocked"
+
+        result = function_under_test()
+
+        assert result == "expected"
+        mock_service.call.assert_called_once()
+
+    @patch("{{PACKAGE}}.{{MODULE}}.datetime")
+    def test_with_frozen_time(self, mock_datetime):
+        """Test with frozen time."""
+        from datetime import datetime
+        mock_datetime.now.return_value = datetime(2024, 1, 1, 12, 0, 0)
+
+        result = get_timestamp()
+
+        assert result == "2024-01-01 12:00:00"
+
+    @patch.dict("os.environ", {"API_KEY": "test-key"})
+    def test_with_env_variables(self):
+        """Test with mocked environment variables."""
+        import os
+
+        result = get_api_key()
+
+        assert result == "test-key"
+
+
+# =============================================================================
+# Async Tests
+# =============================================================================
+
+class TestAsyncFunctions:
+    """Tests for async functions."""
+
+    @pytest.mark.asyncio
+    async def test_async_function_success(self):
+        """Test async function succeeds."""
+        result = await async_function(valid_input)
+
+        assert result == expected
+
+    @pytest.mark.asyncio
+    async def test_async_function_with_mock(self):
+        """Test async function with mocked dependency."""
+        mock_client = AsyncMock()
+        mock_client.fetch.return_value = {"data": "value"}
+
+        result = await function_with_client(mock_client)
+
+        assert result == "expected"
+        mock_client.fetch.assert_awaited_once()
+
+    @pytest.mark.asyncio
+    @patch("{{PACKAGE}}.{{MODULE}}.async_external_call", new_callable=AsyncMock)
+    async def test_async_with_patched_call(self, mock_call):
+        """Test async function with patched external call."""
+        mock_call.return_value = "mocked"
+
+        result = await function_that_awaits()
+
+        assert result == "expected"
