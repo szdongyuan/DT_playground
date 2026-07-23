@@ -133,6 +133,7 @@ class SplitNode(BaseNode):
         self.add_output("val_targets", DataType.ANY, tr_("Validation targets"))
         self.add_output("test_data", DataType.ANY, tr_("Test data"))
         self.add_output("test_targets", DataType.ANY, tr_("Test targets"))
+        self.add_output("target_metadata", DataType.ANY, tr_("Target metadata"))
     
     def _setup_parameters(self):
         self.add_parameter(
@@ -274,6 +275,7 @@ class SplitNode(BaseNode):
             self.set_output_data("val_targets", val_targets)
             self.set_output_data("test_data", test_data)
             self.set_output_data("test_targets", test_targets)
+            self.set_output_data("target_metadata", target_metadata)
             
             msg = tr_("Split complete: train={train}, val={val}, test={test}").format(
                 train=len(train_data),

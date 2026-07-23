@@ -47,9 +47,9 @@ class NodeCategory(Enum):
             NodeCategory.PREPROCESSING: tr_("Preprocessing"),
             NodeCategory.AUGMENTATION: tr_("Data augmentation"),
             NodeCategory.FEATURE: tr_("Feature extraction"),
-            NodeCategory.TRAINING: tr_("AI / Training"),
+            NodeCategory.TRAINING: tr_("AI / Model"),
             NodeCategory.CONTROL: tr_("Control flow"),
-            NodeCategory.OUTPUT: tr_("Output"),
+            NodeCategory.OUTPUT: tr_("Output / Visualization"),
         }
         return names.get(self, self.value)
     
@@ -92,6 +92,9 @@ class BaseNode(ABC):
     subcategory: str = ""                 # Optional subcategory for grouping
     description: str = ""                 # Node description
     icon: str = "📦"                       # Node icon (emoji or icon path)
+    visible_in_palette: bool = True         # Legacy nodes may remain loadable but hidden
+    subcategory_order: int = 100            # Lower values appear first in the palette
+    palette_order: int = 100                # Lower values appear first within a group
     
     def __init__(self, node_id: str = None):
         """
@@ -371,11 +374,15 @@ def get_all_node_types() -> List[str]:
     return list(_node_registry.keys())
 
 
-def get_nodes_by_category(category: NodeCategory) -> List[Type[BaseNode]]:
-    """Get all node classes for specified category"""
+def get_nodes_by_category(
+    category: NodeCategory,
+    include_hidden: bool = False,
+) -> List[Type[BaseNode]]:
+    """Get node classes for a category, excluding legacy nodes by default."""
     return [
         cls for cls in _node_registry.values()
         if cls.category == category
+        and (include_hidden or getattr(cls, "visible_in_palette", True))
     ]
 
 

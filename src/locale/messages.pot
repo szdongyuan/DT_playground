@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-28 11:55+0800\n"
+"POT-Creation-Date: 2026-07-22 14:17+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -87,7 +87,7 @@ msgid "Error"
 msgstr ""
 
 #: src/app.py:381 src/ui/views/model_builder_view.py:408
-#: src/workflow/nodes/training.py:81
+#: src/workflow/nodes/training.py:84
 #, python-brace-format
 msgid "Failed to load model: {error}"
 msgstr ""
@@ -287,9 +287,11 @@ msgid "Workflow"
 msgstr ""
 
 #: src/controllers/navigation_controller.py:83 src/ui/main_window.py:376
-#: src/ui/dialogs/settings_dialog.py:42 src/workflow/nodes/training.py:304
-#: src/workflow/nodes/training.py:684 src/workflow/nodes/training.py:1028
+#: src/ui/dialogs/settings_dialog.py:42 src/workflow/nodes/training.py:312
+#: src/workflow/nodes/training.py:807 src/workflow/nodes/training.py:1209
+#: src/workflow/nodes/training.py:1549 src/workflow/nodes/training.py:1585
 #: src/workflow/nodes/feature/ai_embedding.py:45
+#: src/workflow/nodes/feature/grad_cam.py:48
 msgid "Model"
 msgstr ""
 
@@ -519,6 +521,7 @@ msgid "Recurrent"
 msgstr ""
 
 #: src/model_builder/layer_base.py:50
+#: src/ui/widgets/preview/anomaly_result_preview.py:199
 msgid "Attention"
 msgstr ""
 
@@ -557,12 +560,12 @@ msgstr ""
 msgid "Activation"
 msgstr ""
 
-#: src/model_builder/layer_base.py:56 src/workflow/nodes/control.py:610
+#: src/model_builder/layer_base.py:56 src/workflow/nodes/control.py:612
 msgid "Merge"
 msgstr ""
 
 #: src/model_builder/layer_base.py:57
-#: src/model_builder/layers/input_layers.py:99 src/workflow/node_base.py:52
+#: src/model_builder/layers/input_layers.py:99
 msgid "Output"
 msgstr ""
 
@@ -1097,7 +1100,7 @@ msgstr ""
 
 #: src/model_builder/layers/input_layers.py:142
 #: src/ui/widgets/preview/metrics_preview.py:42
-#: src/workflow/nodes/training.py:688 src/workflow/nodes/training.py:968
+#: src/workflow/nodes/training.py:817 src/workflow/nodes/training.py:1147
 msgid "Metrics"
 msgstr ""
 
@@ -1924,7 +1927,7 @@ msgstr ""
 msgid "Save format:"
 msgstr ""
 
-#: src/ui/dialogs/settings_dialog.py:203 src/workflow/nodes/training.py:353
+#: src/ui/dialogs/settings_dialog.py:203 src/workflow/nodes/training.py:362
 msgid "Early stopping"
 msgstr ""
 
@@ -2345,7 +2348,7 @@ msgstr ""
 msgid "Save model as"
 msgstr ""
 
-#: src/ui/views/model_builder_view.py:606 src/workflow/nodes/training.py:283
+#: src/ui/views/model_builder_view.py:606 src/workflow/nodes/training.py:289
 #, python-brace-format
 msgid "Failed to save model: {error}"
 msgstr ""
@@ -2409,51 +2412,51 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#: src/ui/views/preview_view.py:77
+#: src/ui/views/preview_view.py:78
 msgid "Select a node and run the workflow to preview data"
 msgstr ""
 
-#: src/ui/views/preview_view.py:132
+#: src/ui/views/preview_view.py:134
 msgid "📊 Data Preview"
 msgstr ""
 
-#: src/ui/views/preview_view.py:141 src/ui/views/preview_view.py:442
+#: src/ui/views/preview_view.py:143 src/ui/views/preview_view.py:448
 msgid "No node selected"
 msgstr ""
 
-#: src/ui/views/preview_view.py:160
+#: src/ui/views/preview_view.py:162
 msgid "Item:"
 msgstr ""
 
-#: src/ui/views/preview_view.py:175
+#: src/ui/views/preview_view.py:177
 msgid "Output port:"
 msgstr ""
 
-#: src/ui/views/preview_view.py:186
+#: src/ui/views/preview_view.py:188
 msgid "🔄 Refresh"
 msgstr ""
 
-#: src/ui/views/preview_view.py:215
+#: src/ui/views/preview_view.py:217
 #, python-brace-format
 msgid "Node: {name} ({id})"
 msgstr ""
 
-#: src/ui/views/preview_view.py:233
+#: src/ui/views/preview_view.py:235
 #, python-brace-format
 msgid "Node: {name} (no data - run workflow first)"
 msgstr ""
 
-#: src/ui/views/preview_view.py:342
+#: src/ui/views/preview_view.py:344
 #, python-brace-format
 msgid "Total: {total} item(s)"
 msgstr ""
 
-#: src/ui/views/preview_view.py:370
+#: src/ui/views/preview_view.py:372
 #, python-brace-format
 msgid "Unsupported type: {type}"
 msgstr ""
 
-#: src/ui/views/preview_view.py:380
+#: src/ui/views/preview_view.py:382
 msgid "Failed to set data"
 msgstr ""
 
@@ -2714,6 +2717,86 @@ msgstr ""
 msgid "Samples"
 msgstr ""
 
+#: src/ui/widgets/preview/anomaly_result_preview.py:51
+#: src/workflow/nodes/anomaly.py:583
+msgid "Anomaly explorer"
+msgstr ""
+
+#: src/ui/widgets/preview/anomaly_result_preview.py:73
+msgid "Anomaly summary"
+msgstr ""
+
+#: src/ui/widgets/preview/anomaly_result_preview.py:84
+msgid "Score distribution"
+msgstr ""
+
+#: src/ui/widgets/preview/anomaly_result_preview.py:90
+msgid "Normalized anomaly score"
+msgstr ""
+
+#: src/ui/widgets/preview/anomaly_result_preview.py:91
+#: src/ui/widgets/preview/label_preview.py:100 src/visualization/metrics.py:207
+msgid "Count"
+msgstr ""
+
+#: src/ui/widgets/preview/anomaly_result_preview.py:95
+#: src/ui/widgets/preview/feature_1d_preview.py:85
+#: src/ui/widgets/preview/label_preview.py:105
+#: src/ui/widgets/preview/metrics_preview.py:75
+msgid "Please install pyqtgraph to display charts"
+msgstr ""
+
+#: src/ui/widgets/preview/anomaly_result_preview.py:101
+msgid "Ranked samples"
+msgstr ""
+
+#: src/ui/widgets/preview/anomaly_result_preview.py:107
+msgid "Rank"
+msgstr ""
+
+#: src/ui/widgets/preview/anomaly_result_preview.py:107
+msgid "Sample"
+msgstr ""
+
+#: src/ui/widgets/preview/anomaly_result_preview.py:107
+msgid "Raw score"
+msgstr ""
+
+#: src/ui/widgets/preview/anomaly_result_preview.py:107
+msgid "Score (0-100)"
+msgstr ""
+
+#: src/ui/widgets/preview/anomaly_result_preview.py:107
+msgid "Severity"
+msgstr ""
+
+#: src/ui/widgets/preview/anomaly_result_preview.py:116
+msgid "Selected sample preview"
+msgstr ""
+
+#: src/ui/widgets/preview/anomaly_result_preview.py:120
+msgid "Select a sample to preview its source data"
+msgstr ""
+
+#: src/ui/widgets/preview/anomaly_result_preview.py:157
+#, python-brace-format
+msgid ""
+"Samples: {samples}\n"
+"Anomalies: {anomalies}\n"
+"Attention: {attention}\n"
+"Normal: {normal}\n"
+"Threshold: {threshold:.2f}\n"
+"Strategy: {strategy}"
+msgstr ""
+
+#: src/ui/widgets/preview/anomaly_result_preview.py:198
+msgid "Normal"
+msgstr ""
+
+#: src/ui/widgets/preview/anomaly_result_preview.py:200
+msgid "Anomaly"
+msgstr ""
+
 #: src/ui/widgets/preview/audio_preview.py:38
 msgid "Audio preview"
 msgstr ""
@@ -2743,19 +2826,13 @@ msgstr ""
 msgid "Index"
 msgstr ""
 
-#: src/ui/widgets/preview/feature_1d_preview.py:85
-#: src/ui/widgets/preview/label_preview.py:105
-#: src/ui/widgets/preview/metrics_preview.py:75
-msgid "Please install pyqtgraph to display charts"
-msgstr ""
-
 #: src/ui/widgets/preview/feature_1d_preview.py:99
 #: src/ui/widgets/preview/feature_2d_preview.py:130
 msgid "Statistics"
 msgstr ""
 
 #: src/ui/widgets/preview/feature_1d_preview.py:184
-#: src/ui/widgets/preview/feature_2d_preview.py:224
+#: src/ui/widgets/preview/feature_2d_preview.py:254
 msgid "No data"
 msgstr ""
 
@@ -2764,19 +2841,19 @@ msgid "  Length: {length:,}\n"
 msgstr ""
 
 #: src/ui/widgets/preview/feature_1d_preview.py:189
-#: src/ui/widgets/preview/feature_2d_preview.py:230
+#: src/ui/widgets/preview/feature_2d_preview.py:266
 #, python-brace-format
 msgid "  Min: {value:.6f}\n"
 msgstr ""
 
 #: src/ui/widgets/preview/feature_1d_preview.py:190
-#: src/ui/widgets/preview/feature_2d_preview.py:231
+#: src/ui/widgets/preview/feature_2d_preview.py:267
 #, python-brace-format
 msgid "  Max: {value:.6f}\n"
 msgstr ""
 
 #: src/ui/widgets/preview/feature_1d_preview.py:191
-#: src/ui/widgets/preview/feature_2d_preview.py:232
+#: src/ui/widgets/preview/feature_2d_preview.py:268
 #, python-brace-format
 msgid "  Mean: {value:.6f}\n"
 msgstr ""
@@ -2796,6 +2873,8 @@ msgid "2D feature"
 msgstr ""
 
 #: src/ui/widgets/preview/feature_2d_preview.py:62
+#: src/ui/widgets/preview/feature_2d_preview.py:236
+#: src/ui/widgets/preview/feature_2d_preview.py:277
 msgid "2D feature heatmap"
 msgstr ""
 
@@ -2819,16 +2898,34 @@ msgstr ""
 msgid "Please install pyqtgraph"
 msgstr ""
 
-#: src/ui/widgets/preview/feature_2d_preview.py:228
+#: src/ui/widgets/preview/feature_2d_preview.py:232
+#: src/workflow/nodes/feature/grad_cam.py:51
+msgid "Grad-CAM heatmap"
+msgstr ""
+
+#: src/ui/widgets/preview/feature_2d_preview.py:234
+#: src/workflow/nodes/feature/grad_cam.py:53
+msgid "Grad-CAM overlay"
+msgstr ""
+
+#: src/ui/widgets/preview/feature_2d_preview.py:258
+msgid "  Note: higher values indicate stronger class evidence.\n"
+msgstr ""
+
+#: src/ui/widgets/preview/feature_2d_preview.py:260
+msgid "  Note: normalized source feature blended with Grad-CAM intensity.\n"
+msgstr ""
+
+#: src/ui/widgets/preview/feature_2d_preview.py:264
 #, python-brace-format
 msgid "  Shape: {h} × {w} (features × frames)\n"
 msgstr ""
 
-#: src/ui/widgets/preview/feature_2d_preview.py:229
+#: src/ui/widgets/preview/feature_2d_preview.py:265
 msgid "  Elements: {n:,}\n"
 msgstr ""
 
-#: src/ui/widgets/preview/feature_2d_preview.py:233
+#: src/ui/widgets/preview/feature_2d_preview.py:269
 #, python-brace-format
 msgid "  Std: {value:.6f}"
 msgstr ""
@@ -2843,10 +2940,6 @@ msgstr ""
 
 #: src/ui/widgets/preview/label_preview.py:91
 msgid "📈 Label distribution"
-msgstr ""
-
-#: src/ui/widgets/preview/label_preview.py:100 src/visualization/metrics.py:207
-msgid "Count"
 msgstr ""
 
 #: src/ui/widgets/preview/label_preview.py:113
@@ -3139,14 +3232,18 @@ msgid "Feature extraction"
 msgstr ""
 
 #: src/workflow/node_base.py:50
-msgid "AI / Training"
+msgid "AI / Model"
 msgstr ""
 
 #: src/workflow/node_base.py:51
 msgid "Control flow"
 msgstr ""
 
-#: src/workflow/node_base.py:260
+#: src/workflow/node_base.py:52
+msgid "Output / Visualization"
+msgstr ""
+
+#: src/workflow/node_base.py:263
 #, python-brace-format
 msgid "Input port '{name}' is not connected"
 msgstr ""
@@ -3183,6 +3280,280 @@ msgstr ""
 #: src/workflow/workflow.py:321
 #, python-brace-format
 msgid "Node '{node}' input port '{port}' is not connected"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:34 src/workflow/nodes/anomaly.py:58
+msgid "Feature matrix must be two-dimensional"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:36
+msgid "Sample ID count must match feature matrix rows"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:38
+msgid "Source item count must match feature matrix rows"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:61
+#, python-brace-format
+msgid "Feature count mismatch: expected {expected}, got {actual}"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:67 src/workflow/nodes/anomaly.py:326
+msgid "Feature matrix contains NaN or infinite values"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:98
+msgid "File does not contain an anomaly model artifact"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:124
+msgid "Score arrays and sample IDs must have the same length"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:126
+msgid "Source item count must match score count"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:144
+msgid "Decision count must match score count"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:152
+msgid "Feature vectorizer"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:154
+msgid "Feature preparation"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:155
+msgid ""
+"Convert features into aligned fixed-length vectors for classical machine "
+"learning"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:159
+msgid "Features"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:160 src/workflow/nodes/anomaly.py:408
+msgid "Feature matrix"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:167
+#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:54
+#: src/workflow/nodes/feature/dim1d/statistics.py:57
+msgid "Aggregation"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:169
+msgid "How to reduce each sample to a fixed-length vector"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:176
+msgid "No features provided"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:183
+msgid "Vectorized samples have inconsistent feature counts"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:188
+msgid "Feature matrix contains empty, NaN, or infinite values"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:199
+#, python-brace-format
+msgid "Feature matrix ready: {samples} samples, {features} features"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:206
+#, python-brace-format
+msgid "Feature vectorization failed: {error}"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:225
+msgid "Feature sample is empty"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:252
+msgid "Anomaly detector trainer"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:254 src/workflow/nodes/training.py:772
+#: src/workflow/nodes/training.py:787
+msgid "Model training"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:257
+msgid "Fit an unsupervised anomaly detector on mostly-normal reference data"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:261
+msgid "Reference feature matrix"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:262 src/workflow/nodes/anomaly.py:407
+msgid "Anomaly model"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:263
+msgid "Reference scores"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:264
+msgid "Training summary"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:271
+msgid "Algorithm"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:278
+msgid "Feature scaling"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:285 src/workflow/nodes/anomaly.py:473
+msgid "Expected anomaly ratio"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:293
+msgid "Number of trees"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:301
+msgid "Sample fraction per tree"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:309 src/workflow/nodes/control.py:165
+msgid "Random seed"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:320
+msgid "Anomaly trainer requires feature matrix data"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:323
+msgid "At least two reference samples are required"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:382
+#, python-brace-format
+msgid "Anomaly detector fitted: {samples} reference samples"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:388
+#, python-brace-format
+msgid "Anomaly detector training failed: {error}"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:398
+msgid "Anomaly scorer"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:400 src/workflow/nodes/anomaly.py:451
+#: src/workflow/nodes/training.py:1542 src/workflow/nodes/training.py:1578
+msgid "Inference and decision"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:403
+msgid "Calculate raw and normalized anomaly scores for each sample"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:409 src/workflow/nodes/anomaly.py:458
+msgid "Anomaly scores"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:416
+msgid "No valid anomaly model provided"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:419
+msgid "Anomaly scorer requires feature matrix data"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:435
+#, python-brace-format
+msgid "Anomaly scoring finished: {samples} samples"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:439
+#, python-brace-format
+msgid "Anomaly scoring failed: {error}"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:449
+msgid "Anomaly decision"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:454
+msgid "Apply a configurable threshold without retraining the detector"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:459 src/workflow/nodes/anomaly.py:590
+#: src/workflow/nodes/anomaly.py:591
+msgid "Anomaly result"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:466
+msgid "Threshold strategy"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:481
+msgid "Standard deviation multiplier"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:489
+msgid "MAD multiplier"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:497
+msgid "Manual threshold (0-100)"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:505
+msgid "Attention threshold ratio"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:514
+msgid "No valid anomaly scores provided"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:517
+msgid "Anomaly scores are empty"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:523
+msgid "Reference scores are required for the selected threshold strategy"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:544
+#, python-brace-format
+msgid "Anomaly decision finished: {anomalies} anomalies from {samples} samples"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:551
+#, python-brace-format
+msgid "Anomaly decision failed: {error}"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:571
+#, python-brace-format
+msgid "Unsupported threshold strategy: {strategy}"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:586
+msgid "Inspect ranked anomaly results, thresholds, and source samples"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:596
+msgid "No valid anomaly result provided"
+msgstr ""
+
+#: src/workflow/nodes/anomaly.py:600
+#, python-brace-format
+msgid "Anomaly explorer ready: {samples} samples"
 msgstr ""
 
 #: src/workflow/nodes/augmentation.py:32
@@ -3514,7 +3885,7 @@ msgstr ""
 msgid "No data list provided"
 msgstr ""
 
-#: src/workflow/nodes/control.py:83 src/workflow/nodes/control.py:842
+#: src/workflow/nodes/control.py:83 src/workflow/nodes/control.py:844
 msgid "Data list is empty"
 msgstr ""
 
@@ -3526,346 +3897,344 @@ msgstr ""
 msgid "Split data into train/val/test sets"
 msgstr ""
 
-#: src/workflow/nodes/control.py:127 src/workflow/nodes/control.py:352
-#: src/workflow/nodes/control.py:720 src/workflow/nodes/control.py:721
+#: src/workflow/nodes/control.py:127 src/workflow/nodes/control.py:354
+#: src/workflow/nodes/control.py:722 src/workflow/nodes/control.py:723
 msgid "Data"
 msgstr ""
 
-#: src/workflow/nodes/control.py:128 src/workflow/nodes/control.py:354
+#: src/workflow/nodes/control.py:128 src/workflow/nodes/control.py:356
 msgid "Targets"
 msgstr ""
 
-#: src/workflow/nodes/control.py:129 src/workflow/nodes/data_source.py:491
+#: src/workflow/nodes/control.py:129 src/workflow/nodes/control.py:136
+#: src/workflow/nodes/data_source.py:491 src/workflow/nodes/training.py:317
+#: src/workflow/nodes/training.py:813
 msgid "Target metadata"
 msgstr ""
 
-#: src/workflow/nodes/control.py:130 src/workflow/nodes/training.py:305
+#: src/workflow/nodes/control.py:130 src/workflow/nodes/training.py:313
 msgid "Train data"
 msgstr ""
 
-#: src/workflow/nodes/control.py:131 src/workflow/nodes/training.py:306
+#: src/workflow/nodes/control.py:131 src/workflow/nodes/training.py:314
 msgid "Train targets"
 msgstr ""
 
-#: src/workflow/nodes/control.py:132 src/workflow/nodes/training.py:307
+#: src/workflow/nodes/control.py:132 src/workflow/nodes/training.py:315
 msgid "Validation data"
 msgstr ""
 
-#: src/workflow/nodes/control.py:133 src/workflow/nodes/training.py:308
+#: src/workflow/nodes/control.py:133 src/workflow/nodes/training.py:316
 msgid "Validation targets"
 msgstr ""
 
-#: src/workflow/nodes/control.py:134 src/workflow/nodes/training.py:685
+#: src/workflow/nodes/control.py:134 src/workflow/nodes/training.py:808
 msgid "Test data"
 msgstr ""
 
-#: src/workflow/nodes/control.py:135 src/workflow/nodes/training.py:686
+#: src/workflow/nodes/control.py:135 src/workflow/nodes/training.py:809
 msgid "Test targets"
 msgstr ""
 
-#: src/workflow/nodes/control.py:140
+#: src/workflow/nodes/control.py:141
 msgid "Train ratio"
 msgstr ""
 
-#: src/workflow/nodes/control.py:145
+#: src/workflow/nodes/control.py:146
 msgid "Validation ratio"
 msgstr ""
 
-#: src/workflow/nodes/control.py:150
+#: src/workflow/nodes/control.py:151
 msgid "Test ratio"
 msgstr ""
 
-#: src/workflow/nodes/control.py:155
+#: src/workflow/nodes/control.py:156
 msgid "Shuffle"
 msgstr ""
 
-#: src/workflow/nodes/control.py:159
+#: src/workflow/nodes/control.py:160
 msgid "Stratify"
 msgstr ""
 
-#: src/workflow/nodes/control.py:160
+#: src/workflow/nodes/control.py:161
 msgid "Keep class proportions"
 msgstr ""
 
-#: src/workflow/nodes/control.py:164
-msgid "Random seed"
-msgstr ""
-
-#: src/workflow/nodes/control.py:174 src/workflow/nodes/control.py:834
+#: src/workflow/nodes/control.py:175 src/workflow/nodes/control.py:836
 msgid "No data provided"
 msgstr ""
 
-#: src/workflow/nodes/control.py:206
+#: src/workflow/nodes/control.py:207
 #, python-brace-format
 msgid "Target count ({targets}) does not match data count ({data})"
 msgstr ""
 
-#: src/workflow/nodes/control.py:278
+#: src/workflow/nodes/control.py:280
 #, python-brace-format
 msgid "Split complete: train={train}, val={val}, test={test}"
 msgstr ""
 
-#: src/workflow/nodes/control.py:288
+#: src/workflow/nodes/control.py:290
 #, python-brace-format
 msgid "Split failed: {error}"
 msgstr ""
 
-#: src/workflow/nodes/control.py:294
+#: src/workflow/nodes/control.py:296
 msgid "Split targets must be an ordered target list, not a mapping"
 msgstr ""
 
-#: src/workflow/nodes/control.py:342
+#: src/workflow/nodes/control.py:344
 msgid "Align targets"
 msgstr ""
 
-#: src/workflow/nodes/control.py:344
+#: src/workflow/nodes/control.py:346
 msgid "Align data and targets by file name or path"
 msgstr ""
 
-#: src/workflow/nodes/control.py:353
+#: src/workflow/nodes/control.py:355
 msgid "File paths"
 msgstr ""
 
-#: src/workflow/nodes/control.py:355 src/workflow/nodes/data_source.py:490
+#: src/workflow/nodes/control.py:357 src/workflow/nodes/data_source.py:490
 msgid "Target map"
 msgstr ""
 
-#: src/workflow/nodes/control.py:356
+#: src/workflow/nodes/control.py:358
 msgid "Aligned data"
 msgstr ""
 
-#: src/workflow/nodes/control.py:357
+#: src/workflow/nodes/control.py:359
 msgid "Aligned targets"
 msgstr ""
 
-#: src/workflow/nodes/control.py:358
+#: src/workflow/nodes/control.py:360
 msgid "Aligned file paths"
 msgstr ""
 
-#: src/workflow/nodes/control.py:359
+#: src/workflow/nodes/control.py:361
 msgid "Alignment report"
 msgstr ""
 
-#: src/workflow/nodes/control.py:364
+#: src/workflow/nodes/control.py:366
 msgid "Match mode"
 msgstr ""
 
-#: src/workflow/nodes/control.py:369
+#: src/workflow/nodes/control.py:371
 msgid "Missing target policy"
 msgstr ""
 
-#: src/workflow/nodes/control.py:374
+#: src/workflow/nodes/control.py:376
 msgid "Duplicate target policy"
 msgstr ""
 
-#: src/workflow/nodes/control.py:379
+#: src/workflow/nodes/control.py:381
 msgid "Fill value"
 msgstr ""
 
-#: src/workflow/nodes/control.py:380
+#: src/workflow/nodes/control.py:382
 msgid "Target value used when missing_policy is fill"
 msgstr ""
 
-#: src/workflow/nodes/control.py:392
+#: src/workflow/nodes/control.py:394
 msgid "No file paths provided"
 msgstr ""
 
-#: src/workflow/nodes/control.py:397
+#: src/workflow/nodes/control.py:399
 #, python-brace-format
 msgid "Data count ({data}) does not match file path count ({paths})"
 msgstr ""
 
-#: src/workflow/nodes/control.py:408
+#: src/workflow/nodes/control.py:410
 msgid "No target_map or targets provided"
 msgstr ""
 
-#: src/workflow/nodes/control.py:422
+#: src/workflow/nodes/control.py:424
 msgid "target_map must be a dictionary"
 msgstr ""
 
-#: src/workflow/nodes/control.py:459
+#: src/workflow/nodes/control.py:461
 #, python-brace-format
 msgid "Missing targets for file paths: {paths}"
 msgstr ""
 
-#: src/workflow/nodes/control.py:494
+#: src/workflow/nodes/control.py:496
 #, python-brace-format
 msgid "Target count ({targets}) does not match file path count ({paths})"
 msgstr ""
 
-#: src/workflow/nodes/control.py:542
+#: src/workflow/nodes/control.py:544
 #, python-brace-format
 msgid "Duplicate target keys after {mode} matching: {keys}"
 msgstr ""
 
-#: src/workflow/nodes/control.py:561
+#: src/workflow/nodes/control.py:563
 #, python-brace-format
 msgid "Duplicate file path keys after {mode} matching: {keys}"
 msgstr ""
 
-#: src/workflow/nodes/control.py:591
+#: src/workflow/nodes/control.py:593
 #, python-brace-format
 msgid "No {name} provided"
 msgstr ""
 
-#: src/workflow/nodes/control.py:612
+#: src/workflow/nodes/control.py:614
 msgid "Merge multiple data sources"
 msgstr ""
 
-#: src/workflow/nodes/control.py:616
+#: src/workflow/nodes/control.py:618
 msgid "Data 1"
 msgstr ""
 
-#: src/workflow/nodes/control.py:617 src/workflow/nodes/control.py:724
-#: src/workflow/nodes/control.py:725
+#: src/workflow/nodes/control.py:619 src/workflow/nodes/control.py:726
+#: src/workflow/nodes/control.py:727
 msgid "Data 2"
 msgstr ""
 
-#: src/workflow/nodes/control.py:618
+#: src/workflow/nodes/control.py:620
 msgid "Data 3"
 msgstr ""
 
-#: src/workflow/nodes/control.py:619
+#: src/workflow/nodes/control.py:621
 msgid "Data 4"
 msgstr ""
 
-#: src/workflow/nodes/control.py:620
+#: src/workflow/nodes/control.py:622
 msgid "Merged data"
 msgstr ""
 
-#: src/workflow/nodes/control.py:625
+#: src/workflow/nodes/control.py:627
 msgid "Merge mode"
 msgstr ""
 
-#: src/workflow/nodes/control.py:645
+#: src/workflow/nodes/control.py:647
 msgid "No valid data provided"
 msgstr ""
 
-#: src/workflow/nodes/control.py:680
+#: src/workflow/nodes/control.py:682
 msgid "Passthrough"
 msgstr ""
 
-#: src/workflow/nodes/control.py:682
+#: src/workflow/nodes/control.py:684
 msgid "Pass data through without modification"
 msgstr ""
 
-#: src/workflow/nodes/control.py:689
+#: src/workflow/nodes/control.py:691
 msgid "In"
 msgstr ""
 
-#: src/workflow/nodes/control.py:690
+#: src/workflow/nodes/control.py:692
 msgid "Out"
 msgstr ""
 
-#: src/workflow/nodes/control.py:710
+#: src/workflow/nodes/control.py:712
 msgid "Breakpoint"
 msgstr ""
 
-#: src/workflow/nodes/control.py:712
+#: src/workflow/nodes/control.py:714
 msgid "Pause workflow execution to inspect data"
 msgstr ""
 
-#: src/workflow/nodes/control.py:730
+#: src/workflow/nodes/control.py:732
 msgid "Enable breakpoint"
 msgstr ""
 
-#: src/workflow/nodes/control.py:731
+#: src/workflow/nodes/control.py:733
 msgid "Pause execution at this node"
 msgstr ""
 
-#: src/workflow/nodes/control.py:735
+#: src/workflow/nodes/control.py:737
 msgid "Breakpoint description"
 msgstr ""
 
-#: src/workflow/nodes/control.py:736
+#: src/workflow/nodes/control.py:738
 msgid "Describe the purpose of this breakpoint"
 msgstr ""
 
-#: src/workflow/nodes/control.py:753
+#: src/workflow/nodes/control.py:755
 #, python-brace-format
 msgid "Breakpoint: {desc}"
 msgstr ""
 
-#: src/workflow/nodes/control.py:755
+#: src/workflow/nodes/control.py:757
 msgid "Breakpoint triggered"
 msgstr ""
 
-#: src/workflow/nodes/control.py:776
+#: src/workflow/nodes/control.py:778
 msgid "Validate shape"
 msgstr ""
 
-#: src/workflow/nodes/control.py:778
+#: src/workflow/nodes/control.py:780
 msgid "Validate shape consistency in a batch"
 msgstr ""
 
-#: src/workflow/nodes/control.py:782
+#: src/workflow/nodes/control.py:784
 msgid "Batch data"
 msgstr ""
 
-#: src/workflow/nodes/control.py:783
+#: src/workflow/nodes/control.py:785
 msgid "Validated data"
 msgstr ""
 
-#: src/workflow/nodes/control.py:784
+#: src/workflow/nodes/control.py:786
 msgid "Is valid"
 msgstr ""
 
-#: src/workflow/nodes/control.py:785
+#: src/workflow/nodes/control.py:787
 msgid "Shape info"
 msgstr ""
 
-#: src/workflow/nodes/control.py:790
+#: src/workflow/nodes/control.py:792
 msgid "Strict mode"
 msgstr ""
 
-#: src/workflow/nodes/control.py:791
+#: src/workflow/nodes/control.py:793
 msgid "Stop workflow on inconsistency (otherwise warn only)"
 msgstr ""
 
-#: src/workflow/nodes/control.py:795
+#: src/workflow/nodes/control.py:797
 msgid "Ignore batch dimension"
 msgstr ""
 
-#: src/workflow/nodes/control.py:796
+#: src/workflow/nodes/control.py:798
 msgid "Ignore differences in the first dimension (batch dimension)"
 msgstr ""
 
-#: src/workflow/nodes/control.py:893
+#: src/workflow/nodes/control.py:895
 #, python-brace-format
 msgid "✅ Shape validation passed: {count} items, shape: {shape}"
 msgstr ""
 
-#: src/workflow/nodes/control.py:917
+#: src/workflow/nodes/control.py:919
 #, python-brace-format
 msgid "❌ Shape validation failed: {count} inconsistent items"
 msgstr ""
 
-#: src/workflow/nodes/control.py:920
+#: src/workflow/nodes/control.py:922
 #, python-brace-format
 msgid "   Expected shape: {shape}"
 msgstr ""
 
-#: src/workflow/nodes/control.py:921
+#: src/workflow/nodes/control.py:923
 #, python-brace-format
 msgid "   Shape distribution: {dist}"
 msgstr ""
 
-#: src/workflow/nodes/control.py:927
+#: src/workflow/nodes/control.py:929
 #, python-brace-format
 msgid "   - Index {index}: expected {expected}, got {actual}"
 msgstr ""
 
-#: src/workflow/nodes/control.py:936
+#: src/workflow/nodes/control.py:938
 #, python-brace-format
 msgid "   ... and {count} more"
 msgstr ""
 
-#: src/workflow/nodes/control.py:950
+#: src/workflow/nodes/control.py:952
 #, python-brace-format
 msgid "Shape inconsistent: {count} inconsistent items"
 msgstr ""
 
-#: src/workflow/nodes/control.py:957
+#: src/workflow/nodes/control.py:959
 #, python-brace-format
 msgid "⚠️ Shape validation warning: {count} inconsistent items"
 msgstr ""
@@ -4547,43 +4916,47 @@ msgstr ""
 msgid "Filtering failed: {error}"
 msgstr ""
 
-#: src/workflow/nodes/training.py:34
+#: src/workflow/nodes/training.py:33 src/workflow/nodes/training.py:172
+msgid "Model management"
+msgstr ""
+
+#: src/workflow/nodes/training.py:37
 msgid ""
 "Load model files (Keras models or model editor definitions) and use the "
 "model's built-in compile configuration"
 msgstr ""
 
-#: src/workflow/nodes/training.py:39
+#: src/workflow/nodes/training.py:42
 msgid "Loaded model"
 msgstr ""
 
-#: src/workflow/nodes/training.py:44
+#: src/workflow/nodes/training.py:47
 msgid "Model path"
 msgstr ""
 
-#: src/workflow/nodes/training.py:45
+#: src/workflow/nodes/training.py:48
 msgid "Keras model (.h5/.keras) or model definition (.model.json)"
 msgstr ""
 
-#: src/workflow/nodes/training.py:51
+#: src/workflow/nodes/training.py:54
 msgid "Compile model"
 msgstr ""
 
-#: src/workflow/nodes/training.py:52
+#: src/workflow/nodes/training.py:55
 msgid "Compile using built-in configuration (applies to .model.json only)"
 msgstr ""
 
-#: src/workflow/nodes/training.py:59
+#: src/workflow/nodes/training.py:62
 #, python-brace-format
 msgid "Model file does not exist: {path}"
 msgstr ""
 
-#: src/workflow/nodes/training.py:76
+#: src/workflow/nodes/training.py:79
 #, python-brace-format
 msgid "Model loaded: {name}"
 msgstr ""
 
-#: src/workflow/nodes/training.py:111
+#: src/workflow/nodes/training.py:114
 #, python-brace-format
 msgid ""
 "Failed to load model {path}.\n"
@@ -4591,340 +4964,449 @@ msgid ""
 "Please rebuild and save the model in the model builder."
 msgstr ""
 
-#: src/workflow/nodes/training.py:167
+#: src/workflow/nodes/training.py:170
 msgid "Save model"
 msgstr ""
 
-#: src/workflow/nodes/training.py:169
+#: src/workflow/nodes/training.py:175
 msgid "Save the trained model to a file"
 msgstr ""
 
-#: src/workflow/nodes/training.py:173
+#: src/workflow/nodes/training.py:179
 msgid "Model to save"
 msgstr ""
 
-#: src/workflow/nodes/training.py:174
+#: src/workflow/nodes/training.py:180
 msgid "Saved path"
 msgstr ""
 
-#: src/workflow/nodes/training.py:179
+#: src/workflow/nodes/training.py:185
 msgid "Save mode"
 msgstr ""
 
-#: src/workflow/nodes/training.py:181
+#: src/workflow/nodes/training.py:187
 msgid ""
 "new_file: choose a directory and filename; overwrite: select an existing file"
 msgstr ""
 
-#: src/workflow/nodes/training.py:185
+#: src/workflow/nodes/training.py:191
 msgid "Save directory"
 msgstr ""
 
-#: src/workflow/nodes/training.py:186
+#: src/workflow/nodes/training.py:192
 msgid "Directory to save the model (new_file mode)"
 msgstr ""
 
-#: src/workflow/nodes/training.py:191
+#: src/workflow/nodes/training.py:197
 msgid "Filename"
 msgstr ""
 
-#: src/workflow/nodes/training.py:192
+#: src/workflow/nodes/training.py:198
 msgid "Model filename (including .keras/.h5 extension)"
 msgstr ""
 
-#: src/workflow/nodes/training.py:196
+#: src/workflow/nodes/training.py:202
 msgid "File to overwrite"
 msgstr ""
 
-#: src/workflow/nodes/training.py:197
+#: src/workflow/nodes/training.py:203
 msgid "Select an existing model file (overwrite mode)"
 msgstr ""
 
-#: src/workflow/nodes/training.py:203
+#: src/workflow/nodes/training.py:209
 msgid "Save format"
 msgstr ""
 
-#: src/workflow/nodes/training.py:205
+#: src/workflow/nodes/training.py:211
 msgid "Model save format"
 msgstr ""
 
-#: src/workflow/nodes/training.py:209
+#: src/workflow/nodes/training.py:215
 msgid "Overwrite warning"
 msgstr ""
 
-#: src/workflow/nodes/training.py:210
+#: src/workflow/nodes/training.py:216
 msgid "Log a warning when overwriting an existing file"
 msgstr ""
 
-#: src/workflow/nodes/training.py:217 src/workflow/nodes/training.py:377
-#: src/workflow/nodes/training.py:707 src/workflow/nodes/training.py:1065
+#: src/workflow/nodes/training.py:223 src/workflow/nodes/training.py:387
+#: src/workflow/nodes/training.py:836 src/workflow/nodes/training.py:1246
 #: src/workflow/nodes/feature/ai_embedding.py:87
+#: src/workflow/nodes/feature/grad_cam.py:139
 msgid "No model provided"
 msgstr ""
 
-#: src/workflow/nodes/training.py:229
+#: src/workflow/nodes/training.py:235
 msgid "Save directory is not set"
 msgstr ""
 
-#: src/workflow/nodes/training.py:233
+#: src/workflow/nodes/training.py:239
 msgid "Filename is not set"
 msgstr ""
 
-#: src/workflow/nodes/training.py:250
+#: src/workflow/nodes/training.py:256
 msgid "No file selected to overwrite"
 msgstr ""
 
-#: src/workflow/nodes/training.py:278
+#: src/workflow/nodes/training.py:284
 #, python-brace-format
 msgid "Model saved: {name}"
 msgstr ""
 
-#: src/workflow/nodes/training.py:298
+#: src/workflow/nodes/training.py:304
 msgid "Trainer"
 msgstr ""
 
-#: src/workflow/nodes/training.py:300
+#: src/workflow/nodes/training.py:306
 msgid "Run model training with model config or overridden parameters"
 msgstr ""
 
-#: src/workflow/nodes/training.py:310 src/workflow/nodes/training.py:879
+#: src/workflow/nodes/training.py:319 src/workflow/nodes/training.py:1057
 msgid "Training history"
 msgstr ""
 
-#: src/workflow/nodes/training.py:311
+#: src/workflow/nodes/training.py:320
 msgid "Trained model"
 msgstr ""
 
-#: src/workflow/nodes/training.py:318
+#: src/workflow/nodes/training.py:327
 msgid "Epochs"
 msgstr ""
 
-#: src/workflow/nodes/training.py:323 src/workflow/nodes/training.py:693
-#: src/workflow/nodes/training.py:1043
+#: src/workflow/nodes/training.py:332 src/workflow/nodes/training.py:822
+#: src/workflow/nodes/training.py:1224 src/workflow/nodes/training.py:1559
+#: src/workflow/nodes/training.py:1594
 #: src/workflow/nodes/feature/ai_embedding.py:78
+#: src/workflow/nodes/feature/grad_cam.py:129
 msgid "Batch size"
 msgstr ""
 
-#: src/workflow/nodes/training.py:328
+#: src/workflow/nodes/training.py:337
 msgid "Use model config"
 msgstr ""
 
-#: src/workflow/nodes/training.py:329
+#: src/workflow/nodes/training.py:338
 msgid "True: use model compile config; False: override with parameters below"
 msgstr ""
 
-#: src/workflow/nodes/training.py:334
+#: src/workflow/nodes/training.py:343
 msgid "Optimizer (override)"
 msgstr ""
 
-#: src/workflow/nodes/training.py:336 src/workflow/nodes/training.py:343
+#: src/workflow/nodes/training.py:345 src/workflow/nodes/training.py:352
 msgid "Effective only when 'Use model config' is False"
 msgstr ""
 
-#: src/workflow/nodes/training.py:340
+#: src/workflow/nodes/training.py:349
 msgid "Learning rate (override)"
 msgstr ""
 
-#: src/workflow/nodes/training.py:347
+#: src/workflow/nodes/training.py:356
 msgid "Loss (override)"
 msgstr ""
 
-#: src/workflow/nodes/training.py:349
+#: src/workflow/nodes/training.py:358
 msgid "auto: detect from data; effective only when 'Use model config' is False"
 msgstr ""
 
-#: src/workflow/nodes/training.py:357
+#: src/workflow/nodes/training.py:366
 msgid "Early stopping patience"
 msgstr ""
 
-#: src/workflow/nodes/training.py:381
+#: src/workflow/nodes/training.py:391
 msgid "No training data provided"
 msgstr ""
 
-#: src/workflow/nodes/training.py:403
+#: src/workflow/nodes/training.py:418
 msgid ""
 "Model is not compiled. Ensure it has compile config or disable 'Use model "
 "config'."
 msgstr ""
 
-#: src/workflow/nodes/training.py:411
+#: src/workflow/nodes/training.py:430
 #, python-brace-format
 msgid "Using model config: optimizer={opt}, loss={loss}"
 msgstr ""
 
-#: src/workflow/nodes/training.py:435
+#: src/workflow/nodes/training.py:454
 #, python-brace-format
 msgid "Using override config: optimizer={opt}, loss={loss}"
 msgstr ""
 
-#: src/workflow/nodes/training.py:502
+#: src/workflow/nodes/training.py:521
 #, python-brace-format
 msgid "Training started: {epochs} epochs, batch_size={batch_size}"
 msgstr ""
 
-#: src/workflow/nodes/training.py:536
+#: src/workflow/nodes/training.py:555
 #, python-brace-format
 msgid "Training finished: loss={loss:.4f}, val_loss={val_loss:.4f}"
 msgstr ""
 
-#: src/workflow/nodes/training.py:543
+#: src/workflow/nodes/training.py:562
 #, python-brace-format
 msgid "Training finished: loss={loss:.4f}"
 msgstr ""
 
-#: src/workflow/nodes/training.py:550
+#: src/workflow/nodes/training.py:569
 #, python-brace-format
 msgid "Training failed: {error}"
 msgstr ""
 
-#: src/workflow/nodes/training.py:678
+#: src/workflow/nodes/training.py:582
+msgid "Training targets are empty"
+msgstr ""
+
+#: src/workflow/nodes/training.py:586 src/workflow/nodes/training.py:594
+#: src/workflow/nodes/training.py:604
+msgid "Classification trainer requires categorical targets"
+msgstr ""
+
+#: src/workflow/nodes/training.py:608 src/workflow/nodes/training.py:610
+msgid "Regression trainer requires continuous numeric targets"
+msgstr ""
+
+#: src/workflow/nodes/training.py:637
+msgid ""
+"Classification trainer requires a classification loss; disable model config "
+"to use automatic loss"
+msgstr ""
+
+#: src/workflow/nodes/training.py:641
+msgid ""
+"Regression trainer requires a regression loss; disable model config to use "
+"automatic loss"
+msgstr ""
+
+#: src/workflow/nodes/training.py:770
+msgid "Classification trainer"
+msgstr ""
+
+#: src/workflow/nodes/training.py:771
+msgid "Train a supervised classification model with categorical targets"
+msgstr ""
+
+#: src/workflow/nodes/training.py:785
+msgid "Regression trainer"
+msgstr ""
+
+#: src/workflow/nodes/training.py:786
+msgid "Train a supervised regression model with continuous targets"
+msgstr ""
+
+#: src/workflow/nodes/training.py:799
 msgid "Evaluator"
 msgstr ""
 
-#: src/workflow/nodes/training.py:680
+#: src/workflow/nodes/training.py:801
 msgid "Evaluate model performance"
 msgstr ""
 
-#: src/workflow/nodes/training.py:711
+#: src/workflow/nodes/training.py:840
 msgid "No test data provided"
 msgstr ""
 
-#: src/workflow/nodes/training.py:739
+#: src/workflow/nodes/training.py:852
+msgid "Classification evaluator requires categorical targets"
+msgstr ""
+
+#: src/workflow/nodes/training.py:856
+msgid "Regression evaluator requires continuous numeric targets"
+msgstr ""
+
+#: src/workflow/nodes/training.py:859
+msgid "Evaluation targets are invalid"
+msgstr ""
+
+#: src/workflow/nodes/training.py:887
 #, python-brace-format
 msgid "Evaluation finished: {loss}"
 msgstr ""
 
-#: src/workflow/nodes/training.py:745
+#: src/workflow/nodes/training.py:893
 #, python-brace-format
 msgid "Evaluation failed: {error}"
 msgstr ""
 
-#: src/workflow/nodes/training.py:873
+#: src/workflow/nodes/training.py:1023
+msgid "Classification model evaluation"
+msgstr ""
+
+#: src/workflow/nodes/training.py:1024
+msgid "Evaluate a classification model with categorical targets"
+msgstr ""
+
+#: src/workflow/nodes/training.py:1025 src/workflow/nodes/training.py:1039
+msgid "Model evaluation"
+msgstr ""
+
+#: src/workflow/nodes/training.py:1037
+msgid "Regression model evaluation"
+msgstr ""
+
+#: src/workflow/nodes/training.py:1038
+msgid "Evaluate a regression model with continuous numeric targets"
+msgstr ""
+
+#: src/workflow/nodes/training.py:1050
 msgid "Show training history"
 msgstr ""
 
-#: src/workflow/nodes/training.py:875
+#: src/workflow/nodes/training.py:1053
 msgid "Visualize training history curves"
 msgstr ""
 
-#: src/workflow/nodes/training.py:880
+#: src/workflow/nodes/training.py:1058
 msgid "Training history (passthrough)"
 msgstr ""
 
-#: src/workflow/nodes/training.py:885
+#: src/workflow/nodes/training.py:1063
 msgid "Show loss curve"
 msgstr ""
 
-#: src/workflow/nodes/training.py:889
+#: src/workflow/nodes/training.py:1067
 msgid "Show accuracy curve"
 msgstr ""
 
-#: src/workflow/nodes/training.py:893
+#: src/workflow/nodes/training.py:1071
 msgid "Save path"
 msgstr ""
 
-#: src/workflow/nodes/training.py:894
+#: src/workflow/nodes/training.py:1072
 msgid "Optional. Save the chart to a file."
 msgstr ""
 
-#: src/workflow/nodes/training.py:901
+#: src/workflow/nodes/training.py:1079
 msgid "No training history provided"
 msgstr ""
 
-#: src/workflow/nodes/training.py:951
+#: src/workflow/nodes/training.py:1129
 #, python-brace-format
 msgid "Failed to show training history: {error}"
 msgstr ""
 
-#: src/workflow/nodes/training.py:962
+#: src/workflow/nodes/training.py:1140
 msgid "Show metrics"
 msgstr ""
 
-#: src/workflow/nodes/training.py:964
+#: src/workflow/nodes/training.py:1143
 msgid "Show model evaluation metrics"
 msgstr ""
 
-#: src/workflow/nodes/training.py:969
+#: src/workflow/nodes/training.py:1148
 msgid "Metrics (passthrough)"
 msgstr ""
 
-#: src/workflow/nodes/training.py:974
+#: src/workflow/nodes/training.py:1153
 msgid "Verbose logs"
 msgstr ""
 
-#: src/workflow/nodes/training.py:975
+#: src/workflow/nodes/training.py:1154
 msgid "Output detailed metrics logs (dialog removed)"
 msgstr ""
 
-#: src/workflow/nodes/training.py:981
+#: src/workflow/nodes/training.py:1160
 msgid "No metrics provided"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1008
+#: src/workflow/nodes/training.py:1187
 #, python-brace-format
 msgid "Failed to show metrics: {error}"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1022
+#: src/workflow/nodes/training.py:1201
 msgid "Predict"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1024
+#: src/workflow/nodes/training.py:1203
 msgid "Run prediction using a trained model"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1029
+#: src/workflow/nodes/training.py:1210 src/workflow/nodes/training.py:1550
+#: src/workflow/nodes/training.py:1586
 #: src/workflow/nodes/feature/ai_embedding.py:46
+#: src/workflow/nodes/feature/grad_cam.py:49
 msgid "Input data"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1030
+#: src/workflow/nodes/training.py:1211
 msgid "Predictions"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1035
+#: src/workflow/nodes/training.py:1216
 #: src/workflow/nodes/feature/ai_embedding.py:62
 #: src/workflow/nodes/feature/dim1d/fft.py:47
 #: src/workflow/nodes/feature/dim2d/stft.py:51
 msgid "Output type"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1038
+#: src/workflow/nodes/training.py:1219
 msgid ""
-"Type of prediction result: label=class label, audio=audio, feature_1d=1D "
-"feature, feature_2d=2D feature"
+"Type of prediction result: label=class label, raw=model output, "
+"regression=continuous values, vector=vector output, audio=audio, "
+"feature_1d=1D feature, feature_2d=2D feature"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1045
+#: src/workflow/nodes/training.py:1226 src/workflow/nodes/training.py:1561
+#: src/workflow/nodes/training.py:1596
 msgid "Batch size for prediction"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1049
+#: src/workflow/nodes/training.py:1230
 msgid "Sample rate"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1052
+#: src/workflow/nodes/training.py:1233
 msgid "Output audio sample rate (only for output_type=audio)"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1069
+#: src/workflow/nodes/training.py:1250
 #: src/workflow/nodes/feature/ai_embedding.py:90
+#: src/workflow/nodes/feature/grad_cam.py:142
 msgid "No input data provided"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1077
+#: src/workflow/nodes/training.py:1258
 #, python-brace-format
 msgid "Predicting... (batch_size={batch_size})"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1090
+#: src/workflow/nodes/training.py:1267
 #, python-brace-format
 msgid "Prediction finished: {count} samples, output_type={type}"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1100
+#: src/workflow/nodes/training.py:1277
 #, python-brace-format
 msgid "Prediction failed: {error}"
+msgstr ""
+
+#: src/workflow/nodes/training.py:1540
+msgid "Classification model prediction"
+msgstr ""
+
+#: src/workflow/nodes/training.py:1541
+msgid "Predict class labels and expose the model's raw output"
+msgstr ""
+
+#: src/workflow/nodes/training.py:1551
+msgid "Predicted classes"
+msgstr ""
+
+#: src/workflow/nodes/training.py:1552
+msgid "Raw model output"
+msgstr ""
+
+#: src/workflow/nodes/training.py:1576
+msgid "Regression model prediction"
+msgstr ""
+
+#: src/workflow/nodes/training.py:1577
+msgid "Predict continuous values from a regression model"
+msgstr ""
+
+#: src/workflow/nodes/training.py:1587
+msgid "Predicted values"
 msgstr ""
 
 #: src/workflow/nodes/feature/ai_embedding.py:38
@@ -4933,6 +5415,7 @@ msgstr ""
 
 #: src/workflow/nodes/feature/ai_embedding.py:40
 #: src/workflow/nodes/feature/ai_embedding.py:47
+#: src/workflow/nodes/feature/grad_cam.py:43
 msgid "AI features"
 msgstr ""
 
@@ -4941,6 +5424,7 @@ msgid "Extract embeddings/activations from a model layer"
 msgstr ""
 
 #: src/workflow/nodes/feature/ai_embedding.py:55
+#: src/workflow/nodes/feature/grad_cam.py:60
 msgid "Layer name (optional)"
 msgstr ""
 
@@ -4972,6 +5456,7 @@ msgid "Failed to select layer: {error}"
 msgstr ""
 
 #: src/workflow/nodes/feature/ai_embedding.py:109
+#: src/workflow/nodes/feature/grad_cam.py:235
 #, python-brace-format
 msgid "TensorFlow/Keras is required: {error}"
 msgstr ""
@@ -4992,15 +5477,18 @@ msgid "AI feature extraction failed: {error}"
 msgstr ""
 
 #: src/workflow/nodes/feature/ai_embedding.py:149
+#: src/workflow/nodes/feature/grad_cam.py:196
 #, python-brace-format
 msgid "Layer not found: {name}"
 msgstr ""
 
 #: src/workflow/nodes/feature/ai_embedding.py:193
+#: src/workflow/nodes/feature/grad_cam.py:337
 msgid "Input data list is empty"
 msgstr ""
 
 #: src/workflow/nodes/feature/ai_embedding.py:206
+#: src/workflow/nodes/feature/grad_cam.py:348
 msgid "Input samples have inconsistent shapes; cannot stack into a batch array"
 msgstr ""
 
@@ -5010,6 +5498,141 @@ msgstr ""
 
 #: src/workflow/nodes/feature/ai_embedding.py:296
 msgid "Output batch size does not match input batch size"
+msgstr ""
+
+#: src/workflow/nodes/feature/grad_cam.py:41
+msgid "Grad-CAM"
+msgstr ""
+
+#: src/workflow/nodes/feature/grad_cam.py:44
+msgid "Generate Grad-CAM heatmaps from Conv1D or Conv2D model layers"
+msgstr ""
+
+#: src/workflow/nodes/feature/grad_cam.py:50
+#: src/workflow/nodes/feature/grad_cam.py:75
+msgid "Target class"
+msgstr ""
+
+#: src/workflow/nodes/feature/grad_cam.py:52
+msgid "Prediction"
+msgstr ""
+
+#: src/workflow/nodes/feature/grad_cam.py:61
+msgid ""
+"If set, use this Conv1D/Conv2D layer; otherwise auto-select the last "
+"compatible layer"
+msgstr ""
+
+#: src/workflow/nodes/feature/grad_cam.py:67
+msgid "Target mode"
+msgstr ""
+
+#: src/workflow/nodes/feature/grad_cam.py:69
+msgid ""
+"auto: use predicted class; fixed: use Target class; input: use optional "
+"target port"
+msgstr ""
+
+#: src/workflow/nodes/feature/grad_cam.py:77
+msgid "Class index for fixed mode. -1 falls back to auto."
+msgstr ""
+
+#: src/workflow/nodes/feature/grad_cam.py:83
+msgid "Normalize heatmap"
+msgstr ""
+
+#: src/workflow/nodes/feature/grad_cam.py:84
+msgid "Normalize each heatmap to the 0..1 range"
+msgstr ""
+
+#: src/workflow/nodes/feature/grad_cam.py:90
+msgid "Resize to input"
+msgstr ""
+
+#: src/workflow/nodes/feature/grad_cam.py:91
+msgid "Resize the heatmap to the input feature/time dimensions when possible"
+msgstr ""
+
+#: src/workflow/nodes/feature/grad_cam.py:97
+msgid "Generate overlay"
+msgstr ""
+
+#: src/workflow/nodes/feature/grad_cam.py:98
+msgid "Generate a preview-compatible intensity overlay for 2D feature inputs"
+msgstr ""
+
+#: src/workflow/nodes/feature/grad_cam.py:104
+msgid "Overlay alpha"
+msgstr ""
+
+#: src/workflow/nodes/feature/grad_cam.py:107
+msgid "Blend strength of the Grad-CAM heatmap in the overlay"
+msgstr ""
+
+#: src/workflow/nodes/feature/grad_cam.py:113
+msgid "Overlay mode"
+msgstr ""
+
+#: src/workflow/nodes/feature/grad_cam.py:115
+msgid ""
+"mask: CAM controls source visibility; blend: mix source and CAM intensity"
+msgstr ""
+
+#: src/workflow/nodes/feature/grad_cam.py:121
+msgid "Overlay channel mode"
+msgstr ""
+
+#: src/workflow/nodes/feature/grad_cam.py:123
+msgid "How to reduce multi-channel source features for overlay generation"
+msgstr ""
+
+#: src/workflow/nodes/feature/grad_cam.py:149
+#, python-brace-format
+msgid "Failed to prepare Grad-CAM input: {error}"
+msgstr ""
+
+#: src/workflow/nodes/feature/grad_cam.py:182
+#, python-brace-format
+msgid "Grad-CAM generated from layer: {layer}"
+msgstr ""
+
+#: src/workflow/nodes/feature/grad_cam.py:186
+#, python-brace-format
+msgid "Grad-CAM failed: {error}"
+msgstr ""
+
+#: src/workflow/nodes/feature/grad_cam.py:198
+#, python-brace-format
+msgid "Layer is not a supported Conv1D/Conv2D layer: {name}"
+msgstr ""
+
+#: src/workflow/nodes/feature/grad_cam.py:205
+msgid "No Conv1D or Conv2D layer found for Grad-CAM"
+msgstr ""
+
+#: src/workflow/nodes/feature/grad_cam.py:243
+msgid "Grad-CAM requires a single model output"
+msgstr ""
+
+#: src/workflow/nodes/feature/grad_cam.py:249
+msgid "Could not compute gradients for the selected layer"
+msgstr ""
+
+#: src/workflow/nodes/feature/grad_cam.py:261
+msgid "Selected layer output rank is not supported for Grad-CAM"
+msgstr ""
+
+#: src/workflow/nodes/feature/grad_cam.py:306
+msgid "Target input size does not match batch size"
+msgstr ""
+
+#: src/workflow/nodes/feature/grad_cam.py:321
+#, python-brace-format
+msgid "Target class index is out of range for model output size {size}"
+msgstr ""
+
+#: src/workflow/nodes/feature/grad_cam.py:480
+msgid "Heatmap batch size does not match input batch size"
 msgstr ""
 
 #: src/workflow/nodes/feature/dim1d/fft.py:30
@@ -5088,11 +5711,6 @@ msgstr ""
 #: src/workflow/nodes/feature/dim2d/spectral_contrast.py:43
 #: src/workflow/nodes/feature/dim2d/stft.py:41
 msgid "FFT window size"
-msgstr ""
-
-#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:54
-#: src/workflow/nodes/feature/dim1d/statistics.py:57
-msgid "Aggregation"
 msgstr ""
 
 #: src/workflow/nodes/feature/dim1d/spectral_flatness.py:56

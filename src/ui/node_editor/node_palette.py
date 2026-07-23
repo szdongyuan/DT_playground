@@ -173,7 +173,10 @@ class NodePalette(QWidget):
                     nodes_without_subcategory.append(node_class)
             
             # 添加无子类别的节点
-            for node_class in nodes_without_subcategory:
+            for node_class in sorted(
+                nodes_without_subcategory,
+                key=lambda cls: (getattr(cls, "palette_order", 100), cls.display_name),
+            ):
                 item = QTreeWidgetItem([f"{node_class.icon} {tr_(node_class.display_name)}"])
                 item.setData(0, Qt.ItemDataRole.UserRole, node_class.node_type)
                 item.setToolTip(0, tr_(node_class.description) if node_class.description else "")
@@ -181,7 +184,14 @@ class NodePalette(QWidget):
                 node_count += 1
             
             # 添加有子类别的节点
-            for subcategory, nodes in sorted(subcategory_map.items()):
+            grouped_subcategories = sorted(
+                subcategory_map.items(),
+                key=lambda item: (
+                    min(getattr(cls, "subcategory_order", 100) for cls in item[1]),
+                    item[0],
+                ),
+            )
+            for subcategory, nodes in grouped_subcategories:
                 # 创建子类别节点
                 subcategory_item = QTreeWidgetItem([f"📁 {tr_(subcategory)}"])
                 subcategory_item.setForeground(0, Styles.get_color(category.color))
@@ -189,7 +199,10 @@ class NodePalette(QWidget):
                 category_item.addChild(subcategory_item)
                 
                 # 添加节点到子类别
-                for node_class in nodes:
+                for node_class in sorted(
+                    nodes,
+                    key=lambda cls: (getattr(cls, "palette_order", 100), cls.display_name),
+                ):
                     item = QTreeWidgetItem([f"{node_class.icon} {tr_(node_class.display_name)}"])
                     item.setData(0, Qt.ItemDataRole.UserRole, node_class.node_type)
                     item.setToolTip(0, tr_(node_class.description) if node_class.description else "")
