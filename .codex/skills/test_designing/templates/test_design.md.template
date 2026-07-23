@@ -1,0 +1,144 @@
+# Test Design Document
+
+## Module Information
+
+| Field | Value |
+|-------|-------|
+| **Module/Feature** | {{MODULE_NAME}} |
+| **File Path** | {{FILE_PATH}} |
+| **Author** | {{AUTHOR}} |
+| **Date** | {{DATE}} |
+| **Version** | {{VERSION}} |
+
+## Code Analysis
+
+### Purpose
+
+{{DESCRIPTION}}
+
+### Function/Class Signature
+
+```python
+{{SIGNATURE}}
+```
+
+### Input Parameters
+
+| Parameter | Type | Description | Constraints |
+|-----------|------|-------------|-------------|
+| {{PARAM_NAME}} | {{PARAM_TYPE}} | {{PARAM_DESC}} | {{PARAM_CONSTRAINTS}} |
+
+### Output
+
+| Type | Description |
+|------|-------------|
+| {{OUTPUT_TYPE}} | {{OUTPUT_DESC}} |
+
+### Dependencies
+
+| Dependency | Type | Mock Required |
+|------------|------|---------------|
+| {{DEP_NAME}} | {{DEP_TYPE}} | {{YES_NO}} |
+
+## Test Case Design
+
+### Equivalence Partitions
+
+| Partition ID | Parameter | Partition Description | Valid/Invalid | Representative Value |
+|--------------|-----------|----------------------|---------------|---------------------|
+| EP001 | {{PARAM}} | {{PARTITION_DESC}} | {{VALID_INVALID}} | {{VALUE}} |
+
+### Boundary Values
+
+| Boundary ID | Parameter | Boundary Description | Test Value | Expected Result |
+|-------------|-----------|---------------------|------------|-----------------|
+| BV001 | {{PARAM}} | {{BOUNDARY_DESC}} | {{VALUE}} | {{EXPECTED}} |
+
+### Test Cases
+
+#### Unit Tests
+
+| Test ID | Category | Description | Preconditions | Input | Expected Output | Priority |
+|---------|----------|-------------|---------------|-------|-----------------|----------|
+| UT001 | Happy Path | {{DESC}} | {{PRECOND}} | {{INPUT}} | {{OUTPUT}} | High |
+| UT002 | Boundary | {{DESC}} | {{PRECOND}} | {{INPUT}} | {{OUTPUT}} | High |
+| UT003 | Error | {{DESC}} | {{PRECOND}} | {{INPUT}} | {{OUTPUT}} | Medium |
+| UT004 | Edge Case | {{DESC}} | {{PRECOND}} | {{INPUT}} | {{OUTPUT}} | Medium |
+
+#### Integration Tests
+
+| Test ID | Scenario | Description | Components | Expected Behavior | Priority |
+|---------|----------|-------------|------------|-------------------|----------|
+| IT001 | {{SCENARIO}} | {{DESC}} | {{COMPONENTS}} | {{BEHAVIOR}} | {{PRIORITY}} |
+
+## Mock Strategy
+
+### Dependencies to Mock
+
+| Dependency | Mock Type | Mock Behavior | Rationale |
+|------------|-----------|---------------|-----------|
+| {{DEP_NAME}} | {{MOCK_TYPE}} | {{BEHAVIOR}} | {{REASON}} |
+
+### Mock Implementation Notes
+
+```python
+# Example mock setup
+{{MOCK_EXAMPLE}}
+```
+
+## Test Data
+
+### Test Fixtures
+
+| Fixture Name | Description | Data |
+|--------------|-------------|------|
+| {{FIXTURE_NAME}} | {{FIXTURE_DESC}} | {{FIXTURE_DATA}} |
+
+### Parametrized Test Data
+
+| Parameter Set | Input Values | Expected Output | Description |
+|---------------|--------------|-----------------|-------------|
+| Set 1 | {{VALUES}} | {{EXPECTED}} | {{DESC}} |
+
+## Coverage Goals
+
+| Metric | Target | Notes |
+|--------|--------|-------|
+| Line Coverage | {{PERCENT}}% | {{NOTES}} |
+| Branch Coverage | {{PERCENT}}% | {{NOTES}} |
+| Function Coverage | {{PERCENT}}% | {{NOTES}} |
+
+## Test File Structure
+
+```
+tests/
+├── unit/
+│   └── test_{{MODULE_NAME}}.py
+├── integration/
+│   └── test_{{MODULE_NAME}}_integration.py
+└── conftest.py
+```
+
+## Checklist
+
+### Design Completeness
+
+- [ ] All input parameters analyzed
+- [ ] Equivalence partitions identified
+- [ ] Boundary values identified
+- [ ] Happy path scenarios covered
+- [ ] Error scenarios covered
+- [ ] Edge cases identified
+- [ ] Mock strategy defined
+- [ ] Test data prepared
+
+### Review
+
+- [ ] Test cases reviewed for completeness
+- [ ] Mock strategy validated
+- [ ] Coverage goals are realistic
+- [ ] Test priorities assigned
+
+## Notes
+
+{{ADDITIONAL_NOTES}}

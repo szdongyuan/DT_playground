@@ -1,0 +1,117 @@
+# {{PROJECT_NAME}}
+
+{{PROJECT_DESCRIPTION}}
+
+## Features
+
+{{FEATURES}}
+
+## Quick Start
+
+### Requirements
+
+- Python {{PYTHON_VERSION}}+
+- pip or uv
+
+### Installation
+
+```bash
+# Clone the repository
+git clone {{PROJECT_URL}}
+cd {{PROJECT_NAME}}
+
+# Create virtual environment
+python -m venv .venv
+source .venv/bin/activate  # Linux/macOS
+# or
+.venv\Scripts\activate  # Windows
+
+# Install dependencies
+pip install -e ".[dev]"
+```
+
+### Running
+
+{{RUN_INSTRUCTIONS}}
+
+## Project Structure
+
+```
+{{PROJECT_NAME}}/
+├── src/
+│   └── {{PROJECT_NAME}}/      # Source code
+│       ├── __init__.py
+{{PROJECT_STRUCTURE}}
+├── tests/                      # Test files
+├── docs/                       # Documentation
+├── pyproject.toml              # Project configuration
+└── README.md
+```
+
+## Development Guide
+
+### Code Style
+
+This project uses the following tools for code quality:
+
+- **Ruff**: Code linting and formatting
+- **Mypy**: Static type checking
+- **Pytest**: Unit testing
+
+```bash
+# Format code
+ruff format .
+
+# Lint code
+ruff check .
+
+# Type check
+mypy src/
+
+# Run tests
+pytest
+```
+
+### Commit Conventions
+
+Use [Conventional Commits](https://www.conventionalcommits.org/) format:
+
+```
+feat: add new feature
+fix: fix bug
+docs: update documentation
+refactor: code refactoring
+test: add tests
+chore: other changes
+```
+
+## API Documentation
+
+See [docs/api.md](docs/api.md) for detailed API documentation.
+
+## Architecture
+
+See [ARCHITECTURE.md](ARCHITECTURE.md) for architecture overview.
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for detailed change history.
+
+## License
+
+This project is licensed under the {{LICENSE}} License - see the [LICENSE](LICENSE) file for details.
+
+## Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork this repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Create a Pull Request
+
+## Contact
+
+- Author: {{AUTHOR}}
+- Email: {{AUTHOR_EMAIL}}

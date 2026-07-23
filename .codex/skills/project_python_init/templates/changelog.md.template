@@ -1,0 +1,53 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+### Added
+- Initial project structure
+- Basic configuration files
+- Development documentation
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [0.1.0] - {{DATE}}
+
+### Added
+- Project initialization
+- Basic directory structure
+- pyproject.toml configuration
+- README.md documentation
+- Development standards documentation
+
+---
+
+## Version Guidelines
+
+### Version Number Format
+
+`MAJOR.MINOR.PATCH`
+
+- **MAJOR**: Incompatible API changes
+- **MINOR**: Backward-compatible feature additions
+- **PATCH**: Backward-compatible bug fixes
+
+### Change Types
+
+- **Added**: New features
+- **Changed**: Changes to existing features
+- **Deprecated**: Features to be removed in future
+- **Removed**: Removed features
+- **Fixed**: Bug fixes
+- **Security**: Security-related fixes

@@ -1,0 +1,255 @@
+---
+description: {{PROJECT_NAME}} project development standards
+globs:
+alwaysApply: true
+---
+
+# {{PROJECT_NAME}} Development Standards
+
+## Project Information
+
+- **Project Name**: {{PROJECT_NAME}}
+- **Description**: {{PROJECT_DESCRIPTION}}
+- **Python Version**: {{PYTHON_VERSION}}
+- **Framework**: {{FRAMEWORK}}
+- **Architecture Pattern**: {{ARCHITECTURE_PATTERN}}
+
+## Code Standards
+
+### Python Style
+
+- Follow PEP 8 code style guidelines
+- Use 4 spaces for indentation, no tabs
+- Maximum line length of 88 characters (Black default)
+- Use type hints (Type Annotations)
+- Functions and methods must have docstrings
+
+### Naming Conventions
+
+| Type | Convention | Example |
+|------|------------|---------|
+| Module/Package | snake_case | `user_service.py` |
+| Class | PascalCase | `UserService` |
+| Function/Method | snake_case | `get_user_by_id()` |
+| Constant | UPPER_SNAKE_CASE | `MAX_RETRY_COUNT` |
+| Variable | snake_case | `user_name` |
+| Private Member | leading underscore | `_internal_method()` |
+
+### Type Annotations
+
+```python
+# Function parameters and return values must have type annotations
+def get_user(user_id: int) -> User | None:
+    """Get user information."""
+    pass
+
+# Use typing module for complex types
+from typing import List, Dict, Optional
+
+def process_items(items: List[str]) -> Dict[str, int]:
+    pass
+```
+
+### Docstring Standards
+
+Use Google style docstrings:
+
+```python
+def function_name(param1: str, param2: int) -> bool:
+    """Short description of function.
+
+    More detailed description (optional).
+
+    Args:
+        param1: Description of param1.
+        param2: Description of param2.
+
+    Returns:
+        Description of return value.
+
+    Raises:
+        ValueError: When this exception is raised.
+    """
+    pass
+```
+
+## Project Structure
+
+```
+{{PROJECT_NAME}}/
+├── src/
+│   └── {{PROJECT_NAME}}/
+│       ├── __init__.py
+│       └── ...
+├── tests/
+│   └── ...
+├── docs/
+│   └── ...
+└── pyproject.toml
+```
+
+### Module Responsibilities
+
+{{MODULES}}
+
+## Import Standards
+
+Organize imports in the following order, separated by blank lines:
+
+1. Standard library imports
+2. Third-party library imports
+3. Local application imports
+
+```python
+# Standard library
+import os
+from pathlib import Path
+
+# Third-party libraries
+import requests
+from pydantic import BaseModel
+
+# Local imports
+from {{PROJECT_NAME}}.core import config
+from {{PROJECT_NAME}}.models import User
+```
+
+## Error Handling
+
+- Use specific exception types, avoid bare `except`
+- Custom exceptions inherit from `Exception` or more specific exception classes
+- Handle exceptions at the appropriate level
+
+```python
+# Custom exceptions
+class {{PROJECT_NAME}}Error(Exception):
+    """Base exception class for the project."""
+    pass
+
+class NotFoundError({{PROJECT_NAME}}Error):
+    """Resource not found exception."""
+    pass
+
+# Exception handling
+try:
+    result = risky_operation()
+except SpecificError as e:
+    logger.error(f"Operation failed: {e}")
+    raise
+```
+
+## Logging Standards
+
+Use the `logging` module:
+
+```python
+import logging
+
+logger = logging.getLogger(__name__)
+
+# Log level usage
+logger.debug("Debug information")
+logger.info("General information")
+logger.warning("Warning message")
+logger.error("Error message")
+logger.exception("Exception with stack trace")
+```
+
+## Testing Standards
+
+- Test files start with `test_`
+- Test functions start with `test_`
+- Use pytest fixtures for shared test data
+- Target test coverage: 80%+
+
+```python
+# tests/test_user.py
+import pytest
+from {{PROJECT_NAME}}.models import User
+
+def test_user_creation():
+    user = User(name="test")
+    assert user.name == "test"
+
+@pytest.fixture
+def sample_user():
+    return User(name="sample")
+
+def test_user_with_fixture(sample_user):
+    assert sample_user.name == "sample"
+```
+
+## Git Commit Standards
+
+Use Conventional Commits format:
+
+```
+<type>(<scope>): <description>
+
+[optional body]
+
+[optional footer]
+```
+
+### Types
+
+| Type | Description |
+|------|-------------|
+| feat | New feature |
+| fix | Bug fix |
+| docs | Documentation update |
+| style | Code formatting (no functional changes) |
+| refactor | Refactoring |
+| test | Test related |
+| chore | Build/tooling changes |
+
+### Example
+
+```
+feat(user): add user registration endpoint
+
+- Add POST /users endpoint
+- Add email validation
+- Add password hashing
+
+Closes #123
+```
+
+## Dependency Management
+
+- Use `pyproject.toml` for dependency management
+- Separate production and development dependencies
+- Pin major dependency versions
+
+```toml
+[project]
+dependencies = [
+    "fastapi>=0.100.0,<1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "ruff>=0.1.0",
+]
+```
+
+## Code Quality Tools
+
+Recommended tools:
+
+- **Ruff**: Code linting and formatting
+- **mypy**: Type checking
+- **pytest**: Testing framework
+- **pre-commit**: Git hooks management
+
+```bash
+# Install development dependencies
+pip install -e ".[dev]"
+
+# Run checks
+ruff check .
+ruff format .
+mypy src/
+pytest
+```
