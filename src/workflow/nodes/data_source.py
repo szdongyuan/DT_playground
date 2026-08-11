@@ -10,8 +10,10 @@ import json
 import logging
 import os
 import random
+import re
+import sqlite3
 from dataclasses import dataclass
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from typing import Any, Dict, List, Optional, Tuple
 
 import librosa
@@ -257,6 +259,308 @@ class AudioFolderNode(BaseNode):
             )
         )
         return True
+
+
+@register_node
+class SQLiteAudioDatabaseNode(BaseNode):
+    """Load schema-aware audio records from a read-only SQLite database."""
+
+    node_type = "sqlite_audio_database"
+    display_name = tr_("SQLite audio database")
+    category = NodeCategory.DATA_SOURCE
+    description = tr_("Load filtered audio records from an audio SQLite database")
+    icon = "🗄️"
+
+    TABLE_NAME = "audio_data_table"
+    COLUMNS = (
+        "audio_data_id",
+        "file_path",
+        "product_model",
+        "sample_rate",
+        "record_date",
+        "labels",
+        "barcode",
+        "stimulus_id",
+    )
+
+    def _setup_ports(self):
+        self.add_output("audio", DataType.AUDIO, tr_("Audio list"))
+        self.add_output("labels", DataType.LABEL, tr_("Label list"))
+        self.add_output("file_paths", DataType.ANY, tr_("File path list"))
+        self.add_output("label_map", DataType.ANY, tr_("Label map"))
+        self.add_output("metadata", DataType.ANY, tr_("Audio metadata"))
+
+    def _setup_parameters(self):
+        self.add_parameter(
+            "database_path",
+            "file",
+            "",
+            display_name=tr_("Database path"),
+            description=tr_("SQLite database containing audio_data_table"),
+            file_filter="SQLite Databases (*.db *.sqlite *.sqlite3)",
+        )
+        self.add_parameter(
+            "audio_root",
+            "folder",
+            "",
+            display_name=tr_("Audio root directory"),
+            description=tr_(
+                "Optional root for relative audio paths; defaults to the parent of the database directory"
+            ),
+        )
+        self.add_parameter(
+            "sample_rate",
+            "int",
+            44100,
+            display_name=tr_("Sample rate filter"),
+            description=tr_("Load records whose database sample rate exactly matches this value"),
+            min_value=1,
+        )
+        self.add_parameter(
+            "labels",
+            "str",
+            "",
+            display_name=tr_("Labels"),
+            description=tr_(
+                "Optional comma-separated labels; leave empty to map all non-empty database labels"
+            ),
+        )
+        self.add_parameter(
+            "file_path_regex",
+            "str",
+            "",
+            display_name=tr_("File path regular expression"),
+            description=tr_("Optional case-sensitive regular expression matched against the stored file path"),
+        )
+        self.add_parameter(
+            "max_files",
+            "int",
+            0,
+            display_name=tr_("Max files"),
+            description=tr_("Maximum number of files to load after sorting; 0 means unlimited"),
+            min_value=0,
+        )
+
+    def execute(self) -> bool:
+        database_path = str(self.get_parameter("database_path") or "").strip()
+        audio_root = str(self.get_parameter("audio_root") or "").strip()
+        sample_rate = self.get_parameter("sample_rate")
+        labels_text = str(self.get_parameter("labels") or "")
+        regex_text = str(self.get_parameter("file_path_regex") or "")
+        max_files = self.get_parameter("max_files")
+
+        db_path = Path(database_path)
+        if not database_path or not db_path.is_file():
+            self.error_message = tr_("Database file does not exist: {path}").format(
+                path=database_path
+            )
+            return False
+        if not isinstance(sample_rate, int) or isinstance(sample_rate, bool) or sample_rate <= 0:
+            self.error_message = tr_("Sample rate filter must be a positive integer")
+            return False
+        if not isinstance(max_files, int) or isinstance(max_files, bool) or max_files < 0:
+            self.error_message = tr_("Max files must be a non-negative integer")
+            return False
+
+        if audio_root:
+            root_path = Path(audio_root)
+            if not root_path.is_dir():
+                self.error_message = tr_("Audio root directory does not exist: {path}").format(
+                    path=audio_root
+                )
+                return False
+            root_path = root_path.resolve()
+        else:
+            root_path = db_path.resolve().parent.parent
+
+        try:
+            path_pattern = re.compile(regex_text) if regex_text else None
+        except re.error as exc:
+            self.error_message = tr_("Invalid file path regular expression: {error}").format(
+                error=str(exc)
+            )
+            return False
+
+        requested_labels = self._parse_labels(labels_text)
+        try:
+            rows = self._query_rows(db_path, sample_rate, requested_labels)
+        except (sqlite3.Error, OSError) as exc:
+            self.error_message = tr_("Failed to read SQLite audio database: {error}").format(
+                error=str(exc)
+            )
+            return False
+        except ValueError as exc:
+            self.error_message = str(exc)
+            return False
+
+        queried_count = len(rows)
+        label_names = self._build_label_names(rows, requested_labels)
+        if path_pattern is not None:
+            rows = [row for row in rows if path_pattern.search(str(row["file_path"]))]
+        rows.sort(key=lambda row: str(row["file_path"]))
+        regex_count = len(rows)
+        if max_files > 0:
+            rows = rows[:max_files]
+
+        if not rows:
+            self.error_message = tr_("No database audio records matched the filters")
+            return False
+
+        self.report_status(
+            tr_("Loading {count} database audio files...").format(count=len(rows))
+        )
+
+        audio_list = []
+        encoded_labels = []
+        file_paths = []
+        metadata = []
+        filename_map = {}
+        missing_count = 0
+        failed_count = 0
+        mismatch_count = 0
+
+        for row in rows:
+            resolved_path = self._resolve_audio_path(str(row["file_path"]), root_path)
+            if not resolved_path.is_file():
+                missing_count += 1
+                logger.warning("Database audio path does not exist: %s", resolved_path)
+                continue
+
+            try:
+                audio_data, actual_sample_rate = librosa.load(
+                    str(resolved_path),
+                    sr=None,
+                    mono=False,
+                )
+            except Exception as exc:
+                failed_count += 1
+                logger.warning("Failed to load database audio %s: %s", resolved_path, exc)
+                continue
+
+            if int(actual_sample_rate) != int(row["sample_rate"]):
+                mismatch_count += 1
+                logger.warning(
+                    "Database sample rate mismatch for %s: stored=%s actual=%s",
+                    resolved_path,
+                    row["sample_rate"],
+                    actual_sample_rate,
+                )
+
+            label_name = str(row["labels"])
+            label_id = label_names[label_name]
+            absolute_path = str(resolved_path)
+            audio_list.append(
+                AudioData(
+                    data=audio_data,
+                    sample_rate=int(actual_sample_rate),
+                    file_path=absolute_path,
+                )
+            )
+            encoded_labels.append(label_id)
+            file_paths.append(absolute_path)
+            filename_map[absolute_path] = label_id
+            metadata.append({column: row[column] for column in self.COLUMNS})
+
+        if not audio_list:
+            self.error_message = tr_("No valid database audio files could be loaded")
+            return False
+
+        self.set_output_data("audio", audio_list)
+        self.set_output_data("labels", encoded_labels)
+        self.set_output_data("file_paths", file_paths)
+        self.set_output_data(
+            "label_map",
+            {
+                "filename_map": filename_map,
+                "label_names": label_names,
+            },
+        )
+        self.set_output_data("metadata", metadata)
+
+        self.report_status(
+            tr_(
+                "SQLite audio import: queried {queried}, regex matched {matched}, "
+                "loaded {loaded}, missing {missing}, failed {failed}, "
+                "sample-rate mismatches {mismatches}"
+            ).format(
+                queried=queried_count,
+                matched=regex_count,
+                loaded=len(audio_list),
+                missing=missing_count,
+                failed=failed_count,
+                mismatches=mismatch_count,
+            )
+        )
+        return True
+
+    @classmethod
+    def _query_rows(cls, db_path: Path, sample_rate: int, labels: List[str]):
+        """Return matching rows while keeping the SQLite connection read-only."""
+        database_uri = f"{db_path.resolve().as_uri()}?mode=ro"
+        with sqlite3.connect(database_uri, uri=True) as connection:
+            connection.row_factory = sqlite3.Row
+            table_row = connection.execute(
+                "SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = ?",
+                (cls.TABLE_NAME,),
+            ).fetchone()
+            if table_row is None:
+                raise ValueError(
+                    tr_("SQLite audio database schema is missing: {items}").format(
+                        items=cls.TABLE_NAME
+                    )
+                )
+
+            present_columns = {
+                row["name"]
+                for row in connection.execute(f"PRAGMA table_info({cls.TABLE_NAME})")
+            }
+            missing_columns = [column for column in cls.COLUMNS if column not in present_columns]
+            if missing_columns:
+                raise ValueError(
+                    tr_("SQLite audio database schema is missing: {items}").format(
+                        items=", ".join(missing_columns)
+                    )
+                )
+
+            selected_columns = ", ".join(cls.COLUMNS)
+            query = (
+                f"SELECT {selected_columns} FROM {cls.TABLE_NAME} "
+                "WHERE sample_rate = ? AND labels IS NOT NULL AND TRIM(labels) <> ''"
+            )
+            params: List[Any] = [sample_rate]
+            if labels:
+                placeholders = ", ".join("?" for _ in labels)
+                query += f" AND labels IN ({placeholders})"
+                params.extend(labels)
+            return connection.execute(query, params).fetchall()
+
+    @staticmethod
+    def _parse_labels(labels_text: str) -> List[str]:
+        """Parse comma-separated labels while preserving the first occurrence."""
+        labels = []
+        seen = set()
+        for part in labels_text.split(","):
+            label = part.strip()
+            if label and label not in seen:
+                labels.append(label)
+                seen.add(label)
+        return labels
+
+    @staticmethod
+    def _build_label_names(rows, requested_labels: List[str]) -> Dict[str, int]:
+        """Build either user-ordered or database-derived deterministic label IDs."""
+        if requested_labels:
+            return {label: index for index, label in enumerate(requested_labels)}
+        labels = sorted({str(row["labels"]) for row in rows})
+        return {label: index for index, label in enumerate(labels)}
+
+    @staticmethod
+    def _resolve_audio_path(stored_path: str, audio_root: Path) -> Path:
+        """Resolve relative database paths without rebasing absolute Windows paths."""
+        path = Path(stored_path)
+        if path.is_absolute() or PureWindowsPath(stored_path).is_absolute():
+            return path
+        return (audio_root / path).resolve()
 
 
 @register_node
