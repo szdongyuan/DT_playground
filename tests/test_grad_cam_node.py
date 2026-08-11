@@ -1,7 +1,8 @@
 import numpy as np
 import pytest
 
-from src.workflow.node_base import create_node
+from src.ui.i18n import tr_
+from src.workflow.node_base import NodeCategory, create_node
 from src.workflow.nodes.feature import FeatureData
 from src.workflow.nodes.feature.grad_cam import GradCAMNode
 
@@ -34,11 +35,14 @@ class FakeModel:
         raise ValueError(name)
 
 
-def test_grad_cam_node_is_registered_under_ai_features():
+def test_grad_cam_node_is_registered_under_model_explanation():
     node = create_node("grad_cam")
 
     assert node is not None
-    assert node.subcategory == "AI features"
+    assert node.category == NodeCategory.TRAINING
+    assert node.subcategory == tr_("Model explanation")
+    assert node.subcategory_order == 40
+    assert node.palette_order == 10
     assert "model" in node.inputs
     assert "input_data" in node.inputs
     assert node.inputs["target"].required is False

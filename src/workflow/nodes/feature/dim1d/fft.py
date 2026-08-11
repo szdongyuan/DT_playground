@@ -28,6 +28,8 @@ class FFTNode(BaseNode):
     display_name = tr_("FFT spectrum")
     category = NodeCategory.FEATURE
     subcategory = tr_("1D features")
+    subcategory_order = 10
+    palette_order = 10
     description = tr_("Extract global FFT spectrum")
     icon = "📶"
     

@@ -151,7 +151,9 @@ class FeatureVectorizerNode(BaseNode):
     node_type = "feature_vectorizer"
     display_name = tr_("Feature vectorizer")
     category = NodeCategory.FEATURE
-    subcategory = tr_("Feature preparation")
+    subcategory = tr_("Feature post-processing")
+    subcategory_order = 40
+    palette_order = 10
     description = tr_("Convert features into aligned fixed-length vectors for classical machine learning")
     icon = "🧮"
 
@@ -582,7 +584,9 @@ class AnomalyExplorerNode(BaseNode):
     node_type = "anomaly_explorer"
     display_name = tr_("Anomaly explorer")
     category = NodeCategory.OUTPUT
-    palette_order = 30
+    subcategory = tr_("Result viewing")
+    subcategory_order = 30
+    palette_order = 10
     description = tr_("Inspect ranked anomaly results, thresholds, and source samples")
     icon = "🔎"
 

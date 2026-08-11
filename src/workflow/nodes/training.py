@@ -80,7 +80,7 @@ class LoadModelNode(BaseNode):
     display_name = tr_("Load model")
     category = NodeCategory.TRAINING
     subcategory = tr_("Model management")
-    subcategory_order = 40
+    subcategory_order = 50
     palette_order = 10
     description = tr_(
         "Load model files (Keras models or model editor definitions) and use the model's built-in compile configuration"
@@ -219,7 +219,7 @@ class SaveModelNode(BaseNode):
     display_name = tr_("Save model")
     category = NodeCategory.TRAINING
     subcategory = tr_("Model management")
-    subcategory_order = 40
+    subcategory_order = 50
     palette_order = 20
     description = tr_("Save the trained model to a file")
     icon = "📤"
@@ -1072,6 +1072,8 @@ class ShowHistoryNode(BaseNode):
     node_type = "show_history"
     display_name = tr_("Show training history")
     category = NodeCategory.OUTPUT
+    subcategory = tr_("Training results")
+    subcategory_order = 20
     palette_order = 10
     description = tr_("Visualize training history curves")
     icon = "📈"
@@ -1162,6 +1164,8 @@ class ShowMetricsNode(BaseNode):
     node_type = "show_metrics"
     display_name = tr_("Show metrics")
     category = NodeCategory.OUTPUT
+    subcategory = tr_("Training results")
+    subcategory_order = 20
     palette_order = 20
     description = tr_("Show model evaluation metrics")
     icon = "📊"

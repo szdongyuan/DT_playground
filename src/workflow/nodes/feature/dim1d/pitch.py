@@ -29,6 +29,8 @@ class PitchNode(BaseNode):
     display_name = tr_("Pitch (F0)")
     category = NodeCategory.FEATURE
     subcategory = tr_("1D features")
+    subcategory_order = 10
+    palette_order = 30
     description = tr_("Extract pitch (F0) trajectory")
     icon = "🎤"
     

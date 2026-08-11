@@ -35,8 +35,8 @@ class NodeCategory(Enum):
     PREPROCESSING = "preprocessing"   # Preprocessing
     AUGMENTATION = "augmentation"     # Data augmentation
     FEATURE = "feature"               # Feature extraction
-    TRAINING = "training"             # Training
     CONTROL = "control"               # Control flow
+    TRAINING = "training"             # Training
     OUTPUT = "output"                 # Output
     
     @property
@@ -47,8 +47,8 @@ class NodeCategory(Enum):
             NodeCategory.PREPROCESSING: tr_("Preprocessing"),
             NodeCategory.AUGMENTATION: tr_("Data augmentation"),
             NodeCategory.FEATURE: tr_("Feature extraction"),
+            NodeCategory.CONTROL: tr_("Data and flow"),
             NodeCategory.TRAINING: tr_("AI / Model"),
-            NodeCategory.CONTROL: tr_("Control flow"),
             NodeCategory.OUTPUT: tr_("Output / Visualization"),
         }
         return names.get(self, self.value)

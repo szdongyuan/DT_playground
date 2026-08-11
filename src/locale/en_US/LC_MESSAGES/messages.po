@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-11 16:26+0800\n"
+"POT-Creation-Date: 2026-08-11 17:37+0800\n"
 "PO-Revision-Date: 2026-07-22 10:35+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -102,8 +102,8 @@ msgstr "Failed to load model: {error}"
 msgid "Warning"
 msgstr "Warning"
 
-#: src/app.py:443 src/audio/loader.py:58 src/workflow/nodes/data_source.py:602
-#: src/workflow/nodes/data_source.py:668 src/workflow/nodes/data_source.py:841
+#: src/app.py:443 src/audio/loader.py:58 src/workflow/nodes/data_source.py:605
+#: src/workflow/nodes/data_source.py:672 src/workflow/nodes/data_source.py:846
 #, python-brace-format
 msgid "File does not exist: {path}"
 msgstr "File does not exist: {path}"
@@ -161,7 +161,7 @@ msgstr "Please check the latest log under the logs directory."
 #: src/ui/widgets/spectrogram_widget.py:171 src/visualization/spectrogram.py:77
 #: src/visualization/spectrogram.py:241
 #: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:27
-#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:35
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:37
 msgid "Mel spectrogram"
 msgstr "Mel spectrogram"
 
@@ -183,12 +183,12 @@ msgid "STFT"
 msgstr "STFT"
 
 #: src/audio/features.py:42 src/workflow/nodes/feature/dim1d/fft.py:28
-#: src/workflow/nodes/feature/dim1d/fft.py:36
+#: src/workflow/nodes/feature/dim1d/fft.py:38
 msgid "FFT spectrum"
 msgstr "FFT spectrum"
 
 #: src/audio/features.py:43 src/workflow/nodes/feature/dim2d/cqt.py:30
-#: src/workflow/nodes/feature/dim2d/cqt.py:38
+#: src/workflow/nodes/feature/dim2d/cqt.py:40
 msgid "CQT spectrum"
 msgstr "CQT spectrum"
 
@@ -200,7 +200,7 @@ msgstr "Chroma"
 
 #: src/audio/features.py:45
 #: src/workflow/nodes/feature/dim2d/spectral_contrast.py:30
-#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:38
+#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:40
 msgid "Spectral contrast"
 msgstr "Spectral contrast"
 
@@ -209,30 +209,30 @@ msgid "Tonnetz"
 msgstr "Tonnetz"
 
 #: src/audio/features.py:47 src/visualization/spectrogram.py:260
-#: src/workflow/nodes/feature/dim1d/statistics.py:37
+#: src/workflow/nodes/feature/dim1d/statistics.py:39
 msgid "Spectral centroid"
 msgstr "Spectral centroid"
 
-#: src/audio/features.py:48 src/workflow/nodes/feature/dim1d/statistics.py:41
+#: src/audio/features.py:48 src/workflow/nodes/feature/dim1d/statistics.py:43
 msgid "Spectral bandwidth"
 msgstr "Spectral bandwidth"
 
-#: src/audio/features.py:49 src/workflow/nodes/feature/dim1d/statistics.py:45
+#: src/audio/features.py:49 src/workflow/nodes/feature/dim1d/statistics.py:47
 msgid "Spectral rolloff"
 msgstr "Spectral rolloff"
 
 #: src/audio/features.py:50
 #: src/workflow/nodes/feature/dim1d/spectral_flatness.py:31
-#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:39
+#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:41
 msgid "Spectral flatness"
 msgstr "Spectral flatness"
 
-#: src/audio/features.py:51 src/workflow/nodes/feature/dim1d/statistics.py:49
+#: src/audio/features.py:51 src/workflow/nodes/feature/dim1d/statistics.py:51
 msgid "Zero-crossing rate"
 msgstr "Zero-crossing rate"
 
 #: src/audio/features.py:52 src/visualization/waveform.py:158
-#: src/workflow/nodes/feature/dim1d/statistics.py:53
+#: src/workflow/nodes/feature/dim1d/statistics.py:55
 msgid "RMS energy"
 msgstr "RMS energy"
 
@@ -273,7 +273,7 @@ msgstr "Raw data"
 msgid "Unsupported audio format: {ext}"
 msgstr "Unsupported audio format: {ext}"
 
-#: src/audio/loader.py:89 src/workflow/nodes/data_source.py:618
+#: src/audio/loader.py:89 src/workflow/nodes/data_source.py:621
 #, python-brace-format
 msgid "Failed to load audio: {error}"
 msgstr "Failed to load audio: {error}"
@@ -294,10 +294,10 @@ msgstr "Workflow"
 
 #: src/controllers/navigation_controller.py:83 src/ui/main_window.py:376
 #: src/ui/dialogs/settings_dialog.py:42 src/workflow/nodes/training.py:361
-#: src/workflow/nodes/training.py:830 src/workflow/nodes/training.py:1232
-#: src/workflow/nodes/training.py:1572 src/workflow/nodes/training.py:1608
-#: src/workflow/nodes/feature/ai_embedding.py:45
-#: src/workflow/nodes/feature/grad_cam.py:48
+#: src/workflow/nodes/training.py:830 src/workflow/nodes/training.py:1236
+#: src/workflow/nodes/training.py:1576 src/workflow/nodes/training.py:1612
+#: src/workflow/nodes/feature/ai_embedding.py:47
+#: src/workflow/nodes/feature/grad_cam.py:50
 msgid "Model"
 msgstr "Model"
 
@@ -572,7 +572,7 @@ msgstr "Reshape"
 msgid "Activation"
 msgstr "Activation"
 
-#: src/model_builder/layer_base.py:56 src/workflow/nodes/control.py:612
+#: src/model_builder/layer_base.py:56 src/workflow/nodes/control.py:621
 msgid "Merge"
 msgstr "Merge"
 
@@ -605,7 +605,7 @@ msgid "Cyclic connections are not allowed"
 msgstr "Cyclic connections are not allowed"
 
 #: src/model_builder/model_graph.py:426
-#: src/workflow/nodes/feature/ai_embedding.py:154
+#: src/workflow/nodes/feature/ai_embedding.py:156
 msgid "Model has no layers"
 msgstr "Model has no layers"
 
@@ -1036,7 +1036,7 @@ msgid "Input data shape, e.g. (128,) or (128, 64) or (32, 32, 3)"
 msgstr "Input data shape, e.g. (128,) or (128, 64) or (32, 32, 3)"
 
 #: src/model_builder/layers/input_layers.py:29
-#: src/workflow/nodes/data_source.py:827
+#: src/workflow/nodes/data_source.py:832
 msgid "Data type"
 msgstr "Data type"
 
@@ -1113,7 +1113,7 @@ msgstr "Training loss function"
 
 #: src/model_builder/layers/input_layers.py:142
 #: src/ui/widgets/preview/metrics_preview.py:42
-#: src/workflow/nodes/training.py:840 src/workflow/nodes/training.py:1170
+#: src/workflow/nodes/training.py:840 src/workflow/nodes/training.py:1174
 msgid "Metrics"
 msgstr "Metrics"
 
@@ -1190,9 +1190,9 @@ msgid "Axes for dot product"
 msgstr "Axes for dot product"
 
 #: src/model_builder/layers/merge_layers.py:142
-#: src/workflow/nodes/preprocessing.py:301
-#: src/workflow/nodes/feature/dim1d/fft.py:52
-#: src/workflow/nodes/feature/dim1d/pitch.py:65
+#: src/workflow/nodes/preprocessing.py:303
+#: src/workflow/nodes/feature/dim1d/fft.py:54
+#: src/workflow/nodes/feature/dim1d/pitch.py:67
 msgid "Normalize"
 msgstr "Normalize"
 
@@ -1672,7 +1672,7 @@ msgstr "Class Distribution"
 msgid "Class"
 msgstr "Class"
 
-#: src/ui/dialogs/dataset_dialog.py:144 src/workflow/nodes/control.py:39
+#: src/ui/dialogs/dataset_dialog.py:144 src/workflow/nodes/control.py:42
 msgid "Total"
 msgstr "Total"
 
@@ -1819,42 +1819,42 @@ msgstr "Please install tf2onnx: pip install tf2onnx"
 msgid "Settings"
 msgstr "Settings"
 
-#: src/ui/dialogs/settings_dialog.py:39 src/workflow/nodes/augmentation.py:38
-#: src/workflow/nodes/augmentation.py:40 src/workflow/nodes/augmentation.py:108
-#: src/workflow/nodes/augmentation.py:236
+#: src/ui/dialogs/settings_dialog.py:39 src/workflow/nodes/augmentation.py:39
+#: src/workflow/nodes/augmentation.py:41 src/workflow/nodes/augmentation.py:110
 #: src/workflow/nodes/augmentation.py:239
-#: src/workflow/nodes/augmentation.py:349
-#: src/workflow/nodes/augmentation.py:350
-#: src/workflow/nodes/augmentation.py:428
-#: src/workflow/nodes/augmentation.py:429
-#: src/workflow/nodes/augmentation.py:505
-#: src/workflow/nodes/augmentation.py:513
-#: src/workflow/nodes/augmentation.py:689 src/workflow/nodes/data_source.py:581
-#: src/workflow/nodes/data_source.py:1072
-#: src/workflow/nodes/preprocessing.py:124
-#: src/workflow/nodes/preprocessing.py:127
-#: src/workflow/nodes/preprocessing.py:187
-#: src/workflow/nodes/preprocessing.py:188
-#: src/workflow/nodes/preprocessing.py:307
-#: src/workflow/nodes/preprocessing.py:308
-#: src/workflow/nodes/preprocessing.py:391
-#: src/workflow/nodes/preprocessing.py:394
-#: src/workflow/nodes/preprocessing.py:491
-#: src/workflow/nodes/preprocessing.py:501
-#: src/workflow/nodes/preprocessing.py:684
-#: src/workflow/nodes/preprocessing.py:685
-#: src/workflow/nodes/preprocessing.py:764
-#: src/workflow/nodes/preprocessing.py:1130
-#: src/workflow/nodes/preprocessing.py:1131
-#: src/workflow/nodes/feature/dim1d/fft.py:35
-#: src/workflow/nodes/feature/dim1d/pitch.py:36
-#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:38
-#: src/workflow/nodes/feature/dim1d/statistics.py:31
-#: src/workflow/nodes/feature/dim2d/cqt.py:37
-#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:34
-#: src/workflow/nodes/feature/dim2d/mfcc.py:34
-#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:37
-#: src/workflow/nodes/feature/dim2d/stft.py:35
+#: src/workflow/nodes/augmentation.py:242
+#: src/workflow/nodes/augmentation.py:353
+#: src/workflow/nodes/augmentation.py:354
+#: src/workflow/nodes/augmentation.py:433
+#: src/workflow/nodes/augmentation.py:434
+#: src/workflow/nodes/augmentation.py:511
+#: src/workflow/nodes/augmentation.py:519
+#: src/workflow/nodes/augmentation.py:696 src/workflow/nodes/data_source.py:584
+#: src/workflow/nodes/data_source.py:1080
+#: src/workflow/nodes/preprocessing.py:125
+#: src/workflow/nodes/preprocessing.py:128
+#: src/workflow/nodes/preprocessing.py:189
+#: src/workflow/nodes/preprocessing.py:190
+#: src/workflow/nodes/preprocessing.py:310
+#: src/workflow/nodes/preprocessing.py:311
+#: src/workflow/nodes/preprocessing.py:395
+#: src/workflow/nodes/preprocessing.py:398
+#: src/workflow/nodes/preprocessing.py:495
+#: src/workflow/nodes/preprocessing.py:505
+#: src/workflow/nodes/preprocessing.py:689
+#: src/workflow/nodes/preprocessing.py:690
+#: src/workflow/nodes/preprocessing.py:770
+#: src/workflow/nodes/preprocessing.py:1138
+#: src/workflow/nodes/preprocessing.py:1139
+#: src/workflow/nodes/feature/dim1d/fft.py:37
+#: src/workflow/nodes/feature/dim1d/pitch.py:38
+#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:40
+#: src/workflow/nodes/feature/dim1d/statistics.py:33
+#: src/workflow/nodes/feature/dim2d/cqt.py:39
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:36
+#: src/workflow/nodes/feature/dim2d/mfcc.py:36
+#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:39
+#: src/workflow/nodes/feature/dim2d/stft.py:37
 msgid "Audio"
 msgstr "Audio"
 
@@ -2215,17 +2215,21 @@ msgstr "Reset selected node connections"
 msgid "Delete selected nodes"
 msgstr "Delete selected nodes"
 
-#: src/ui/node_editor/node_palette.py:109
+#: src/ui/node_editor/node_palette.py:111
 msgid "🧩 Node Library"
 msgstr "🧩 Node Library"
 
-#: src/ui/node_editor/node_palette.py:124
+#: src/ui/node_editor/node_palette.py:126
 msgid "🔍 Search nodes..."
 msgstr "🔍 Search nodes..."
 
-#: src/ui/node_editor/node_palette.py:136
+#: src/ui/node_editor/node_palette.py:138
 msgid "Drag or double-click to add a node"
 msgstr "Drag or double-click to add a node"
+
+#: src/ui/node_editor/node_palette.py:272
+msgid "No matching nodes"
+msgstr "No matching nodes"
 
 #: src/ui/node_editor/property_panel.py:81
 #: src/ui/node_editor/property_panel.py:151
@@ -2302,7 +2306,7 @@ msgid "Merge channels"
 msgstr "Merge channels"
 
 #: src/ui/node_editor/property_panel.py:344
-#: src/workflow/nodes/visualization.py:403
+#: src/workflow/nodes/visualization.py:405
 msgid "Selected channel"
 msgstr "Selected channel"
 
@@ -2836,7 +2840,7 @@ msgid "Samples"
 msgstr "Samples"
 
 #: src/ui/widgets/preview/anomaly_result_preview.py:51
-#: src/workflow/nodes/anomaly.py:583
+#: src/workflow/nodes/anomaly.py:585
 msgid "Anomaly explorer"
 msgstr "Anomaly explorer"
 
@@ -3023,12 +3027,12 @@ msgid "Please install pyqtgraph"
 msgstr "Please install pyqtgraph"
 
 #: src/ui/widgets/preview/feature_2d_preview.py:232
-#: src/workflow/nodes/feature/grad_cam.py:51
+#: src/workflow/nodes/feature/grad_cam.py:53
 msgid "Grad-CAM heatmap"
 msgstr "Grad-CAM heatmap"
 
 #: src/ui/widgets/preview/feature_2d_preview.py:234
-#: src/workflow/nodes/feature/grad_cam.py:53
+#: src/workflow/nodes/feature/grad_cam.py:55
 msgid "Grad-CAM overlay"
 msgstr "Grad-CAM overlay"
 
@@ -3314,12 +3318,12 @@ msgid "Class distribution"
 msgstr "Class distribution"
 
 #: src/visualization/spectrogram.py:120
-#: src/workflow/nodes/feature/dim2d/stft.py:36
+#: src/workflow/nodes/feature/dim2d/stft.py:38
 msgid "STFT spectrogram"
 msgstr "STFT spectrogram"
 
 #: src/visualization/spectrogram.py:166
-#: src/workflow/nodes/feature/dim2d/mfcc.py:40
+#: src/workflow/nodes/feature/dim2d/mfcc.py:42
 msgid "MFCC coefficients"
 msgstr "MFCC coefficients"
 
@@ -3403,12 +3407,12 @@ msgid "Feature extraction"
 msgstr "Feature extraction"
 
 #: src/workflow/node_base.py:50
-msgid "AI / Model"
-msgstr "AI / Model"
+msgid "Data and flow"
+msgstr "Data and flow"
 
 #: src/workflow/node_base.py:51
-msgid "Control flow"
-msgstr "Control flow"
+msgid "AI / Model"
+msgstr "AI / Model"
 
 #: src/workflow/node_base.py:52
 msgid "Output / Visualization"
@@ -3470,7 +3474,7 @@ msgstr "Source item count must match feature matrix rows"
 msgid "Feature count mismatch: expected {expected}, got {actual}"
 msgstr "Feature count mismatch: expected {expected}, got {actual}"
 
-#: src/workflow/nodes/anomaly.py:67 src/workflow/nodes/anomaly.py:326
+#: src/workflow/nodes/anomaly.py:67 src/workflow/nodes/anomaly.py:328
 msgid "Feature matrix contains NaN or infinite values"
 msgstr "Feature matrix contains NaN or infinite values"
 
@@ -3495,10 +3499,10 @@ msgid "Feature vectorizer"
 msgstr "Feature vectorizer"
 
 #: src/workflow/nodes/anomaly.py:154
-msgid "Feature preparation"
-msgstr "Feature preparation"
+msgid "Feature post-processing"
+msgstr "Feature post-processing"
 
-#: src/workflow/nodes/anomaly.py:155
+#: src/workflow/nodes/anomaly.py:157
 msgid ""
 "Convert features into aligned fixed-length vectors for classical machine "
 "learning"
@@ -3506,226 +3510,230 @@ msgstr ""
 "Convert features into aligned fixed-length vectors for classical machine "
 "learning"
 
-#: src/workflow/nodes/anomaly.py:159
+#: src/workflow/nodes/anomaly.py:161
 msgid "Features"
 msgstr "Features"
 
-#: src/workflow/nodes/anomaly.py:160 src/workflow/nodes/anomaly.py:408
+#: src/workflow/nodes/anomaly.py:162 src/workflow/nodes/anomaly.py:410
 msgid "Feature matrix"
 msgstr "Feature matrix"
 
-#: src/workflow/nodes/anomaly.py:167
-#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:54
-#: src/workflow/nodes/feature/dim1d/statistics.py:57
+#: src/workflow/nodes/anomaly.py:169
+#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:56
+#: src/workflow/nodes/feature/dim1d/statistics.py:59
 msgid "Aggregation"
 msgstr "Aggregation"
 
-#: src/workflow/nodes/anomaly.py:169
+#: src/workflow/nodes/anomaly.py:171
 msgid "How to reduce each sample to a fixed-length vector"
 msgstr "How to reduce each sample to a fixed-length vector"
 
-#: src/workflow/nodes/anomaly.py:176
+#: src/workflow/nodes/anomaly.py:178
 msgid "No features provided"
 msgstr "No features provided"
 
-#: src/workflow/nodes/anomaly.py:183
+#: src/workflow/nodes/anomaly.py:185
 msgid "Vectorized samples have inconsistent feature counts"
 msgstr "Vectorized samples have inconsistent feature counts"
 
-#: src/workflow/nodes/anomaly.py:188
+#: src/workflow/nodes/anomaly.py:190
 msgid "Feature matrix contains empty, NaN, or infinite values"
 msgstr "Feature matrix contains empty, NaN, or infinite values"
 
-#: src/workflow/nodes/anomaly.py:199
+#: src/workflow/nodes/anomaly.py:201
 #, python-brace-format
 msgid "Feature matrix ready: {samples} samples, {features} features"
 msgstr "Feature matrix ready: {samples} samples, {features} features"
 
-#: src/workflow/nodes/anomaly.py:206
+#: src/workflow/nodes/anomaly.py:208
 #, python-brace-format
 msgid "Feature vectorization failed: {error}"
 msgstr "Feature vectorization failed: {error}"
 
-#: src/workflow/nodes/anomaly.py:225
+#: src/workflow/nodes/anomaly.py:227
 msgid "Feature sample is empty"
 msgstr "Feature sample is empty"
 
-#: src/workflow/nodes/anomaly.py:252
+#: src/workflow/nodes/anomaly.py:254
 msgid "Anomaly detector trainer"
 msgstr "Anomaly detector trainer"
 
-#: src/workflow/nodes/anomaly.py:254 src/workflow/nodes/training.py:795
+#: src/workflow/nodes/anomaly.py:256 src/workflow/nodes/training.py:795
 #: src/workflow/nodes/training.py:810
 msgid "Model training"
 msgstr "Model training"
 
-#: src/workflow/nodes/anomaly.py:257
+#: src/workflow/nodes/anomaly.py:259
 msgid "Fit an unsupervised anomaly detector on mostly-normal reference data"
 msgstr "Fit an unsupervised anomaly detector on mostly-normal reference data"
 
-#: src/workflow/nodes/anomaly.py:261
+#: src/workflow/nodes/anomaly.py:263
 msgid "Reference feature matrix"
 msgstr "Reference feature matrix"
 
-#: src/workflow/nodes/anomaly.py:262 src/workflow/nodes/anomaly.py:407
+#: src/workflow/nodes/anomaly.py:264 src/workflow/nodes/anomaly.py:409
 msgid "Anomaly model"
 msgstr "Anomaly model"
 
-#: src/workflow/nodes/anomaly.py:263
+#: src/workflow/nodes/anomaly.py:265
 msgid "Reference scores"
 msgstr "Reference scores"
 
-#: src/workflow/nodes/anomaly.py:264
+#: src/workflow/nodes/anomaly.py:266
 msgid "Training summary"
 msgstr "Training summary"
 
-#: src/workflow/nodes/anomaly.py:271
+#: src/workflow/nodes/anomaly.py:273
 msgid "Algorithm"
 msgstr "Algorithm"
 
-#: src/workflow/nodes/anomaly.py:278
+#: src/workflow/nodes/anomaly.py:280
 msgid "Feature scaling"
 msgstr "Feature scaling"
 
-#: src/workflow/nodes/anomaly.py:285 src/workflow/nodes/anomaly.py:473
+#: src/workflow/nodes/anomaly.py:287 src/workflow/nodes/anomaly.py:475
 msgid "Expected anomaly ratio"
 msgstr "Expected anomaly ratio"
 
-#: src/workflow/nodes/anomaly.py:293
+#: src/workflow/nodes/anomaly.py:295
 msgid "Number of trees"
 msgstr "Number of trees"
 
-#: src/workflow/nodes/anomaly.py:301
+#: src/workflow/nodes/anomaly.py:303
 msgid "Sample fraction per tree"
 msgstr "Sample fraction per tree"
 
-#: src/workflow/nodes/anomaly.py:309 src/workflow/nodes/control.py:165
+#: src/workflow/nodes/anomaly.py:311 src/workflow/nodes/control.py:171
 msgid "Random seed"
 msgstr "Random seed"
 
-#: src/workflow/nodes/anomaly.py:320
+#: src/workflow/nodes/anomaly.py:322
 msgid "Anomaly trainer requires feature matrix data"
 msgstr "Anomaly trainer requires feature matrix data"
 
-#: src/workflow/nodes/anomaly.py:323
+#: src/workflow/nodes/anomaly.py:325
 msgid "At least two reference samples are required"
 msgstr "At least two reference samples are required"
 
-#: src/workflow/nodes/anomaly.py:382
+#: src/workflow/nodes/anomaly.py:384
 #, python-brace-format
 msgid "Anomaly detector fitted: {samples} reference samples"
 msgstr "Anomaly detector fitted: {samples} reference samples"
 
-#: src/workflow/nodes/anomaly.py:388
+#: src/workflow/nodes/anomaly.py:390
 #, python-brace-format
 msgid "Anomaly detector training failed: {error}"
 msgstr "Anomaly detector training failed: {error}"
 
-#: src/workflow/nodes/anomaly.py:398
+#: src/workflow/nodes/anomaly.py:400
 msgid "Anomaly scorer"
 msgstr "Anomaly scorer"
 
-#: src/workflow/nodes/anomaly.py:400 src/workflow/nodes/anomaly.py:451
-#: src/workflow/nodes/training.py:1565 src/workflow/nodes/training.py:1601
+#: src/workflow/nodes/anomaly.py:402 src/workflow/nodes/anomaly.py:453
+#: src/workflow/nodes/training.py:1569 src/workflow/nodes/training.py:1605
 msgid "Inference and decision"
 msgstr "Inference and decision"
 
-#: src/workflow/nodes/anomaly.py:403
+#: src/workflow/nodes/anomaly.py:405
 msgid "Calculate raw and normalized anomaly scores for each sample"
 msgstr "Calculate raw and normalized anomaly scores for each sample"
 
-#: src/workflow/nodes/anomaly.py:409 src/workflow/nodes/anomaly.py:458
+#: src/workflow/nodes/anomaly.py:411 src/workflow/nodes/anomaly.py:460
 msgid "Anomaly scores"
 msgstr "Anomaly scores"
 
-#: src/workflow/nodes/anomaly.py:416
+#: src/workflow/nodes/anomaly.py:418
 msgid "No valid anomaly model provided"
 msgstr "No valid anomaly model provided"
 
-#: src/workflow/nodes/anomaly.py:419
+#: src/workflow/nodes/anomaly.py:421
 msgid "Anomaly scorer requires feature matrix data"
 msgstr "Anomaly scorer requires feature matrix data"
 
-#: src/workflow/nodes/anomaly.py:435
+#: src/workflow/nodes/anomaly.py:437
 #, python-brace-format
 msgid "Anomaly scoring finished: {samples} samples"
 msgstr "Anomaly scoring finished: {samples} samples"
 
-#: src/workflow/nodes/anomaly.py:439
+#: src/workflow/nodes/anomaly.py:441
 #, python-brace-format
 msgid "Anomaly scoring failed: {error}"
 msgstr "Anomaly scoring failed: {error}"
 
-#: src/workflow/nodes/anomaly.py:449
+#: src/workflow/nodes/anomaly.py:451
 msgid "Anomaly decision"
 msgstr "Anomaly decision"
 
-#: src/workflow/nodes/anomaly.py:454
+#: src/workflow/nodes/anomaly.py:456
 msgid "Apply a configurable threshold without retraining the detector"
 msgstr "Apply a configurable threshold without retraining the detector"
 
-#: src/workflow/nodes/anomaly.py:459 src/workflow/nodes/anomaly.py:590
-#: src/workflow/nodes/anomaly.py:591
+#: src/workflow/nodes/anomaly.py:461 src/workflow/nodes/anomaly.py:594
+#: src/workflow/nodes/anomaly.py:595
 msgid "Anomaly result"
 msgstr "Anomaly result"
 
-#: src/workflow/nodes/anomaly.py:466
+#: src/workflow/nodes/anomaly.py:468
 msgid "Threshold strategy"
 msgstr "Threshold strategy"
 
-#: src/workflow/nodes/anomaly.py:481
+#: src/workflow/nodes/anomaly.py:483
 msgid "Standard deviation multiplier"
 msgstr "Standard deviation multiplier"
 
-#: src/workflow/nodes/anomaly.py:489
+#: src/workflow/nodes/anomaly.py:491
 msgid "MAD multiplier"
 msgstr "MAD multiplier"
 
-#: src/workflow/nodes/anomaly.py:497
+#: src/workflow/nodes/anomaly.py:499
 msgid "Manual threshold (0-100)"
 msgstr "Manual threshold (0-100)"
 
-#: src/workflow/nodes/anomaly.py:505
+#: src/workflow/nodes/anomaly.py:507
 msgid "Attention threshold ratio"
 msgstr "Attention threshold ratio"
 
-#: src/workflow/nodes/anomaly.py:514
+#: src/workflow/nodes/anomaly.py:516
 msgid "No valid anomaly scores provided"
 msgstr "No valid anomaly scores provided"
 
-#: src/workflow/nodes/anomaly.py:517
+#: src/workflow/nodes/anomaly.py:519
 msgid "Anomaly scores are empty"
 msgstr "Anomaly scores are empty"
 
-#: src/workflow/nodes/anomaly.py:523
+#: src/workflow/nodes/anomaly.py:525
 msgid "Reference scores are required for the selected threshold strategy"
 msgstr "Reference scores are required for the selected threshold strategy"
 
-#: src/workflow/nodes/anomaly.py:544
+#: src/workflow/nodes/anomaly.py:546
 #, python-brace-format
 msgid "Anomaly decision finished: {anomalies} anomalies from {samples} samples"
 msgstr ""
 "Anomaly decision finished: {anomalies} anomalies from {samples} samples"
 
-#: src/workflow/nodes/anomaly.py:551
+#: src/workflow/nodes/anomaly.py:553
 #, python-brace-format
 msgid "Anomaly decision failed: {error}"
 msgstr "Anomaly decision failed: {error}"
 
-#: src/workflow/nodes/anomaly.py:571
+#: src/workflow/nodes/anomaly.py:573
 #, python-brace-format
 msgid "Unsupported threshold strategy: {strategy}"
 msgstr "Unsupported threshold strategy: {strategy}"
 
-#: src/workflow/nodes/anomaly.py:586
+#: src/workflow/nodes/anomaly.py:587 src/workflow/nodes/visualization.py:369
+msgid "Result viewing"
+msgstr "Result viewing"
+
+#: src/workflow/nodes/anomaly.py:590
 msgid "Inspect ranked anomaly results, thresholds, and source samples"
 msgstr "Inspect ranked anomaly results, thresholds, and source samples"
 
-#: src/workflow/nodes/anomaly.py:596
+#: src/workflow/nodes/anomaly.py:600
 msgid "No valid anomaly result provided"
 msgstr "No valid anomaly result provided"
 
-#: src/workflow/nodes/anomaly.py:600
+#: src/workflow/nodes/anomaly.py:604
 #, python-brace-format
 msgid "Anomaly explorer ready: {samples} samples"
 msgstr "Anomaly explorer ready: {samples} samples"
@@ -3734,297 +3742,297 @@ msgstr "Anomaly explorer ready: {samples} samples"
 msgid "Sample expansion"
 msgstr "Sample expansion"
 
-#: src/workflow/nodes/augmentation.py:34
+#: src/workflow/nodes/augmentation.py:35
 msgid "Duplicate audio and labels together for sample expansion"
 msgstr "Duplicate audio and labels together for sample expansion"
 
-#: src/workflow/nodes/augmentation.py:39 src/workflow/nodes/augmentation.py:41
-#: src/workflow/nodes/data_source.py:323 src/workflow/nodes/data_source.py:1079
+#: src/workflow/nodes/augmentation.py:40 src/workflow/nodes/augmentation.py:42
+#: src/workflow/nodes/data_source.py:325 src/workflow/nodes/data_source.py:1087
 msgid "Labels"
 msgstr "Labels"
 
-#: src/workflow/nodes/augmentation.py:46 src/workflow/nodes/augmentation.py:707
+#: src/workflow/nodes/augmentation.py:47 src/workflow/nodes/augmentation.py:714
 msgid "Multiplier"
 msgstr "Multiplier"
 
-#: src/workflow/nodes/augmentation.py:47
+#: src/workflow/nodes/augmentation.py:48
 msgid "Number of duplicated samples to create per input item"
 msgstr "Number of duplicated samples to create per input item"
 
-#: src/workflow/nodes/augmentation.py:63
+#: src/workflow/nodes/augmentation.py:64
 #, python-brace-format
 msgid "{node}: labels input is required"
 msgstr "{node}: labels input is required"
 
-#: src/workflow/nodes/augmentation.py:70
+#: src/workflow/nodes/augmentation.py:71
 msgid "Multiplier must be a positive integer"
 msgstr "Multiplier must be a positive integer"
 
-#: src/workflow/nodes/augmentation.py:78
+#: src/workflow/nodes/augmentation.py:79
 msgid "Audio and label counts must match for sample expansion"
 msgstr "Audio and label counts must match for sample expansion"
 
-#: src/workflow/nodes/augmentation.py:102
+#: src/workflow/nodes/augmentation.py:103
 msgid "Add noise"
 msgstr "Add noise"
 
-#: src/workflow/nodes/augmentation.py:104
+#: src/workflow/nodes/augmentation.py:106
 msgid "Add noise to audio"
 msgstr "Add noise to audio"
 
-#: src/workflow/nodes/augmentation.py:109
+#: src/workflow/nodes/augmentation.py:111
 msgid "Noisy audio"
 msgstr "Noisy audio"
 
-#: src/workflow/nodes/augmentation.py:114
+#: src/workflow/nodes/augmentation.py:116
 msgid "Noise type"
 msgstr "Noise type"
 
-#: src/workflow/nodes/augmentation.py:119
+#: src/workflow/nodes/augmentation.py:121
 msgid "SNR (dB)"
 msgstr "SNR (dB)"
 
-#: src/workflow/nodes/augmentation.py:124
+#: src/workflow/nodes/augmentation.py:126
 msgid "Random SNR"
 msgstr "Random SNR"
 
-#: src/workflow/nodes/augmentation.py:125
+#: src/workflow/nodes/augmentation.py:127
 msgid "Randomly choose SNR within the specified range"
 msgstr "Randomly choose SNR within the specified range"
 
-#: src/workflow/nodes/augmentation.py:129
+#: src/workflow/nodes/augmentation.py:131
 msgid "Min SNR (dB)"
 msgstr "Min SNR (dB)"
 
-#: src/workflow/nodes/augmentation.py:134
+#: src/workflow/nodes/augmentation.py:136
 msgid "Max SNR (dB)"
 msgstr "Max SNR (dB)"
 
-#: src/workflow/nodes/augmentation.py:227
+#: src/workflow/nodes/augmentation.py:229
 msgid "Adjust gain"
 msgstr "Adjust gain"
 
-#: src/workflow/nodes/augmentation.py:229
+#: src/workflow/nodes/augmentation.py:232
 msgid "Increase or decrease audio level by a fixed or random dB amount"
 msgstr "Increase or decrease audio level by a fixed or random dB amount"
 
-#: src/workflow/nodes/augmentation.py:237
-#: src/workflow/nodes/preprocessing.py:125
-#: src/workflow/nodes/preprocessing.py:392
-#: src/workflow/nodes/preprocessing.py:492
-#: src/workflow/nodes/preprocessing.py:1130
+#: src/workflow/nodes/augmentation.py:240
+#: src/workflow/nodes/preprocessing.py:126
+#: src/workflow/nodes/preprocessing.py:396
+#: src/workflow/nodes/preprocessing.py:496
+#: src/workflow/nodes/preprocessing.py:1138
 msgid "Audio or audio list"
 msgstr "Audio or audio list"
 
-#: src/workflow/nodes/augmentation.py:244
+#: src/workflow/nodes/augmentation.py:247
 msgid "Gain (dB)"
 msgstr "Gain (dB)"
 
-#: src/workflow/nodes/augmentation.py:249
+#: src/workflow/nodes/augmentation.py:252
 msgid "Random gain"
 msgstr "Random gain"
 
-#: src/workflow/nodes/augmentation.py:250
+#: src/workflow/nodes/augmentation.py:253
 msgid "Randomly choose gain within the specified range"
 msgstr "Randomly choose gain within the specified range"
 
-#: src/workflow/nodes/augmentation.py:254
+#: src/workflow/nodes/augmentation.py:257
 msgid "Minimum gain (dB)"
 msgstr "Minimum gain (dB)"
 
-#: src/workflow/nodes/augmentation.py:259
+#: src/workflow/nodes/augmentation.py:262
 msgid "Maximum gain (dB)"
 msgstr "Maximum gain (dB)"
 
-#: src/workflow/nodes/augmentation.py:264
+#: src/workflow/nodes/augmentation.py:267
 msgid "Clip protection"
 msgstr "Clip protection"
 
-#: src/workflow/nodes/augmentation.py:265
+#: src/workflow/nodes/augmentation.py:268
 msgid "Automatically rescale audio to avoid clipping"
 msgstr "Automatically rescale audio to avoid clipping"
 
-#: src/workflow/nodes/augmentation.py:287
+#: src/workflow/nodes/augmentation.py:290
 msgid "Random gain bounds must be finite values"
 msgstr "Random gain bounds must be finite values"
 
-#: src/workflow/nodes/augmentation.py:292
+#: src/workflow/nodes/augmentation.py:295
 msgid "Minimum gain must be less than or equal to maximum gain"
 msgstr "Minimum gain must be less than or equal to maximum gain"
 
-#: src/workflow/nodes/augmentation.py:297
+#: src/workflow/nodes/augmentation.py:300
 msgid "Gain must be a finite value"
 msgstr "Gain must be a finite value"
 
-#: src/workflow/nodes/augmentation.py:343
+#: src/workflow/nodes/augmentation.py:346
 msgid "Time stretch"
 msgstr "Time stretch"
 
-#: src/workflow/nodes/augmentation.py:345
+#: src/workflow/nodes/augmentation.py:349
 msgid "Change speed while preserving pitch"
 msgstr "Change speed while preserving pitch"
 
-#: src/workflow/nodes/augmentation.py:355
+#: src/workflow/nodes/augmentation.py:359
 msgid "Stretch rate"
 msgstr "Stretch rate"
 
-#: src/workflow/nodes/augmentation.py:356
+#: src/workflow/nodes/augmentation.py:360
 msgid "<1 slower, >1 faster"
 msgstr "<1 slower, >1 faster"
 
-#: src/workflow/nodes/augmentation.py:361
+#: src/workflow/nodes/augmentation.py:365
 msgid "Random rate"
 msgstr "Random rate"
 
-#: src/workflow/nodes/augmentation.py:365
+#: src/workflow/nodes/augmentation.py:369
 msgid "Min rate"
 msgstr "Min rate"
 
-#: src/workflow/nodes/augmentation.py:370
+#: src/workflow/nodes/augmentation.py:374
 msgid "Max rate"
 msgstr "Max rate"
 
-#: src/workflow/nodes/augmentation.py:422
+#: src/workflow/nodes/augmentation.py:426
 msgid "Pitch shift"
 msgstr "Pitch shift"
 
-#: src/workflow/nodes/augmentation.py:424
+#: src/workflow/nodes/augmentation.py:429
 msgid "Change pitch while preserving speed"
 msgstr "Change pitch while preserving speed"
 
-#: src/workflow/nodes/augmentation.py:434
+#: src/workflow/nodes/augmentation.py:439
 msgid "Semitones"
 msgstr "Semitones"
 
-#: src/workflow/nodes/augmentation.py:435
+#: src/workflow/nodes/augmentation.py:440
 msgid "Positive = higher, negative = lower"
 msgstr "Positive = higher, negative = lower"
 
-#: src/workflow/nodes/augmentation.py:440
+#: src/workflow/nodes/augmentation.py:445
 msgid "Random shift"
 msgstr "Random shift"
 
-#: src/workflow/nodes/augmentation.py:444
+#: src/workflow/nodes/augmentation.py:449
 msgid "Min shift (semitones)"
 msgstr "Min shift (semitones)"
 
-#: src/workflow/nodes/augmentation.py:449
+#: src/workflow/nodes/augmentation.py:454
 msgid "Max shift (semitones)"
 msgstr "Max shift (semitones)"
 
-#: src/workflow/nodes/augmentation.py:499
+#: src/workflow/nodes/augmentation.py:504
 msgid "Reverb"
 msgstr "Reverb"
 
-#: src/workflow/nodes/augmentation.py:501
+#: src/workflow/nodes/augmentation.py:507
 msgid "Apply synthetic room reverb to audio"
 msgstr "Apply synthetic room reverb to audio"
 
-#: src/workflow/nodes/augmentation.py:509
+#: src/workflow/nodes/augmentation.py:515
 msgid "Impulse response"
 msgstr "Impulse response"
 
-#: src/workflow/nodes/augmentation.py:511
+#: src/workflow/nodes/augmentation.py:517
 msgid "Optional impulse response audio or audio list"
 msgstr "Optional impulse response audio or audio list"
 
-#: src/workflow/nodes/augmentation.py:518
+#: src/workflow/nodes/augmentation.py:524
 msgid "Decay"
 msgstr "Decay"
 
-#: src/workflow/nodes/augmentation.py:519
+#: src/workflow/nodes/augmentation.py:525
 msgid "Controls how long the reverb tail lasts"
 msgstr "Controls how long the reverb tail lasts"
 
-#: src/workflow/nodes/augmentation.py:524
+#: src/workflow/nodes/augmentation.py:530
 msgid "Wet mix"
 msgstr "Wet mix"
 
-#: src/workflow/nodes/augmentation.py:525
+#: src/workflow/nodes/augmentation.py:531
 msgid "Blend between dry input and reverberated output"
 msgstr "Blend between dry input and reverberated output"
 
-#: src/workflow/nodes/augmentation.py:530
+#: src/workflow/nodes/augmentation.py:536
 msgid "Random wet mix"
 msgstr "Random wet mix"
 
-#: src/workflow/nodes/augmentation.py:531
+#: src/workflow/nodes/augmentation.py:537
 msgid "Randomly choose wet mix within the specified range"
 msgstr "Randomly choose wet mix within the specified range"
 
-#: src/workflow/nodes/augmentation.py:535
+#: src/workflow/nodes/augmentation.py:541
 msgid "Min wet mix"
 msgstr "Min wet mix"
 
-#: src/workflow/nodes/augmentation.py:540
+#: src/workflow/nodes/augmentation.py:546
 msgid "Max wet mix"
 msgstr "Max wet mix"
 
-#: src/workflow/nodes/augmentation.py:597
+#: src/workflow/nodes/augmentation.py:603
 msgid "Reverb: impulse response audio contains only silence"
 msgstr "Reverb: impulse response audio contains only silence"
 
-#: src/workflow/nodes/augmentation.py:618
+#: src/workflow/nodes/augmentation.py:624
 msgid "Reverb impulse response"
 msgstr "Reverb impulse response"
 
-#: src/workflow/nodes/augmentation.py:683
+#: src/workflow/nodes/augmentation.py:689
 msgid "Audio slicing"
 msgstr "Audio slicing"
 
-#: src/workflow/nodes/augmentation.py:685
+#: src/workflow/nodes/augmentation.py:692
 msgid "Slice audio into multiple short segments to augment data"
 msgstr "Slice audio into multiple short segments to augment data"
 
-#: src/workflow/nodes/augmentation.py:690
+#: src/workflow/nodes/augmentation.py:697
 msgid "Sliced audio"
 msgstr "Sliced audio"
 
-#: src/workflow/nodes/augmentation.py:695
+#: src/workflow/nodes/augmentation.py:702
 msgid "Slice duration (s)"
 msgstr "Slice duration (s)"
 
-#: src/workflow/nodes/augmentation.py:696
+#: src/workflow/nodes/augmentation.py:703
 msgid "Duration of each slice"
 msgstr "Duration of each slice"
 
-#: src/workflow/nodes/augmentation.py:701
+#: src/workflow/nodes/augmentation.py:708
 msgid "Slice mode"
 msgstr "Slice mode"
 
-#: src/workflow/nodes/augmentation.py:703
+#: src/workflow/nodes/augmentation.py:710
 msgid "random: random start; sliding: sliding window"
 msgstr "random: random start; sliding: sliding window"
 
-#: src/workflow/nodes/augmentation.py:708
+#: src/workflow/nodes/augmentation.py:715
 msgid "Number of slices to generate in random mode"
 msgstr "Number of slices to generate in random mode"
 
-#: src/workflow/nodes/augmentation.py:713
+#: src/workflow/nodes/augmentation.py:720
 msgid "Overlap"
 msgstr "Overlap"
 
-#: src/workflow/nodes/augmentation.py:714
+#: src/workflow/nodes/augmentation.py:721
 msgid "Overlap ratio in sliding window mode (0-0.9)"
 msgstr "Overlap ratio in sliding window mode (0-0.9)"
 
-#: src/workflow/nodes/augmentation.py:719
+#: src/workflow/nodes/augmentation.py:726
 msgid "Include remainder"
 msgstr "Include remainder"
 
-#: src/workflow/nodes/augmentation.py:720
+#: src/workflow/nodes/augmentation.py:727
 msgid ""
 "In sliding window mode, include the final remainder shorter than a full slice"
 msgstr ""
 "In sliding window mode, include the final remainder shorter than a full slice"
 
-#: src/workflow/nodes/augmentation.py:724
-#: src/workflow/nodes/preprocessing.py:203
-#: src/workflow/nodes/preprocessing.py:970
+#: src/workflow/nodes/augmentation.py:731
+#: src/workflow/nodes/preprocessing.py:205
+#: src/workflow/nodes/preprocessing.py:977
 msgid "Pad mode"
 msgstr "Pad mode"
 
-#: src/workflow/nodes/augmentation.py:726
+#: src/workflow/nodes/augmentation.py:733
 msgid "Padding strategy for the remainder segment"
 msgstr "Padding strategy for the remainder segment"
 
@@ -4032,384 +4040,394 @@ msgstr "Padding strategy for the remainder segment"
 msgid "Loop"
 msgstr "Loop"
 
-#: src/workflow/nodes/control.py:32
+#: src/workflow/nodes/control.py:32 src/workflow/nodes/control.py:696
+#: src/workflow/nodes/control.py:729 src/workflow/nodes/control.py:798
+msgid "Flow and debugging"
+msgstr "Flow and debugging"
+
+#: src/workflow/nodes/control.py:35
 msgid "Iterate over a list and output items one by one"
 msgstr "Iterate over a list and output items one by one"
 
-#: src/workflow/nodes/control.py:36
+#: src/workflow/nodes/control.py:39
 msgid "Data list"
 msgstr "Data list"
 
-#: src/workflow/nodes/control.py:37
+#: src/workflow/nodes/control.py:40
 msgid "Current item"
 msgstr "Current item"
 
-#: src/workflow/nodes/control.py:38
+#: src/workflow/nodes/control.py:41
 msgid "Current index"
 msgstr "Current index"
 
-#: src/workflow/nodes/control.py:44
+#: src/workflow/nodes/control.py:47
 msgid "Max iterations"
 msgstr "Max iterations"
 
-#: src/workflow/nodes/control.py:45
+#: src/workflow/nodes/control.py:48
 msgid "0 means no limit"
 msgstr "0 means no limit"
 
-#: src/workflow/nodes/control.py:57
+#: src/workflow/nodes/control.py:60
 msgid "No data list provided"
 msgstr "No data list provided"
 
-#: src/workflow/nodes/control.py:83 src/workflow/nodes/control.py:844
+#: src/workflow/nodes/control.py:86 src/workflow/nodes/control.py:865
 msgid "Data list is empty"
 msgstr "Data list is empty"
 
-#: src/workflow/nodes/control.py:121
+#: src/workflow/nodes/control.py:124
 msgid "Split dataset"
 msgstr "Split dataset"
 
-#: src/workflow/nodes/control.py:123
+#: src/workflow/nodes/control.py:126 src/workflow/nodes/control.py:352
+#: src/workflow/nodes/control.py:623
+msgid "Dataset processing"
+msgstr "Dataset processing"
+
+#: src/workflow/nodes/control.py:129
 msgid "Split data into train/val/test sets"
 msgstr "Split data into train/val/test sets"
 
-#: src/workflow/nodes/control.py:127 src/workflow/nodes/control.py:354
-#: src/workflow/nodes/control.py:722 src/workflow/nodes/control.py:723
+#: src/workflow/nodes/control.py:133 src/workflow/nodes/control.py:363
+#: src/workflow/nodes/control.py:740 src/workflow/nodes/control.py:741
 msgid "Data"
 msgstr "Data"
 
-#: src/workflow/nodes/control.py:128 src/workflow/nodes/control.py:356
+#: src/workflow/nodes/control.py:134 src/workflow/nodes/control.py:365
 msgid "Targets"
 msgstr "Targets"
 
-#: src/workflow/nodes/control.py:129 src/workflow/nodes/control.py:136
-#: src/workflow/nodes/data_source.py:795 src/workflow/nodes/training.py:366
+#: src/workflow/nodes/control.py:135 src/workflow/nodes/control.py:142
+#: src/workflow/nodes/data_source.py:800 src/workflow/nodes/training.py:366
 #: src/workflow/nodes/training.py:836
 msgid "Target metadata"
 msgstr "Target metadata"
 
-#: src/workflow/nodes/control.py:130 src/workflow/nodes/training.py:362
+#: src/workflow/nodes/control.py:136 src/workflow/nodes/training.py:362
 msgid "Train data"
 msgstr "Train data"
 
-#: src/workflow/nodes/control.py:131 src/workflow/nodes/training.py:363
+#: src/workflow/nodes/control.py:137 src/workflow/nodes/training.py:363
 msgid "Train targets"
 msgstr "Train targets"
 
-#: src/workflow/nodes/control.py:132 src/workflow/nodes/training.py:364
+#: src/workflow/nodes/control.py:138 src/workflow/nodes/training.py:364
 msgid "Validation data"
 msgstr "Validation data"
 
-#: src/workflow/nodes/control.py:133 src/workflow/nodes/training.py:365
+#: src/workflow/nodes/control.py:139 src/workflow/nodes/training.py:365
 msgid "Validation targets"
 msgstr "Validation targets"
 
-#: src/workflow/nodes/control.py:134 src/workflow/nodes/training.py:831
+#: src/workflow/nodes/control.py:140 src/workflow/nodes/training.py:831
 msgid "Test data"
 msgstr "Test data"
 
-#: src/workflow/nodes/control.py:135 src/workflow/nodes/training.py:832
+#: src/workflow/nodes/control.py:141 src/workflow/nodes/training.py:832
 msgid "Test targets"
 msgstr "Test targets"
 
-#: src/workflow/nodes/control.py:141
+#: src/workflow/nodes/control.py:147
 msgid "Train ratio"
 msgstr "Train ratio"
 
-#: src/workflow/nodes/control.py:146
+#: src/workflow/nodes/control.py:152
 msgid "Validation ratio"
 msgstr "Validation ratio"
 
-#: src/workflow/nodes/control.py:151
+#: src/workflow/nodes/control.py:157
 msgid "Test ratio"
 msgstr "Test ratio"
 
-#: src/workflow/nodes/control.py:156
+#: src/workflow/nodes/control.py:162
 msgid "Shuffle"
 msgstr "Shuffle"
 
-#: src/workflow/nodes/control.py:160
+#: src/workflow/nodes/control.py:166
 msgid "Stratify"
 msgstr "Stratify"
 
-#: src/workflow/nodes/control.py:161
+#: src/workflow/nodes/control.py:167
 msgid "Keep class proportions"
 msgstr "Keep class proportions"
 
-#: src/workflow/nodes/control.py:175 src/workflow/nodes/control.py:836
+#: src/workflow/nodes/control.py:181 src/workflow/nodes/control.py:857
 msgid "No data provided"
 msgstr "No data provided"
 
-#: src/workflow/nodes/control.py:207
+#: src/workflow/nodes/control.py:213
 #, python-brace-format
 msgid "Target count ({targets}) does not match data count ({data})"
 msgstr "Target count ({targets}) does not match data count ({data})"
 
-#: src/workflow/nodes/control.py:280
+#: src/workflow/nodes/control.py:286
 #, python-brace-format
 msgid "Split complete: train={train}, val={val}, test={test}"
 msgstr "Split complete: train={train}, val={val}, test={test}"
 
-#: src/workflow/nodes/control.py:290
+#: src/workflow/nodes/control.py:296
 #, python-brace-format
 msgid "Split failed: {error}"
 msgstr "Split failed: {error}"
 
-#: src/workflow/nodes/control.py:296
+#: src/workflow/nodes/control.py:302
 msgid "Split targets must be an ordered target list, not a mapping"
 msgstr "Split targets must be an ordered target list, not a mapping"
 
-#: src/workflow/nodes/control.py:344
+#: src/workflow/nodes/control.py:350
 msgid "Align targets"
 msgstr "Align targets"
 
-#: src/workflow/nodes/control.py:346
+#: src/workflow/nodes/control.py:355
 msgid "Align data and targets by file name or path"
 msgstr "Align data and targets by file name or path"
 
-#: src/workflow/nodes/control.py:355
+#: src/workflow/nodes/control.py:364
 msgid "File paths"
 msgstr "File paths"
 
-#: src/workflow/nodes/control.py:357 src/workflow/nodes/data_source.py:794
+#: src/workflow/nodes/control.py:366 src/workflow/nodes/data_source.py:799
 msgid "Target map"
 msgstr "Target map"
 
-#: src/workflow/nodes/control.py:358
+#: src/workflow/nodes/control.py:367
 msgid "Aligned data"
 msgstr "Aligned data"
 
-#: src/workflow/nodes/control.py:359
+#: src/workflow/nodes/control.py:368
 msgid "Aligned targets"
 msgstr "Aligned targets"
 
-#: src/workflow/nodes/control.py:360
+#: src/workflow/nodes/control.py:369
 msgid "Aligned file paths"
 msgstr "Aligned file paths"
 
-#: src/workflow/nodes/control.py:361
+#: src/workflow/nodes/control.py:370
 msgid "Alignment report"
 msgstr "Alignment report"
 
-#: src/workflow/nodes/control.py:366
+#: src/workflow/nodes/control.py:375
 msgid "Match mode"
 msgstr "Match mode"
 
-#: src/workflow/nodes/control.py:371
+#: src/workflow/nodes/control.py:380
 msgid "Missing target policy"
 msgstr "Missing target policy"
 
-#: src/workflow/nodes/control.py:376
+#: src/workflow/nodes/control.py:385
 msgid "Duplicate target policy"
 msgstr "Duplicate target policy"
 
-#: src/workflow/nodes/control.py:381
+#: src/workflow/nodes/control.py:390
 msgid "Fill value"
 msgstr "Fill value"
 
-#: src/workflow/nodes/control.py:382
+#: src/workflow/nodes/control.py:391
 msgid "Target value used when missing_policy is fill"
 msgstr "Target value used when missing_policy is fill"
 
-#: src/workflow/nodes/control.py:394
+#: src/workflow/nodes/control.py:403
 msgid "No file paths provided"
 msgstr "No file paths provided"
 
-#: src/workflow/nodes/control.py:399
+#: src/workflow/nodes/control.py:408
 #, python-brace-format
 msgid "Data count ({data}) does not match file path count ({paths})"
 msgstr "Data count ({data}) does not match file path count ({paths})"
 
-#: src/workflow/nodes/control.py:410
+#: src/workflow/nodes/control.py:419
 msgid "No target_map or targets provided"
 msgstr "No target_map or targets provided"
 
-#: src/workflow/nodes/control.py:424
+#: src/workflow/nodes/control.py:433
 msgid "target_map must be a dictionary"
 msgstr "target_map must be a dictionary"
 
-#: src/workflow/nodes/control.py:461
+#: src/workflow/nodes/control.py:470
 #, python-brace-format
 msgid "Missing targets for file paths: {paths}"
 msgstr "Missing targets for file paths: {paths}"
 
-#: src/workflow/nodes/control.py:496
+#: src/workflow/nodes/control.py:505
 #, python-brace-format
 msgid "Target count ({targets}) does not match file path count ({paths})"
 msgstr "Target count ({targets}) does not match file path count ({paths})"
 
-#: src/workflow/nodes/control.py:544
+#: src/workflow/nodes/control.py:553
 #, python-brace-format
 msgid "Duplicate target keys after {mode} matching: {keys}"
 msgstr "Duplicate target keys after {mode} matching: {keys}"
 
-#: src/workflow/nodes/control.py:563
+#: src/workflow/nodes/control.py:572
 #, python-brace-format
 msgid "Duplicate file path keys after {mode} matching: {keys}"
 msgstr "Duplicate file path keys after {mode} matching: {keys}"
 
-#: src/workflow/nodes/control.py:593
+#: src/workflow/nodes/control.py:602
 #, python-brace-format
 msgid "No {name} provided"
 msgstr "No {name} provided"
 
-#: src/workflow/nodes/control.py:614
+#: src/workflow/nodes/control.py:626
 msgid "Merge multiple data sources"
 msgstr "Merge multiple data sources"
 
-#: src/workflow/nodes/control.py:618
+#: src/workflow/nodes/control.py:630
 msgid "Data 1"
 msgstr "Data 1"
 
-#: src/workflow/nodes/control.py:619 src/workflow/nodes/control.py:726
-#: src/workflow/nodes/control.py:727
+#: src/workflow/nodes/control.py:631 src/workflow/nodes/control.py:744
+#: src/workflow/nodes/control.py:745
 msgid "Data 2"
 msgstr "Data 2"
 
-#: src/workflow/nodes/control.py:620
+#: src/workflow/nodes/control.py:632
 msgid "Data 3"
 msgstr "Data 3"
 
-#: src/workflow/nodes/control.py:621
+#: src/workflow/nodes/control.py:633
 msgid "Data 4"
 msgstr "Data 4"
 
-#: src/workflow/nodes/control.py:622
+#: src/workflow/nodes/control.py:634
 msgid "Merged data"
 msgstr "Merged data"
 
-#: src/workflow/nodes/control.py:627
+#: src/workflow/nodes/control.py:639
 msgid "Merge mode"
 msgstr "Merge mode"
 
-#: src/workflow/nodes/control.py:647
+#: src/workflow/nodes/control.py:659
 msgid "No valid data provided"
 msgstr "No valid data provided"
 
-#: src/workflow/nodes/control.py:682
+#: src/workflow/nodes/control.py:694
 msgid "Passthrough"
 msgstr "Passthrough"
 
-#: src/workflow/nodes/control.py:684
+#: src/workflow/nodes/control.py:699
 msgid "Pass data through without modification"
 msgstr "Pass data through without modification"
 
-#: src/workflow/nodes/control.py:691
+#: src/workflow/nodes/control.py:706
 msgid "In"
 msgstr "In"
 
-#: src/workflow/nodes/control.py:692
+#: src/workflow/nodes/control.py:707
 msgid "Out"
 msgstr "Out"
 
-#: src/workflow/nodes/control.py:712
+#: src/workflow/nodes/control.py:727
 msgid "Breakpoint"
 msgstr "Breakpoint"
 
-#: src/workflow/nodes/control.py:714
+#: src/workflow/nodes/control.py:732
 msgid "Pause workflow execution to inspect data"
 msgstr "Pause workflow execution to inspect data"
 
-#: src/workflow/nodes/control.py:732
+#: src/workflow/nodes/control.py:750
 msgid "Enable breakpoint"
 msgstr "Enable breakpoint"
 
-#: src/workflow/nodes/control.py:733
+#: src/workflow/nodes/control.py:751
 msgid "Pause execution at this node"
 msgstr "Pause execution at this node"
 
-#: src/workflow/nodes/control.py:737
+#: src/workflow/nodes/control.py:755
 msgid "Breakpoint description"
 msgstr "Breakpoint description"
 
-#: src/workflow/nodes/control.py:738
+#: src/workflow/nodes/control.py:756
 msgid "Describe the purpose of this breakpoint"
 msgstr "Describe the purpose of this breakpoint"
 
-#: src/workflow/nodes/control.py:755
+#: src/workflow/nodes/control.py:773
 #, python-brace-format
 msgid "Breakpoint: {desc}"
 msgstr "Breakpoint: {desc}"
 
-#: src/workflow/nodes/control.py:757
+#: src/workflow/nodes/control.py:775
 msgid "Breakpoint triggered"
 msgstr "Breakpoint triggered"
 
-#: src/workflow/nodes/control.py:778
+#: src/workflow/nodes/control.py:796
 msgid "Validate shape"
 msgstr "Validate shape"
 
-#: src/workflow/nodes/control.py:780
+#: src/workflow/nodes/control.py:801
 msgid "Validate shape consistency in a batch"
 msgstr "Validate shape consistency in a batch"
 
-#: src/workflow/nodes/control.py:784
+#: src/workflow/nodes/control.py:805
 msgid "Batch data"
 msgstr "Batch data"
 
-#: src/workflow/nodes/control.py:785
+#: src/workflow/nodes/control.py:806
 msgid "Validated data"
 msgstr "Validated data"
 
-#: src/workflow/nodes/control.py:786
+#: src/workflow/nodes/control.py:807
 msgid "Is valid"
 msgstr "Is valid"
 
-#: src/workflow/nodes/control.py:787
+#: src/workflow/nodes/control.py:808
 msgid "Shape info"
 msgstr "Shape info"
 
-#: src/workflow/nodes/control.py:792
+#: src/workflow/nodes/control.py:813
 msgid "Strict mode"
 msgstr "Strict mode"
 
-#: src/workflow/nodes/control.py:793
+#: src/workflow/nodes/control.py:814
 msgid "Stop workflow on inconsistency (otherwise warn only)"
 msgstr "Stop workflow on inconsistency (otherwise warn only)"
 
-#: src/workflow/nodes/control.py:797
+#: src/workflow/nodes/control.py:818
 msgid "Ignore batch dimension"
 msgstr "Ignore batch dimension"
 
-#: src/workflow/nodes/control.py:798
+#: src/workflow/nodes/control.py:819
 msgid "Ignore differences in the first dimension (batch dimension)"
 msgstr "Ignore differences in the first dimension (batch dimension)"
 
-#: src/workflow/nodes/control.py:895
+#: src/workflow/nodes/control.py:916
 #, python-brace-format
 msgid "✅ Shape validation passed: {count} items, shape: {shape}"
 msgstr "✅ Shape validation passed: {count} items, shape: {shape}"
 
-#: src/workflow/nodes/control.py:919
+#: src/workflow/nodes/control.py:940
 #, python-brace-format
 msgid "❌ Shape validation failed: {count} inconsistent items"
 msgstr "❌ Shape validation failed: {count} inconsistent items"
 
-#: src/workflow/nodes/control.py:922
+#: src/workflow/nodes/control.py:943
 #, python-brace-format
 msgid "   Expected shape: {shape}"
 msgstr "   Expected shape: {shape}"
 
-#: src/workflow/nodes/control.py:923
+#: src/workflow/nodes/control.py:944
 #, python-brace-format
 msgid "   Shape distribution: {dist}"
 msgstr "   Shape distribution: {dist}"
 
-#: src/workflow/nodes/control.py:929
+#: src/workflow/nodes/control.py:950
 #, python-brace-format
 msgid "   - Index {index}: expected {expected}, got {actual}"
 msgstr "   - Index {index}: expected {expected}, got {actual}"
 
-#: src/workflow/nodes/control.py:938
+#: src/workflow/nodes/control.py:959
 #, python-brace-format
 msgid "   ... and {count} more"
 msgstr "   ... and {count} more"
 
-#: src/workflow/nodes/control.py:952
+#: src/workflow/nodes/control.py:973
 #, python-brace-format
 msgid "Shape inconsistent: {count} inconsistent items"
 msgstr "Shape inconsistent: {count} inconsistent items"
 
-#: src/workflow/nodes/control.py:959
+#: src/workflow/nodes/control.py:980
 #, python-brace-format
 msgid "⚠️ Shape validation warning: {count} inconsistent items"
 msgstr "⚠️ Shape validation warning: {count} inconsistent items"
@@ -4423,122 +4441,122 @@ msgstr "Channel index {idx} out of range (total {channels} channels)"
 msgid "Audio folder"
 msgstr "Audio folder"
 
-#: src/workflow/nodes/data_source.py:122
+#: src/workflow/nodes/data_source.py:123
 msgid "Load audio files from a folder, optionally auto-label by subfolder"
 msgstr "Load audio files from a folder, optionally auto-label by subfolder"
 
-#: src/workflow/nodes/data_source.py:130 src/workflow/nodes/data_source.py:287
+#: src/workflow/nodes/data_source.py:131 src/workflow/nodes/data_source.py:289
 msgid "Audio list"
 msgstr "Audio list"
 
-#: src/workflow/nodes/data_source.py:131 src/workflow/nodes/data_source.py:288
-#: src/workflow/nodes/data_source.py:637
+#: src/workflow/nodes/data_source.py:132 src/workflow/nodes/data_source.py:290
+#: src/workflow/nodes/data_source.py:641
 msgid "Label list"
 msgstr "Label list"
 
-#: src/workflow/nodes/data_source.py:132 src/workflow/nodes/data_source.py:289
+#: src/workflow/nodes/data_source.py:133 src/workflow/nodes/data_source.py:291
 msgid "File path list"
 msgstr "File path list"
 
-#: src/workflow/nodes/data_source.py:137
+#: src/workflow/nodes/data_source.py:138
 msgid "Folder path"
 msgstr "Folder path"
 
-#: src/workflow/nodes/data_source.py:138
+#: src/workflow/nodes/data_source.py:139
 msgid "Directory containing audio files"
 msgstr "Directory containing audio files"
 
-#: src/workflow/nodes/data_source.py:143
+#: src/workflow/nodes/data_source.py:144
 msgid "Recursive scan"
 msgstr "Recursive scan"
 
-#: src/workflow/nodes/data_source.py:144
+#: src/workflow/nodes/data_source.py:145
 msgid "Scan subfolders"
 msgstr "Scan subfolders"
 
-#: src/workflow/nodes/data_source.py:148
+#: src/workflow/nodes/data_source.py:149
 msgid "Auto label"
 msgstr "Auto label"
 
-#: src/workflow/nodes/data_source.py:149
+#: src/workflow/nodes/data_source.py:150
 msgid "Auto-generate labels from subfolder names"
 msgstr "Auto-generate labels from subfolder names"
 
-#: src/workflow/nodes/data_source.py:153 src/workflow/nodes/data_source.py:593
-#: src/workflow/nodes/preprocessing.py:132
+#: src/workflow/nodes/data_source.py:154 src/workflow/nodes/data_source.py:596
+#: src/workflow/nodes/preprocessing.py:133
 msgid "Target sample rate"
 msgstr "Target sample rate"
 
-#: src/workflow/nodes/data_source.py:154
+#: src/workflow/nodes/data_source.py:155
 msgid "Resample to this sample rate when loading"
 msgstr "Resample to this sample rate when loading"
 
-#: src/workflow/nodes/data_source.py:159 src/workflow/nodes/data_source.py:339
+#: src/workflow/nodes/data_source.py:160 src/workflow/nodes/data_source.py:341
 msgid "Max files"
 msgstr "Max files"
 
-#: src/workflow/nodes/data_source.py:160
+#: src/workflow/nodes/data_source.py:161
 msgid "Maximum number of files to load"
 msgstr "Maximum number of files to load"
 
-#: src/workflow/nodes/data_source.py:165
+#: src/workflow/nodes/data_source.py:166
 msgid "Selection mode"
 msgstr "Selection mode"
 
-#: src/workflow/nodes/data_source.py:166
+#: src/workflow/nodes/data_source.py:167
 msgid ""
 "Choose files by order or random sampling when max files is greater than 0"
 msgstr ""
 "Choose files by order or random sampling when max files is greater than 0"
 
-#: src/workflow/nodes/data_source.py:173
+#: src/workflow/nodes/data_source.py:174
 #, python-brace-format
 msgid "Directory does not exist: {path}"
 msgstr "Directory does not exist: {path}"
 
-#: src/workflow/nodes/data_source.py:210
+#: src/workflow/nodes/data_source.py:211
 #, python-brace-format
 msgid "Loading {count} audio files..."
 msgstr "Loading {count} audio files..."
 
-#: src/workflow/nodes/data_source.py:246
+#: src/workflow/nodes/data_source.py:247
 msgid "No valid audio files found"
 msgstr "No valid audio files found"
 
-#: src/workflow/nodes/data_source.py:256
+#: src/workflow/nodes/data_source.py:257
 #, python-brace-format
 msgid "Audio loaded: {files} files, {classes} classes"
 msgstr "Audio loaded: {files} files, {classes} classes"
 
-#: src/workflow/nodes/data_source.py:269
+#: src/workflow/nodes/data_source.py:270
 msgid "SQLite audio database"
 msgstr "SQLite audio database"
 
-#: src/workflow/nodes/data_source.py:271
+#: src/workflow/nodes/data_source.py:273
 msgid "Load filtered audio records from an audio SQLite database"
 msgstr "Load filtered audio records from an audio SQLite database"
 
-#: src/workflow/nodes/data_source.py:290 src/workflow/nodes/data_source.py:638
+#: src/workflow/nodes/data_source.py:292 src/workflow/nodes/data_source.py:642
 msgid "Label map"
 msgstr "Label map"
 
-#: src/workflow/nodes/data_source.py:291
+#: src/workflow/nodes/data_source.py:293
 msgid "Audio metadata"
 msgstr "Audio metadata"
 
-#: src/workflow/nodes/data_source.py:298
+#: src/workflow/nodes/data_source.py:300
 msgid "Database path"
 msgstr "Database path"
 
-#: src/workflow/nodes/data_source.py:299
+#: src/workflow/nodes/data_source.py:301
 msgid "SQLite database containing audio_data_table"
 msgstr "SQLite database containing audio_data_table"
 
-#: src/workflow/nodes/data_source.py:306
+#: src/workflow/nodes/data_source.py:308
 msgid "Audio root directory"
 msgstr "Audio root directory"
 
-#: src/workflow/nodes/data_source.py:308
+#: src/workflow/nodes/data_source.py:310
 msgid ""
 "Optional root for relative audio paths; defaults to the parent of the "
 "database directory"
@@ -4546,15 +4564,15 @@ msgstr ""
 "Optional root for relative audio paths; defaults to the parent of the "
 "database directory"
 
-#: src/workflow/nodes/data_source.py:315
+#: src/workflow/nodes/data_source.py:317
 msgid "Sample rate filter"
 msgstr "Sample rate filter"
 
-#: src/workflow/nodes/data_source.py:316
+#: src/workflow/nodes/data_source.py:318
 msgid "Load records whose database sample rate exactly matches this value"
 msgstr "Load records whose database sample rate exactly matches this value"
 
-#: src/workflow/nodes/data_source.py:325
+#: src/workflow/nodes/data_source.py:327
 msgid ""
 "Optional comma-separated labels; leave empty to map all non-empty database "
 "labels"
@@ -4562,11 +4580,11 @@ msgstr ""
 "Optional comma-separated labels; leave empty to map all non-empty database "
 "labels"
 
-#: src/workflow/nodes/data_source.py:332
+#: src/workflow/nodes/data_source.py:334
 msgid "File path regular expression"
 msgstr "File path regular expression"
 
-#: src/workflow/nodes/data_source.py:333
+#: src/workflow/nodes/data_source.py:335
 msgid ""
 "Optional case-sensitive regular expression matched against the stored file "
 "path"
@@ -4574,52 +4592,52 @@ msgstr ""
 "Optional case-sensitive regular expression matched against the stored file "
 "path"
 
-#: src/workflow/nodes/data_source.py:340
+#: src/workflow/nodes/data_source.py:342
 msgid "Maximum number of files to load after sorting; 0 means unlimited"
 msgstr "Maximum number of files to load after sorting; 0 means unlimited"
 
-#: src/workflow/nodes/data_source.py:354
+#: src/workflow/nodes/data_source.py:356
 #, python-brace-format
 msgid "Database file does not exist: {path}"
 msgstr "Database file does not exist: {path}"
 
-#: src/workflow/nodes/data_source.py:359
+#: src/workflow/nodes/data_source.py:361
 msgid "Sample rate filter must be a positive integer"
 msgstr "Sample rate filter must be a positive integer"
 
-#: src/workflow/nodes/data_source.py:362
+#: src/workflow/nodes/data_source.py:364
 msgid "Max files must be a non-negative integer"
 msgstr "Max files must be a non-negative integer"
 
-#: src/workflow/nodes/data_source.py:368
+#: src/workflow/nodes/data_source.py:370
 #, python-brace-format
 msgid "Audio root directory does not exist: {path}"
 msgstr "Audio root directory does not exist: {path}"
 
-#: src/workflow/nodes/data_source.py:379
+#: src/workflow/nodes/data_source.py:381
 #, python-brace-format
 msgid "Invalid file path regular expression: {error}"
 msgstr "Invalid file path regular expression: {error}"
 
-#: src/workflow/nodes/data_source.py:388
+#: src/workflow/nodes/data_source.py:390
 #, python-brace-format
 msgid "Failed to read SQLite audio database: {error}"
 msgstr "Failed to read SQLite audio database: {error}"
 
-#: src/workflow/nodes/data_source.py:406
+#: src/workflow/nodes/data_source.py:408
 msgid "No database audio records matched the filters"
 msgstr "No database audio records matched the filters"
 
-#: src/workflow/nodes/data_source.py:410
+#: src/workflow/nodes/data_source.py:412
 #, python-brace-format
 msgid "Loading {count} database audio files..."
 msgstr "Loading {count} database audio files..."
 
-#: src/workflow/nodes/data_source.py:465
+#: src/workflow/nodes/data_source.py:467
 msgid "No valid database audio files could be loaded"
 msgstr "No valid database audio files could be loaded"
 
-#: src/workflow/nodes/data_source.py:482
+#: src/workflow/nodes/data_source.py:484
 #, python-brace-format
 msgid ""
 "SQLite audio import: queried {queried}, regex matched {matched}, loaded "
@@ -4630,190 +4648,194 @@ msgstr ""
 "{loaded}, missing {missing}, failed {failed}, sample-rate mismatches "
 "{mismatches}"
 
-#: src/workflow/nodes/data_source.py:508 src/workflow/nodes/data_source.py:520
+#: src/workflow/nodes/data_source.py:510 src/workflow/nodes/data_source.py:522
 #, python-brace-format
 msgid "SQLite audio database schema is missing: {items}"
 msgstr "SQLite audio database schema is missing: {items}"
 
-#: src/workflow/nodes/data_source.py:575
+#: src/workflow/nodes/data_source.py:577
 msgid "Audio file"
 msgstr "Audio file"
 
-#: src/workflow/nodes/data_source.py:577
+#: src/workflow/nodes/data_source.py:580
 msgid "Load a single audio file"
 msgstr "Load a single audio file"
 
-#: src/workflow/nodes/data_source.py:586 src/workflow/nodes/data_source.py:643
-#: src/workflow/nodes/data_source.py:800
+#: src/workflow/nodes/data_source.py:589 src/workflow/nodes/data_source.py:647
+#: src/workflow/nodes/data_source.py:805
 msgid "File path"
 msgstr "File path"
 
-#: src/workflow/nodes/data_source.py:587
+#: src/workflow/nodes/data_source.py:590
 msgid "Audio file path"
 msgstr "Audio file path"
 
-#: src/workflow/nodes/data_source.py:631
+#: src/workflow/nodes/data_source.py:634
 msgid "Label file"
 msgstr "Label file"
 
-#: src/workflow/nodes/data_source.py:633
+#: src/workflow/nodes/data_source.py:637
 msgid "Load labels from CSV/JSON/TXT"
 msgstr "Load labels from CSV/JSON/TXT"
 
-#: src/workflow/nodes/data_source.py:649 src/workflow/nodes/data_source.py:806
+#: src/workflow/nodes/data_source.py:653 src/workflow/nodes/data_source.py:811
 msgid "File format"
 msgstr "File format"
 
-#: src/workflow/nodes/data_source.py:654 src/workflow/nodes/data_source.py:811
+#: src/workflow/nodes/data_source.py:658 src/workflow/nodes/data_source.py:816
 msgid "Filename column"
 msgstr "Filename column"
 
-#: src/workflow/nodes/data_source.py:655 src/workflow/nodes/data_source.py:812
+#: src/workflow/nodes/data_source.py:659 src/workflow/nodes/data_source.py:817
 msgid "Column name for filename in CSV"
 msgstr "Column name for filename in CSV"
 
-#: src/workflow/nodes/data_source.py:659
+#: src/workflow/nodes/data_source.py:663
 msgid "Label column"
 msgstr "Label column"
 
-#: src/workflow/nodes/data_source.py:660
+#: src/workflow/nodes/data_source.py:664
 msgid "Column name for label in CSV"
 msgstr "Column name for label in CSV"
 
-#: src/workflow/nodes/data_source.py:699
+#: src/workflow/nodes/data_source.py:703
 #, python-brace-format
 msgid "Failed to load labels: {error}"
 msgstr "Failed to load labels: {error}"
 
-#: src/workflow/nodes/data_source.py:753 src/workflow/nodes/data_source.py:925
+#: src/workflow/nodes/data_source.py:757 src/workflow/nodes/data_source.py:930
 msgid "Unsupported JSON format"
 msgstr "Unsupported JSON format"
 
-#: src/workflow/nodes/data_source.py:783
+#: src/workflow/nodes/data_source.py:787
 msgid "Target file"
 msgstr "Target file"
 
-#: src/workflow/nodes/data_source.py:785
+#: src/workflow/nodes/data_source.py:790
 msgid "Load generic supervised targets from CSV/JSON/TXT"
 msgstr "Load generic supervised targets from CSV/JSON/TXT"
 
-#: src/workflow/nodes/data_source.py:793
+#: src/workflow/nodes/data_source.py:798
 msgid "Target list"
 msgstr "Target list"
 
-#: src/workflow/nodes/data_source.py:816
+#: src/workflow/nodes/data_source.py:821
 msgid "Target columns"
 msgstr "Target columns"
 
-#: src/workflow/nodes/data_source.py:817
+#: src/workflow/nodes/data_source.py:822
 msgid "Comma-separated target column names in CSV"
 msgstr "Comma-separated target column names in CSV"
 
-#: src/workflow/nodes/data_source.py:821
+#: src/workflow/nodes/data_source.py:826
 msgid "Target kind"
 msgstr "Target kind"
 
-#: src/workflow/nodes/data_source.py:823
+#: src/workflow/nodes/data_source.py:828
 msgid "Machine-learning target shape, not business type"
 msgstr "Machine-learning target shape, not business type"
 
-#: src/workflow/nodes/data_source.py:832
+#: src/workflow/nodes/data_source.py:837
 msgid "Output format"
 msgstr "Output format"
 
-#: src/workflow/nodes/data_source.py:875
+#: src/workflow/nodes/data_source.py:880
 #, python-brace-format
 msgid "Failed to load targets: {error}"
 msgstr "Failed to load targets: {error}"
 
-#: src/workflow/nodes/data_source.py:917
+#: src/workflow/nodes/data_source.py:922
 msgid "Structured JSON targets must be a list"
 msgstr "Structured JSON targets must be a list"
 
-#: src/workflow/nodes/data_source.py:919
+#: src/workflow/nodes/data_source.py:924
 msgid "Structured JSON target_map must be an object"
 msgstr "Structured JSON target_map must be an object"
 
-#: src/workflow/nodes/data_source.py:940
+#: src/workflow/nodes/data_source.py:945
 msgid "At least one target column is required"
 msgstr "At least one target column is required"
 
-#: src/workflow/nodes/data_source.py:947
+#: src/workflow/nodes/data_source.py:952
 #, python-brace-format
 msgid "Missing target column: {column}"
 msgstr "Missing target column: {column}"
 
-#: src/workflow/nodes/data_source.py:1001
+#: src/workflow/nodes/data_source.py:1006
 msgid "Continuous targets require numeric dtype"
 msgstr "Continuous targets require numeric dtype"
 
-#: src/workflow/nodes/data_source.py:1063
-msgid "Save audio"
-msgstr "Save audio"
+#: src/workflow/nodes/data_source.py:1068
+msgid "Export audio"
+msgstr "Export audio"
 
-#: src/workflow/nodes/data_source.py:1065
+#: src/workflow/nodes/data_source.py:1070
+msgid "Data export"
+msgstr "Data export"
+
+#: src/workflow/nodes/data_source.py:1073
 msgid "Save audio as WAV files, optionally save labels JSON"
 msgstr "Save audio as WAV files, optionally save labels JSON"
 
-#: src/workflow/nodes/data_source.py:1074
+#: src/workflow/nodes/data_source.py:1082
 msgid "Audio data to save (single item or list)"
 msgstr "Audio data to save (single item or list)"
 
-#: src/workflow/nodes/data_source.py:1081
+#: src/workflow/nodes/data_source.py:1089
 msgid "Optional labels corresponding to audio items"
 msgstr "Optional labels corresponding to audio items"
 
-#: src/workflow/nodes/data_source.py:1087
+#: src/workflow/nodes/data_source.py:1095
 msgid "Output folder"
 msgstr "Output folder"
 
-#: src/workflow/nodes/data_source.py:1088
+#: src/workflow/nodes/data_source.py:1096
 msgid "Target folder to save audio files"
 msgstr "Target folder to save audio files"
 
-#: src/workflow/nodes/data_source.py:1093
+#: src/workflow/nodes/data_source.py:1101
 msgid "Filename prefix"
 msgstr "Filename prefix"
 
-#: src/workflow/nodes/data_source.py:1094
+#: src/workflow/nodes/data_source.py:1102
 msgid "Prefix for output audio filenames"
 msgstr "Prefix for output audio filenames"
 
-#: src/workflow/nodes/data_source.py:1098
+#: src/workflow/nodes/data_source.py:1106
 msgid "Save labels file"
 msgstr "Save labels file"
 
-#: src/workflow/nodes/data_source.py:1099
+#: src/workflow/nodes/data_source.py:1107
 msgid "When labels are provided, save labels.json"
 msgstr "When labels are provided, save labels.json"
 
-#: src/workflow/nodes/data_source.py:1103
+#: src/workflow/nodes/data_source.py:1111
 msgid "Overwrite existing files"
 msgstr "Overwrite existing files"
 
-#: src/workflow/nodes/data_source.py:1104
+#: src/workflow/nodes/data_source.py:1112
 msgid "Overwrite files if they already exist"
 msgstr "Overwrite files if they already exist"
 
-#: src/workflow/nodes/data_source.py:1120
+#: src/workflow/nodes/data_source.py:1128
 msgid "Please select an output folder"
 msgstr "Please select an output folder"
 
-#: src/workflow/nodes/data_source.py:1127
+#: src/workflow/nodes/data_source.py:1135
 #, python-brace-format
 msgid "Unable to create output folder: {error}"
 msgstr "Unable to create output folder: {error}"
 
-#: src/workflow/nodes/data_source.py:1134
+#: src/workflow/nodes/data_source.py:1142
 msgid "No input audio data"
 msgstr "No input audio data"
 
-#: src/workflow/nodes/data_source.py:1142
+#: src/workflow/nodes/data_source.py:1150
 #, python-brace-format
 msgid "Unsupported audio data type: {type}"
 msgstr "Unsupported audio data type: {type}"
 
-#: src/workflow/nodes/data_source.py:1159
+#: src/workflow/nodes/data_source.py:1167
 #, python-brace-format
 msgid ""
 "Label count ({labels}) does not match audio count ({audio}); items will be "
@@ -4822,21 +4844,21 @@ msgstr ""
 "Label count ({labels}) does not match audio count ({audio}); items will be "
 "paired in order and extras will be ignored"
 
-#: src/workflow/nodes/data_source.py:1164
+#: src/workflow/nodes/data_source.py:1172
 #, python-brace-format
 msgid "Saving {count} audio files..."
 msgstr "Saving {count} audio files..."
 
-#: src/workflow/nodes/data_source.py:1215
+#: src/workflow/nodes/data_source.py:1223
 msgid "No audio files were saved successfully"
 msgstr "No audio files were saved successfully"
 
-#: src/workflow/nodes/data_source.py:1219
+#: src/workflow/nodes/data_source.py:1227
 #, python-brace-format
 msgid "Audio saved: {files} files"
 msgstr "Audio saved: {files} files"
 
-#: src/workflow/nodes/data_source.py:1221
+#: src/workflow/nodes/data_source.py:1229
 #, python-brace-format
 msgid ", labels: {count}"
 msgstr ", labels: {count}"
@@ -4865,355 +4887,351 @@ msgstr ""
 msgid "Resample"
 msgstr "Resample"
 
-#: src/workflow/nodes/preprocessing.py:117
+#: src/workflow/nodes/preprocessing.py:118
 msgid "Resample audio to the target sample rate"
 msgstr "Resample audio to the target sample rate"
 
-#: src/workflow/nodes/preprocessing.py:181
+#: src/workflow/nodes/preprocessing.py:182
 msgid "Trim / pad"
 msgstr "Trim / pad"
 
-#: src/workflow/nodes/preprocessing.py:183
+#: src/workflow/nodes/preprocessing.py:185
 msgid "Make audio a fixed duration by trimming and/or padding"
 msgstr "Make audio a fixed duration by trimming and/or padding"
 
-#: src/workflow/nodes/preprocessing.py:193
+#: src/workflow/nodes/preprocessing.py:195
 msgid "Target duration (s)"
 msgstr "Target duration (s)"
 
-#: src/workflow/nodes/preprocessing.py:198
+#: src/workflow/nodes/preprocessing.py:200
 msgid "Mode"
 msgstr "Mode"
 
-#: src/workflow/nodes/preprocessing.py:208
+#: src/workflow/nodes/preprocessing.py:210
 msgid "Alignment"
 msgstr "Alignment"
 
-#: src/workflow/nodes/preprocessing.py:303
+#: src/workflow/nodes/preprocessing.py:306
 msgid "Normalize audio amplitude"
 msgstr "Normalize audio amplitude"
 
-#: src/workflow/nodes/preprocessing.py:313
+#: src/workflow/nodes/preprocessing.py:316
 msgid "Method"
 msgstr "Method"
 
-#: src/workflow/nodes/preprocessing.py:318
+#: src/workflow/nodes/preprocessing.py:321
 msgid "Target level (dB)"
 msgstr "Target level (dB)"
 
-#: src/workflow/nodes/preprocessing.py:382
+#: src/workflow/nodes/preprocessing.py:385
 msgid "Windowing"
 msgstr "Windowing"
 
-#: src/workflow/nodes/preprocessing.py:384
+#: src/workflow/nodes/preprocessing.py:388
 msgid "Apply a window function to the full waveform"
 msgstr "Apply a window function to the full waveform"
 
-#: src/workflow/nodes/preprocessing.py:401
+#: src/workflow/nodes/preprocessing.py:405
 msgid "Window type"
 msgstr "Window type"
 
-#: src/workflow/nodes/preprocessing.py:402
+#: src/workflow/nodes/preprocessing.py:406
 msgid "Window function applied to the full waveform"
 msgstr "Window function applied to the full waveform"
 
-#: src/workflow/nodes/preprocessing.py:407
+#: src/workflow/nodes/preprocessing.py:411
 msgid "Window length"
 msgstr "Window length"
 
-#: src/workflow/nodes/preprocessing.py:481
+#: src/workflow/nodes/preprocessing.py:485
 msgid "Spectral subtraction"
 msgstr "Spectral subtraction"
 
-#: src/workflow/nodes/preprocessing.py:483
-msgid "Denoise"
-msgstr "Denoise"
-
-#: src/workflow/nodes/preprocessing.py:484
+#: src/workflow/nodes/preprocessing.py:488
 msgid "Reduce stationary noise using spectral subtraction"
 msgstr "Reduce stationary noise using spectral subtraction"
 
-#: src/workflow/nodes/preprocessing.py:497
+#: src/workflow/nodes/preprocessing.py:501
 msgid "Noise reference"
 msgstr "Noise reference"
 
-#: src/workflow/nodes/preprocessing.py:499
+#: src/workflow/nodes/preprocessing.py:503
 msgid "Optional noise-only audio or audio list"
 msgstr "Optional noise-only audio or audio list"
 
-#: src/workflow/nodes/preprocessing.py:508
+#: src/workflow/nodes/preprocessing.py:512
 msgid "Noise duration (s)"
 msgstr "Noise duration (s)"
 
-#: src/workflow/nodes/preprocessing.py:509
+#: src/workflow/nodes/preprocessing.py:513
 msgid "Head duration used for noise estimation when no reference is connected"
 msgstr "Head duration used for noise estimation when no reference is connected"
 
-#: src/workflow/nodes/preprocessing.py:517
+#: src/workflow/nodes/preprocessing.py:521
 msgid "Subtract alpha"
 msgstr "Subtract alpha"
 
-#: src/workflow/nodes/preprocessing.py:518
+#: src/workflow/nodes/preprocessing.py:522
 msgid "Strength of spectral subtraction"
 msgstr "Strength of spectral subtraction"
 
-#: src/workflow/nodes/preprocessing.py:526
+#: src/workflow/nodes/preprocessing.py:530
 msgid "Spectral floor"
 msgstr "Spectral floor"
 
-#: src/workflow/nodes/preprocessing.py:527
+#: src/workflow/nodes/preprocessing.py:531
 msgid "Residual floor factor to avoid musical noise"
 msgstr "Residual floor factor to avoid musical noise"
 
-#: src/workflow/nodes/preprocessing.py:547
+#: src/workflow/nodes/preprocessing.py:551
 #, python-brace-format
 msgid "Spectral subtraction failed: {error}"
 msgstr "Spectral subtraction failed: {error}"
 
-#: src/workflow/nodes/preprocessing.py:564
+#: src/workflow/nodes/preprocessing.py:568
 #, python-brace-format
 msgid "{node}: Noise reference list length must match audio list length"
 msgstr "{node}: Noise reference list length must match audio list length"
 
-#: src/workflow/nodes/preprocessing.py:581
+#: src/workflow/nodes/preprocessing.py:585
 #, python-brace-format
 msgid "{node}: Noise reference list requires audio list input"
 msgstr "{node}: Noise reference list requires audio list input"
 
-#: src/workflow/nodes/preprocessing.py:613
+#: src/workflow/nodes/preprocessing.py:617
 #, python-brace-format
 msgid "{node}: Input audio is empty"
 msgstr "{node}: Input audio is empty"
 
-#: src/workflow/nodes/preprocessing.py:619
+#: src/workflow/nodes/preprocessing.py:623
 #, python-brace-format
 msgid "{node}: Noise reference sample rate must match input audio"
 msgstr "{node}: Noise reference sample rate must match input audio"
 
-#: src/workflow/nodes/preprocessing.py:631
+#: src/workflow/nodes/preprocessing.py:635
 #, python-brace-format
 msgid "{node}: Noise estimation segment is empty"
 msgstr "{node}: Noise estimation segment is empty"
 
-#: src/workflow/nodes/preprocessing.py:678
+#: src/workflow/nodes/preprocessing.py:682
 msgid "Trim silence"
 msgstr "Trim silence"
 
-#: src/workflow/nodes/preprocessing.py:680
+#: src/workflow/nodes/preprocessing.py:685
 msgid "Remove leading and trailing silence"
 msgstr "Remove leading and trailing silence"
 
-#: src/workflow/nodes/preprocessing.py:690
+#: src/workflow/nodes/preprocessing.py:695
 msgid "Threshold (dB)"
 msgstr "Threshold (dB)"
 
-#: src/workflow/nodes/preprocessing.py:691
+#: src/workflow/nodes/preprocessing.py:696
 msgid "Below this threshold is considered silence"
 msgstr "Below this threshold is considered silence"
 
-#: src/workflow/nodes/preprocessing.py:696
+#: src/workflow/nodes/preprocessing.py:701
 msgid "Frame length"
 msgstr "Frame length"
 
-#: src/workflow/nodes/preprocessing.py:701
-#: src/workflow/nodes/feature/dim1d/pitch.py:54
-#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:49
-#: src/workflow/nodes/feature/dim2d/cqt.py:55
-#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:50
-#: src/workflow/nodes/feature/dim2d/mfcc.py:55
-#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:48
-#: src/workflow/nodes/feature/dim2d/stft.py:46
+#: src/workflow/nodes/preprocessing.py:706
+#: src/workflow/nodes/feature/dim1d/pitch.py:56
+#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:51
+#: src/workflow/nodes/feature/dim2d/cqt.py:57
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:52
+#: src/workflow/nodes/feature/dim2d/mfcc.py:57
+#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:50
+#: src/workflow/nodes/feature/dim2d/stft.py:48
 msgid "Hop length"
 msgstr "Hop length"
 
-#: src/workflow/nodes/preprocessing.py:755
+#: src/workflow/nodes/preprocessing.py:760
 msgid "Channel mapper"
 msgstr "Channel mapper"
 
-#: src/workflow/nodes/preprocessing.py:757
+#: src/workflow/nodes/preprocessing.py:763
 msgid "Map selected channels to different outputs"
 msgstr "Map selected channels to different outputs"
 
-#: src/workflow/nodes/preprocessing.py:765
+#: src/workflow/nodes/preprocessing.py:771
 msgid "Multichannel audio input"
 msgstr "Multichannel audio input"
 
-#: src/workflow/nodes/preprocessing.py:767
+#: src/workflow/nodes/preprocessing.py:773
 msgid "Output 1"
 msgstr "Output 1"
 
-#: src/workflow/nodes/preprocessing.py:768
+#: src/workflow/nodes/preprocessing.py:774
 msgid "Output 2"
 msgstr "Output 2"
 
-#: src/workflow/nodes/preprocessing.py:769
+#: src/workflow/nodes/preprocessing.py:775
 msgid "Output 3"
 msgstr "Output 3"
 
-#: src/workflow/nodes/preprocessing.py:770
+#: src/workflow/nodes/preprocessing.py:776
 msgid "Output 4"
 msgstr "Output 4"
 
-#: src/workflow/nodes/preprocessing.py:775
+#: src/workflow/nodes/preprocessing.py:781
 msgid "Output 1 channels"
 msgstr "Output 1 channels"
 
-#: src/workflow/nodes/preprocessing.py:776
+#: src/workflow/nodes/preprocessing.py:782
 msgid "Channel indices (0-based), comma-separated, e.g. 0 or 0,1,2"
 msgstr "Channel indices (0-based), comma-separated, e.g. 0 or 0,1,2"
 
-#: src/workflow/nodes/preprocessing.py:780
+#: src/workflow/nodes/preprocessing.py:786
 msgid "Output 2 channels"
 msgstr "Output 2 channels"
 
-#: src/workflow/nodes/preprocessing.py:781
-#: src/workflow/nodes/preprocessing.py:786
-#: src/workflow/nodes/preprocessing.py:791
+#: src/workflow/nodes/preprocessing.py:787
+#: src/workflow/nodes/preprocessing.py:792
+#: src/workflow/nodes/preprocessing.py:797
 msgid "Channel indices; leave blank to disable output"
 msgstr "Channel indices; leave blank to disable output"
 
-#: src/workflow/nodes/preprocessing.py:785
+#: src/workflow/nodes/preprocessing.py:791
 msgid "Output 3 channels"
 msgstr "Output 3 channels"
 
-#: src/workflow/nodes/preprocessing.py:790
+#: src/workflow/nodes/preprocessing.py:796
 msgid "Output 4 channels"
 msgstr "Output 4 channels"
 
-#: src/workflow/nodes/preprocessing.py:931
+#: src/workflow/nodes/preprocessing.py:937
 msgid "Channel merge"
 msgstr "Channel merge"
 
-#: src/workflow/nodes/preprocessing.py:933
+#: src/workflow/nodes/preprocessing.py:940
 msgid "Merge channels from multiple audio inputs"
 msgstr "Merge channels from multiple audio inputs"
 
-#: src/workflow/nodes/preprocessing.py:937
+#: src/workflow/nodes/preprocessing.py:944
 msgid "Input 1"
 msgstr "Input 1"
 
-#: src/workflow/nodes/preprocessing.py:937
+#: src/workflow/nodes/preprocessing.py:944
 msgid "Audio input 1"
 msgstr "Audio input 1"
 
-#: src/workflow/nodes/preprocessing.py:941
+#: src/workflow/nodes/preprocessing.py:948
 msgid "Input 2"
 msgstr "Input 2"
 
-#: src/workflow/nodes/preprocessing.py:942
+#: src/workflow/nodes/preprocessing.py:949
 msgid "Audio input 2 (optional)"
 msgstr "Audio input 2 (optional)"
 
-#: src/workflow/nodes/preprocessing.py:948
+#: src/workflow/nodes/preprocessing.py:955
 msgid "Input 3"
 msgstr "Input 3"
 
-#: src/workflow/nodes/preprocessing.py:949
+#: src/workflow/nodes/preprocessing.py:956
 msgid "Audio input 3 (optional)"
 msgstr "Audio input 3 (optional)"
 
-#: src/workflow/nodes/preprocessing.py:955
+#: src/workflow/nodes/preprocessing.py:962
 msgid "Input 4"
 msgstr "Input 4"
 
-#: src/workflow/nodes/preprocessing.py:956
+#: src/workflow/nodes/preprocessing.py:963
 msgid "Audio input 4 (optional)"
 msgstr "Audio input 4 (optional)"
 
-#: src/workflow/nodes/preprocessing.py:959
+#: src/workflow/nodes/preprocessing.py:966
 msgid "Merged audio"
 msgstr "Merged audio"
 
-#: src/workflow/nodes/preprocessing.py:964
+#: src/workflow/nodes/preprocessing.py:971
 msgid "Length handling"
 msgstr "Length handling"
 
-#: src/workflow/nodes/preprocessing.py:965
+#: src/workflow/nodes/preprocessing.py:972
 msgid "How to handle different input lengths"
 msgstr "How to handle different input lengths"
 
-#: src/workflow/nodes/preprocessing.py:971
+#: src/workflow/nodes/preprocessing.py:978
 msgid "Padding strategy for shorter audio when using max length"
 msgstr "Padding strategy for shorter audio when using max length"
 
-#: src/workflow/nodes/preprocessing.py:986
+#: src/workflow/nodes/preprocessing.py:993
 msgid "At least one valid audio input is required"
 msgstr "At least one valid audio input is required"
 
-#: src/workflow/nodes/preprocessing.py:1000
+#: src/workflow/nodes/preprocessing.py:1007
 msgid "All inputs must be the same type (all single audio or all audio lists)"
 msgstr "All inputs must be the same type (all single audio or all audio lists)"
 
-#: src/workflow/nodes/preprocessing.py:1005
+#: src/workflow/nodes/preprocessing.py:1012
 #, python-brace-format
 msgid "Audio list lengths differ: {lengths}"
 msgstr "Audio list lengths differ: {lengths}"
 
-#: src/workflow/nodes/preprocessing.py:1025
+#: src/workflow/nodes/preprocessing.py:1032
 #, python-brace-format
 msgid "Expected AudioData, but got {type}"
 msgstr "Expected AudioData, but got {type}"
 
-#: src/workflow/nodes/preprocessing.py:1049
+#: src/workflow/nodes/preprocessing.py:1056
 msgid "No audio to merge"
 msgstr "No audio to merge"
 
-#: src/workflow/nodes/preprocessing.py:1056
+#: src/workflow/nodes/preprocessing.py:1063
 #, python-brace-format
 msgid "Sample rates differ: {rates}. Please resample first."
 msgstr "Sample rates differ: {rates}. Please resample first."
 
-#: src/workflow/nodes/preprocessing.py:1124
+#: src/workflow/nodes/preprocessing.py:1131
 msgid "Filter"
 msgstr "Filter"
 
-#: src/workflow/nodes/preprocessing.py:1126
+#: src/workflow/nodes/preprocessing.py:1134
 msgid "Apply digital filtering (lowpass/highpass/bandpass/bandstop)"
 msgstr "Apply digital filtering (lowpass/highpass/bandpass/bandstop)"
 
-#: src/workflow/nodes/preprocessing.py:1136
+#: src/workflow/nodes/preprocessing.py:1144
 msgid "Filter type"
 msgstr "Filter type"
 
-#: src/workflow/nodes/preprocessing.py:1137
+#: src/workflow/nodes/preprocessing.py:1145
 msgid "lowpass, highpass, bandpass, bandstop"
 msgstr "lowpass, highpass, bandpass, bandstop"
 
-#: src/workflow/nodes/preprocessing.py:1142
+#: src/workflow/nodes/preprocessing.py:1150
 msgid "Cutoff (Hz)"
 msgstr "Cutoff (Hz)"
 
-#: src/workflow/nodes/preprocessing.py:1143
+#: src/workflow/nodes/preprocessing.py:1151
 msgid "Used by lowpass/highpass; low bound for bandpass/bandstop"
 msgstr "Used by lowpass/highpass; low bound for bandpass/bandstop"
 
-#: src/workflow/nodes/preprocessing.py:1148
+#: src/workflow/nodes/preprocessing.py:1156
 msgid "High cutoff (Hz)"
 msgstr "High cutoff (Hz)"
 
-#: src/workflow/nodes/preprocessing.py:1149
+#: src/workflow/nodes/preprocessing.py:1157
 msgid "Only for bandpass/bandstop; ignored for lowpass/highpass"
 msgstr "Only for bandpass/bandstop; ignored for lowpass/highpass"
 
-#: src/workflow/nodes/preprocessing.py:1154
+#: src/workflow/nodes/preprocessing.py:1162
 msgid "Filter order"
 msgstr "Filter order"
 
-#: src/workflow/nodes/preprocessing.py:1155
+#: src/workflow/nodes/preprocessing.py:1163
 msgid "Butterworth order; higher means steeper rolloff"
 msgstr "Butterworth order; higher means steeper rolloff"
 
-#: src/workflow/nodes/preprocessing.py:1208
+#: src/workflow/nodes/preprocessing.py:1216
 #, python-brace-format
 msgid "Unknown filter type: {type}"
 msgstr "Unknown filter type: {type}"
 
-#: src/workflow/nodes/preprocessing.py:1210
+#: src/workflow/nodes/preprocessing.py:1218
 #, python-brace-format
 msgid "Filter design failed: {error}"
 msgstr "Filter design failed: {error}"
 
-#: src/workflow/nodes/preprocessing.py:1232
+#: src/workflow/nodes/preprocessing.py:1240
 #, python-brace-format
 msgid "Filtering failed: {error}"
 msgstr "Filtering failed: {error}"
@@ -5338,9 +5356,9 @@ msgid "Log a warning when overwriting an existing file"
 msgstr "Log a warning when overwriting an existing file"
 
 #: src/workflow/nodes/training.py:272 src/workflow/nodes/training.py:436
-#: src/workflow/nodes/training.py:859 src/workflow/nodes/training.py:1269
-#: src/workflow/nodes/feature/ai_embedding.py:87
-#: src/workflow/nodes/feature/grad_cam.py:139
+#: src/workflow/nodes/training.py:859 src/workflow/nodes/training.py:1273
+#: src/workflow/nodes/feature/ai_embedding.py:89
+#: src/workflow/nodes/feature/grad_cam.py:141
 msgid "No model provided"
 msgstr "No model provided"
 
@@ -5369,7 +5387,7 @@ msgstr "Trainer"
 msgid "Run model training with model config or overridden parameters"
 msgstr "Run model training with model config or overridden parameters"
 
-#: src/workflow/nodes/training.py:368 src/workflow/nodes/training.py:1080
+#: src/workflow/nodes/training.py:368 src/workflow/nodes/training.py:1082
 msgid "Training history"
 msgstr "Training history"
 
@@ -5382,10 +5400,10 @@ msgid "Epochs"
 msgstr "Epochs"
 
 #: src/workflow/nodes/training.py:381 src/workflow/nodes/training.py:845
-#: src/workflow/nodes/training.py:1247 src/workflow/nodes/training.py:1582
-#: src/workflow/nodes/training.py:1617
-#: src/workflow/nodes/feature/ai_embedding.py:78
-#: src/workflow/nodes/feature/grad_cam.py:129
+#: src/workflow/nodes/training.py:1251 src/workflow/nodes/training.py:1586
+#: src/workflow/nodes/training.py:1621
+#: src/workflow/nodes/feature/ai_embedding.py:80
+#: src/workflow/nodes/feature/grad_cam.py:131
 msgid "Batch size"
 msgstr "Batch size"
 
@@ -5566,95 +5584,99 @@ msgstr "Evaluate a regression model with continuous numeric targets"
 msgid "Show training history"
 msgstr "Show training history"
 
-#: src/workflow/nodes/training.py:1076
+#: src/workflow/nodes/training.py:1075 src/workflow/nodes/training.py:1167
+msgid "Training results"
+msgstr "Training results"
+
+#: src/workflow/nodes/training.py:1078
 msgid "Visualize training history curves"
 msgstr "Visualize training history curves"
 
-#: src/workflow/nodes/training.py:1081
+#: src/workflow/nodes/training.py:1083
 msgid "Training history (passthrough)"
 msgstr "Training history (passthrough)"
 
-#: src/workflow/nodes/training.py:1086
+#: src/workflow/nodes/training.py:1088
 msgid "Show loss curve"
 msgstr "Show loss curve"
 
-#: src/workflow/nodes/training.py:1090
+#: src/workflow/nodes/training.py:1092
 msgid "Show accuracy curve"
 msgstr "Show accuracy curve"
 
-#: src/workflow/nodes/training.py:1094
+#: src/workflow/nodes/training.py:1096
 msgid "Save path"
 msgstr "Save path"
 
-#: src/workflow/nodes/training.py:1095
+#: src/workflow/nodes/training.py:1097
 msgid "Optional. Save the chart to a file."
 msgstr "Optional. Save the chart to a file."
 
-#: src/workflow/nodes/training.py:1102
+#: src/workflow/nodes/training.py:1104
 msgid "No training history provided"
 msgstr "No training history provided"
 
-#: src/workflow/nodes/training.py:1152
+#: src/workflow/nodes/training.py:1154
 #, python-brace-format
 msgid "Failed to show training history: {error}"
 msgstr "Failed to show training history: {error}"
 
-#: src/workflow/nodes/training.py:1163
+#: src/workflow/nodes/training.py:1165
 msgid "Show metrics"
 msgstr "Show metrics"
 
-#: src/workflow/nodes/training.py:1166
+#: src/workflow/nodes/training.py:1170
 msgid "Show model evaluation metrics"
 msgstr "Show model evaluation metrics"
 
-#: src/workflow/nodes/training.py:1171
+#: src/workflow/nodes/training.py:1175
 msgid "Metrics (passthrough)"
 msgstr "Metrics (passthrough)"
 
-#: src/workflow/nodes/training.py:1176
+#: src/workflow/nodes/training.py:1180
 msgid "Verbose logs"
 msgstr "Verbose logs"
 
-#: src/workflow/nodes/training.py:1177
+#: src/workflow/nodes/training.py:1181
 msgid "Output detailed metrics logs (dialog removed)"
 msgstr "Output detailed metrics logs (dialog removed)"
 
-#: src/workflow/nodes/training.py:1183
+#: src/workflow/nodes/training.py:1187
 msgid "No metrics provided"
 msgstr "No metrics provided"
 
-#: src/workflow/nodes/training.py:1210
+#: src/workflow/nodes/training.py:1214
 #, python-brace-format
 msgid "Failed to show metrics: {error}"
 msgstr "Failed to show metrics: {error}"
 
-#: src/workflow/nodes/training.py:1224
+#: src/workflow/nodes/training.py:1228
 msgid "Predict"
 msgstr "Predict"
 
-#: src/workflow/nodes/training.py:1226
+#: src/workflow/nodes/training.py:1230
 msgid "Run prediction using a trained model"
 msgstr "Run prediction using a trained model"
 
-#: src/workflow/nodes/training.py:1233 src/workflow/nodes/training.py:1573
-#: src/workflow/nodes/training.py:1609
-#: src/workflow/nodes/feature/ai_embedding.py:46
-#: src/workflow/nodes/feature/grad_cam.py:49
+#: src/workflow/nodes/training.py:1237 src/workflow/nodes/training.py:1577
+#: src/workflow/nodes/training.py:1613
+#: src/workflow/nodes/feature/ai_embedding.py:48
+#: src/workflow/nodes/feature/grad_cam.py:51
 msgid "Input data"
 msgstr "Input data"
 
-#: src/workflow/nodes/training.py:1234
+#: src/workflow/nodes/training.py:1238
 msgid "Predictions"
 msgstr "Predictions"
 
-#: src/workflow/nodes/training.py:1239
-#: src/workflow/nodes/feature/ai_embedding.py:62
-#: src/workflow/nodes/feature/dim1d/fft.py:47
-#: src/workflow/nodes/feature/dim2d/stft.py:51
+#: src/workflow/nodes/training.py:1243
+#: src/workflow/nodes/feature/ai_embedding.py:64
+#: src/workflow/nodes/feature/dim1d/fft.py:49
+#: src/workflow/nodes/feature/dim2d/stft.py:53
 msgid "Output type"
 msgstr "Output type"
 
-#: src/workflow/nodes/training.py:1242
+#: src/workflow/nodes/training.py:1246
 msgid ""
 "Type of prediction result: label=class label, raw=model output, "
 "regression=continuous values, vector=vector output, audio=audio, "
@@ -5664,65 +5686,65 @@ msgstr ""
 "regression=continuous values, vector=vector output, audio=audio, "
 "feature_1d=1D feature, feature_2d=2D feature"
 
-#: src/workflow/nodes/training.py:1249 src/workflow/nodes/training.py:1584
-#: src/workflow/nodes/training.py:1619
+#: src/workflow/nodes/training.py:1253 src/workflow/nodes/training.py:1588
+#: src/workflow/nodes/training.py:1623
 msgid "Batch size for prediction"
 msgstr "Batch size for prediction"
 
-#: src/workflow/nodes/training.py:1253
+#: src/workflow/nodes/training.py:1257
 msgid "Sample rate"
 msgstr "Sample rate"
 
-#: src/workflow/nodes/training.py:1256
+#: src/workflow/nodes/training.py:1260
 msgid "Output audio sample rate (only for output_type=audio)"
 msgstr "Output audio sample rate (only for output_type=audio)"
 
-#: src/workflow/nodes/training.py:1273
-#: src/workflow/nodes/feature/ai_embedding.py:90
-#: src/workflow/nodes/feature/grad_cam.py:142
+#: src/workflow/nodes/training.py:1277
+#: src/workflow/nodes/feature/ai_embedding.py:92
+#: src/workflow/nodes/feature/grad_cam.py:144
 msgid "No input data provided"
 msgstr "No input data provided"
 
-#: src/workflow/nodes/training.py:1281
+#: src/workflow/nodes/training.py:1285
 #, python-brace-format
 msgid "Predicting... (batch_size={batch_size})"
 msgstr "Predicting... (batch_size={batch_size})"
 
-#: src/workflow/nodes/training.py:1290
+#: src/workflow/nodes/training.py:1294
 #, python-brace-format
 msgid "Prediction finished: {count} samples, output_type={type}"
 msgstr "Prediction finished: {count} samples, output_type={type}"
 
-#: src/workflow/nodes/training.py:1300
+#: src/workflow/nodes/training.py:1304
 #, python-brace-format
 msgid "Prediction failed: {error}"
 msgstr "Prediction failed: {error}"
 
-#: src/workflow/nodes/training.py:1563
+#: src/workflow/nodes/training.py:1567
 msgid "Classification model prediction"
 msgstr "Classification model prediction"
 
-#: src/workflow/nodes/training.py:1564
+#: src/workflow/nodes/training.py:1568
 msgid "Predict class labels and expose the model's raw output"
 msgstr "Predict class labels and expose the model's raw output"
 
-#: src/workflow/nodes/training.py:1574
+#: src/workflow/nodes/training.py:1578
 msgid "Predicted classes"
 msgstr "Predicted classes"
 
-#: src/workflow/nodes/training.py:1575
+#: src/workflow/nodes/training.py:1579
 msgid "Raw model output"
 msgstr "Raw model output"
 
-#: src/workflow/nodes/training.py:1599
+#: src/workflow/nodes/training.py:1603
 msgid "Regression model prediction"
 msgstr "Regression model prediction"
 
-#: src/workflow/nodes/training.py:1600
+#: src/workflow/nodes/training.py:1604
 msgid "Predict continuous values from a regression model"
 msgstr "Predict continuous values from a regression model"
 
-#: src/workflow/nodes/training.py:1610
+#: src/workflow/nodes/training.py:1614
 msgid "Predicted values"
 msgstr "Predicted values"
 
@@ -5817,67 +5839,67 @@ msgstr "Original coordinate"
 msgid "Aggregate statistics require compatible horizontal coordinates"
 msgstr "Aggregate statistics require compatible horizontal coordinates"
 
-#: src/workflow/nodes/visualization.py:370
+#: src/workflow/nodes/visualization.py:372
 msgid "Compare all line-compatible data in one interactive chart"
 msgstr "Compare all line-compatible data in one interactive chart"
 
-#: src/workflow/nodes/visualization.py:378
+#: src/workflow/nodes/visualization.py:380
 msgid "Line data"
 msgstr "Line data"
 
-#: src/workflow/nodes/visualization.py:383
+#: src/workflow/nodes/visualization.py:385
 msgid "Interaction mode"
 msgstr "Interaction mode"
 
-#: src/workflow/nodes/visualization.py:388
+#: src/workflow/nodes/visualization.py:390
 msgid "Display mode"
 msgstr "Display mode"
 
-#: src/workflow/nodes/visualization.py:393
+#: src/workflow/nodes/visualization.py:395
 msgid "Horizontal alignment"
 msgstr "Horizontal alignment"
 
-#: src/workflow/nodes/visualization.py:398
+#: src/workflow/nodes/visualization.py:400
 msgid "Channel handling"
 msgstr "Channel handling"
 
-#: src/workflow/nodes/visualization.py:409
+#: src/workflow/nodes/visualization.py:411
 msgid "Value transform"
 msgstr "Value transform"
 
-#: src/workflow/nodes/visualization.py:414
+#: src/workflow/nodes/visualization.py:416
 msgid "Aggregate curve"
 msgstr "Aggregate curve"
 
-#: src/workflow/nodes/visualization.py:419
+#: src/workflow/nodes/visualization.py:421
 msgid "Variability band"
 msgstr "Variability band"
 
-#: src/workflow/nodes/visualization.py:424
+#: src/workflow/nodes/visualization.py:426
 msgid "Lower percentile"
 msgstr "Lower percentile"
 
-#: src/workflow/nodes/visualization.py:430
+#: src/workflow/nodes/visualization.py:432
 msgid "Upper percentile"
 msgstr "Upper percentile"
 
-#: src/workflow/nodes/visualization.py:436
+#: src/workflow/nodes/visualization.py:438
 msgid "Maximum points per curve"
 msgstr "Maximum points per curve"
 
-#: src/workflow/nodes/visualization.py:442
+#: src/workflow/nodes/visualization.py:444
 msgid "Line opacity"
 msgstr "Line opacity"
 
-#: src/workflow/nodes/visualization.py:448
+#: src/workflow/nodes/visualization.py:450
 msgid "Show legend"
 msgstr "Show legend"
 
-#: src/workflow/nodes/visualization.py:456
+#: src/workflow/nodes/visualization.py:458
 msgid "Lower percentile must be smaller than upper percentile"
 msgstr "Lower percentile must be smaller than upper percentile"
 
-#: src/workflow/nodes/visualization.py:472
+#: src/workflow/nodes/visualization.py:474
 #, python-brace-format
 msgid "Multi-curve viewer ready: {count} curves"
 msgstr "Multi-curve viewer ready: {count} curves"
@@ -5887,93 +5909,92 @@ msgid "AI feature extraction"
 msgstr "AI feature extraction"
 
 #: src/workflow/nodes/feature/ai_embedding.py:40
-#: src/workflow/nodes/feature/ai_embedding.py:47
-#: src/workflow/nodes/feature/grad_cam.py:43
+#: src/workflow/nodes/feature/ai_embedding.py:49
 msgid "AI features"
 msgstr "AI features"
 
-#: src/workflow/nodes/feature/ai_embedding.py:41
+#: src/workflow/nodes/feature/ai_embedding.py:43
 msgid "Extract embeddings/activations from a model layer"
 msgstr "Extract embeddings/activations from a model layer"
 
-#: src/workflow/nodes/feature/ai_embedding.py:55
-#: src/workflow/nodes/feature/grad_cam.py:60
+#: src/workflow/nodes/feature/ai_embedding.py:57
+#: src/workflow/nodes/feature/grad_cam.py:62
 msgid "Layer name (optional)"
 msgstr "Layer name (optional)"
 
-#: src/workflow/nodes/feature/ai_embedding.py:56
+#: src/workflow/nodes/feature/ai_embedding.py:58
 msgid "If set, extract activations from this layer name; otherwise auto-select"
 msgstr ""
 "If set, extract activations from this layer name; otherwise auto-select"
 
-#: src/workflow/nodes/feature/ai_embedding.py:64
+#: src/workflow/nodes/feature/ai_embedding.py:66
 msgid ""
 "feature_1d: (channels, features); feature_2d: (channels, features, frames)"
 msgstr ""
 "feature_1d: (channels, features); feature_2d: (channels, features, frames)"
 
-#: src/workflow/nodes/feature/ai_embedding.py:70
+#: src/workflow/nodes/feature/ai_embedding.py:72
 msgid "Auto layer strategy"
 msgstr "Auto layer strategy"
 
-#: src/workflow/nodes/feature/ai_embedding.py:72
+#: src/workflow/nodes/feature/ai_embedding.py:74
 msgid "How to auto-select layer when layer name is empty"
 msgstr "How to auto-select layer when layer name is empty"
 
-#: src/workflow/nodes/feature/ai_embedding.py:96
+#: src/workflow/nodes/feature/ai_embedding.py:98
 #, python-brace-format
 msgid "Failed to prepare input data: {error}"
 msgstr "Failed to prepare input data: {error}"
 
-#: src/workflow/nodes/feature/ai_embedding.py:103
+#: src/workflow/nodes/feature/ai_embedding.py:105
 #, python-brace-format
 msgid "Failed to select layer: {error}"
 msgstr "Failed to select layer: {error}"
 
-#: src/workflow/nodes/feature/ai_embedding.py:109
-#: src/workflow/nodes/feature/grad_cam.py:235
+#: src/workflow/nodes/feature/ai_embedding.py:111
+#: src/workflow/nodes/feature/grad_cam.py:237
 #, python-brace-format
 msgid "TensorFlow/Keras is required: {error}"
 msgstr "TensorFlow/Keras is required: {error}"
 
-#: src/workflow/nodes/feature/ai_embedding.py:116
+#: src/workflow/nodes/feature/ai_embedding.py:118
 #, python-brace-format
 msgid "Extracting AI features from layer: {layer}"
 msgstr "Extracting AI features from layer: {layer}"
 
-#: src/workflow/nodes/feature/ai_embedding.py:121
+#: src/workflow/nodes/feature/ai_embedding.py:123
 msgid ""
 "Selected layer produced multiple outputs; please choose a single-output layer"
 msgstr ""
 "Selected layer produced multiple outputs; please choose a single-output layer"
 
-#: src/workflow/nodes/feature/ai_embedding.py:139
+#: src/workflow/nodes/feature/ai_embedding.py:141
 #, python-brace-format
 msgid "AI feature extraction failed: {error}"
 msgstr "AI feature extraction failed: {error}"
 
-#: src/workflow/nodes/feature/ai_embedding.py:149
-#: src/workflow/nodes/feature/grad_cam.py:196
+#: src/workflow/nodes/feature/ai_embedding.py:151
+#: src/workflow/nodes/feature/grad_cam.py:198
 #, python-brace-format
 msgid "Layer not found: {name}"
 msgstr "Layer not found: {name}"
 
-#: src/workflow/nodes/feature/ai_embedding.py:193
-#: src/workflow/nodes/feature/grad_cam.py:337
+#: src/workflow/nodes/feature/ai_embedding.py:195
+#: src/workflow/nodes/feature/grad_cam.py:339
 msgid "Input data list is empty"
 msgstr "Input data list is empty"
 
-#: src/workflow/nodes/feature/ai_embedding.py:206
-#: src/workflow/nodes/feature/grad_cam.py:348
+#: src/workflow/nodes/feature/ai_embedding.py:208
+#: src/workflow/nodes/feature/grad_cam.py:350
 msgid "Input samples have inconsistent shapes; cannot stack into a batch array"
 msgstr ""
 "Input samples have inconsistent shapes; cannot stack into a batch array"
 
-#: src/workflow/nodes/feature/ai_embedding.py:285
+#: src/workflow/nodes/feature/ai_embedding.py:287
 msgid "Unsupported model output shape"
 msgstr "Unsupported model output shape"
 
-#: src/workflow/nodes/feature/ai_embedding.py:296
+#: src/workflow/nodes/feature/ai_embedding.py:298
 msgid "Output batch size does not match input batch size"
 msgstr "Output batch size does not match input batch size"
 
@@ -5981,20 +6002,24 @@ msgstr "Output batch size does not match input batch size"
 msgid "Grad-CAM"
 msgstr "Grad-CAM"
 
-#: src/workflow/nodes/feature/grad_cam.py:44
+#: src/workflow/nodes/feature/grad_cam.py:43
+msgid "Model explanation"
+msgstr "Model explanation"
+
+#: src/workflow/nodes/feature/grad_cam.py:46
 msgid "Generate Grad-CAM heatmaps from Conv1D or Conv2D model layers"
 msgstr "Generate Grad-CAM heatmaps from Conv1D or Conv2D model layers"
 
-#: src/workflow/nodes/feature/grad_cam.py:50
-#: src/workflow/nodes/feature/grad_cam.py:75
+#: src/workflow/nodes/feature/grad_cam.py:52
+#: src/workflow/nodes/feature/grad_cam.py:77
 msgid "Target class"
 msgstr "Target class"
 
-#: src/workflow/nodes/feature/grad_cam.py:52
+#: src/workflow/nodes/feature/grad_cam.py:54
 msgid "Prediction"
 msgstr "Prediction"
 
-#: src/workflow/nodes/feature/grad_cam.py:61
+#: src/workflow/nodes/feature/grad_cam.py:63
 msgid ""
 "If set, use this Conv1D/Conv2D layer; otherwise auto-select the last "
 "compatible layer"
@@ -6002,11 +6027,11 @@ msgstr ""
 "If set, use this Conv1D/Conv2D layer; otherwise auto-select the last "
 "compatible layer"
 
-#: src/workflow/nodes/feature/grad_cam.py:67
+#: src/workflow/nodes/feature/grad_cam.py:69
 msgid "Target mode"
 msgstr "Target mode"
 
-#: src/workflow/nodes/feature/grad_cam.py:69
+#: src/workflow/nodes/feature/grad_cam.py:71
 msgid ""
 "auto: use predicted class; fixed: use Target class; input: use optional "
 "target port"
@@ -6014,106 +6039,106 @@ msgstr ""
 "auto: use predicted class; fixed: use Target class; input: use optional "
 "target port"
 
-#: src/workflow/nodes/feature/grad_cam.py:77
+#: src/workflow/nodes/feature/grad_cam.py:79
 msgid "Class index for fixed mode. -1 falls back to auto."
 msgstr "Class index for fixed mode. -1 falls back to auto."
 
-#: src/workflow/nodes/feature/grad_cam.py:83
+#: src/workflow/nodes/feature/grad_cam.py:85
 msgid "Normalize heatmap"
 msgstr "Normalize heatmap"
 
-#: src/workflow/nodes/feature/grad_cam.py:84
+#: src/workflow/nodes/feature/grad_cam.py:86
 msgid "Normalize each heatmap to the 0..1 range"
 msgstr "Normalize each heatmap to the 0..1 range"
 
-#: src/workflow/nodes/feature/grad_cam.py:90
+#: src/workflow/nodes/feature/grad_cam.py:92
 msgid "Resize to input"
 msgstr "Resize to input"
 
-#: src/workflow/nodes/feature/grad_cam.py:91
+#: src/workflow/nodes/feature/grad_cam.py:93
 msgid "Resize the heatmap to the input feature/time dimensions when possible"
 msgstr "Resize the heatmap to the input feature/time dimensions when possible"
 
-#: src/workflow/nodes/feature/grad_cam.py:97
+#: src/workflow/nodes/feature/grad_cam.py:99
 msgid "Generate overlay"
 msgstr "Generate overlay"
 
-#: src/workflow/nodes/feature/grad_cam.py:98
+#: src/workflow/nodes/feature/grad_cam.py:100
 msgid "Generate a preview-compatible intensity overlay for 2D feature inputs"
 msgstr "Generate a preview-compatible intensity overlay for 2D feature inputs"
 
-#: src/workflow/nodes/feature/grad_cam.py:104
+#: src/workflow/nodes/feature/grad_cam.py:106
 msgid "Overlay alpha"
 msgstr "Overlay alpha"
 
-#: src/workflow/nodes/feature/grad_cam.py:107
+#: src/workflow/nodes/feature/grad_cam.py:109
 msgid "Blend strength of the Grad-CAM heatmap in the overlay"
 msgstr "Blend strength of the Grad-CAM heatmap in the overlay"
 
-#: src/workflow/nodes/feature/grad_cam.py:113
+#: src/workflow/nodes/feature/grad_cam.py:115
 msgid "Overlay mode"
 msgstr "Overlay mode"
 
-#: src/workflow/nodes/feature/grad_cam.py:115
+#: src/workflow/nodes/feature/grad_cam.py:117
 msgid ""
 "mask: CAM controls source visibility; blend: mix source and CAM intensity"
 msgstr ""
 "mask: CAM controls source visibility; blend: mix source and CAM intensity"
 
-#: src/workflow/nodes/feature/grad_cam.py:121
+#: src/workflow/nodes/feature/grad_cam.py:123
 msgid "Overlay channel mode"
 msgstr "Overlay channel mode"
 
-#: src/workflow/nodes/feature/grad_cam.py:123
+#: src/workflow/nodes/feature/grad_cam.py:125
 msgid "How to reduce multi-channel source features for overlay generation"
 msgstr "How to reduce multi-channel source features for overlay generation"
 
-#: src/workflow/nodes/feature/grad_cam.py:149
+#: src/workflow/nodes/feature/grad_cam.py:151
 #, python-brace-format
 msgid "Failed to prepare Grad-CAM input: {error}"
 msgstr "Failed to prepare Grad-CAM input: {error}"
 
-#: src/workflow/nodes/feature/grad_cam.py:182
+#: src/workflow/nodes/feature/grad_cam.py:184
 #, python-brace-format
 msgid "Grad-CAM generated from layer: {layer}"
 msgstr "Grad-CAM generated from layer: {layer}"
 
-#: src/workflow/nodes/feature/grad_cam.py:186
+#: src/workflow/nodes/feature/grad_cam.py:188
 #, python-brace-format
 msgid "Grad-CAM failed: {error}"
 msgstr "Grad-CAM failed: {error}"
 
-#: src/workflow/nodes/feature/grad_cam.py:198
+#: src/workflow/nodes/feature/grad_cam.py:200
 #, python-brace-format
 msgid "Layer is not a supported Conv1D/Conv2D layer: {name}"
 msgstr "Layer is not a supported Conv1D/Conv2D layer: {name}"
 
-#: src/workflow/nodes/feature/grad_cam.py:205
+#: src/workflow/nodes/feature/grad_cam.py:207
 msgid "No Conv1D or Conv2D layer found for Grad-CAM"
 msgstr "No Conv1D or Conv2D layer found for Grad-CAM"
 
-#: src/workflow/nodes/feature/grad_cam.py:243
+#: src/workflow/nodes/feature/grad_cam.py:245
 msgid "Grad-CAM requires a single model output"
 msgstr "Grad-CAM requires a single model output"
 
-#: src/workflow/nodes/feature/grad_cam.py:249
+#: src/workflow/nodes/feature/grad_cam.py:251
 msgid "Could not compute gradients for the selected layer"
 msgstr "Could not compute gradients for the selected layer"
 
-#: src/workflow/nodes/feature/grad_cam.py:261
+#: src/workflow/nodes/feature/grad_cam.py:263
 msgid "Selected layer output rank is not supported for Grad-CAM"
 msgstr "Selected layer output rank is not supported for Grad-CAM"
 
-#: src/workflow/nodes/feature/grad_cam.py:306
+#: src/workflow/nodes/feature/grad_cam.py:308
 msgid "Target input size does not match batch size"
 msgstr "Target input size does not match batch size"
 
-#: src/workflow/nodes/feature/grad_cam.py:321
+#: src/workflow/nodes/feature/grad_cam.py:323
 #, python-brace-format
 msgid "Target class index is out of range for model output size {size}"
 msgstr "Target class index is out of range for model output size {size}"
 
-#: src/workflow/nodes/feature/grad_cam.py:480
+#: src/workflow/nodes/feature/grad_cam.py:482
 msgid "Heatmap batch size does not match input batch size"
 msgstr "Heatmap batch size does not match input batch size"
 
@@ -6124,19 +6149,19 @@ msgstr "Heatmap batch size does not match input batch size"
 msgid "1D features"
 msgstr "1D features"
 
-#: src/workflow/nodes/feature/dim1d/fft.py:31
+#: src/workflow/nodes/feature/dim1d/fft.py:33
 msgid "Extract global FFT spectrum"
 msgstr "Extract global FFT spectrum"
 
-#: src/workflow/nodes/feature/dim1d/fft.py:41
+#: src/workflow/nodes/feature/dim1d/fft.py:43
 msgid "FFT size"
 msgstr "FFT size"
 
-#: src/workflow/nodes/feature/dim1d/fft.py:43
+#: src/workflow/nodes/feature/dim1d/fft.py:45
 msgid "auto: use signal length as FFT size"
 msgstr "auto: use signal length as FFT size"
 
-#: src/workflow/nodes/feature/dim1d/fft.py:53
+#: src/workflow/nodes/feature/dim1d/fft.py:55
 msgid "Normalize to max value"
 msgstr "Normalize to max value"
 
@@ -6144,67 +6169,67 @@ msgstr "Normalize to max value"
 msgid "Pitch (F0)"
 msgstr "Pitch (F0)"
 
-#: src/workflow/nodes/feature/dim1d/pitch.py:32
+#: src/workflow/nodes/feature/dim1d/pitch.py:34
 msgid "Extract pitch (F0) trajectory"
 msgstr "Extract pitch (F0) trajectory"
 
-#: src/workflow/nodes/feature/dim1d/pitch.py:37
+#: src/workflow/nodes/feature/dim1d/pitch.py:39
 msgid "Pitch trajectory"
 msgstr "Pitch trajectory"
 
-#: src/workflow/nodes/feature/dim1d/pitch.py:42
-#: src/workflow/nodes/feature/dim2d/cqt.py:60
-#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:55
+#: src/workflow/nodes/feature/dim1d/pitch.py:44
+#: src/workflow/nodes/feature/dim2d/cqt.py:62
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:57
 msgid "Min frequency (Hz)"
 msgstr "Min frequency (Hz)"
 
-#: src/workflow/nodes/feature/dim1d/pitch.py:44
+#: src/workflow/nodes/feature/dim1d/pitch.py:46
 msgid "Lowest detectable frequency (default C2 ~ 65 Hz)"
 msgstr "Lowest detectable frequency (default C2 ~ 65 Hz)"
 
-#: src/workflow/nodes/feature/dim1d/pitch.py:48
-#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:60
+#: src/workflow/nodes/feature/dim1d/pitch.py:50
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:62
 msgid "Max frequency (Hz)"
 msgstr "Max frequency (Hz)"
 
-#: src/workflow/nodes/feature/dim1d/pitch.py:50
+#: src/workflow/nodes/feature/dim1d/pitch.py:52
 msgid "Highest detectable frequency (default C7 ~ 2093 Hz)"
 msgstr "Highest detectable frequency (default C7 ~ 2093 Hz)"
 
-#: src/workflow/nodes/feature/dim1d/pitch.py:59
+#: src/workflow/nodes/feature/dim1d/pitch.py:61
 msgid "Fill value for unvoiced frames"
 msgstr "Fill value for unvoiced frames"
 
-#: src/workflow/nodes/feature/dim1d/pitch.py:61
+#: src/workflow/nodes/feature/dim1d/pitch.py:63
 msgid "Use this value for frames where pitch cannot be detected"
 msgstr "Use this value for frames where pitch cannot be detected"
 
-#: src/workflow/nodes/feature/dim1d/pitch.py:66
+#: src/workflow/nodes/feature/dim1d/pitch.py:68
 msgid "Normalize pitch values to 0-1 range"
 msgstr "Normalize pitch values to 0-1 range"
 
-#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:34
+#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:36
 msgid "Extract spectral flatness"
 msgstr "Extract spectral flatness"
 
-#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:44
-#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:45
-#: src/workflow/nodes/feature/dim2d/mfcc.py:50
-#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:43
-#: src/workflow/nodes/feature/dim2d/stft.py:41
+#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:46
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:47
+#: src/workflow/nodes/feature/dim2d/mfcc.py:52
+#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:45
+#: src/workflow/nodes/feature/dim2d/stft.py:43
 msgid "FFT window size"
 msgstr "FFT window size"
 
-#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:56
+#: src/workflow/nodes/feature/dim1d/spectral_flatness.py:58
 msgid "Aggregate over the time axis"
 msgstr "Aggregate over the time axis"
 
 #: src/workflow/nodes/feature/dim1d/statistics.py:24
-#: src/workflow/nodes/feature/dim1d/statistics.py:32
+#: src/workflow/nodes/feature/dim1d/statistics.py:34
 msgid "Statistical features"
 msgstr "Statistical features"
 
-#: src/workflow/nodes/feature/dim1d/statistics.py:27
+#: src/workflow/nodes/feature/dim1d/statistics.py:29
 msgid "Extract statistical spectral features"
 msgstr "Extract statistical spectral features"
 
@@ -6216,76 +6241,88 @@ msgstr "Extract statistical spectral features"
 msgid "2D features"
 msgstr "2D features"
 
-#: src/workflow/nodes/feature/dim2d/cqt.py:33
+#: src/workflow/nodes/feature/dim2d/cqt.py:35
 msgid "Extract Constant-Q Transform (CQT) spectrogram"
 msgstr "Extract Constant-Q Transform (CQT) spectrogram"
 
-#: src/workflow/nodes/feature/dim2d/cqt.py:43
+#: src/workflow/nodes/feature/dim2d/cqt.py:45
 msgid "Bins"
 msgstr "Bins"
 
-#: src/workflow/nodes/feature/dim2d/cqt.py:45
+#: src/workflow/nodes/feature/dim2d/cqt.py:47
 msgid "Number of CQT bins (default 84 = 7 octaves × 12 semitones)"
 msgstr "Number of CQT bins (default 84 = 7 octaves × 12 semitones)"
 
-#: src/workflow/nodes/feature/dim2d/cqt.py:49
+#: src/workflow/nodes/feature/dim2d/cqt.py:51
 msgid "Bins per octave"
 msgstr "Bins per octave"
 
-#: src/workflow/nodes/feature/dim2d/cqt.py:51
+#: src/workflow/nodes/feature/dim2d/cqt.py:53
 msgid "Bins per octave (default 12 = semitone resolution)"
 msgstr "Bins per octave (default 12 = semitone resolution)"
 
-#: src/workflow/nodes/feature/dim2d/cqt.py:62
+#: src/workflow/nodes/feature/dim2d/cqt.py:64
 msgid "Minimum frequency (default C1 ~ 32.7 Hz)"
 msgstr "Minimum frequency (default C1 ~ 32.7 Hz)"
 
-#: src/workflow/nodes/feature/dim2d/cqt.py:66
-#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:65
+#: src/workflow/nodes/feature/dim2d/cqt.py:68
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:67
 msgid "Convert to dB"
 msgstr "Convert to dB"
 
-#: src/workflow/nodes/feature/dim2d/cqt.py:67
+#: src/workflow/nodes/feature/dim2d/cqt.py:69
 msgid "Convert magnitude to dB scale"
 msgstr "Convert magnitude to dB scale"
 
-#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:30
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:32
 msgid "Extract Mel spectrogram"
 msgstr "Extract Mel spectrogram"
 
-#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:40
-#: src/workflow/nodes/feature/dim2d/mfcc.py:45
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:42
+#: src/workflow/nodes/feature/dim2d/mfcc.py:47
 msgid "Mel filters"
 msgstr "Mel filters"
 
-#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:66
+#: src/workflow/nodes/feature/dim2d/mel_spectrogram.py:68
 msgid "Convert power spectrogram to dB scale"
 msgstr "Convert power spectrogram to dB scale"
 
-#: src/workflow/nodes/feature/dim2d/mfcc.py:30
+#: src/workflow/nodes/feature/dim2d/mfcc.py:32
 msgid "Extract MFCC features"
 msgstr "Extract MFCC features"
 
-#: src/workflow/nodes/feature/dim2d/mfcc.py:60
+#: src/workflow/nodes/feature/dim2d/mfcc.py:62
 msgid "Include delta"
 msgstr "Include delta"
 
-#: src/workflow/nodes/feature/dim2d/mfcc.py:64
+#: src/workflow/nodes/feature/dim2d/mfcc.py:66
 msgid "Include delta-delta"
 msgstr "Include delta-delta"
 
-#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:33
+#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:35
 msgid "Extract spectral contrast"
 msgstr "Extract spectral contrast"
 
-#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:53
+#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:55
 msgid "Bands"
 msgstr "Bands"
 
-#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:55
+#: src/workflow/nodes/feature/dim2d/spectral_contrast.py:57
 msgid "Number of sub-bands (output dimension is n_bands + 1)"
 msgstr "Number of sub-bands (output dimension is n_bands + 1)"
 
-#: src/workflow/nodes/feature/dim2d/stft.py:31
+#: src/workflow/nodes/feature/dim2d/stft.py:33
 msgid "Extract STFT spectrogram"
 msgstr "Extract STFT spectrogram"
+
+#~ msgid "Control flow"
+#~ msgstr "Control flow"
+
+#~ msgid "Feature preparation"
+#~ msgstr "Feature preparation"
+
+#~ msgid "Save audio"
+#~ msgstr "Save audio"
+
+#~ msgid "Denoise"
+#~ msgstr "Denoise"

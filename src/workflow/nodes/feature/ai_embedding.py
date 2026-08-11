@@ -38,6 +38,8 @@ class AIFeatureExtractionNode(BaseNode):
     display_name = tr_("AI feature extraction")
     category = NodeCategory.FEATURE
     subcategory = tr_("AI features")
+    subcategory_order = 30
+    palette_order = 10
     description = tr_("Extract embeddings/activations from a model layer")
     icon = "🤖"
 

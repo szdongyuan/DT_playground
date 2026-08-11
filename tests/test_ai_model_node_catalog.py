@@ -51,8 +51,9 @@ def test_ai_model_nodes_use_stage_based_subcategories_and_order():
         "anomaly_decision": ("Inference and decision", 20, 40),
         "classification_evaluator": ("Model evaluation", 30, 10),
         "regression_evaluator": ("Model evaluation", 30, 20),
-        "load_model": ("Model management", 40, 10),
-        "save_model": ("Model management", 40, 20),
+        "grad_cam": ("Model explanation", 40, 10),
+        "load_model": ("Model management", 50, 10),
+        "save_model": ("Model management", 50, 20),
     }
 
     assert NodeCategory.TRAINING.display_name == tr_("AI / Model")
@@ -76,6 +77,7 @@ def test_palette_renders_stage_groups_and_nodes_in_workflow_order(qapp):
         f"📁 {tr_('Model training')}",
         f"📁 {tr_('Inference and decision')}",
         f"📁 {tr_('Model evaluation')}",
+        f"📁 {tr_('Model explanation')}",
         f"📁 {tr_('Model management')}",
     ]
 
@@ -83,6 +85,7 @@ def test_palette_renders_stage_groups_and_nodes_in_workflow_order(qapp):
         ["classification_trainer", "regression_trainer", "anomaly_detector_trainer"],
         ["classification_predict", "regression_predict", "anomaly_scorer", "anomaly_decision"],
         ["classification_evaluator", "regression_evaluator"],
+        ["grad_cam"],
         ["load_model", "save_model"],
     ]
     for group_index, node_types in enumerate(expected_types):
@@ -93,7 +96,7 @@ def test_palette_renders_stage_groups_and_nodes_in_workflow_order(qapp):
         ] == node_types
 
 
-def test_visualization_nodes_are_grouped_under_output_category(qapp):
+def test_output_nodes_are_grouped_by_user_intent(qapp):
     assert NodeCategory.OUTPUT.display_name == tr_("Output / Visualization")
     palette = NodePalette()
     tree = palette._tree
@@ -102,16 +105,23 @@ def test_visualization_nodes_are_grouped_under_output_category(qapp):
         for index in range(tree.topLevelItemCount())
         if tree.topLevelItem(index).text(0) == NodeCategory.OUTPUT.display_name
     )
-    output_types = [
-        output_item.child(index).data(0, Qt.ItemDataRole.UserRole)
-        for index in range(output_item.childCount())
+    assert [output_item.child(index).text(0) for index in range(output_item.childCount())] == [
+        f"📁 {tr_('Data export')}",
+        f"📁 {tr_('Training results')}",
+        f"📁 {tr_('Result viewing')}",
     ]
-
-    assert output_types == [
-        "show_history",
-        "show_metrics",
-        "anomaly_explorer",
-        "multi_curve_viewer",
+    assert [
+        [
+            output_item.child(group_index).child(node_index).data(
+                0, Qt.ItemDataRole.UserRole
+            )
+            for node_index in range(output_item.child(group_index).childCount())
+        ]
+        for group_index in range(output_item.childCount())
+    ] == [
+        ["save_audio"],
+        ["show_history", "show_metrics"],
+        ["anomaly_explorer", "multi_curve_viewer"],
     ]
 
 

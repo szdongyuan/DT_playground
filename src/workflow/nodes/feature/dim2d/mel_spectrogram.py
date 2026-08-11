@@ -27,6 +27,8 @@ class MelSpectrogramNode(BaseNode):
     display_name = tr_("Mel spectrogram")
     category = NodeCategory.FEATURE
     subcategory = tr_("2D features")
+    subcategory_order = 20
+    palette_order = 10
     description = tr_("Extract Mel spectrogram")
     icon = "📈"
     

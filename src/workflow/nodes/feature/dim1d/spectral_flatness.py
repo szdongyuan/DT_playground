@@ -31,6 +31,8 @@ class SpectralFlatnessNode(BaseNode):
     display_name = tr_("Spectral flatness")
     category = NodeCategory.FEATURE
     subcategory = tr_("1D features")
+    subcategory_order = 10
+    palette_order = 40
     description = tr_("Extract spectral flatness")
     icon = "📏"
     

@@ -366,7 +366,9 @@ class MultiCurveViewerNode(BaseNode):
     node_type = "multi_curve_viewer"
     display_name = tr_("Multi-curve viewer")
     category = NodeCategory.OUTPUT
-    palette_order = 40
+    subcategory = tr_("Result viewing")
+    subcategory_order = 30
+    palette_order = 20
     description = tr_("Compare all line-compatible data in one interactive chart")
     icon = "📉"
 
