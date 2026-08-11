@@ -30,6 +30,7 @@ from ..widgets.preview import (
     LabelPreviewWidget,
     MetricsPreviewWidget,
     ModelPreviewWidget,
+    MultiCurvePreviewWidget,
 )
 
 
@@ -90,6 +91,7 @@ class PreviewView(QWidget):
         
         # 创建并注册各类型预览组件
         preview_classes = [
+            ('multi_curve', MultiCurvePreviewWidget),
             ('anomaly_result', AnomalyResultPreviewWidget),
             ('audio', AudioPreviewWidget),
             ('feature_1d', Feature1DPreviewWidget),
@@ -174,9 +176,9 @@ class PreviewView(QWidget):
         self._item_combo.hide()
         
         # 输出端口选择
-        port_label = QLabel(tr_("Output port:"))
-        port_label.setStyleSheet(f"color: {Styles.COLORS['subtext1']};")
-        layout.addWidget(port_label)
+        self._port_label = QLabel(tr_("Output port:"))
+        self._port_label.setStyleSheet(f"color: {Styles.COLORS['subtext1']};")
+        layout.addWidget(self._port_label)
         
         self._port_combo = QComboBox()
         self._port_combo.setMinimumWidth(120)
@@ -185,9 +187,9 @@ class PreviewView(QWidget):
         layout.addWidget(self._port_combo)
         
         # 刷新按钮
-        refresh_btn = QPushButton(tr_("🔄 Refresh"))
-        refresh_btn.clicked.connect(self._on_refresh)
-        refresh_btn.setStyleSheet(f"""
+        self._refresh_btn = QPushButton(tr_("🔄 Refresh"))
+        self._refresh_btn.clicked.connect(self._on_refresh)
+        self._refresh_btn.setStyleSheet(f"""
             QPushButton {{
                 background: {Styles.COLORS['surface1']};
                 border: none;
@@ -199,7 +201,7 @@ class PreviewView(QWidget):
                 background: {Styles.COLORS['surface2']};
             }}
         """)
-        layout.addWidget(refresh_btn)
+        layout.addWidget(self._refresh_btn)
         
         return header
     
@@ -224,6 +226,14 @@ class PreviewView(QWidget):
             if data is not None:
                 self._port_combo.addItem(port_name, data)
         self._port_combo.blockSignals(False)
+
+        preview_only_data = (
+            self._port_combo.count() == 1
+            and MultiCurvePreviewWidget.can_display(self._port_combo.itemData(0))
+        )
+        self._port_label.setVisible(not preview_only_data)
+        self._port_combo.setVisible(not preview_only_data)
+        self._refresh_btn.setVisible(not preview_only_data)
         
         # 显示第一个端口的数据
         if self._port_combo.count() > 0:
@@ -387,6 +397,9 @@ class PreviewView(QWidget):
         # 顺序很重要：先检查更具体的类型
         
         # Anomaly results own the complete ranked-result experience.
+        if MultiCurvePreviewWidget.can_display(data):
+            return self._preview_widgets.get('multi_curve')
+
         if AnomalyResultPreviewWidget.can_display(data):
             return self._preview_widgets.get('anomaly_result')
 
@@ -447,4 +460,7 @@ class PreviewView(QWidget):
         self._current_node_id = None
         self._node_info.setText(tr_("No node selected"))
         self._port_combo.clear()
+        self._port_label.show()
+        self._port_combo.show()
+        self._refresh_btn.show()
         self._clear_display()

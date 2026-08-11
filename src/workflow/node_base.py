@@ -249,6 +249,19 @@ class BaseNode(ABC):
         """Set data to output port"""
         if port_name in self.outputs:
             self.outputs[port_name].data = data
+
+    def get_preview_outputs(self) -> Dict[str, Any]:
+        """Return data exposed to the preview view.
+
+        Most nodes preview their output ports. Terminal visualization nodes may
+        override this method to expose cached preview-only data without adding a
+        workflow output port.
+        """
+        return {
+            port_name: port.data
+            for port_name, port in self.outputs.items()
+            if port.data is not None
+        }
     
     def validate(self) -> Tuple[bool, str]:
         """

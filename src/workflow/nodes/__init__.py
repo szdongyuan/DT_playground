@@ -13,6 +13,7 @@ from . import data_source
 from . import feature
 from . import preprocessing
 from . import training
+from . import visualization
 
 __all__ = [
     'data_source',
@@ -22,5 +23,6 @@ __all__ = [
     'feature',
     'training',
     'control',
+    'visualization',
 ]
 
