@@ -13,6 +13,7 @@ from .feature_2d_preview import Feature2DPreviewWidget
 from .label_preview import LabelPreviewWidget
 from .metrics_preview import MetricsPreviewWidget
 from .model_preview import ModelPreviewWidget
+from .multi_curve_preview import MultiCurvePreviewWidget
 
 __all__ = [
     'BasePreviewWidget',
@@ -23,5 +24,6 @@ __all__ = [
     'LabelPreviewWidget',
     'MetricsPreviewWidget',
     'ModelPreviewWidget',
+    'MultiCurvePreviewWidget',
 ]
 

@@ -107,7 +107,12 @@ def test_visualization_nodes_are_grouped_under_output_category(qapp):
         for index in range(output_item.childCount())
     ]
 
-    assert output_types == ["show_history", "show_metrics", "anomaly_explorer"]
+    assert output_types == [
+        "show_history",
+        "show_metrics",
+        "anomaly_explorer",
+        "multi_curve_viewer",
+    ]
 
 
 def test_task_specific_evaluators_validate_target_semantics():

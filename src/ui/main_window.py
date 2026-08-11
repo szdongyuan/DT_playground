@@ -431,10 +431,7 @@ class MainWindow(QWidget):
             return
         
         # 收集输出数据
-        outputs = {
-            port_name: port.data
-            for port_name, port in node.outputs.items()
-        }
+        outputs = node.get_preview_outputs()
         
         self._preview_view.set_node_data(node_id, node.display_name, outputs)
     
@@ -767,16 +764,8 @@ class MainWindow(QWidget):
             return
         
         # 检查节点是否有输出数据（判断是否已运行）
-        has_output_data = any(
-            port.data is not None 
-            for port in node.outputs.values()
-        )
-        
-        # 收集输出数据
-        outputs = {
-            port_name: port.data
-            for port_name, port in node.outputs.items()
-        }
+        outputs = node.get_preview_outputs()
+        has_output_data = bool(outputs)
         
         ctx = NodeDoubleClickContext(
             node_id=node_id,

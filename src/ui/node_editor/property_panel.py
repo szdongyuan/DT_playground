@@ -325,11 +325,75 @@ class PropertyPanel(QWidget):
                 "random_n": tr_("Random N"),
             }.get(choice, str(choice))
             return display_text
+        viewer_choices = {
+            "interaction_mode": {
+                "performance": tr_("High performance"),
+                "series_toggle": tr_("Per-series selection"),
+            },
+            "display_mode": {
+                "overlay": tr_("Overlay"),
+                "offset": tr_("Vertical offset"),
+            },
+            "x_alignment": {
+                "normalized": tr_("Normalized length"),
+                "original": tr_("Original coordinates"),
+            },
+            "channel_mode": {
+                "separate": tr_("Separate channels"),
+                "merge": tr_("Merge channels"),
+                "selected": tr_("Selected channel"),
+            },
+            "value_transform": {
+                "none": tr_("None"),
+                "mean_center": tr_("Mean center"),
+                "minmax": tr_("Min-max"),
+                "zscore": tr_("Z-score"),
+            },
+            "aggregate_mode": {
+                "none": tr_("None"),
+                "mean": tr_("Mean"),
+                "median": tr_("Median"),
+            },
+            "variability_mode": {
+                "none": tr_("None"),
+                "std": tr_("Standard deviation"),
+                "percentile": tr_("Percentile interval"),
+                "minmax": tr_("Min-max"),
+            },
+        }
+        if param.name in viewer_choices:
+            return viewer_choices[param.name].get(choice, str(choice))
         return tr_(str(choice))
     
     def _refresh_parameter_dependencies(self):
         """Refresh UI state for parameter dependencies."""
-        if not self._current_node or self._current_node.node_type != "audio_folder":
+        if not self._current_node:
+            return
+
+        if self._current_node.node_type == "multi_curve_viewer":
+            selected_visible = self._current_node.get_parameter("channel_mode") == "selected"
+            percentile_visible = (
+                self._current_node.get_parameter("variability_mode") == "percentile"
+            )
+            legend_visible = (
+                self._current_node.get_parameter("interaction_mode")
+                == "series_toggle"
+            )
+            for name, visible in (
+                ("selected_channel", selected_visible),
+                ("percentile_low", percentile_visible),
+                ("percentile_high", percentile_visible),
+                ("show_legend", legend_visible),
+            ):
+                widget = self._widgets.get(name)
+                label = self._labels.get(name)
+                if widget:
+                    widget.setVisible(visible)
+                if label:
+                    label.setVisible(visible)
+            return
+
+        if self._current_node.node_type != "audio_folder":
             return
 
         max_files = self._current_node.get_parameter("max_files") or 0
