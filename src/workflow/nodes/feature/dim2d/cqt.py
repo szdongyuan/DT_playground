@@ -30,6 +30,8 @@ class CQTNode(BaseNode):
     display_name = tr_("CQT spectrum")
     category = NodeCategory.FEATURE
     subcategory = tr_("2D features")
+    subcategory_order = 20
+    palette_order = 40
     description = tr_("Extract Constant-Q Transform (CQT) spectrogram")
     icon = "🎵"
     

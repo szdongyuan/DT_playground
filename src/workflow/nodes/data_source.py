@@ -119,6 +119,7 @@ class AudioFolderNode(BaseNode):
     node_type = "audio_folder"
     display_name = tr_("Audio folder")
     category = NodeCategory.DATA_SOURCE
+    palette_order = 10
     description = tr_("Load audio files from a folder, optionally auto-label by subfolder")
     icon = "📂"
     
@@ -268,6 +269,7 @@ class SQLiteAudioDatabaseNode(BaseNode):
     node_type = "sqlite_audio_database"
     display_name = tr_("SQLite audio database")
     category = NodeCategory.DATA_SOURCE
+    palette_order = 20
     description = tr_("Load filtered audio records from an audio SQLite database")
     icon = "🗄️"
 
@@ -574,6 +576,7 @@ class AudioFileNode(BaseNode):
     node_type = "audio_file"
     display_name = tr_("Audio file")
     category = NodeCategory.DATA_SOURCE
+    palette_order = 30
     description = tr_("Load a single audio file")
     icon = "🎵"
     
@@ -630,6 +633,7 @@ class LabelFileNode(BaseNode):
     node_type = "label_file"
     display_name = tr_("Label file")
     category = NodeCategory.DATA_SOURCE
+    palette_order = 40
     description = tr_("Load labels from CSV/JSON/TXT")
     icon = "📄"
     
@@ -782,6 +786,7 @@ class TargetFileNode(BaseNode):
     node_type = "target_file"
     display_name = tr_("Target file")
     category = NodeCategory.DATA_SOURCE
+    palette_order = 50
     description = tr_("Load generic supervised targets from CSV/JSON/TXT")
     icon = "🎯"
 
@@ -1060,8 +1065,11 @@ class SaveAudioNode(BaseNode):
     """
     
     node_type = "save_audio"
-    display_name = tr_("Save audio")
-    category = NodeCategory.DATA_SOURCE
+    display_name = tr_("Export audio")
+    category = NodeCategory.OUTPUT
+    subcategory = tr_("Data export")
+    subcategory_order = 10
+    palette_order = 10
     description = tr_("Save audio as WAV files, optionally save labels JSON")
     icon = "💾"
     

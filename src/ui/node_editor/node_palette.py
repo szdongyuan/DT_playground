@@ -18,7 +18,7 @@ from PySide6.QtWidgets import (
 from src.ui.i18n import tr_
 from src.ui.styles import Styles
 from src.workflow.node_base import (
-    NodeCategory, get_all_node_types, get_nodes_by_category
+    NodeCategory, get_nodes_by_category
 )
 
 logger = logging.getLogger(__name__)
@@ -90,6 +90,8 @@ class NodePalette(QWidget):
     
     def __init__(self, parent=None):
         super().__init__(parent)
+        self._search_expansion_state = None
+        self._empty_search_item = None
         self._setup_ui()
         self._populate_nodes()
         self._apply_styles()
@@ -156,8 +158,8 @@ class NodePalette(QWidget):
             # 创建分类节点
             category_item = QTreeWidgetItem([f"{category.display_name}"])
             category_item.setForeground(0, Styles.get_color(category.color))
-            category_item.setExpanded(True)
             self._tree.addTopLevelItem(category_item)
+            category_item.setExpanded(category == NodeCategory.DATA_SOURCE)
             
             # 按子类别分组节点
             subcategory_map = {}
@@ -175,7 +177,7 @@ class NodePalette(QWidget):
             # 添加无子类别的节点
             for node_class in sorted(
                 nodes_without_subcategory,
-                key=lambda cls: (getattr(cls, "palette_order", 100), cls.display_name),
+                key=lambda cls: (getattr(cls, "palette_order", 100), cls.node_type),
             ):
                 item = QTreeWidgetItem([f"{node_class.icon} {tr_(node_class.display_name)}"])
                 item.setData(0, Qt.ItemDataRole.UserRole, node_class.node_type)
@@ -195,13 +197,13 @@ class NodePalette(QWidget):
                 # 创建子类别节点
                 subcategory_item = QTreeWidgetItem([f"📁 {tr_(subcategory)}"])
                 subcategory_item.setForeground(0, Styles.get_color(category.color))
-                subcategory_item.setExpanded(True)
                 category_item.addChild(subcategory_item)
+                subcategory_item.setExpanded(False)
                 
                 # 添加节点到子类别
                 for node_class in sorted(
                     nodes,
-                    key=lambda cls: (getattr(cls, "palette_order", 100), cls.display_name),
+                    key=lambda cls: (getattr(cls, "palette_order", 100), cls.node_type),
                 ):
                     item = QTreeWidgetItem([f"{node_class.icon} {tr_(node_class.display_name)}"])
                     item.setData(0, Qt.ItemDataRole.UserRole, node_class.node_type)
@@ -212,9 +214,25 @@ class NodePalette(QWidget):
         logger.info(f"节点面板已加载 {node_count} 个节点")
     
     def _on_search(self, text: str):
-        """搜索过滤（支持三级结构）"""
-        text = text.lower()
-        
+        """Filter nodes by localized display name and manage expansion state."""
+        query = text.casefold()
+
+        if self._empty_search_item is not None:
+            index = self._tree.indexOfTopLevelItem(self._empty_search_item)
+            if index >= 0:
+                self._tree.takeTopLevelItem(index)
+            self._empty_search_item = None
+
+        if not query:
+            self._set_all_items_visible()
+            self._restore_expansion_state()
+            return
+
+        if self._search_expansion_state is None:
+            self._search_expansion_state = self._capture_expansion_state()
+
+        match_count = 0
+
         for i in range(self._tree.topLevelItemCount()):
             category_item = self._tree.topLevelItem(i)
             category_visible = 0
@@ -225,25 +243,78 @@ class NodePalette(QWidget):
                 
                 if node_type:
                     # 这是一个节点项
-                    match = text in child.text(0).lower()
+                    match = query in child.text(0).casefold()
                     child.setHidden(not match)
                     if match:
                         category_visible += 1
+                        match_count += 1
                 else:
                     # 这是一个子类别项
                     subcategory_visible = 0
                     for k in range(child.childCount()):
                         node_item = child.child(k)
-                        match = text in node_item.text(0).lower()
+                        match = query in node_item.text(0).casefold()
                         node_item.setHidden(not match)
                         if match:
                             subcategory_visible += 1
+                            match_count += 1
                     
                     child.setHidden(subcategory_visible == 0)
                     if subcategory_visible > 0:
+                        child.setExpanded(True)
                         category_visible += 1
             
             category_item.setHidden(category_visible == 0)
+            if category_visible > 0:
+                category_item.setExpanded(True)
+
+        if match_count == 0:
+            self._empty_search_item = QTreeWidgetItem([tr_("No matching nodes")])
+            self._empty_search_item.setDisabled(True)
+            self._tree.addTopLevelItem(self._empty_search_item)
+
+    def _capture_expansion_state(self):
+        """Capture category and subcategory expansion state for search."""
+        state = []
+        for i in range(self._tree.topLevelItemCount()):
+            category_item = self._tree.topLevelItem(i)
+            child_state = [
+                category_item.child(j).isExpanded()
+                for j in range(category_item.childCount())
+                if category_item.child(j).data(0, Qt.ItemDataRole.UserRole) is None
+            ]
+            state.append((category_item.isExpanded(), child_state))
+        return state
+
+    def _restore_expansion_state(self):
+        """Restore the expansion state captured before search."""
+        if self._search_expansion_state is None:
+            return
+
+        for i, (category_expanded, child_state) in enumerate(
+            self._search_expansion_state
+        ):
+            category_item = self._tree.topLevelItem(i)
+            category_item.setExpanded(category_expanded)
+            subcategory_index = 0
+            for j in range(category_item.childCount()):
+                child = category_item.child(j)
+                if child.data(0, Qt.ItemDataRole.UserRole) is None:
+                    child.setExpanded(child_state[subcategory_index])
+                    subcategory_index += 1
+
+        self._search_expansion_state = None
+
+    def _set_all_items_visible(self):
+        """Show every category, subcategory, and node item."""
+        for i in range(self._tree.topLevelItemCount()):
+            category_item = self._tree.topLevelItem(i)
+            category_item.setHidden(False)
+            for j in range(category_item.childCount()):
+                child = category_item.child(j)
+                child.setHidden(False)
+                for k in range(child.childCount()):
+                    child.child(k).setHidden(False)
     
     def _on_item_clicked(self, item, column):
         """选中节点"""

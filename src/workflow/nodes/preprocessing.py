@@ -114,6 +114,7 @@ class ResampleNode(BaseNode):
     node_type = "resample"
     display_name = tr_("Resample")
     category = NodeCategory.PREPROCESSING
+    palette_order = 10
     description = tr_("Resample audio to the target sample rate")
     icon = "📏"
     
@@ -180,6 +181,7 @@ class TrimPadNode(BaseNode):
     node_type = "trim_pad"
     display_name = tr_("Trim / pad")
     category = NodeCategory.PREPROCESSING
+    palette_order = 40
     description = tr_("Make audio a fixed duration by trimming and/or padding")
     icon = "✂️"
     
@@ -300,6 +302,7 @@ class NormalizeNode(BaseNode):
     node_type = "normalize"
     display_name = tr_("Normalize")
     category = NodeCategory.PREPROCESSING
+    palette_order = 80
     description = tr_("Normalize audio amplitude")
     icon = "📊"
     
@@ -381,6 +384,7 @@ class WindowingNode(BaseNode):
     node_type = "windowing"
     display_name = tr_("Windowing")
     category = NodeCategory.PREPROCESSING
+    palette_order = 90
     description = tr_("Apply a window function to the full waveform")
     icon = "🪟"
     
@@ -480,7 +484,7 @@ class SpectralSubtractionNode(BaseNode):
     node_type = "spectral_subtraction"
     display_name = tr_("Spectral subtraction")
     category = NodeCategory.PREPROCESSING
-    subcategory = tr_("Denoise")
+    palette_order = 70
     description = tr_("Reduce stationary noise using spectral subtraction")
     icon = "🔉"
 
@@ -677,6 +681,7 @@ class SilenceTrimNode(BaseNode):
     node_type = "silence_trim"
     display_name = tr_("Trim silence")
     category = NodeCategory.PREPROCESSING
+    palette_order = 50
     description = tr_("Remove leading and trailing silence")
     icon = "🎚️"
     
@@ -754,6 +759,7 @@ class ChannelMapperNode(BaseNode):
     node_type = "channel_mapper"
     display_name = tr_("Channel mapper")
     category = NodeCategory.PREPROCESSING
+    palette_order = 20
     description = tr_("Map selected channels to different outputs")
     icon = "🔀"
     
@@ -930,6 +936,7 @@ class ChannelMergeNode(BaseNode):
     node_type = "channel_merge"
     display_name = tr_("Channel merge")
     category = NodeCategory.PREPROCESSING
+    palette_order = 30
     description = tr_("Merge channels from multiple audio inputs")
     icon = "🔗"
     
@@ -1123,6 +1130,7 @@ class FilterNode(BaseNode):
     node_type = "filter"
     display_name = tr_("Filter")
     category = NodeCategory.PREPROCESSING
+    palette_order = 60
     description = tr_("Apply digital filtering (lowpass/highpass/bandpass/bandstop)")
     icon = "🎛️"
     

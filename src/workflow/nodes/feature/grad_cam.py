@@ -39,8 +39,10 @@ class GradCAMNode(BaseNode):
 
     node_type = "grad_cam"
     display_name = tr_("Grad-CAM")
-    category = NodeCategory.FEATURE
-    subcategory = tr_("AI features")
+    category = NodeCategory.TRAINING
+    subcategory = tr_("Model explanation")
+    subcategory_order = 40
+    palette_order = 10
     description = tr_("Generate Grad-CAM heatmaps from Conv1D or Conv2D model layers")
     icon = "🔥"
 

@@ -30,6 +30,8 @@ class SpectralContrastNode(BaseNode):
     display_name = tr_("Spectral contrast")
     category = NodeCategory.FEATURE
     subcategory = tr_("2D features")
+    subcategory_order = 20
+    palette_order = 50
     description = tr_("Extract spectral contrast")
     icon = "📊"
     

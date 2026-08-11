@@ -31,6 +31,7 @@ class SampleExpansionNode(BaseNode):
     node_type = "sample_expansion"
     display_name = tr_("Sample expansion")
     category = NodeCategory.AUGMENTATION
+    palette_order = 20
     description = tr_("Duplicate audio and labels together for sample expansion")
     icon = "📈"
 
@@ -101,6 +102,7 @@ class AddNoiseNode(BaseNode):
     node_type = "add_noise"
     display_name = tr_("Add noise")
     category = NodeCategory.AUGMENTATION
+    palette_order = 30
     description = tr_("Add noise to audio")
     icon = "🔊"
     
@@ -226,6 +228,7 @@ class AdjustGainNode(BaseNode):
     node_type = "adjust_gain"
     display_name = tr_("Adjust gain")
     category = NodeCategory.AUGMENTATION
+    palette_order = 40
     description = tr_("Increase or decrease audio level by a fixed or random dB amount")
     icon = "🔊"
 
@@ -342,6 +345,7 @@ class TimeStretchNode(BaseNode):
     node_type = "time_stretch"
     display_name = tr_("Time stretch")
     category = NodeCategory.AUGMENTATION
+    palette_order = 50
     description = tr_("Change speed while preserving pitch")
     icon = "⏱️"
     
@@ -421,6 +425,7 @@ class PitchShiftNode(BaseNode):
     node_type = "pitch_shift"
     display_name = tr_("Pitch shift")
     category = NodeCategory.AUGMENTATION
+    palette_order = 60
     description = tr_("Change pitch while preserving speed")
     icon = "🎵"
     
@@ -498,6 +503,7 @@ class ReverbNode(BaseNode):
     node_type = "reverb"
     display_name = tr_("Reverb")
     category = NodeCategory.AUGMENTATION
+    palette_order = 70
     description = tr_("Apply synthetic room reverb to audio")
     icon = "🏛️"
 
@@ -682,6 +688,7 @@ class AudioSliceNode(BaseNode):
     node_type = "audio_slice"
     display_name = tr_("Audio slicing")
     category = NodeCategory.AUGMENTATION
+    palette_order = 10
     description = tr_("Slice audio into multiple short segments to augment data")
     icon = "✂️"
     

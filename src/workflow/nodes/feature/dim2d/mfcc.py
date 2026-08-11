@@ -27,6 +27,8 @@ class MFCCNode(BaseNode):
     display_name = "MFCC"
     category = NodeCategory.FEATURE
     subcategory = tr_("2D features")
+    subcategory_order = 20
+    palette_order = 30
     description = tr_("Extract MFCC features")
     icon = "📊"
     

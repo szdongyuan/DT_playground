@@ -28,6 +28,8 @@ class STFTNode(BaseNode):
     display_name = "STFT"
     category = NodeCategory.FEATURE
     subcategory = tr_("2D features")
+    subcategory_order = 20
+    palette_order = 20
     description = tr_("Extract STFT spectrogram")
     icon = "🎼"
     

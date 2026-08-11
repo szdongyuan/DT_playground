@@ -24,6 +24,8 @@ class StatisticsNode(BaseNode):
     display_name = tr_("Statistical features")
     category = NodeCategory.FEATURE
     subcategory = tr_("1D features")
+    subcategory_order = 10
+    palette_order = 20
     description = tr_("Extract statistical spectral features")
     icon = "📉"
     

@@ -2,18 +2,18 @@ import unittest
 
 import numpy as np
 
-from src.ui.i18n import tr_
 from src.workflow.node_base import NodeCategory, create_node
 from src.workflow.nodes.data_source import AudioData
 
 
 class SpectralSubtractionNodeTests(unittest.TestCase):
-    def test_spectral_subtraction_node_is_registered_under_denoise_subcategory(self):
+    def test_spectral_subtraction_node_is_flattened_into_preprocessing(self):
         node = create_node("spectral_subtraction")
 
         self.assertIsNotNone(node)
         self.assertEqual(node.category, NodeCategory.PREPROCESSING)
-        self.assertEqual(node.subcategory, tr_("Denoise"))
+        self.assertEqual(node.subcategory, "")
+        self.assertEqual(node.palette_order, 70)
         self.assertIn("audio", node.inputs)
         self.assertIn("audio", node.outputs)
         self.assertIn("noise", node.inputs)

@@ -29,6 +29,9 @@ class LoopNode(BaseNode):
     node_type = "loop"
     display_name = tr_("Loop")
     category = NodeCategory.CONTROL
+    subcategory = tr_("Flow and debugging")
+    subcategory_order = 20
+    palette_order = 10
     description = tr_("Iterate over a list and output items one by one")
     icon = "🔄"
     
@@ -120,6 +123,9 @@ class SplitNode(BaseNode):
     node_type = "split"
     display_name = tr_("Split dataset")
     category = NodeCategory.CONTROL
+    subcategory = tr_("Dataset processing")
+    subcategory_order = 10
+    palette_order = 20
     description = tr_("Split data into train/val/test sets")
     icon = "✂️"
     
@@ -343,6 +349,9 @@ class AlignTargetsNode(BaseNode):
     node_type = "align_targets"
     display_name = tr_("Align targets")
     category = NodeCategory.CONTROL
+    subcategory = tr_("Dataset processing")
+    subcategory_order = 10
+    palette_order = 10
     description = tr_("Align data and targets by file name or path")
     icon = "🎯"
 
@@ -611,6 +620,9 @@ class MergeNode(BaseNode):
     node_type = "merge"
     display_name = tr_("Merge")
     category = NodeCategory.CONTROL
+    subcategory = tr_("Dataset processing")
+    subcategory_order = 10
+    palette_order = 30
     description = tr_("Merge multiple data sources")
     icon = "🔗"
     
@@ -681,6 +693,9 @@ class PassthroughNode(BaseNode):
     node_type = "passthrough"
     display_name = tr_("Passthrough")
     category = NodeCategory.CONTROL
+    subcategory = tr_("Flow and debugging")
+    subcategory_order = 20
+    palette_order = 20
     description = tr_("Pass data through without modification")
     icon = "◇"
     
@@ -711,6 +726,9 @@ class BreakpointNode(BaseNode):
     node_type = "breakpoint"
     display_name = tr_("Breakpoint")
     category = NodeCategory.CONTROL
+    subcategory = tr_("Flow and debugging")
+    subcategory_order = 20
+    palette_order = 40
     description = tr_("Pause workflow execution to inspect data")
     icon = "🔴"
     
@@ -777,6 +795,9 @@ class ValidateShapeNode(BaseNode):
     node_type = "validate_shape"
     display_name = tr_("Validate shape")
     category = NodeCategory.CONTROL
+    subcategory = tr_("Flow and debugging")
+    subcategory_order = 20
+    palette_order = 30
     description = tr_("Validate shape consistency in a batch")
     icon = "✅"
     
