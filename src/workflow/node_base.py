@@ -198,7 +198,9 @@ class BaseNode(ABC):
         max_value: Any = None,
         choices: List[Any] = None,
         file_filter: str = "",
-        default_directory: str = ""
+        default_directory: str = "",
+        required: bool = True,
+        visible_when: Dict[str, Any] = None,
     ):
         """Add node parameter"""
         param = NodeParameter(
@@ -211,7 +213,9 @@ class BaseNode(ABC):
             max_value=max_value,
             choices=choices,
             file_filter=file_filter,
-            default_directory=default_directory
+            default_directory=default_directory,
+            required=required,
+            visible_when=visible_when,
         )
         self.parameters[name] = param
         self.parameter_values[name] = default_value
@@ -231,6 +235,9 @@ class BaseNode(ABC):
             return False, f"Unknown parameter: {name}"
         
         param = self.parameters[name]
+        if value is None and param.default_value is None:
+            self.parameter_values[name] = None
+            return True, ""
         valid, msg = param.validate(value)
         if not valid:
             return False, msg
@@ -280,11 +287,32 @@ class BaseNode(ABC):
         # Validate parameters
         for name, value in self.parameter_values.items():
             if name in self.parameters:
+                if not self.is_parameter_active(name):
+                    continue
                 valid, msg = self.parameters[name].validate(value)
                 if not valid:
                     return False, msg
         
         return True, ""
+
+    def is_parameter_active(self, name: str) -> bool:
+        """Return whether a parameter's dependency conditions are satisfied."""
+        parameter = self.parameters.get(name)
+        if parameter is None or not parameter.visible_when:
+            return True
+        alternatives = (
+            parameter.visible_when
+            if isinstance(parameter.visible_when, list)
+            else [parameter.visible_when]
+        )
+        for conditions in alternatives:
+            if all(
+                self.parameter_values.get(dependency)
+                in (expected if isinstance(expected, (list, tuple, set)) else [expected])
+                for dependency, expected in conditions.items()
+            ):
+                return True
+        return False
     
     @abstractmethod
     def execute(self) -> bool:

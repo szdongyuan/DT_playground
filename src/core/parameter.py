@@ -44,6 +44,7 @@ class Parameter:
     file_filter: str = ""                   # File filter (for file type)
     default_directory: str = ""             # File dialog default directory (for file/folder types)
     required: bool = True                   # Whether required
+    visible_when: Optional[Any] = None            # Parameter dependency rules
     
     def _get_param_type_str(self) -> str:
         """Get parameter type string (compatible with enum and string)"""
@@ -138,6 +139,7 @@ class Parameter:
             "file_filter": self.file_filter,
             "default_directory": self.default_directory,
             "required": self.required,
+            "visible_when": self.visible_when,
         }
     
     @classmethod
@@ -162,6 +164,7 @@ class Parameter:
             file_filter=data.get("file_filter", ""),
             default_directory=data.get("default_directory", ""),
             required=data.get("required", True),
+            visible_when=data.get("visible_when"),
         )
 
 
@@ -176,7 +179,8 @@ def create_parameter(
     choices: List[Any] = None,
     file_filter: str = "",
     default_directory: str = "",
-    required: bool = True
+    required: bool = True,
+    visible_when: Optional[Any] = None,
 ) -> Parameter:
     """
     Convenience function to create parameters
@@ -209,6 +213,7 @@ def create_parameter(
         file_filter=file_filter,
         default_directory=default_directory,
         required=required,
+        visible_when=visible_when,
     )
 
 

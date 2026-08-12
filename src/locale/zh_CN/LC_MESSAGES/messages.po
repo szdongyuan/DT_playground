@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-11 17:37+0800\n"
+"POT-Creation-Date: 2026-08-12 12:08+0800\n"
 "PO-Revision-Date: 2026-02-04 17:15+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -155,6 +155,111 @@ msgstr "重启失败"
 #: src/app.py:597
 msgid "Please check the latest log under the logs directory."
 msgstr "请查看 logs 目录下最新的日志。"
+
+#: src/audio/acoustics.py:26
+msgid "Audio data must have shape (channels, samples)"
+msgstr "音频数据形状必须为（通道，采样点）"
+
+#: src/audio/acoustics.py:28
+msgid "Audio data contains NaN or infinite values"
+msgstr "音频数据包含 NaN 或无穷值"
+
+#: src/audio/acoustics.py:30
+msgid "Calibration factor must be a positive finite Pa/FS value"
+msgstr "校准系数必须是正的有限 Pa/FS 数值"
+
+#: src/audio/acoustics.py:52
+#, python-brace-format
+msgid "Channel {channel} may be digitally clipped ({count} full-scale samples)"
+msgstr "通道 {channel} 可能发生数字削波（{count} 个满量程采样点）"
+
+#: src/audio/acoustics.py:64
+msgid "A/C weighting requires a sample rate above 2000 Hz"
+msgstr "A/C 计权要求采样率高于 2000 Hz"
+
+#: src/audio/acoustics.py:82
+#, python-brace-format
+msgid "Unsupported frequency weighting: {weighting}"
+msgstr "不支持的频率计权：{weighting}"
+
+#: src/audio/acoustics.py:96
+msgid "Failed to normalize the frequency-weighting filter"
+msgstr "频率计权滤波器归一化失败"
+
+#: src/audio/acoustics.py:108 src/workflow/nodes/feature/acoustic.py:105
+msgid "Sample rate must be positive"
+msgstr "采样率必须为正数"
+
+#: src/audio/acoustics.py:113
+msgid "Frequency weighting must be Z, A, or C"
+msgstr "频率计权必须为 Z、A 或 C"
+
+#: src/audio/acoustics.py:125
+msgid "Reference pressure must be positive and finite"
+msgstr "参考声压必须是正的有限数值"
+
+#: src/audio/acoustics.py:127
+msgid "Sound-level floor must be finite"
+msgstr "声级下限必须是有限数值"
+
+#: src/audio/acoustics.py:129
+msgid "Sound energy contains NaN or infinite values"
+msgstr "声能量包含 NaN 或无穷值"
+
+#: src/audio/acoustics.py:134
+msgid "Sound energy cannot be negative"
+msgstr "声能量不能为负数"
+
+#: src/audio/acoustics.py:151
+msgid "Integration time and output step must be positive"
+msgstr "积分时间和输出步长必须为正数"
+
+#: src/audio/acoustics.py:155
+msgid "Audio is shorter than the Leq integration window"
+msgstr "音频长度短于 Leq 积分窗口"
+
+#: src/audio/acoustics.py:179
+msgid "Time constant and output step must be positive"
+msgstr "时间常数和输出步长必须为正数"
+
+#: src/audio/acoustics.py:212
+msgid "FFT size must cover the complete audio record"
+msgstr "FFT 点数必须能够覆盖完整音频记录"
+
+#: src/audio/acoustics.py:227
+msgid "Welch segment length must be between 2 and the audio length"
+msgstr "Welch 分段长度必须介于 2 和音频长度之间"
+
+#: src/audio/acoustics.py:229
+msgid "Welch overlap must be in the range [0, 100)"
+msgstr "Welch 重叠率必须位于 [0, 100) 范围内"
+
+#: src/audio/acoustics.py:258 src/audio/acoustics.py:302
+msgid "The spectrum must contain at least two frequency bins"
+msgstr "频谱必须至少包含两个频率分辨带"
+
+#: src/audio/acoustics.py:261
+msgid "The requested frequency range contains no spectrum bins"
+msgstr "请求的频率范围内没有频谱分辨带"
+
+#: src/audio/acoustics.py:274
+msgid "Octave-band fraction must be 1, 3, 6, or 12"
+msgstr "倍频程分数必须为 1、3、6 或 12"
+
+#: src/audio/acoustics.py:287
+msgid "The requested range contains no fractional-octave bands"
+msgstr "请求的范围内没有分数倍频程频带"
+
+#: src/audio/acoustics.py:314
+msgid "No complete fractional-octave bands fit below Nyquist"
+msgstr "奈奎斯特频率以下没有完整的分数倍频程频带"
+
+#: src/audio/acoustics.py:321
+#, python-brace-format
+msgid ""
+"Frequency resolution is insufficient for the lowest octave band; use a Welch "
+"segment length of at least {length}"
+msgstr "频率分辨率不足以表示最低倍频程频带；Welch 分段长度至少应为 {length}"
 
 #: src/audio/features.py:37 src/ui/widgets/spectrogram_widget.py:53
 #: src/ui/widgets/spectrogram_widget.py:171 src/visualization/spectrogram.py:77
@@ -476,42 +581,42 @@ msgstr "节点“{name}”（{id}）：{message}"
 msgid "Graph contains cyclic dependencies"
 msgstr "图中存在循环依赖"
 
-#: src/core/parameter.py:66
+#: src/core/parameter.py:67
 #, python-brace-format
 msgid "Parameter '{name}' is required"
 msgstr "参数“{name}”为必填项"
 
-#: src/core/parameter.py:76
+#: src/core/parameter.py:77
 #, python-brace-format
 msgid "Parameter '{name}' must be an integer"
 msgstr "参数“{name}”必须为整数"
 
-#: src/core/parameter.py:80 src/core/parameter.py:96
+#: src/core/parameter.py:81 src/core/parameter.py:97
 #, python-brace-format
 msgid "Parameter '{name}' must be >= {min_value}"
 msgstr "参数“{name}”必须 ≥ {min_value}"
 
-#: src/core/parameter.py:85 src/core/parameter.py:101
+#: src/core/parameter.py:86 src/core/parameter.py:102
 #, python-brace-format
 msgid "Parameter '{name}' must be <= {max_value}"
 msgstr "参数“{name}”必须 ≤ {max_value}"
 
-#: src/core/parameter.py:92
+#: src/core/parameter.py:93
 #, python-brace-format
 msgid "Parameter '{name}' must be a number"
 msgstr "参数“{name}”必须为数字"
 
-#: src/core/parameter.py:108
+#: src/core/parameter.py:109
 #, python-brace-format
 msgid "Parameter '{name}' must be a boolean"
 msgstr "参数“{name}”必须为布尔值"
 
-#: src/core/parameter.py:114
+#: src/core/parameter.py:115
 #, python-brace-format
 msgid "Parameter '{name}' must be one of {choices}"
 msgstr "参数“{name}”必须为 {choices} 之一"
 
-#: src/core/parameter.py:121
+#: src/core/parameter.py:122
 #, python-brace-format
 msgid "Parameter '{name}' must be a string"
 msgstr "参数“{name}”必须为字符串"
@@ -1353,7 +1458,7 @@ msgid "Applies additive Gaussian noise"
 msgstr "添加高斯噪声（加性）"
 
 #: src/model_builder/layers/regularization_layers.py:103
-#: src/ui/node_editor/property_panel.py:359
+#: src/ui/node_editor/property_panel.py:377
 msgid "Standard deviation"
 msgstr "标准差"
 
@@ -1846,6 +1951,8 @@ msgstr "设置"
 #: src/workflow/nodes/preprocessing.py:770
 #: src/workflow/nodes/preprocessing.py:1138
 #: src/workflow/nodes/preprocessing.py:1139
+#: src/workflow/nodes/feature/acoustic.py:147
+#: src/workflow/nodes/feature/acoustic.py:285
 #: src/workflow/nodes/feature/dim1d/fft.py:37
 #: src/workflow/nodes/feature/dim1d/pitch.py:38
 #: src/workflow/nodes/feature/dim1d/spectral_flatness.py:40
@@ -2134,12 +2241,12 @@ msgid "Optional, for identifying the layer"
 msgstr "可选，用于标识该层"
 
 #: src/ui/model_editor/layer_property_panel.py:149
-#: src/ui/node_editor/property_panel.py:125
+#: src/ui/node_editor/property_panel.py:126
 msgid "Type:"
 msgstr "类型："
 
 #: src/ui/model_editor/layer_property_panel.py:161
-#: src/ui/node_editor/property_panel.py:132
+#: src/ui/node_editor/property_panel.py:133
 msgid "Parameters"
 msgstr "参数"
 
@@ -2230,130 +2337,188 @@ msgstr "拖拽或双击以添加节点"
 msgid "No matching nodes"
 msgstr "未找到匹配节点"
 
-#: src/ui/node_editor/property_panel.py:81
-#: src/ui/node_editor/property_panel.py:151
+#: src/ui/node_editor/property_panel.py:82
+#: src/ui/node_editor/property_panel.py:152
 msgid "Properties"
 msgstr "属性"
 
-#: src/ui/node_editor/property_panel.py:114
+#: src/ui/node_editor/property_panel.py:115
 msgid "Node Info"
 msgstr "节点信息"
 
-#: src/ui/node_editor/property_panel.py:124
+#: src/ui/node_editor/property_panel.py:125
 msgid "Name:"
 msgstr "名称："
 
-#: src/ui/node_editor/property_panel.py:126
+#: src/ui/node_editor/property_panel.py:127
 msgid "Category:"
 msgstr "分类："
 
-#: src/ui/node_editor/property_panel.py:127
+#: src/ui/node_editor/property_panel.py:128
 msgid "Description:"
 msgstr "描述："
 
-#: src/ui/node_editor/property_panel.py:138
+#: src/ui/node_editor/property_panel.py:139
 msgid "Ports"
 msgstr "端口"
 
-#: src/ui/node_editor/property_panel.py:175
+#: src/ui/node_editor/property_panel.py:176
 #, python-brace-format
 msgid "Properties - {name}"
 msgstr "属性 - {name}"
 
-#: src/ui/node_editor/property_panel.py:183
+#: src/ui/node_editor/property_panel.py:184
 msgid "No description"
 msgstr "无描述"
 
-#: src/ui/node_editor/property_panel.py:324
+#: src/ui/node_editor/property_panel.py:246
+msgid "Required"
+msgstr "必填"
+
+#: src/ui/node_editor/property_panel.py:342
 msgid "First N in order"
 msgstr "顺序前 N 个"
 
-#: src/ui/node_editor/property_panel.py:325
+#: src/ui/node_editor/property_panel.py:343
 msgid "Random N"
 msgstr "随机 N 个"
 
-#: src/ui/node_editor/property_panel.py:330
+#: src/ui/node_editor/property_panel.py:348
 msgid "High performance"
 msgstr "高性能"
 
-#: src/ui/node_editor/property_panel.py:331
+#: src/ui/node_editor/property_panel.py:349
 msgid "Per-series selection"
 msgstr "逐条选择"
 
-#: src/ui/node_editor/property_panel.py:334
+#: src/ui/node_editor/property_panel.py:352
 msgid "Overlay"
 msgstr "叠加"
 
-#: src/ui/node_editor/property_panel.py:335
+#: src/ui/node_editor/property_panel.py:353
 msgid "Vertical offset"
 msgstr "垂直错位"
 
-#: src/ui/node_editor/property_panel.py:338
+#: src/ui/node_editor/property_panel.py:356
 msgid "Normalized length"
 msgstr "归一化长度"
 
-#: src/ui/node_editor/property_panel.py:339
+#: src/ui/node_editor/property_panel.py:357
 msgid "Original coordinates"
 msgstr "原始坐标"
 
-#: src/ui/node_editor/property_panel.py:342
+#: src/ui/node_editor/property_panel.py:360
 msgid "Separate channels"
 msgstr "通道独立"
 
-#: src/ui/node_editor/property_panel.py:343
+#: src/ui/node_editor/property_panel.py:361
 msgid "Merge channels"
 msgstr "合并通道"
 
-#: src/ui/node_editor/property_panel.py:344
-#: src/workflow/nodes/visualization.py:405
+#: src/ui/node_editor/property_panel.py:362
+#: src/workflow/nodes/visualization.py:462
 msgid "Selected channel"
 msgstr "选择通道"
 
-#: src/ui/node_editor/property_panel.py:347
-#: src/ui/node_editor/property_panel.py:353
-#: src/ui/node_editor/property_panel.py:358
+#: src/ui/node_editor/property_panel.py:365
+#: src/ui/node_editor/property_panel.py:371
+#: src/ui/node_editor/property_panel.py:376
 msgid "None"
 msgstr "无"
 
-#: src/ui/node_editor/property_panel.py:348
+#: src/ui/node_editor/property_panel.py:366
 msgid "Mean center"
 msgstr "去均值"
 
-#: src/ui/node_editor/property_panel.py:349
-#: src/ui/node_editor/property_panel.py:361
+#: src/ui/node_editor/property_panel.py:367
+#: src/ui/node_editor/property_panel.py:379
 msgid "Min-max"
 msgstr "最小—最大归一化"
 
-#: src/ui/node_editor/property_panel.py:350
+#: src/ui/node_editor/property_panel.py:368
 msgid "Z-score"
 msgstr "Z-score 标准化"
 
-#: src/ui/node_editor/property_panel.py:354
+#: src/ui/node_editor/property_panel.py:372
 #: src/ui/widgets/preview/feature_2d_preview.py:114
 msgid "Mean"
 msgstr "均值"
 
-#: src/ui/node_editor/property_panel.py:355
+#: src/ui/node_editor/property_panel.py:373
 msgid "Median"
 msgstr "中位数"
 
-#: src/ui/node_editor/property_panel.py:360
+#: src/ui/node_editor/property_panel.py:378
 msgid "Percentile interval"
 msgstr "分位区间"
 
-#: src/ui/node_editor/property_panel.py:432
+#: src/ui/node_editor/property_panel.py:382
+msgid "Sliding Leq"
+msgstr "滑动 Leq"
+
+#: src/ui/node_editor/property_panel.py:383
+msgid "Exponential time weighting"
+msgstr "指数时间计权"
+
+#: src/ui/node_editor/property_panel.py:386
+msgid "Fast (125 ms)"
+msgstr "Fast（125 ms）"
+
+#: src/ui/node_editor/property_panel.py:387
+msgid "Slow (1 s)"
+msgstr "Slow（1 s）"
+
+#: src/ui/node_editor/property_panel.py:390
+msgid "Narrowband"
+msgstr "窄带"
+
+#: src/ui/node_editor/property_panel.py:391
+msgid "Fractional octave bands"
+msgstr "分数倍频程"
+
+#: src/ui/node_editor/property_panel.py:394
+msgid "FFT"
+msgstr "FFT"
+
+#: src/ui/node_editor/property_panel.py:395
+msgid "Welch"
+msgstr "Welch"
+
+#: src/ui/node_editor/property_panel.py:398
+msgid "Strict"
+msgstr "严格"
+
+#: src/ui/node_editor/property_panel.py:399
+msgid "Fixed grid resampling"
+msgstr "固定网格重采样"
+
+#: src/ui/node_editor/property_panel.py:402
+msgid "Automatic"
+msgstr "自动"
+
+#: src/ui/node_editor/property_panel.py:403
+#: src/ui/node_editor/property_panel.py:407
+msgid "Linear"
+msgstr "线性"
+
+#: src/ui/node_editor/property_panel.py:404
+#: src/ui/node_editor/property_panel.py:408
+msgid "Logarithmic"
+msgstr "对数"
+
+#: src/ui/node_editor/property_panel.py:498
 msgid "Select file"
 msgstr "选择文件"
 
-#: src/ui/node_editor/property_panel.py:452
+#: src/ui/node_editor/property_panel.py:518
 msgid "Select folder"
 msgstr "选择文件夹"
 
-#: src/ui/node_editor/property_panel.py:474
+#: src/ui/node_editor/property_panel.py:540
 msgid "📥 Inputs:"
 msgstr "📥 输入："
 
-#: src/ui/node_editor/property_panel.py:489
+#: src/ui/node_editor/property_panel.py:555
 msgid "📤 Outputs:"
 msgstr "📤 输出："
 
@@ -2530,51 +2695,51 @@ msgstr "模型结构"
 msgid "OK"
 msgstr "确定"
 
-#: src/ui/views/preview_view.py:79
+#: src/ui/views/preview_view.py:81
 msgid "Select a node and run the workflow to preview data"
 msgstr "选择一个节点并运行工作流以预览数据"
 
-#: src/ui/views/preview_view.py:136
+#: src/ui/views/preview_view.py:139
 msgid "📊 Data Preview"
 msgstr "📊 数据预览"
 
-#: src/ui/views/preview_view.py:145 src/ui/views/preview_view.py:461
+#: src/ui/views/preview_view.py:148 src/ui/views/preview_view.py:476
 msgid "No node selected"
 msgstr "未选择节点"
 
-#: src/ui/views/preview_view.py:164
+#: src/ui/views/preview_view.py:167
 msgid "Item:"
 msgstr "条目："
 
-#: src/ui/views/preview_view.py:179
+#: src/ui/views/preview_view.py:182
 msgid "Output port:"
 msgstr "输出端口："
 
-#: src/ui/views/preview_view.py:190
+#: src/ui/views/preview_view.py:193
 msgid "🔄 Refresh"
 msgstr "🔄 刷新"
 
-#: src/ui/views/preview_view.py:219
+#: src/ui/views/preview_view.py:222
 #, python-brace-format
 msgid "Node: {name} ({id})"
 msgstr "节点：{name}（{id}）"
 
-#: src/ui/views/preview_view.py:245
+#: src/ui/views/preview_view.py:248
 #, python-brace-format
 msgid "Node: {name} (no data - run workflow first)"
 msgstr "节点：{name}（无数据 - 请先运行工作流）"
 
-#: src/ui/views/preview_view.py:354
+#: src/ui/views/preview_view.py:364
 #, python-brace-format
 msgid "Total: {total} item(s)"
 msgstr "总计：{total} 项"
 
-#: src/ui/views/preview_view.py:382
+#: src/ui/views/preview_view.py:394
 #, python-brace-format
 msgid "Unsupported type: {type}"
 msgstr "不支持的类型：{type}"
 
-#: src/ui/views/preview_view.py:392
+#: src/ui/views/preview_view.py:404
 msgid "Failed to set data"
 msgstr "设置数据失败"
 
@@ -2603,7 +2768,8 @@ msgstr "指标"
 #: src/ui/widgets/preview/feature_1d_preview.py:74
 #: src/ui/widgets/preview/metrics_preview.py:70
 #: src/ui/widgets/preview/multi_curve_preview.py:117
-#: src/ui/widgets/preview/multi_curve_preview.py:207
+#: src/workflow/nodes/visualization.py:331
+#: src/workflow/nodes/visualization.py:382
 msgid "Value"
 msgstr "数值"
 
@@ -2827,9 +2993,9 @@ msgstr "幅度"
 
 #: src/ui/widgets/waveform_widget.py:58 src/visualization/spectrogram.py:261
 #: src/visualization/waveform.py:64 src/visualization/waveform.py:114
-#: src/visualization/waveform.py:166 src/workflow/nodes/visualization.py:129
-#: src/workflow/nodes/visualization.py:134
-#: src/workflow/nodes/visualization.py:136
+#: src/visualization/waveform.py:166 src/workflow/nodes/visualization.py:138
+#: src/workflow/nodes/visualization.py:143
+#: src/workflow/nodes/visualization.py:145
 msgid "Time (s)"
 msgstr "时间（秒）"
 
@@ -2864,6 +3030,7 @@ msgid "Count"
 msgstr "数量"
 
 #: src/ui/widgets/preview/anomaly_result_preview.py:95
+#: src/ui/widgets/preview/curve_preview.py:71
 #: src/ui/widgets/preview/feature_1d_preview.py:85
 #: src/ui/widgets/preview/label_preview.py:105
 #: src/ui/widgets/preview/metrics_preview.py:75
@@ -2948,22 +3115,65 @@ msgstr "子类必须实现 set_data()"
 msgid "Subclasses must implement clear()"
 msgstr "子类必须实现 clear()"
 
-#: src/ui/widgets/preview/feature_1d_preview.py:43
-#: src/ui/widgets/preview/feature_1d_preview.py:57
-msgid "1D feature"
-msgstr "1D 特征"
+#: src/ui/widgets/preview/curve_preview.py:29
+#: src/ui/widgets/preview/curve_preview.py:41
+msgid "Physical curve"
+msgstr "物理曲线"
 
-#: src/ui/widgets/preview/feature_1d_preview.py:75
-#: src/workflow/nodes/visualization.py:130
-#: src/workflow/nodes/visualization.py:140
-#: src/workflow/nodes/visualization.py:142
-msgid "Index"
-msgstr "索引"
+#: src/ui/widgets/preview/curve_preview.py:47
+msgid "Channel:"
+msgstr "声道："
 
+#: src/ui/widgets/preview/curve_preview.py:76
 #: src/ui/widgets/preview/feature_1d_preview.py:99
 #: src/ui/widgets/preview/feature_2d_preview.py:130
 msgid "Statistics"
 msgstr "统计信息"
+
+#: src/ui/widgets/preview/curve_preview.py:129
+msgid "  Points: {count:,}\n"
+msgstr "  点数：{count:,}\n"
+
+#: src/ui/widgets/preview/curve_preview.py:130
+#, python-brace-format
+msgid "  Minimum: {value:.6f}\n"
+msgstr "  最小值：{value:.6f}\n"
+
+#: src/ui/widgets/preview/curve_preview.py:131
+#, python-brace-format
+msgid "  Maximum: {value:.6f}\n"
+msgstr "  最大值：{value:.6f}\n"
+
+#: src/ui/widgets/preview/curve_preview.py:132
+#: src/ui/widgets/preview/feature_1d_preview.py:191
+#: src/ui/widgets/preview/feature_2d_preview.py:268
+#, python-brace-format
+msgid "  Mean: {value:.6f}\n"
+msgstr "  均值：{value:.6f}\n"
+
+#: src/ui/widgets/preview/curve_preview.py:133
+#, python-brace-format
+msgid "  Standard deviation: {value:.6f}\n"
+msgstr "  标准差：{value:.6f}\n"
+
+#: src/ui/widgets/preview/curve_preview.py:134
+#: src/ui/widgets/preview/feature_1d_preview.py:193
+#, python-brace-format
+msgid "  Median: {value:.6f}"
+msgstr "  中位数：{value:.6f}"
+
+#: src/ui/widgets/preview/feature_1d_preview.py:43
+#: src/ui/widgets/preview/feature_1d_preview.py:57
+#: src/workflow/nodes/feature/acoustic.py:511
+msgid "1D feature"
+msgstr "1D 特征"
+
+#: src/ui/widgets/preview/feature_1d_preview.py:75
+#: src/workflow/nodes/visualization.py:139
+#: src/workflow/nodes/visualization.py:149
+#: src/workflow/nodes/visualization.py:151
+msgid "Index"
+msgstr "索引"
 
 #: src/ui/widgets/preview/feature_1d_preview.py:184
 #: src/ui/widgets/preview/feature_2d_preview.py:254
@@ -2986,21 +3196,10 @@ msgstr "  最小值：{value:.6f}\n"
 msgid "  Max: {value:.6f}\n"
 msgstr "  最大值：{value:.6f}\n"
 
-#: src/ui/widgets/preview/feature_1d_preview.py:191
-#: src/ui/widgets/preview/feature_2d_preview.py:268
-#, python-brace-format
-msgid "  Mean: {value:.6f}\n"
-msgstr "  均值：{value:.6f}\n"
-
 #: src/ui/widgets/preview/feature_1d_preview.py:192
 #, python-brace-format
 msgid "  Std: {value:.6f}\n"
 msgstr "  标准差：{value:.6f}\n"
-
-#: src/ui/widgets/preview/feature_1d_preview.py:193
-#, python-brace-format
-msgid "  Median: {value:.6f}"
-msgstr "  中位数：{value:.6f}"
 
 #: src/ui/widgets/preview/feature_2d_preview.py:43
 msgid "2D feature"
@@ -3186,7 +3385,7 @@ msgid "Compile status"
 msgstr "编译状态"
 
 #: src/ui/widgets/preview/multi_curve_preview.py:53
-#: src/workflow/nodes/visualization.py:367
+#: src/workflow/nodes/visualization.py:419
 msgid "Multi-curve viewer"
 msgstr "多曲线查看器"
 
@@ -3203,25 +3402,25 @@ msgstr "搜索数据系列..."
 msgid "MULTI_CURVE  curves={curves}"
 msgstr "多曲线  曲线数={curves}"
 
-#: src/ui/widgets/preview/multi_curve_preview.py:281
+#: src/ui/widgets/preview/multi_curve_preview.py:282
 msgid "Aggregate"
 msgstr "汇总"
 
-#: src/ui/widgets/preview/multi_curve_preview.py:309
+#: src/ui/widgets/preview/multi_curve_preview.py:310
 #, python-brace-format
 msgid "{visible} / {total} curves visible"
 msgstr "已显示 {visible} / {total} 条曲线"
 
-#: src/ui/widgets/preview/multi_curve_preview.py:314
+#: src/ui/widgets/preview/multi_curve_preview.py:315
 #, python-brace-format
 msgid "{total} curves"
 msgstr "{total} 条曲线"
 
-#: src/ui/widgets/preview/multi_curve_preview.py:317
+#: src/ui/widgets/preview/multi_curve_preview.py:318
 msgid "display downsampling active"
 msgstr "已启用显示降采样"
 
-#: src/ui/widgets/preview/multi_curve_preview.py:322
+#: src/ui/widgets/preview/multi_curve_preview.py:323
 #, python-brace-format
 msgid "{count} more warning(s)"
 msgstr "另有 {count} 条警告"
@@ -3337,6 +3536,34 @@ msgstr "右"
 msgid "Waveform envelope"
 msgstr "波形包络"
 
+#: src/workflow/curve.py:33
+msgid "Curve data must have shape (channels, points)"
+msgstr "曲线数据形状必须为（通道，点）"
+
+#: src/workflow/curve.py:35
+msgid "Curve coordinates must be one-dimensional"
+msgstr "曲线坐标必须是一维的"
+
+#: src/workflow/curve.py:37
+msgid "Curve coordinates must match the number of points"
+msgstr "曲线坐标数量必须与曲线点数一致"
+
+#: src/workflow/curve.py:39
+msgid "Curve data cannot be empty"
+msgstr "曲线数据不能为空"
+
+#: src/workflow/curve.py:41
+msgid "Curve coordinates must be finite"
+msgstr "曲线坐标必须是有限数值"
+
+#: src/workflow/curve.py:43
+msgid "Curve coordinates must be strictly increasing"
+msgstr "曲线坐标必须严格递增"
+
+#: src/workflow/curve.py:50
+msgid "Channel names must match the curve channel count"
+msgstr "通道名称数量必须与曲线通道数一致"
+
 #: src/workflow/engine.py:131 src/workflow/engine.py:143
 #: src/workflow/engine.py:226 src/workflow/engine.py:244
 #: src/workflow/engine.py:301
@@ -3416,7 +3643,7 @@ msgstr "AI / 模型"
 msgid "Output / Visualization"
 msgstr "输出 / 可视化"
 
-#: src/workflow/node_base.py:276
+#: src/workflow/node_base.py:283
 #, python-brace-format
 msgid "Input port '{name}' is not connected"
 msgstr "输入端口“{name}”未连接"
@@ -3496,7 +3723,7 @@ msgstr "判定数量必须与分数数量一致"
 msgid "Feature vectorizer"
 msgstr "特征向量化"
 
-#: src/workflow/nodes/anomaly.py:154
+#: src/workflow/nodes/anomaly.py:154 src/workflow/nodes/feature/acoustic.py:490
 msgid "Feature post-processing"
 msgstr "特征后处理"
 
@@ -3716,7 +3943,7 @@ msgstr "异常判定失败：{error}"
 msgid "Unsupported threshold strategy: {strategy}"
 msgstr "不支持的阈值策略：{strategy}"
 
-#: src/workflow/nodes/anomaly.py:587 src/workflow/nodes/visualization.py:369
+#: src/workflow/nodes/anomaly.py:587 src/workflow/nodes/visualization.py:421
 msgid "Result viewing"
 msgstr "结果查看"
 
@@ -4426,7 +4653,7 @@ msgstr "形状不一致：{count} 个不一致项"
 msgid "⚠️ Shape validation warning: {count} inconsistent items"
 msgstr "⚠️ 形状校验警告：{count} 个不一致项"
 
-#: src/workflow/nodes/data_source.py:77 src/workflow/nodes/feature/base.py:64
+#: src/workflow/nodes/data_source.py:77 src/workflow/nodes/feature/base.py:65
 #, python-brace-format
 msgid "Channel index {idx} out of range (total {channels} channels)"
 msgstr "通道索引 {idx} 超出范围（共 {channels} 个通道）"
@@ -5721,159 +5948,404 @@ msgstr "使用回归模型预测连续值"
 msgid "Predicted values"
 msgstr "预测值"
 
-#: src/workflow/nodes/visualization.py:53
+#: src/workflow/nodes/visualization.py:56
 msgid "Only real numeric line data is supported"
 msgstr "仅支持实数数值型线条数据"
 
-#: src/workflow/nodes/visualization.py:61
+#: src/workflow/nodes/visualization.py:64
 msgid "Empty curves cannot be displayed"
 msgstr "无法显示空曲线"
 
-#: src/workflow/nodes/visualization.py:65
+#: src/workflow/nodes/visualization.py:68
 msgid "A curve contains no finite values"
 msgstr "曲线中不包含有限值"
 
-#: src/workflow/nodes/visualization.py:84
+#: src/workflow/nodes/visualization.py:87
 #, python-brace-format
 msgid "Series {index}"
 msgstr "数据系列 {index}"
 
-#: src/workflow/nodes/visualization.py:112
+#: src/workflow/nodes/visualization.py:121
 #, python-brace-format
 msgid ""
 "Feature '{feature_type}' is two-dimensional map data and cannot be shown as "
 "a curve"
 msgstr "特征“{feature_type}”是二维图谱数据，无法作为曲线显示"
 
-#: src/workflow/nodes/visualization.py:120
+#: src/workflow/nodes/visualization.py:129
 #, python-brace-format
 msgid "Feature '{feature_type}' is not line-compatible"
 msgstr "特征“{feature_type}”无法转换为曲线"
 
-#: src/workflow/nodes/visualization.py:125
+#: src/workflow/nodes/visualization.py:134
 msgid "Frequency (Hz)"
 msgstr "频率（Hz）"
 
-#: src/workflow/nodes/visualization.py:127
+#: src/workflow/nodes/visualization.py:136
 msgid "Feature index"
 msgstr "特征索引"
 
-#: src/workflow/nodes/visualization.py:137
+#: src/workflow/nodes/visualization.py:146
 msgid "Audio data must have shape (samples,) or (channels, samples)"
 msgstr "音频数据形状必须为（采样点）或（通道，采样点）"
 
-#: src/workflow/nodes/visualization.py:143
+#: src/workflow/nodes/visualization.py:152
 msgid "Only one-dimensional lines or channel-by-line arrays are supported"
 msgstr "仅支持一维曲线或“通道×曲线”数组"
 
-#: src/workflow/nodes/visualization.py:239
-#: src/workflow/nodes/visualization.py:243
+#: src/workflow/nodes/visualization.py:158
+msgid "Curve coordinates do not match the curve values"
+msgstr "曲线坐标与曲线数值不匹配"
+
+#: src/workflow/nodes/visualization.py:254
+#: src/workflow/nodes/visualization.py:258
+#: src/workflow/nodes/feature/acoustic.py:39
 msgid "No curve data provided"
 msgstr "未提供曲线数据"
 
-#: src/workflow/nodes/visualization.py:262
+#: src/workflow/nodes/visualization.py:275
+msgid "Physical curve coordinates were preserved instead of normalized"
+msgstr "已保留曲线物理坐标，未执行归一化"
+
+#: src/workflow/nodes/visualization.py:281
 msgid "A data item contains no channels"
 msgstr "数据项中没有通道"
 
-#: src/workflow/nodes/visualization.py:267
+#: src/workflow/nodes/visualization.py:288
 msgid "Channels must have equal lengths before they can be merged"
 msgstr "合并通道前，各通道长度必须相同"
 
-#: src/workflow/nodes/visualization.py:276
+#: src/workflow/nodes/visualization.py:299
 #, python-brace-format
 msgid "Selected channel {channel} is unavailable for {name}"
 msgstr "{name} 中不存在所选通道 {channel}"
 
-#: src/workflow/nodes/visualization.py:289
+#: src/workflow/nodes/visualization.py:312
 #, python-brace-format
 msgid "Non-finite values were interpolated in {name}"
 msgstr "已对 {name} 中的非有限值进行插值"
 
-#: src/workflow/nodes/visualization.py:296
+#: src/workflow/nodes/visualization.py:322
 #, python-brace-format
 msgid "{name} · channel {channel}"
 msgstr "{name} · 通道 {channel}"
 
-#: src/workflow/nodes/visualization.py:304
+#: src/workflow/nodes/visualization.py:339
 msgid "No line-compatible data was found"
 msgstr "未找到可转换为曲线的数据"
 
-#: src/workflow/nodes/visualization.py:322
+#: src/workflow/nodes/visualization.py:357
 msgid "Normalized position (%)"
 msgstr "归一化位置（%）"
 
-#: src/workflow/nodes/visualization.py:325
+#: src/workflow/nodes/visualization.py:360
 msgid "Original coordinate"
 msgstr "原始坐标"
 
-#: src/workflow/nodes/visualization.py:341
+#: src/workflow/nodes/visualization.py:378
 msgid "Aggregate statistics require compatible horizontal coordinates"
 msgstr "汇总统计要求各曲线具有兼容的横轴坐标"
 
-#: src/workflow/nodes/visualization.py:372
+#: src/workflow/nodes/visualization.py:424
 msgid "Compare all line-compatible data in one interactive chart"
 msgstr "在一张交互式图表中比较所有可转换为曲线的数据"
 
-#: src/workflow/nodes/visualization.py:380
+#: src/workflow/nodes/visualization.py:432
 msgid "Line data"
 msgstr "线条数据"
 
-#: src/workflow/nodes/visualization.py:385
+#: src/workflow/nodes/visualization.py:437
 msgid "Interaction mode"
 msgstr "交互模式"
 
-#: src/workflow/nodes/visualization.py:390
+#: src/workflow/nodes/visualization.py:442
 msgid "Display mode"
 msgstr "展示方式"
 
-#: src/workflow/nodes/visualization.py:395
+#: src/workflow/nodes/visualization.py:447
 msgid "Horizontal alignment"
 msgstr "横轴对齐"
 
-#: src/workflow/nodes/visualization.py:400
+#: src/workflow/nodes/visualization.py:452
+msgid "Frequency axis"
+msgstr "频率轴"
+
+#: src/workflow/nodes/visualization.py:457
 msgid "Channel handling"
 msgstr "通道处理"
 
-#: src/workflow/nodes/visualization.py:411
+#: src/workflow/nodes/visualization.py:468
 msgid "Value transform"
 msgstr "数值变换"
 
-#: src/workflow/nodes/visualization.py:416
+#: src/workflow/nodes/visualization.py:473
 msgid "Aggregate curve"
 msgstr "汇总曲线"
 
-#: src/workflow/nodes/visualization.py:421
+#: src/workflow/nodes/visualization.py:478
 msgid "Variability band"
 msgstr "波动范围"
 
-#: src/workflow/nodes/visualization.py:426
+#: src/workflow/nodes/visualization.py:483
 msgid "Lower percentile"
 msgstr "下分位数"
 
-#: src/workflow/nodes/visualization.py:432
+#: src/workflow/nodes/visualization.py:489
 msgid "Upper percentile"
 msgstr "上分位数"
 
-#: src/workflow/nodes/visualization.py:438
+#: src/workflow/nodes/visualization.py:495
 msgid "Maximum points per curve"
 msgstr "每条曲线最大点数"
 
-#: src/workflow/nodes/visualization.py:444
+#: src/workflow/nodes/visualization.py:501
 msgid "Line opacity"
 msgstr "曲线透明度"
 
-#: src/workflow/nodes/visualization.py:450
+#: src/workflow/nodes/visualization.py:507
 msgid "Show legend"
 msgstr "显示图例"
 
-#: src/workflow/nodes/visualization.py:458
+#: src/workflow/nodes/visualization.py:515
 msgid "Lower percentile must be smaller than upper percentile"
 msgstr "下分位数必须小于上分位数"
 
-#: src/workflow/nodes/visualization.py:474
+#: src/workflow/nodes/visualization.py:531
 #, python-brace-format
 msgid "Multi-curve viewer ready: {count} curves"
 msgstr "多曲线查看器已就绪：{count} 条曲线"
+
+#: src/workflow/nodes/feature/acoustic.py:41
+msgid "Curve input must contain CurveData objects"
+msgstr "曲线输入必须包含 CurveData 对象"
+
+#: src/workflow/nodes/feature/acoustic.py:53
+msgid "Calibration factor (Pa/FS)"
+msgstr "校准系数（Pa/FS）"
+
+#: src/workflow/nodes/feature/acoustic.py:54
+msgid "Required pressure represented by digital full scale"
+msgstr "数字满量程所代表的声压，必填"
+
+#: src/workflow/nodes/feature/acoustic.py:61
+msgid "Reference pressure (μPa)"
+msgstr "参考声压（μPa）"
+
+#: src/workflow/nodes/feature/acoustic.py:69
+msgid "Frequency weighting"
+msgstr "频率计权"
+
+#: src/workflow/nodes/feature/acoustic.py:76
+msgid "Remove DC"
+msgstr "去除直流"
+
+#: src/workflow/nodes/feature/acoustic.py:82
+msgid "Sound-level floor (dB)"
+msgstr "声级下限（dB）"
+
+#: src/workflow/nodes/feature/acoustic.py:90
+msgid "Detect clipping"
+msgstr "检测削波"
+
+#: src/workflow/nodes/feature/acoustic.py:96
+msgid "Calibration factor must be entered as a positive Pa/FS value"
+msgstr "必须输入正的 Pa/FS 校准系数"
+
+#: src/workflow/nodes/feature/acoustic.py:138
+msgid "Time-varying total sound level"
+msgstr "时变总声压级"
+
+#: src/workflow/nodes/feature/acoustic.py:140
+#: src/workflow/nodes/feature/acoustic.py:278
+msgid "Acoustic analysis"
+msgstr "声学分析"
+
+#: src/workflow/nodes/feature/acoustic.py:143
+msgid "Calculate calibrated time-varying total sound pressure level"
+msgstr "计算经过校准的时变总声压级"
+
+#: src/workflow/nodes/feature/acoustic.py:148
+#: src/workflow/nodes/feature/acoustic.py:286
+msgid "Sound-level curve"
+msgstr "声压级曲线"
+
+#: src/workflow/nodes/feature/acoustic.py:156
+msgid "Calculation mode"
+msgstr "计算模式"
+
+#: src/workflow/nodes/feature/acoustic.py:163
+msgid "Integration time (s)"
+msgstr "积分时间（s）"
+
+#: src/workflow/nodes/feature/acoustic.py:172
+#: src/workflow/nodes/feature/acoustic.py:189
+msgid "Output step (s)"
+msgstr "输出步长（s）"
+
+#: src/workflow/nodes/feature/acoustic.py:181
+msgid "Time weighting"
+msgstr "时间计权"
+
+#: src/workflow/nodes/feature/acoustic.py:207
+#, python-brace-format
+msgid ""
+"Time-varying sound level ready: {count} record(s), {warnings} warning(s)"
+msgstr "时变声压级已就绪：{count} 条记录，{warnings} 条警告"
+
+#: src/workflow/nodes/feature/acoustic.py:260
+msgid "Time"
+msgstr "时间"
+
+#: src/workflow/nodes/feature/acoustic.py:262
+#: src/workflow/nodes/feature/acoustic.py:474
+msgid "Sound pressure level"
+msgstr "声压级"
+
+#: src/workflow/nodes/feature/acoustic.py:276
+msgid "Steady-state frequency sound level"
+msgstr "稳态频率声压级"
+
+#: src/workflow/nodes/feature/acoustic.py:281
+msgid ""
+"Calculate calibrated narrowband or fractional-octave sound pressure levels"
+msgstr "计算经过校准的窄带或分数倍频程声压级"
+
+#: src/workflow/nodes/feature/acoustic.py:294
+msgid "Analysis type"
+msgstr "分析类型"
+
+#: src/workflow/nodes/feature/acoustic.py:301
+msgid "Spectral estimator"
+msgstr "频谱估计方法"
+
+#: src/workflow/nodes/feature/acoustic.py:309
+#: src/workflow/nodes/feature/dim1d/fft.py:43
+msgid "FFT size"
+msgstr "FFT 大小"
+
+#: src/workflow/nodes/feature/acoustic.py:317
+msgid "Window"
+msgstr "窗函数"
+
+#: src/workflow/nodes/feature/acoustic.py:328
+msgid "Welch segment length"
+msgstr "Welch 分段长度"
+
+#: src/workflow/nodes/feature/acoustic.py:337
+msgid "Welch overlap (%)"
+msgstr "Welch 重叠率（%）"
+
+#: src/workflow/nodes/feature/acoustic.py:346
+msgid "Welch average"
+msgstr "Welch 平均方式"
+
+#: src/workflow/nodes/feature/acoustic.py:354
+msgid "Octave-band fraction"
+msgstr "倍频程分数"
+
+#: src/workflow/nodes/feature/acoustic.py:362
+msgid "Minimum frequency (Hz)"
+msgstr "最低频率（Hz）"
+
+#: src/workflow/nodes/feature/acoustic.py:370
+msgid "Maximum frequency (Hz)"
+msgstr "最高频率（Hz）"
+
+#: src/workflow/nodes/feature/acoustic.py:382
+msgid "Minimum frequency must be lower than maximum frequency"
+msgstr "最低频率必须小于最高频率"
+
+#: src/workflow/nodes/feature/acoustic.py:397
+#, python-brace-format
+msgid "Frequency sound level ready: {count} record(s), {warnings} warning(s)"
+msgstr "频率声压级已就绪：{count} 条记录，{warnings} 条警告"
+
+#: src/workflow/nodes/feature/acoustic.py:411
+msgid "Frequency range must overlap the audio Nyquist range"
+msgstr "频率范围必须与音频的奈奎斯特范围重叠"
+
+#: src/workflow/nodes/feature/acoustic.py:414
+#, python-brace-format
+msgid ""
+"Maximum frequency was limited to the Nyquist frequency ({frequency:.3f} Hz)"
+msgstr "最高频率已限制为奈奎斯特频率（{frequency:.3f} Hz）"
+
+#: src/workflow/nodes/feature/acoustic.py:472
+msgid "Frequency"
+msgstr "频率"
+
+#: src/workflow/nodes/feature/acoustic.py:488
+msgid "Curve to 1D feature"
+msgstr "曲线转一维特征"
+
+#: src/workflow/nodes/feature/acoustic.py:493
+msgid "Preserve complete aligned curves as AI-ready one-dimensional features"
+msgstr "将完整且已对齐的曲线保留为可供 AI 使用的一维特征"
+
+#: src/workflow/nodes/feature/acoustic.py:510
+msgid "Curve"
+msgstr "曲线"
+
+#: src/workflow/nodes/feature/acoustic.py:518
+msgid "Alignment mode"
+msgstr "对齐模式"
+
+#: src/workflow/nodes/feature/acoustic.py:525
+msgid "Target points"
+msgstr "目标点数"
+
+#: src/workflow/nodes/feature/acoustic.py:534
+msgid "Grid spacing"
+msgstr "网格间距"
+
+#: src/workflow/nodes/feature/acoustic.py:542
+msgid "Grid start (automatic when empty)"
+msgstr "网格起点（留空时自动）"
+
+#: src/workflow/nodes/feature/acoustic.py:550
+msgid "Grid end (automatic when empty)"
+msgstr "网格终点（留空时自动）"
+
+#: src/workflow/nodes/feature/acoustic.py:570
+#, python-brace-format
+msgid "Curve features ready: {count} sample(s), {points} points"
+msgstr "曲线特征已就绪：{count} 个样本，{points} 个点"
+
+#: src/workflow/nodes/feature/acoustic.py:582
+#, python-brace-format
+msgid "Curve sample {index} contains NaN or infinite values"
+msgstr "曲线样本 {index} 包含 NaN 或无穷值"
+
+#: src/workflow/nodes/feature/acoustic.py:586
+#, python-brace-format
+msgid "Curve sample {index} has a different channel count"
+msgstr "曲线样本 {index} 的通道数不同"
+
+#: src/workflow/nodes/feature/acoustic.py:593
+#, python-brace-format
+msgid "Curve sample {index} differs in '{field}'"
+msgstr "曲线样本 {index} 的“{field}”不同"
+
+#: src/workflow/nodes/feature/acoustic.py:617
+#, python-brace-format
+msgid "Curve sample {index} has different physical coordinates"
+msgstr "曲线样本 {index} 的物理坐标不同"
+
+#: src/workflow/nodes/feature/acoustic.py:624
+msgid "Fractional-octave curves cannot be resampled between band grids"
+msgstr "分数倍频程曲线不能在不同频带网格之间重采样"
+
+#: src/workflow/nodes/feature/acoustic.py:630
+msgid "The fixed curve grid must have a finite increasing range"
+msgstr "固定曲线网格必须具有有限且递增的范围"
+
+#: src/workflow/nodes/feature/acoustic.py:632
+msgid "The fixed curve grid must lie inside every source curve"
+msgstr "固定曲线网格必须位于每条源曲线的范围内"
+
+#: src/workflow/nodes/feature/acoustic.py:637
+msgid "Logarithmic curve grids require a positive start"
+msgstr "对数曲线网格要求起点为正数"
 
 #: src/workflow/nodes/feature/ai_embedding.py:38
 msgid "AI feature extraction"
@@ -6114,10 +6586,6 @@ msgstr "1D 特征"
 #: src/workflow/nodes/feature/dim1d/fft.py:33
 msgid "Extract global FFT spectrum"
 msgstr "提取全局 FFT 频谱"
-
-#: src/workflow/nodes/feature/dim1d/fft.py:43
-msgid "FFT size"
-msgstr "FFT 大小"
 
 #: src/workflow/nodes/feature/dim1d/fft.py:45
 msgid "auto: use signal length as FFT size"

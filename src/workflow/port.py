@@ -25,6 +25,7 @@ class DataType(Enum):
     FEATURE_2D = "feature_2d"     # 2D features (e.g., Mel spectrogram)
     FEATURE = "feature"           # Generic feature type (compatible with 1D and 2D)
     FEATURE_MATRIX = "feature_matrix"  # Fixed-length samples for classical ML
+    CURVE = "curve"                    # Physical-coordinate line data
     
     # Label data - supports single or list
     LABEL = "label"

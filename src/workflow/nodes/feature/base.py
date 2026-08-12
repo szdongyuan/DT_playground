@@ -5,8 +5,8 @@ Feature Extraction Base Module
 Shared data structures and utilities for feature extraction nodes.
 """
 
-from dataclasses import dataclass
-from typing import List, Union
+from dataclasses import dataclass, field
+from typing import Any, Dict, List, Union
 
 import numpy as np
 
@@ -29,6 +29,7 @@ class FeatureData:
     sample_rate: int        # 原始采样率
     hop_length: int         # 帧移
     source_file: str = ""   # 源文件路径
+    metadata: Dict[str, Any] = field(default_factory=dict)  # Optional feature provenance
     
     @property
     def shape(self):

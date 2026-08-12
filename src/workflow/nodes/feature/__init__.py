@@ -35,6 +35,11 @@ from .dim2d import (
 # Import AI feature nodes
 from .ai_embedding import AIFeatureExtractionNode
 from .grad_cam import GradCAMNode
+from .acoustic import (
+    CurveToFeatureNode,
+    SteadyStateFrequencySoundLevelNode,
+    TimeVaryingSoundLevelNode,
+)
 
 __all__ = [
     # Base
@@ -54,4 +59,7 @@ __all__ = [
     # AI node
     'AIFeatureExtractionNode',
     'GradCAMNode',
+    'CurveToFeatureNode',
+    'SteadyStateFrequencySoundLevelNode',
+    'TimeVaryingSoundLevelNode',
 ]

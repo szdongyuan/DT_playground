@@ -25,6 +25,7 @@ from ..widgets.preview import (
     BasePreviewWidget,
     AnomalyResultPreviewWidget,
     AudioPreviewWidget,
+    CurvePreviewWidget,
     Feature1DPreviewWidget,
     Feature2DPreviewWidget,
     LabelPreviewWidget,
@@ -32,6 +33,7 @@ from ..widgets.preview import (
     ModelPreviewWidget,
     MultiCurvePreviewWidget,
 )
+from ...workflow.nodes.visualization import MultiCurvePreviewData
 
 
 logger = logging.getLogger(__name__)
@@ -94,6 +96,7 @@ class PreviewView(QWidget):
             ('multi_curve', MultiCurvePreviewWidget),
             ('anomaly_result', AnomalyResultPreviewWidget),
             ('audio', AudioPreviewWidget),
+            ('curve', CurvePreviewWidget),
             ('feature_1d', Feature1DPreviewWidget),
             ('feature_2d', Feature2DPreviewWidget),
             ('label', LabelPreviewWidget),
@@ -229,7 +232,7 @@ class PreviewView(QWidget):
 
         preview_only_data = (
             self._port_combo.count() == 1
-            and MultiCurvePreviewWidget.can_display(self._port_combo.itemData(0))
+            and isinstance(self._port_combo.itemData(0), MultiCurvePreviewData)
         )
         self._port_label.setVisible(not preview_only_data)
         self._port_combo.setVisible(not preview_only_data)
@@ -287,6 +290,13 @@ class PreviewView(QWidget):
         
         if data is None:
             self._clear_display()
+            return
+
+        if MultiCurvePreviewWidget.can_display(data):
+            self._current_data_list = []
+            self._item_label.hide()
+            self._item_combo.hide()
+            self._display_single_item(data)
             return
         
         # 处理列表数据
@@ -359,6 +369,8 @@ class PreviewView(QWidget):
             # AudioData 有 file_path 属性
             name = os.path.basename(item.file_path)
             return f"[{index}] {name}"
+        elif hasattr(item, 'source_file') and item.source_file:
+            return f"[{index}] {os.path.basename(item.source_file)}"
         elif hasattr(item, 'feature_type'):
             # FeatureData
             return f"[{index}] {item.feature_type}"
@@ -406,6 +418,9 @@ class PreviewView(QWidget):
         # 0. 检查是否是 Keras 模型
         if ModelPreviewWidget.can_display(data):
             return self._preview_widgets.get('model')
+
+        if CurvePreviewWidget.can_display(data):
+            return self._preview_widgets.get('curve')
         
         # 1. 检查是否是 FeatureData
         if hasattr(data, 'data') and hasattr(data, 'feature_type'):
