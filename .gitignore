@@ -36,6 +36,7 @@ scripts/
 docs/*.xlsx
 docs/*.pdf
 docs/*.docx
+/docs/plans/
 
 # 工作流文件
 workflows/*.json
