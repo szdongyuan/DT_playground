@@ -11,6 +11,7 @@ import sys
 from typing import Any, Dict, Optional
 
 from PySide6.QtCore import Qt, Signal
+from PySide6.QtGui import QDoubleValidator
 from PySide6.QtWidgets import (
     QCheckBox, QComboBox, QDoubleSpinBox, QFileDialog,
     QFormLayout, QFrame, QGroupBox, QHBoxLayout, QLabel,
@@ -231,6 +232,23 @@ class PropertyPanel(QWidget):
                 lambda v, pn=param.name: self._on_param_changed(pn, v)
             )
         
+        elif param.param_type == "float" and param.default_value is None:
+            widget = QLineEdit()
+            validator = QDoubleValidator(widget)
+            validator.setNotation(QDoubleValidator.Notation.ScientificNotation)
+            validator.setDecimals(12)
+            validator.setRange(
+                float(param.min_value) if param.min_value is not None else -1.0e300,
+                float(param.max_value) if param.max_value is not None else 1.0e300,
+                12,
+            )
+            widget.setValidator(validator)
+            widget.setPlaceholderText(tr_("Required"))
+            widget.setText("" if value is None else format(float(value), ".12g"))
+            widget.editingFinished.connect(
+                lambda pn=param.name, w=widget: self._commit_nullable_float(pn, w)
+            )
+
         elif param.param_type == "float":
             widget = QDoubleSpinBox()
             widget.setRange(
@@ -360,6 +378,35 @@ class PropertyPanel(QWidget):
                 "percentile": tr_("Percentile interval"),
                 "minmax": tr_("Min-max"),
             },
+            "calculation_mode": {
+                "sliding_leq": tr_("Sliding Leq"),
+                "exponential": tr_("Exponential time weighting"),
+            },
+            "time_weighting": {
+                "fast": tr_("Fast (125 ms)"),
+                "slow": tr_("Slow (1 s)"),
+            },
+            "analysis_type": {
+                "narrowband": tr_("Narrowband"),
+                "octave": tr_("Fractional octave bands"),
+            },
+            "spectral_estimator": {
+                "fft": tr_("FFT"),
+                "welch": tr_("Welch"),
+            },
+            "alignment_mode": {
+                "strict": tr_("Strict"),
+                "fixed_grid": tr_("Fixed grid resampling"),
+            },
+            "frequency_axis": {
+                "auto": tr_("Automatic"),
+                "linear": tr_("Linear"),
+                "log": tr_("Logarithmic"),
+            },
+            "grid_spacing": {
+                "linear": tr_("Linear"),
+                "log": tr_("Logarithmic"),
+            },
         }
         if param.name in viewer_choices:
             return viewer_choices[param.name].get(choice, str(choice))
@@ -369,6 +416,15 @@ class PropertyPanel(QWidget):
         """Refresh UI state for parameter dependencies."""
         if not self._current_node:
             return
+
+        for name in self._current_node.parameters:
+            visible = self._current_node.is_parameter_active(name)
+            widget = self._widgets.get(name)
+            label = self._labels.get(name)
+            if widget:
+                widget.setVisible(visible)
+            if label:
+                label.setVisible(visible)
 
         if self._current_node.node_type == "multi_curve_viewer":
             selected_visible = self._current_node.get_parameter("channel_mode") == "selected"
@@ -405,6 +461,16 @@ class PropertyPanel(QWidget):
             selection_widget.setVisible(selection_enabled)
         if selection_label:
             selection_label.setVisible(selection_enabled)
+
+    def _commit_nullable_float(self, param_name: str, widget: QLineEdit):
+        """Commit a required floating-point field that may start unset."""
+        text = widget.text().strip()
+        try:
+            value = None if not text else float(text)
+        except ValueError:
+            logger.warning("Invalid floating-point text for parameter %s", param_name)
+            return
+        self._on_param_changed(param_name, value)
     
     def _on_param_changed(self, param_name: str, value: Any):
         """参数值改变回调"""

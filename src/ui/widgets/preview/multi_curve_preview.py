@@ -190,6 +190,7 @@ class MultiCurvePreviewWidget(BasePreviewWidget):
         data = self._current_data
         plot_item = self._plot_widget.getPlotItem()
         plot_item.clear()
+        plot_item.setLogMode(x=data.x_scale == "log", y=False)
         if plot_item.legend is not None:
             plot_item.legend.scene().removeItem(plot_item.legend)
             plot_item.legend = None
@@ -204,7 +205,7 @@ class MultiCurvePreviewWidget(BasePreviewWidget):
 
         self._draw_statistics(plot_item)
         plot_item.setLabel("bottom", data.x_label)
-        plot_item.setLabel("left", tr_("Value"))
+        plot_item.setLabel("left", data.y_label)
         self._update_status(len(data.series))
 
     def _draw_selectable_curves(self, plot_item: Any, offset_step: float):

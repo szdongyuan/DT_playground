@@ -68,7 +68,7 @@ def test_palette_contains_every_visible_node_once(qapp):
         for category in NodeCategory
         for node_class in get_nodes_by_category(category)
     ]
-    assert len(actual_types) == 56
+    assert len(actual_types) == 59
     assert len(actual_types) == len(set(actual_types))
     assert set(actual_types) == set(expected_types)
 
@@ -132,26 +132,31 @@ def test_feature_groups_follow_approved_task_order(qapp):
     category = _find_category(palette, NodeCategory.FEATURE)
 
     assert [category.child(index).text(0) for index in range(category.childCount())] == [
+        f"📁 {tr_('Acoustic analysis')}",
         f"📁 {tr_('1D features')}",
         f"📁 {tr_('2D features')}",
         f"📁 {tr_('AI features')}",
         f"📁 {tr_('Feature post-processing')}",
     ]
     assert _node_types(category.child(0)) == [
+        "time_varying_sound_level",
+        "steady_state_frequency_sound_level",
+    ]
+    assert _node_types(category.child(1)) == [
         "fft",
         "statistics",
         "pitch",
         "spectral_flatness",
     ]
-    assert _node_types(category.child(1)) == [
+    assert _node_types(category.child(2)) == [
         "mel_spectrogram",
         "stft",
         "mfcc",
         "cqt",
         "spectral_contrast",
     ]
-    assert _node_types(category.child(2)) == ["ai_feature_extraction"]
-    assert _node_types(category.child(3)) == ["feature_vectorizer"]
+    assert _node_types(category.child(3)) == ["ai_feature_extraction"]
+    assert _node_types(category.child(4)) == ["feature_vectorizer", "curve_to_feature"]
 
 
 def test_search_matches_only_node_name_and_restores_expansion(qapp):

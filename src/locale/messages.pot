@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-11 17:37+0800\n"
+"POT-Creation-Date: 2026-08-12 12:08+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -149,6 +149,111 @@ msgstr ""
 
 #: src/app.py:597
 msgid "Please check the latest log under the logs directory."
+msgstr ""
+
+#: src/audio/acoustics.py:26
+msgid "Audio data must have shape (channels, samples)"
+msgstr ""
+
+#: src/audio/acoustics.py:28
+msgid "Audio data contains NaN or infinite values"
+msgstr ""
+
+#: src/audio/acoustics.py:30
+msgid "Calibration factor must be a positive finite Pa/FS value"
+msgstr ""
+
+#: src/audio/acoustics.py:52
+#, python-brace-format
+msgid "Channel {channel} may be digitally clipped ({count} full-scale samples)"
+msgstr ""
+
+#: src/audio/acoustics.py:64
+msgid "A/C weighting requires a sample rate above 2000 Hz"
+msgstr ""
+
+#: src/audio/acoustics.py:82
+#, python-brace-format
+msgid "Unsupported frequency weighting: {weighting}"
+msgstr ""
+
+#: src/audio/acoustics.py:96
+msgid "Failed to normalize the frequency-weighting filter"
+msgstr ""
+
+#: src/audio/acoustics.py:108 src/workflow/nodes/feature/acoustic.py:105
+msgid "Sample rate must be positive"
+msgstr ""
+
+#: src/audio/acoustics.py:113
+msgid "Frequency weighting must be Z, A, or C"
+msgstr ""
+
+#: src/audio/acoustics.py:125
+msgid "Reference pressure must be positive and finite"
+msgstr ""
+
+#: src/audio/acoustics.py:127
+msgid "Sound-level floor must be finite"
+msgstr ""
+
+#: src/audio/acoustics.py:129
+msgid "Sound energy contains NaN or infinite values"
+msgstr ""
+
+#: src/audio/acoustics.py:134
+msgid "Sound energy cannot be negative"
+msgstr ""
+
+#: src/audio/acoustics.py:151
+msgid "Integration time and output step must be positive"
+msgstr ""
+
+#: src/audio/acoustics.py:155
+msgid "Audio is shorter than the Leq integration window"
+msgstr ""
+
+#: src/audio/acoustics.py:179
+msgid "Time constant and output step must be positive"
+msgstr ""
+
+#: src/audio/acoustics.py:212
+msgid "FFT size must cover the complete audio record"
+msgstr ""
+
+#: src/audio/acoustics.py:227
+msgid "Welch segment length must be between 2 and the audio length"
+msgstr ""
+
+#: src/audio/acoustics.py:229
+msgid "Welch overlap must be in the range [0, 100)"
+msgstr ""
+
+#: src/audio/acoustics.py:258 src/audio/acoustics.py:302
+msgid "The spectrum must contain at least two frequency bins"
+msgstr ""
+
+#: src/audio/acoustics.py:261
+msgid "The requested frequency range contains no spectrum bins"
+msgstr ""
+
+#: src/audio/acoustics.py:274
+msgid "Octave-band fraction must be 1, 3, 6, or 12"
+msgstr ""
+
+#: src/audio/acoustics.py:287
+msgid "The requested range contains no fractional-octave bands"
+msgstr ""
+
+#: src/audio/acoustics.py:314
+msgid "No complete fractional-octave bands fit below Nyquist"
+msgstr ""
+
+#: src/audio/acoustics.py:321
+#, python-brace-format
+msgid ""
+"Frequency resolution is insufficient for the lowest octave band; use a Welch "
+"segment length of at least {length}"
 msgstr ""
 
 #: src/audio/features.py:37 src/ui/widgets/spectrogram_widget.py:53
@@ -463,42 +568,42 @@ msgstr ""
 msgid "Graph contains cyclic dependencies"
 msgstr ""
 
-#: src/core/parameter.py:66
+#: src/core/parameter.py:67
 #, python-brace-format
 msgid "Parameter '{name}' is required"
 msgstr ""
 
-#: src/core/parameter.py:76
+#: src/core/parameter.py:77
 #, python-brace-format
 msgid "Parameter '{name}' must be an integer"
 msgstr ""
 
-#: src/core/parameter.py:80 src/core/parameter.py:96
+#: src/core/parameter.py:81 src/core/parameter.py:97
 #, python-brace-format
 msgid "Parameter '{name}' must be >= {min_value}"
 msgstr ""
 
-#: src/core/parameter.py:85 src/core/parameter.py:101
+#: src/core/parameter.py:86 src/core/parameter.py:102
 #, python-brace-format
 msgid "Parameter '{name}' must be <= {max_value}"
 msgstr ""
 
-#: src/core/parameter.py:92
+#: src/core/parameter.py:93
 #, python-brace-format
 msgid "Parameter '{name}' must be a number"
 msgstr ""
 
-#: src/core/parameter.py:108
+#: src/core/parameter.py:109
 #, python-brace-format
 msgid "Parameter '{name}' must be a boolean"
 msgstr ""
 
-#: src/core/parameter.py:114
+#: src/core/parameter.py:115
 #, python-brace-format
 msgid "Parameter '{name}' must be one of {choices}"
 msgstr ""
 
-#: src/core/parameter.py:121
+#: src/core/parameter.py:122
 #, python-brace-format
 msgid "Parameter '{name}' must be a string"
 msgstr ""
@@ -1340,7 +1445,7 @@ msgid "Applies additive Gaussian noise"
 msgstr ""
 
 #: src/model_builder/layers/regularization_layers.py:103
-#: src/ui/node_editor/property_panel.py:359
+#: src/ui/node_editor/property_panel.py:377
 msgid "Standard deviation"
 msgstr ""
 
@@ -1824,6 +1929,8 @@ msgstr ""
 #: src/workflow/nodes/preprocessing.py:770
 #: src/workflow/nodes/preprocessing.py:1138
 #: src/workflow/nodes/preprocessing.py:1139
+#: src/workflow/nodes/feature/acoustic.py:147
+#: src/workflow/nodes/feature/acoustic.py:285
 #: src/workflow/nodes/feature/dim1d/fft.py:37
 #: src/workflow/nodes/feature/dim1d/pitch.py:38
 #: src/workflow/nodes/feature/dim1d/spectral_flatness.py:40
@@ -2108,12 +2215,12 @@ msgid "Optional, for identifying the layer"
 msgstr ""
 
 #: src/ui/model_editor/layer_property_panel.py:149
-#: src/ui/node_editor/property_panel.py:125
+#: src/ui/node_editor/property_panel.py:126
 msgid "Type:"
 msgstr ""
 
 #: src/ui/model_editor/layer_property_panel.py:161
-#: src/ui/node_editor/property_panel.py:132
+#: src/ui/node_editor/property_panel.py:133
 msgid "Parameters"
 msgstr ""
 
@@ -2204,130 +2311,188 @@ msgstr ""
 msgid "No matching nodes"
 msgstr ""
 
-#: src/ui/node_editor/property_panel.py:81
-#: src/ui/node_editor/property_panel.py:151
+#: src/ui/node_editor/property_panel.py:82
+#: src/ui/node_editor/property_panel.py:152
 msgid "Properties"
 msgstr ""
 
-#: src/ui/node_editor/property_panel.py:114
+#: src/ui/node_editor/property_panel.py:115
 msgid "Node Info"
 msgstr ""
 
-#: src/ui/node_editor/property_panel.py:124
+#: src/ui/node_editor/property_panel.py:125
 msgid "Name:"
 msgstr ""
 
-#: src/ui/node_editor/property_panel.py:126
+#: src/ui/node_editor/property_panel.py:127
 msgid "Category:"
 msgstr ""
 
-#: src/ui/node_editor/property_panel.py:127
+#: src/ui/node_editor/property_panel.py:128
 msgid "Description:"
 msgstr ""
 
-#: src/ui/node_editor/property_panel.py:138
+#: src/ui/node_editor/property_panel.py:139
 msgid "Ports"
 msgstr ""
 
-#: src/ui/node_editor/property_panel.py:175
+#: src/ui/node_editor/property_panel.py:176
 #, python-brace-format
 msgid "Properties - {name}"
 msgstr ""
 
-#: src/ui/node_editor/property_panel.py:183
+#: src/ui/node_editor/property_panel.py:184
 msgid "No description"
 msgstr ""
 
-#: src/ui/node_editor/property_panel.py:324
-msgid "First N in order"
-msgstr ""
-
-#: src/ui/node_editor/property_panel.py:325
-msgid "Random N"
-msgstr ""
-
-#: src/ui/node_editor/property_panel.py:330
-msgid "High performance"
-msgstr ""
-
-#: src/ui/node_editor/property_panel.py:331
-msgid "Per-series selection"
-msgstr ""
-
-#: src/ui/node_editor/property_panel.py:334
-msgid "Overlay"
-msgstr ""
-
-#: src/ui/node_editor/property_panel.py:335
-msgid "Vertical offset"
-msgstr ""
-
-#: src/ui/node_editor/property_panel.py:338
-msgid "Normalized length"
-msgstr ""
-
-#: src/ui/node_editor/property_panel.py:339
-msgid "Original coordinates"
+#: src/ui/node_editor/property_panel.py:246
+msgid "Required"
 msgstr ""
 
 #: src/ui/node_editor/property_panel.py:342
-msgid "Separate channels"
+msgid "First N in order"
 msgstr ""
 
 #: src/ui/node_editor/property_panel.py:343
-msgid "Merge channels"
-msgstr ""
-
-#: src/ui/node_editor/property_panel.py:344
-#: src/workflow/nodes/visualization.py:405
-msgid "Selected channel"
-msgstr ""
-
-#: src/ui/node_editor/property_panel.py:347
-#: src/ui/node_editor/property_panel.py:353
-#: src/ui/node_editor/property_panel.py:358
-msgid "None"
+msgid "Random N"
 msgstr ""
 
 #: src/ui/node_editor/property_panel.py:348
-msgid "Mean center"
+msgid "High performance"
 msgstr ""
 
 #: src/ui/node_editor/property_panel.py:349
+msgid "Per-series selection"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:352
+msgid "Overlay"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:353
+msgid "Vertical offset"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:356
+msgid "Normalized length"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:357
+msgid "Original coordinates"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:360
+msgid "Separate channels"
+msgstr ""
+
 #: src/ui/node_editor/property_panel.py:361
+msgid "Merge channels"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:362
+#: src/workflow/nodes/visualization.py:462
+msgid "Selected channel"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:365
+#: src/ui/node_editor/property_panel.py:371
+#: src/ui/node_editor/property_panel.py:376
+msgid "None"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:366
+msgid "Mean center"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:367
+#: src/ui/node_editor/property_panel.py:379
 msgid "Min-max"
 msgstr ""
 
-#: src/ui/node_editor/property_panel.py:350
+#: src/ui/node_editor/property_panel.py:368
 msgid "Z-score"
 msgstr ""
 
-#: src/ui/node_editor/property_panel.py:354
+#: src/ui/node_editor/property_panel.py:372
 #: src/ui/widgets/preview/feature_2d_preview.py:114
 msgid "Mean"
 msgstr ""
 
-#: src/ui/node_editor/property_panel.py:355
+#: src/ui/node_editor/property_panel.py:373
 msgid "Median"
 msgstr ""
 
-#: src/ui/node_editor/property_panel.py:360
+#: src/ui/node_editor/property_panel.py:378
 msgid "Percentile interval"
 msgstr ""
 
-#: src/ui/node_editor/property_panel.py:432
+#: src/ui/node_editor/property_panel.py:382
+msgid "Sliding Leq"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:383
+msgid "Exponential time weighting"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:386
+msgid "Fast (125 ms)"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:387
+msgid "Slow (1 s)"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:390
+msgid "Narrowband"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:391
+msgid "Fractional octave bands"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:394
+msgid "FFT"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:395
+msgid "Welch"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:398
+msgid "Strict"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:399
+msgid "Fixed grid resampling"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:402
+msgid "Automatic"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:403
+#: src/ui/node_editor/property_panel.py:407
+msgid "Linear"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:404
+#: src/ui/node_editor/property_panel.py:408
+msgid "Logarithmic"
+msgstr ""
+
+#: src/ui/node_editor/property_panel.py:498
 msgid "Select file"
 msgstr ""
 
-#: src/ui/node_editor/property_panel.py:452
+#: src/ui/node_editor/property_panel.py:518
 msgid "Select folder"
 msgstr ""
 
-#: src/ui/node_editor/property_panel.py:474
+#: src/ui/node_editor/property_panel.py:540
 msgid "📥 Inputs:"
 msgstr ""
 
-#: src/ui/node_editor/property_panel.py:489
+#: src/ui/node_editor/property_panel.py:555
 msgid "📤 Outputs:"
 msgstr ""
 
@@ -2486,51 +2651,51 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#: src/ui/views/preview_view.py:79
+#: src/ui/views/preview_view.py:81
 msgid "Select a node and run the workflow to preview data"
 msgstr ""
 
-#: src/ui/views/preview_view.py:136
+#: src/ui/views/preview_view.py:139
 msgid "📊 Data Preview"
 msgstr ""
 
-#: src/ui/views/preview_view.py:145 src/ui/views/preview_view.py:461
+#: src/ui/views/preview_view.py:148 src/ui/views/preview_view.py:476
 msgid "No node selected"
 msgstr ""
 
-#: src/ui/views/preview_view.py:164
+#: src/ui/views/preview_view.py:167
 msgid "Item:"
 msgstr ""
 
-#: src/ui/views/preview_view.py:179
+#: src/ui/views/preview_view.py:182
 msgid "Output port:"
 msgstr ""
 
-#: src/ui/views/preview_view.py:190
+#: src/ui/views/preview_view.py:193
 msgid "🔄 Refresh"
 msgstr ""
 
-#: src/ui/views/preview_view.py:219
+#: src/ui/views/preview_view.py:222
 #, python-brace-format
 msgid "Node: {name} ({id})"
 msgstr ""
 
-#: src/ui/views/preview_view.py:245
+#: src/ui/views/preview_view.py:248
 #, python-brace-format
 msgid "Node: {name} (no data - run workflow first)"
 msgstr ""
 
-#: src/ui/views/preview_view.py:354
+#: src/ui/views/preview_view.py:364
 #, python-brace-format
 msgid "Total: {total} item(s)"
 msgstr ""
 
-#: src/ui/views/preview_view.py:382
+#: src/ui/views/preview_view.py:394
 #, python-brace-format
 msgid "Unsupported type: {type}"
 msgstr ""
 
-#: src/ui/views/preview_view.py:392
+#: src/ui/views/preview_view.py:404
 msgid "Failed to set data"
 msgstr ""
 
@@ -2559,7 +2724,8 @@ msgstr ""
 #: src/ui/widgets/preview/feature_1d_preview.py:74
 #: src/ui/widgets/preview/metrics_preview.py:70
 #: src/ui/widgets/preview/multi_curve_preview.py:117
-#: src/ui/widgets/preview/multi_curve_preview.py:207
+#: src/workflow/nodes/visualization.py:331
+#: src/workflow/nodes/visualization.py:382
 msgid "Value"
 msgstr ""
 
@@ -2781,9 +2947,9 @@ msgstr ""
 
 #: src/ui/widgets/waveform_widget.py:58 src/visualization/spectrogram.py:261
 #: src/visualization/waveform.py:64 src/visualization/waveform.py:114
-#: src/visualization/waveform.py:166 src/workflow/nodes/visualization.py:129
-#: src/workflow/nodes/visualization.py:134
-#: src/workflow/nodes/visualization.py:136
+#: src/visualization/waveform.py:166 src/workflow/nodes/visualization.py:138
+#: src/workflow/nodes/visualization.py:143
+#: src/workflow/nodes/visualization.py:145
 msgid "Time (s)"
 msgstr ""
 
@@ -2818,6 +2984,7 @@ msgid "Count"
 msgstr ""
 
 #: src/ui/widgets/preview/anomaly_result_preview.py:95
+#: src/ui/widgets/preview/curve_preview.py:71
 #: src/ui/widgets/preview/feature_1d_preview.py:85
 #: src/ui/widgets/preview/label_preview.py:105
 #: src/ui/widgets/preview/metrics_preview.py:75
@@ -2896,21 +3063,64 @@ msgstr ""
 msgid "Subclasses must implement clear()"
 msgstr ""
 
+#: src/ui/widgets/preview/curve_preview.py:29
+#: src/ui/widgets/preview/curve_preview.py:41
+msgid "Physical curve"
+msgstr ""
+
+#: src/ui/widgets/preview/curve_preview.py:47
+msgid "Channel:"
+msgstr ""
+
+#: src/ui/widgets/preview/curve_preview.py:76
+#: src/ui/widgets/preview/feature_1d_preview.py:99
+#: src/ui/widgets/preview/feature_2d_preview.py:130
+msgid "Statistics"
+msgstr ""
+
+#: src/ui/widgets/preview/curve_preview.py:129
+msgid "  Points: {count:,}\n"
+msgstr ""
+
+#: src/ui/widgets/preview/curve_preview.py:130
+#, python-brace-format
+msgid "  Minimum: {value:.6f}\n"
+msgstr ""
+
+#: src/ui/widgets/preview/curve_preview.py:131
+#, python-brace-format
+msgid "  Maximum: {value:.6f}\n"
+msgstr ""
+
+#: src/ui/widgets/preview/curve_preview.py:132
+#: src/ui/widgets/preview/feature_1d_preview.py:191
+#: src/ui/widgets/preview/feature_2d_preview.py:268
+#, python-brace-format
+msgid "  Mean: {value:.6f}\n"
+msgstr ""
+
+#: src/ui/widgets/preview/curve_preview.py:133
+#, python-brace-format
+msgid "  Standard deviation: {value:.6f}\n"
+msgstr ""
+
+#: src/ui/widgets/preview/curve_preview.py:134
+#: src/ui/widgets/preview/feature_1d_preview.py:193
+#, python-brace-format
+msgid "  Median: {value:.6f}"
+msgstr ""
+
 #: src/ui/widgets/preview/feature_1d_preview.py:43
 #: src/ui/widgets/preview/feature_1d_preview.py:57
+#: src/workflow/nodes/feature/acoustic.py:511
 msgid "1D feature"
 msgstr ""
 
 #: src/ui/widgets/preview/feature_1d_preview.py:75
-#: src/workflow/nodes/visualization.py:130
-#: src/workflow/nodes/visualization.py:140
-#: src/workflow/nodes/visualization.py:142
+#: src/workflow/nodes/visualization.py:139
+#: src/workflow/nodes/visualization.py:149
+#: src/workflow/nodes/visualization.py:151
 msgid "Index"
-msgstr ""
-
-#: src/ui/widgets/preview/feature_1d_preview.py:99
-#: src/ui/widgets/preview/feature_2d_preview.py:130
-msgid "Statistics"
 msgstr ""
 
 #: src/ui/widgets/preview/feature_1d_preview.py:184
@@ -2934,20 +3144,9 @@ msgstr ""
 msgid "  Max: {value:.6f}\n"
 msgstr ""
 
-#: src/ui/widgets/preview/feature_1d_preview.py:191
-#: src/ui/widgets/preview/feature_2d_preview.py:268
-#, python-brace-format
-msgid "  Mean: {value:.6f}\n"
-msgstr ""
-
 #: src/ui/widgets/preview/feature_1d_preview.py:192
 #, python-brace-format
 msgid "  Std: {value:.6f}\n"
-msgstr ""
-
-#: src/ui/widgets/preview/feature_1d_preview.py:193
-#, python-brace-format
-msgid "  Median: {value:.6f}"
 msgstr ""
 
 #: src/ui/widgets/preview/feature_2d_preview.py:43
@@ -3134,7 +3333,7 @@ msgid "Compile status"
 msgstr ""
 
 #: src/ui/widgets/preview/multi_curve_preview.py:53
-#: src/workflow/nodes/visualization.py:367
+#: src/workflow/nodes/visualization.py:419
 msgid "Multi-curve viewer"
 msgstr ""
 
@@ -3151,25 +3350,25 @@ msgstr ""
 msgid "MULTI_CURVE  curves={curves}"
 msgstr ""
 
-#: src/ui/widgets/preview/multi_curve_preview.py:281
+#: src/ui/widgets/preview/multi_curve_preview.py:282
 msgid "Aggregate"
 msgstr ""
 
-#: src/ui/widgets/preview/multi_curve_preview.py:309
+#: src/ui/widgets/preview/multi_curve_preview.py:310
 #, python-brace-format
 msgid "{visible} / {total} curves visible"
 msgstr ""
 
-#: src/ui/widgets/preview/multi_curve_preview.py:314
+#: src/ui/widgets/preview/multi_curve_preview.py:315
 #, python-brace-format
 msgid "{total} curves"
 msgstr ""
 
-#: src/ui/widgets/preview/multi_curve_preview.py:317
+#: src/ui/widgets/preview/multi_curve_preview.py:318
 msgid "display downsampling active"
 msgstr ""
 
-#: src/ui/widgets/preview/multi_curve_preview.py:322
+#: src/ui/widgets/preview/multi_curve_preview.py:323
 #, python-brace-format
 msgid "{count} more warning(s)"
 msgstr ""
@@ -3285,6 +3484,34 @@ msgstr ""
 msgid "Waveform envelope"
 msgstr ""
 
+#: src/workflow/curve.py:33
+msgid "Curve data must have shape (channels, points)"
+msgstr ""
+
+#: src/workflow/curve.py:35
+msgid "Curve coordinates must be one-dimensional"
+msgstr ""
+
+#: src/workflow/curve.py:37
+msgid "Curve coordinates must match the number of points"
+msgstr ""
+
+#: src/workflow/curve.py:39
+msgid "Curve data cannot be empty"
+msgstr ""
+
+#: src/workflow/curve.py:41
+msgid "Curve coordinates must be finite"
+msgstr ""
+
+#: src/workflow/curve.py:43
+msgid "Curve coordinates must be strictly increasing"
+msgstr ""
+
+#: src/workflow/curve.py:50
+msgid "Channel names must match the curve channel count"
+msgstr ""
+
 #: src/workflow/engine.py:131 src/workflow/engine.py:143
 #: src/workflow/engine.py:226 src/workflow/engine.py:244
 #: src/workflow/engine.py:301
@@ -3362,7 +3589,7 @@ msgstr ""
 msgid "Output / Visualization"
 msgstr ""
 
-#: src/workflow/node_base.py:276
+#: src/workflow/node_base.py:283
 #, python-brace-format
 msgid "Input port '{name}' is not connected"
 msgstr ""
@@ -3442,7 +3669,7 @@ msgstr ""
 msgid "Feature vectorizer"
 msgstr ""
 
-#: src/workflow/nodes/anomaly.py:154
+#: src/workflow/nodes/anomaly.py:154 src/workflow/nodes/feature/acoustic.py:490
 msgid "Feature post-processing"
 msgstr ""
 
@@ -3662,7 +3889,7 @@ msgstr ""
 msgid "Unsupported threshold strategy: {strategy}"
 msgstr ""
 
-#: src/workflow/nodes/anomaly.py:587 src/workflow/nodes/visualization.py:369
+#: src/workflow/nodes/anomaly.py:587 src/workflow/nodes/visualization.py:421
 msgid "Result viewing"
 msgstr ""
 
@@ -4372,7 +4599,7 @@ msgstr ""
 msgid "⚠️ Shape validation warning: {count} inconsistent items"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:77 src/workflow/nodes/feature/base.py:64
+#: src/workflow/nodes/data_source.py:77 src/workflow/nodes/feature/base.py:65
 #, python-brace-format
 msgid "Channel index {idx} out of range (total {channels} channels)"
 msgstr ""
@@ -5658,158 +5885,403 @@ msgstr ""
 msgid "Predicted values"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:53
+#: src/workflow/nodes/visualization.py:56
 msgid "Only real numeric line data is supported"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:61
+#: src/workflow/nodes/visualization.py:64
 msgid "Empty curves cannot be displayed"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:65
+#: src/workflow/nodes/visualization.py:68
 msgid "A curve contains no finite values"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:84
+#: src/workflow/nodes/visualization.py:87
 #, python-brace-format
 msgid "Series {index}"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:112
+#: src/workflow/nodes/visualization.py:121
 #, python-brace-format
 msgid ""
 "Feature '{feature_type}' is two-dimensional map data and cannot be shown as "
 "a curve"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:120
+#: src/workflow/nodes/visualization.py:129
 #, python-brace-format
 msgid "Feature '{feature_type}' is not line-compatible"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:125
+#: src/workflow/nodes/visualization.py:134
 msgid "Frequency (Hz)"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:127
+#: src/workflow/nodes/visualization.py:136
 msgid "Feature index"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:137
+#: src/workflow/nodes/visualization.py:146
 msgid "Audio data must have shape (samples,) or (channels, samples)"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:143
+#: src/workflow/nodes/visualization.py:152
 msgid "Only one-dimensional lines or channel-by-line arrays are supported"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:239
-#: src/workflow/nodes/visualization.py:243
+#: src/workflow/nodes/visualization.py:158
+msgid "Curve coordinates do not match the curve values"
+msgstr ""
+
+#: src/workflow/nodes/visualization.py:254
+#: src/workflow/nodes/visualization.py:258
+#: src/workflow/nodes/feature/acoustic.py:39
 msgid "No curve data provided"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:262
+#: src/workflow/nodes/visualization.py:275
+msgid "Physical curve coordinates were preserved instead of normalized"
+msgstr ""
+
+#: src/workflow/nodes/visualization.py:281
 msgid "A data item contains no channels"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:267
+#: src/workflow/nodes/visualization.py:288
 msgid "Channels must have equal lengths before they can be merged"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:276
+#: src/workflow/nodes/visualization.py:299
 #, python-brace-format
 msgid "Selected channel {channel} is unavailable for {name}"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:289
+#: src/workflow/nodes/visualization.py:312
 #, python-brace-format
 msgid "Non-finite values were interpolated in {name}"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:296
+#: src/workflow/nodes/visualization.py:322
 #, python-brace-format
 msgid "{name} · channel {channel}"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:304
+#: src/workflow/nodes/visualization.py:339
 msgid "No line-compatible data was found"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:322
+#: src/workflow/nodes/visualization.py:357
 msgid "Normalized position (%)"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:325
+#: src/workflow/nodes/visualization.py:360
 msgid "Original coordinate"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:341
+#: src/workflow/nodes/visualization.py:378
 msgid "Aggregate statistics require compatible horizontal coordinates"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:372
+#: src/workflow/nodes/visualization.py:424
 msgid "Compare all line-compatible data in one interactive chart"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:380
+#: src/workflow/nodes/visualization.py:432
 msgid "Line data"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:385
+#: src/workflow/nodes/visualization.py:437
 msgid "Interaction mode"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:390
+#: src/workflow/nodes/visualization.py:442
 msgid "Display mode"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:395
+#: src/workflow/nodes/visualization.py:447
 msgid "Horizontal alignment"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:400
+#: src/workflow/nodes/visualization.py:452
+msgid "Frequency axis"
+msgstr ""
+
+#: src/workflow/nodes/visualization.py:457
 msgid "Channel handling"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:411
+#: src/workflow/nodes/visualization.py:468
 msgid "Value transform"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:416
+#: src/workflow/nodes/visualization.py:473
 msgid "Aggregate curve"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:421
+#: src/workflow/nodes/visualization.py:478
 msgid "Variability band"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:426
+#: src/workflow/nodes/visualization.py:483
 msgid "Lower percentile"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:432
+#: src/workflow/nodes/visualization.py:489
 msgid "Upper percentile"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:438
+#: src/workflow/nodes/visualization.py:495
 msgid "Maximum points per curve"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:444
+#: src/workflow/nodes/visualization.py:501
 msgid "Line opacity"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:450
+#: src/workflow/nodes/visualization.py:507
 msgid "Show legend"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:458
+#: src/workflow/nodes/visualization.py:515
 msgid "Lower percentile must be smaller than upper percentile"
 msgstr ""
 
-#: src/workflow/nodes/visualization.py:474
+#: src/workflow/nodes/visualization.py:531
 #, python-brace-format
 msgid "Multi-curve viewer ready: {count} curves"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:41
+msgid "Curve input must contain CurveData objects"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:53
+msgid "Calibration factor (Pa/FS)"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:54
+msgid "Required pressure represented by digital full scale"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:61
+msgid "Reference pressure (μPa)"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:69
+msgid "Frequency weighting"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:76
+msgid "Remove DC"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:82
+msgid "Sound-level floor (dB)"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:90
+msgid "Detect clipping"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:96
+msgid "Calibration factor must be entered as a positive Pa/FS value"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:138
+msgid "Time-varying total sound level"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:140
+#: src/workflow/nodes/feature/acoustic.py:278
+msgid "Acoustic analysis"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:143
+msgid "Calculate calibrated time-varying total sound pressure level"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:148
+#: src/workflow/nodes/feature/acoustic.py:286
+msgid "Sound-level curve"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:156
+msgid "Calculation mode"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:163
+msgid "Integration time (s)"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:172
+#: src/workflow/nodes/feature/acoustic.py:189
+msgid "Output step (s)"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:181
+msgid "Time weighting"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:207
+#, python-brace-format
+msgid ""
+"Time-varying sound level ready: {count} record(s), {warnings} warning(s)"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:260
+msgid "Time"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:262
+#: src/workflow/nodes/feature/acoustic.py:474
+msgid "Sound pressure level"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:276
+msgid "Steady-state frequency sound level"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:281
+msgid ""
+"Calculate calibrated narrowband or fractional-octave sound pressure levels"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:294
+msgid "Analysis type"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:301
+msgid "Spectral estimator"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:309
+#: src/workflow/nodes/feature/dim1d/fft.py:43
+msgid "FFT size"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:317
+msgid "Window"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:328
+msgid "Welch segment length"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:337
+msgid "Welch overlap (%)"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:346
+msgid "Welch average"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:354
+msgid "Octave-band fraction"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:362
+msgid "Minimum frequency (Hz)"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:370
+msgid "Maximum frequency (Hz)"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:382
+msgid "Minimum frequency must be lower than maximum frequency"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:397
+#, python-brace-format
+msgid "Frequency sound level ready: {count} record(s), {warnings} warning(s)"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:411
+msgid "Frequency range must overlap the audio Nyquist range"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:414
+#, python-brace-format
+msgid ""
+"Maximum frequency was limited to the Nyquist frequency ({frequency:.3f} Hz)"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:472
+msgid "Frequency"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:488
+msgid "Curve to 1D feature"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:493
+msgid "Preserve complete aligned curves as AI-ready one-dimensional features"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:510
+msgid "Curve"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:518
+msgid "Alignment mode"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:525
+msgid "Target points"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:534
+msgid "Grid spacing"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:542
+msgid "Grid start (automatic when empty)"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:550
+msgid "Grid end (automatic when empty)"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:570
+#, python-brace-format
+msgid "Curve features ready: {count} sample(s), {points} points"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:582
+#, python-brace-format
+msgid "Curve sample {index} contains NaN or infinite values"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:586
+#, python-brace-format
+msgid "Curve sample {index} has a different channel count"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:593
+#, python-brace-format
+msgid "Curve sample {index} differs in '{field}'"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:617
+#, python-brace-format
+msgid "Curve sample {index} has different physical coordinates"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:624
+msgid "Fractional-octave curves cannot be resampled between band grids"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:630
+msgid "The fixed curve grid must have a finite increasing range"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:632
+msgid "The fixed curve grid must lie inside every source curve"
+msgstr ""
+
+#: src/workflow/nodes/feature/acoustic.py:637
+msgid "Logarithmic curve grids require a positive start"
 msgstr ""
 
 #: src/workflow/nodes/feature/ai_embedding.py:38
@@ -6050,10 +6522,6 @@ msgstr ""
 
 #: src/workflow/nodes/feature/dim1d/fft.py:33
 msgid "Extract global FFT spectrum"
-msgstr ""
-
-#: src/workflow/nodes/feature/dim1d/fft.py:43
-msgid "FFT size"
 msgstr ""
 
 #: src/workflow/nodes/feature/dim1d/fft.py:45

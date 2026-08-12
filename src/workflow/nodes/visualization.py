@@ -10,6 +10,7 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 import numpy as np
 
 from src.ui.i18n import tr_
+from src.workflow.curve import CurveData
 
 from ..node_base import BaseNode, NodeCategory, register_node
 from ..port import DataType
@@ -32,6 +33,8 @@ class MultiCurvePreviewData:
 
     series: List[CurveSeries]
     x_label: str
+    y_label: str
+    x_scale: str
     interaction_mode: str
     display_mode: str
     aggregate_mode: str
@@ -86,6 +89,12 @@ def _item_name(item: Any, source_index: int) -> str:
 
 def _extract_channels(item: Any) -> Tuple[List[np.ndarray], str, str]:
     """Extract channel lines plus their original-axis kind and label."""
+    if isinstance(item, CurveData):
+        label = item.x_name
+        if item.x_unit:
+            label = f"{label} ({item.x_unit})"
+        return [item.data[index] for index in range(item.channels)], "explicit", label
+
     feature_type = getattr(item, "feature_type", "")
     is_feature = bool(feature_type) and hasattr(item, "data")
     is_audio = (
@@ -144,6 +153,10 @@ def _extract_channels(item: Any) -> Tuple[List[np.ndarray], str, str]:
 
 
 def _original_x(item: Any, axis_kind: str, length: int) -> np.ndarray:
+    if axis_kind == "explicit" and isinstance(item, CurveData):
+        if item.x.size != length:
+            raise ValueError(tr_("Curve coordinates do not match the curve values"))
+        return item.x.astype(np.float32, copy=False)
     if axis_kind == "frequency":
         sample_rate = float(getattr(item, "sample_rate", 0) or 0)
         return np.linspace(0.0, sample_rate / 2.0, length, dtype=np.float32)
@@ -194,6 +207,7 @@ def _build_aggregate(
     variability_mode: str,
     percentile_low: float,
     percentile_high: float,
+    energy_average: bool = False,
 ) -> Tuple[Optional[np.ndarray], Optional[np.ndarray], Optional[np.ndarray]]:
     if aggregate_mode == "none" or not series:
         return None, None, None
@@ -205,11 +219,12 @@ def _build_aggregate(
         np.float32,
         copy=False,
     )
-    aggregate = (
-        np.median(values, axis=0)
-        if aggregate_mode == "median"
-        else np.mean(values, axis=0)
-    )
+    if aggregate_mode == "median":
+        aggregate = np.median(values, axis=0)
+    elif energy_average:
+        aggregate = 10.0 * np.log10(np.mean(np.power(10.0, values / 10.0), axis=0))
+    else:
+        aggregate = np.mean(values, axis=0)
     aggregate = aggregate.astype(np.float32, copy=False)
     if variability_mode == "std":
         std = np.std(values, axis=0)
@@ -254,21 +269,29 @@ def prepare_multi_curve_preview(data: Any, settings: Dict[str, Any]) -> MultiCur
     transform = settings["value_transform"]
     max_points = int(settings["max_points"])
     warnings: List[str] = []
-    raw_series: List[Tuple[str, np.ndarray, np.ndarray, int, Optional[int], str]] = []
+    contains_curve_data = any(isinstance(item, CurveData) for item in items)
+    if contains_curve_data and alignment == "normalized":
+        alignment = "original"
+        warnings.append(tr_("Physical curve coordinates were preserved instead of normalized"))
+    raw_series: List[Tuple[str, np.ndarray, np.ndarray, int, Optional[int], str, str, bool, str]] = []
 
     for source_index, item in enumerate(items):
         channels, axis_kind, axis_label = _extract_channels(item)
         if not channels:
             raise ValueError(tr_("A data item contains no channels"))
+        if isinstance(item, CurveData):
+            warnings.extend(str(value) for value in item.metadata.get("warnings", []))
 
         if channel_mode == "merge":
             cleaned = [_clean_line(channel)[0] for channel in channels]
             if len({line.size for line in cleaned}) != 1:
                 raise ValueError(tr_("Channels must have equal lengths before they can be merged"))
-            merged = np.mean(np.stack(cleaned, axis=0), axis=0).astype(
-                np.float32,
-                copy=False,
-            )
+            stacked = np.stack(cleaned, axis=0)
+            if isinstance(item, CurveData) and item.y_unit == "dB SPL":
+                merged = 10.0 * np.log10(np.mean(np.power(10.0, stacked / 10.0), axis=0))
+            else:
+                merged = np.mean(stacked, axis=0)
+            merged = merged.astype(np.float32, copy=False)
             selected = [(merged, None)]
         elif channel_mode == "selected":
             if selected_channel < 0 or selected_channel >= len(channels):
@@ -293,12 +316,24 @@ def prepare_multi_curve_preview(data: Any, settings: Dict[str, Any]) -> MultiCur
             line = _transform_line(line, transform)
             name = _item_name(item, source_index)
             if channel_index is not None and len(channels) > 1:
-                name = tr_("{name} · channel {channel}").format(
-                    name=name,
-                    channel=channel_index + 1,
-                )
+                if isinstance(item, CurveData):
+                    name = f"{name} · {item.channel_names[channel_index]}"
+                else:
+                    name = tr_("{name} · channel {channel}").format(
+                        name=name,
+                        channel=channel_index + 1,
+                    )
             x = _original_x(item, axis_kind, line.size)
-            raw_series.append((name, x, line, source_index, channel_index, axis_label))
+            is_spl = isinstance(item, CurveData) and item.y_unit == "dB SPL" and transform == "none"
+            y_label = (
+                f"{item.y_name} ({item.y_unit})"
+                if isinstance(item, CurveData) and item.y_unit
+                else tr_("Value")
+            )
+            curve_type = item.curve_type if isinstance(item, CurveData) else ""
+            raw_series.append(
+                (name, x, line, source_index, channel_index, axis_label, y_label, is_spl, curve_type)
+            )
 
     if not raw_series:
         raise ValueError(tr_("No line-compatible data was found"))
@@ -306,14 +341,14 @@ def prepare_multi_curve_preview(data: Any, settings: Dict[str, Any]) -> MultiCur
     series: List[CurveSeries] = []
     downsampled = False
     if alignment == "normalized":
-        target_count = max(1, min(max_points, max(line.size for _, _, line, _, _, _ in raw_series)))
+        target_count = max(1, min(max_points, max(line.size for _, _, line, *_ in raw_series)))
         shared_x = np.linspace(
             0.0,
             100.0,
             target_count,
             dtype=np.float32,
         )
-        for name, _, line, source_index, channel_index, _ in raw_series:
+        for name, _, line, source_index, channel_index, *_ in raw_series:
             y = _resample_normalized(line, shared_x)
             downsampled = downsampled or line.size > target_count
             series.append(
@@ -321,19 +356,21 @@ def prepare_multi_curve_preview(data: Any, settings: Dict[str, Any]) -> MultiCur
             )
         x_label = tr_("Normalized position (%)")
     else:
-        axis_labels = {axis_label for *_, axis_label in raw_series}
+        axis_labels = {item[5] for item in raw_series}
         x_label = next(iter(axis_labels)) if len(axis_labels) == 1 else tr_("Original coordinate")
-        for name, x, line, source_index, channel_index, _ in raw_series:
+        for name, x, line, source_index, channel_index, *_ in raw_series:
             x, line, reduced = _downsample(x, line, max_points)
             downsampled = downsampled or reduced
             series.append(CurveSeries(name, x, line, source_index, channel_index))
 
+    spl_semantics = bool(raw_series) and all(item[7] for item in raw_series)
     aggregate_y, lower_y, upper_y = _build_aggregate(
         series,
         settings["aggregate_mode"],
         settings["variability_mode"],
         float(settings["percentile_low"]),
         float(settings["percentile_high"]),
+        energy_average=spl_semantics,
     )
     aggregate_x = series[0].x if aggregate_y is not None else None
     if settings["aggregate_mode"] != "none" and aggregate_y is None:
@@ -341,9 +378,24 @@ def prepare_multi_curve_preview(data: Any, settings: Dict[str, Any]) -> MultiCur
             tr_("Aggregate statistics require compatible horizontal coordinates")
         )
 
+    y_labels = {item[6] for item in raw_series}
+    y_label = next(iter(y_labels)) if len(y_labels) == 1 else tr_("Value")
+    curve_types = {item[8] for item in raw_series if item[8]}
+    frequency_axis = settings.get("frequency_axis", "auto")
+    if frequency_axis == "auto":
+        x_scale = "log" if curve_types and all(
+            curve_type.startswith("frequency_octave_") for curve_type in curve_types
+        ) else "linear"
+    else:
+        x_scale = frequency_axis if curve_types and all(
+            curve_type.startswith("frequency_") for curve_type in curve_types
+        ) else "linear"
+
     return MultiCurvePreviewData(
         series=series,
         x_label=x_label,
+        y_label=y_label,
+        x_scale=x_scale,
         interaction_mode=settings.get("interaction_mode", "performance"),
         display_mode=settings["display_mode"],
         aggregate_mode=settings["aggregate_mode"],
@@ -394,6 +446,11 @@ class MultiCurveViewerNode(BaseNode):
             "x_alignment", "choice", "normalized",
             display_name=tr_("Horizontal alignment"),
             choices=["normalized", "original"],
+        )
+        self.add_parameter(
+            "frequency_axis", "choice", "auto",
+            display_name=tr_("Frequency axis"),
+            choices=["auto", "linear", "log"],
         )
         self.add_parameter(
             "channel_mode", "choice", "separate",
