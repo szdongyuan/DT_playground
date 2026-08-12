@@ -17,10 +17,28 @@ Configure environment → Execute tests → Analyze results → Generate coverag
 
 ## Prerequisites
 
+### Mandatory project interpreter gate
+
+Before collecting or running any tests, read and follow
+`../project-python-environment/SKILL.md`. This repository must run pytest as:
+
+```powershell
+& './.venv/Scripts/python.exe' -m pytest
+```
+
+First print and validate the interpreter using that skill's preflight. Never
+run bare `pytest`, `python -m pytest`, or a global pytest executable. Shell
+activation is not sufficient because it does not persist across tool calls.
+
+All bare `pytest` commands shown later in this document are option examples
+only. When executing them in this repository, replace `pytest` with
+`& './.venv/Scripts/python.exe' -m pytest`. Treat results produced by any other
+interpreter as invalid.
+
 Ensure required packages are installed:
 
-```bash
-pip install pytest pytest-cov pytest-asyncio pytest-xdist
+```powershell
+& './.venv/Scripts/python.exe' -m pip install pytest pytest-cov pytest-asyncio pytest-xdist
 ```
 
 ## Instructions

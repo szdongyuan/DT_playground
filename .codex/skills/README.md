@@ -28,6 +28,7 @@ Minimum routing rules:
 | Test design | `test_designing/SKILL.md` |
 | Test writing | `test_writing/SKILL.md` |
 | Test execution | `test_running/SKILL.md` |
+| Python execution, dependency installation, testing, or packaging | `project-python-environment/SKILL.md`, plus the matching task skill |
 | PowerShell or Windows shell work | `shell_powershell_commands/SKILL.md` |
 | Skill creation or organization | `skill_creating_skills/SKILL.md` |
 
@@ -94,6 +95,7 @@ Concrete examples demonstrating the skill.
 | git-pushing-changes | Commit and push changes safely | [git_pushing_changes/SKILL.md](git_pushing_changes/SKILL.md) |
 | git-submitting-issues | Create structured GitHub issues | [git_submitting_issues/SKILL.md](git_submitting_issues/SKILL.md) |
 | project-managing-i18n | Manage gettext catalog updates | [project_managing_i18n/SKILL.md](project_managing_i18n/SKILL.md) |
+| project-python-environment | Enforce the repository `.venv` for Python, tests, and packaging | [project-python-environment/SKILL.md](project-python-environment/SKILL.md) |
 | project-python-init | Initialize Python project scaffolding | [project_python_init/SKILL.md](project_python_init/SKILL.md) |
 | shell-powershell-commands | Run PowerShell commands on Windows | [shell_powershell_commands/SKILL.md](shell_powershell_commands/SKILL.md) |
 | skill-creating-skills | Create or organize project skills | [skill_creating_skills/SKILL.md](skill_creating_skills/SKILL.md) |
