@@ -151,15 +151,17 @@ cmd1; if (-not $?) { cmd2 }
 ### Run Python Scripts
 
 ```powershell
-# Run directly
-python script.py
+# Repository rule: use the project interpreter explicitly
+& './.venv/Scripts/python.exe' ./script.py
 
 # With arguments
-python script.py --arg1 value1
-
-# With virtual environment
-.\.venv\Scripts\Activate.ps1; python script.py
+& './.venv/Scripts/python.exe' ./script.py --arg1 value1
 ```
+
+For this repository, always read and follow
+`../project-python-environment/SKILL.md` before any Python-related command.
+Never depend on `Activate.ps1`: shell state does not persist between tool calls.
+Use the explicit `.venv` interpreter for scripts, pip, pytest, and PyInstaller.
 
 ### Git Operations
 
