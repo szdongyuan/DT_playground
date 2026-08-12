@@ -131,6 +131,7 @@ class AudioFolderNode(BaseNode):
         self.add_output("audio", DataType.AUDIO, tr_("Audio list"))
         self.add_output("labels", DataType.LABEL, tr_("Label list"))
         self.add_output("file_paths", DataType.ANY, tr_("File path list"))
+        self.add_output("label_map", DataType.ANY, tr_("Label map"))
     
     def _setup_parameters(self):
         self.add_parameter(
@@ -252,11 +253,20 @@ class AudioFolderNode(BaseNode):
         self.set_output_data("labels", labels)
         self.set_output_data("file_paths", file_paths)
         
-        logger.info(f"加载完成: {len(audio_list)} 个音频, {len(label_map)} 个类别")
+        output_label_names = label_map if auto_label else {"default": 0}
+        self.set_output_data(
+            "label_map",
+            {
+                "label_names": output_label_names,
+                "filename_map": dict(zip(file_paths, labels)),
+            },
+        )
+
+        logger.info(f"加载完成: {len(audio_list)} 个音频, {len(output_label_names)} 个类别")
         self.report_status(
             tr_("Audio loaded: {files} files, {classes} classes").format(
                 files=len(audio_list),
-                classes=len(label_map),
+                classes=len(output_label_names),
             )
         )
         return True

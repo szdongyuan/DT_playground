@@ -18,7 +18,8 @@ from typing import Dict, List, Optional, Tuple
 from PySide6.QtCore import QPoint, QPointF, QRectF, Qt, QTimer, Signal
 from PySide6.QtGui import (
     QAction, QBrush, QColor, QDragEnterEvent, QDropEvent,
-    QFont, QKeyEvent, QMouseEvent, QPainter, QPainterPath, QPen, QWheelEvent
+    QFont, QFontMetricsF, QKeyEvent, QMouseEvent, QPainter, QPainterPath, QPen,
+    QWheelEvent
 )
 from PySide6.QtWidgets import (
     QGraphicsItem, QGraphicsRectItem,
@@ -64,6 +65,9 @@ class NodeItem(QGraphicsRectItem):
     HEADER_HEIGHT = 28
     PORT_SPACING = 24
     PORT_MARGIN = 12
+    PORT_LABEL_GAP = 16
+    TEXT_ITEM_PADDING = 8
+    TITLE_STATE_RESERVE = 36
     
     # 紧凑模式尺寸
     COMPACT_WIDTH = 60
@@ -91,7 +95,7 @@ class NodeItem(QGraphicsRectItem):
         else:
             # 标准模式：根据端口数计算高度
             max_ports = max(len(node.inputs), len(node.outputs), 1)
-            width = self.NODE_WIDTH
+            width = self._calculate_standard_width()
             height = self.HEADER_HEIGHT + max_ports * self.PORT_SPACING + self.PORT_MARGIN
         
         # 设置矩形
@@ -112,6 +116,43 @@ class NodeItem(QGraphicsRectItem):
         # 创建子元素
         self._create_header()
         self._create_ports()
+
+    def _calculate_standard_width(self) -> float:
+        """Return a width that keeps translated port labels from overlapping."""
+        title_font = QFont("Microsoft YaHei", 10, QFont.Weight.Bold)
+        port_font = QFont("Microsoft YaHei", 9)
+
+        title = f"{self.node.icon} {tr_(self.node.display_name)}"
+        title_width = self._text_width(title, title_font)
+        required_width = 8 + title_width + self.TITLE_STATE_RESERVE
+
+        inputs = list(self.node.inputs.values())
+        outputs = list(self.node.outputs.values())
+        row_count = max(len(inputs), len(outputs), 1)
+        for index in range(row_count):
+            input_width = (
+                self._text_width(tr_(inputs[index].display_name), port_font)
+                if index < len(inputs)
+                else 0
+            )
+            output_width = (
+                self._text_width(tr_(outputs[index].display_name), port_font)
+                if index < len(outputs)
+                else 0
+            )
+            row_width = (
+                2 * self.PORT_MARGIN
+                + input_width
+                + output_width
+                + (self.PORT_LABEL_GAP if input_width and output_width else 0)
+            )
+            required_width = max(required_width, row_width)
+
+        return max(self.NODE_WIDTH, required_width)
+
+    def _text_width(self, text: str, font: QFont) -> float:
+        """Match the horizontal footprint used by QGraphicsTextItem."""
+        return QFontMetricsF(font).horizontalAdvance(text) + self.TEXT_ITEM_PADDING
     
     def _create_header(self):
         """创建头部"""

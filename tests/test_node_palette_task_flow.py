@@ -68,7 +68,7 @@ def test_palette_contains_every_visible_node_once(qapp):
         for category in NodeCategory
         for node_class in get_nodes_by_category(category)
     ]
-    assert len(actual_types) == 59
+    assert len(actual_types) == 60
     assert len(actual_types) == len(set(actual_types))
     assert set(actual_types) == set(expected_types)
 
@@ -118,7 +118,12 @@ def test_data_and_flow_groups_follow_approved_task_order(qapp):
         f"📁 {tr_('Dataset processing')}",
         f"📁 {tr_('Flow and debugging')}",
     ]
-    assert _node_types(category.child(0)) == ["align_targets", "split", "merge"]
+    assert _node_types(category.child(0)) == [
+        "align_targets",
+        "filter_dataset_by_label",
+        "split",
+        "merge",
+    ]
     assert _node_types(category.child(1)) == [
         "loop",
         "passthrough",
