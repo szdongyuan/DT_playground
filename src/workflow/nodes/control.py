@@ -113,6 +113,322 @@ class LoopNode(BaseNode):
 
 
 @register_node
+class FilterDatasetByLabelNode(BaseNode):
+    """Filter aligned sample data by classification label."""
+
+    node_type = "filter_dataset_by_label"
+    display_name = tr_("Filter dataset by label")
+    category = NodeCategory.CONTROL
+    subcategory = tr_("Dataset processing")
+    subcategory_order = 10
+    palette_order = 15
+    description = tr_("Keep selected classes and re-encode labels for training")
+    icon = "🔎"
+
+    def _setup_ports(self):
+        self.add_input("data", DataType.ANY, tr_("Data"))
+        self.add_input("labels", DataType.LABEL, tr_("Labels"))
+        self.add_input("file_paths", DataType.ANY, tr_("File paths"), required=False)
+        self.add_input("label_map", DataType.ANY, tr_("Label map"), required=False)
+        self.add_output("filtered_data", DataType.ANY, tr_("Filtered data"))
+        self.add_output("filtered_labels", DataType.LABEL, tr_("Filtered labels"))
+        self.add_output("filtered_file_paths", DataType.ANY, tr_("Filtered file paths"))
+        self.add_output("filtered_label_map", DataType.ANY, tr_("Filtered label map"))
+
+    def _setup_parameters(self):
+        self.add_parameter(
+            "keep_labels",
+            "str",
+            "",
+            display_name=tr_("Keep labels"),
+            description=tr_(
+                "Comma-separated labels to keep, in the desired output class order"
+            ),
+        )
+
+    def execute(self) -> bool:
+        try:
+            data = self._as_ordered_list(self.get_input_data("data"), "data")
+            labels = self._as_ordered_list(self.get_input_data("labels"), "labels")
+            file_paths_input = self.get_input_data("file_paths")
+            file_paths = (
+                None
+                if file_paths_input is None
+                else self._as_ordered_list(file_paths_input, "file_paths")
+            )
+
+            if not data:
+                raise ValueError(tr_("Data list is empty"))
+            if len(labels) != len(data):
+                raise ValueError(
+                    tr_("Label count ({labels}) does not match data count ({data})").format(
+                        labels=len(labels), data=len(data)
+                    )
+                )
+            if file_paths is not None and len(file_paths) != len(data):
+                raise ValueError(
+                    tr_(
+                        "File path count ({paths}) does not match data count ({data})"
+                    ).format(paths=len(file_paths), data=len(data))
+                )
+
+            requested_names = self._parse_requested_labels(
+                str(self.get_parameter("keep_labels") or "")
+            )
+            label_map_input = self.get_input_data("label_map")
+            requested_values = self._resolve_requested_values(
+                requested_names,
+                labels,
+                label_map_input,
+            )
+
+            selected_indices = [
+                index for index, label in enumerate(labels) if label in requested_values
+            ]
+            if not selected_indices:
+                raise ValueError(tr_("Label filtering produced no samples"))
+
+            old_to_new = {
+                label_value: new_id
+                for new_id, label_value in enumerate(requested_values)
+            }
+            filtered_data = [data[index] for index in selected_indices]
+            filtered_labels = [old_to_new[labels[index]] for index in selected_indices]
+            filtered_file_paths = (
+                [file_paths[index] for index in selected_indices]
+                if file_paths is not None
+                else []
+            )
+
+            filtered_label_map = {
+                "label_names": {
+                    name: new_id for new_id, name in enumerate(requested_names)
+                }
+            }
+            if file_paths is not None:
+                filtered_label_map["filename_map"] = {
+                    str(path): label
+                    for path, label in zip(filtered_file_paths, filtered_labels)
+                }
+
+            self.set_output_data("filtered_data", filtered_data)
+            self.set_output_data("filtered_labels", filtered_labels)
+            self.set_output_data("filtered_file_paths", filtered_file_paths)
+            self.set_output_data("filtered_label_map", filtered_label_map)
+
+            class_counts = [
+                f"{name}={filtered_labels.count(new_id)}"
+                for new_id, name in enumerate(requested_names)
+            ]
+            message = tr_(
+                "Dataset label filter complete: input {input}, kept {kept}, "
+                "removed {removed}; {classes}"
+            ).format(
+                input=len(data),
+                kept=len(filtered_data),
+                removed=len(data) - len(filtered_data),
+                classes=", ".join(class_counts),
+            )
+            self.report_status(message)
+            logger.info(message)
+            input_counts = self._count_labels(labels)
+            kept_counts = self._count_labels(
+                labels[index] for index in selected_indices
+            )
+            removed_counts = {
+                label: count - kept_counts.get(label, 0)
+                for label, count in input_counts.items()
+                if count - kept_counts.get(label, 0) > 0
+            }
+            logger.info(
+                "Dataset label filter details: input_counts=%s, kept_counts=%s, "
+                "removed_counts=%s, original_label_map=%s, output_label_map=%s",
+                self._named_counts(input_counts, label_map_input),
+                self._named_counts(kept_counts, label_map_input),
+                self._named_counts(removed_counts, label_map_input),
+                label_map_input,
+                filtered_label_map["label_names"],
+            )
+            return True
+        except (TypeError, ValueError) as exc:
+            self.error_message = str(exc)
+            return False
+
+    @staticmethod
+    def _as_ordered_list(value: Any, name: str) -> List[Any]:
+        if value is None:
+            raise ValueError(tr_("No {name} provided").format(name=name))
+        if isinstance(value, dict):
+            raise ValueError(
+                tr_("{name} must be an ordered sequence, not a mapping").format(name=name)
+            )
+        if isinstance(value, np.ndarray):
+            return [value.item()] if value.ndim == 0 else list(value)
+        if isinstance(value, list):
+            return value
+        if isinstance(value, tuple):
+            return list(value)
+        if isinstance(value, (str, bytes)):
+            return [value]
+        try:
+            return list(value)
+        except TypeError:
+            return [value]
+
+    @staticmethod
+    def _parse_requested_labels(raw_value: str) -> List[str]:
+        requested = []
+        seen = set()
+        for part in raw_value.split(","):
+            label = part.strip()
+            if label and label not in seen:
+                requested.append(label)
+                seen.add(label)
+        if not requested:
+            raise ValueError(tr_("Keep labels must contain at least one label"))
+        return requested
+
+    def _resolve_requested_values(
+        self,
+        requested_names: List[str],
+        labels: List[Any],
+        label_map: Any,
+    ) -> List[Any]:
+        self._validate_label_values(labels)
+        if label_map is not None and not isinstance(label_map, dict):
+            raise ValueError(tr_("Label map must be a dictionary"))
+
+        label_names = label_map.get("label_names") if label_map is not None else None
+        if label_names is not None:
+            return self._resolve_from_name_mapping(requested_names, labels, label_names)
+        return self._resolve_from_actual_values(requested_names, labels)
+
+    def _resolve_from_name_mapping(
+        self,
+        requested_names: List[str],
+        labels: List[Any],
+        label_names: Any,
+    ) -> List[Any]:
+        if not isinstance(label_names, dict) or not label_names:
+            raise ValueError(tr_("label_names must be a non-empty dictionary"))
+        if any(not isinstance(name, str) or not name for name in label_names):
+            raise ValueError(tr_("label_names keys must be non-empty strings"))
+
+        mapped_values = list(label_names.values())
+        self._validate_label_values(mapped_values)
+        if len(set(mapped_values)) != len(mapped_values):
+            raise ValueError(
+                tr_("label_names must map each name to a unique label value")
+            )
+
+        unmapped_values = self._unique_in_order(
+            label for label in labels if label not in mapped_values
+        )
+        if unmapped_values:
+            raise ValueError(
+                tr_(
+                    "Label values are not represented in the label mapping: {labels}"
+                ).format(labels=self._format_values(unmapped_values))
+            )
+
+        missing_names = [name for name in requested_names if name not in label_names]
+        if missing_names:
+            raise ValueError(
+                tr_("Labels not found: {missing}; available labels: {available}").format(
+                    missing=", ".join(missing_names),
+                    available=", ".join(label_names),
+                )
+            )
+
+        requested_values = [label_names[name] for name in requested_names]
+        empty_names = [
+            name
+            for name, value in zip(requested_names, requested_values)
+            if value not in labels
+        ]
+        if empty_names:
+            raise ValueError(
+                tr_("Requested labels have no input samples: {labels}").format(
+                    labels=", ".join(empty_names)
+                )
+            )
+        return requested_values
+
+    def _resolve_from_actual_values(
+        self,
+        requested_names: List[str],
+        labels: List[Any],
+    ) -> List[Any]:
+        available_values = self._unique_in_order(labels)
+        values_by_text: Dict[str, Any] = {}
+        ambiguous_text = set()
+        for value in available_values:
+            text = str(value)
+            if text in values_by_text and values_by_text[text] != value:
+                ambiguous_text.add(text)
+            else:
+                values_by_text[text] = value
+
+        missing_names = [
+            name
+            for name in requested_names
+            if name not in values_by_text or name in ambiguous_text
+        ]
+        if missing_names:
+            raise ValueError(
+                tr_("Labels not found: {missing}; available labels: {available}").format(
+                    missing=", ".join(missing_names),
+                    available=", ".join(values_by_text),
+                )
+            )
+        return [values_by_text[name] for name in requested_names]
+
+    @staticmethod
+    def _validate_label_values(values: List[Any]):
+        for value in values:
+            try:
+                hash(value)
+            except TypeError as exc:
+                raise ValueError(
+                    tr_("Labels must contain scalar, hashable values")
+                ) from exc
+
+    @staticmethod
+    def _unique_in_order(values) -> List[Any]:
+        unique = []
+        seen = set()
+        for value in values:
+            if value not in seen:
+                unique.append(value)
+                seen.add(value)
+        return unique
+
+    @staticmethod
+    def _format_values(values: List[Any]) -> str:
+        return ", ".join(str(value) for value in values)
+
+    @staticmethod
+    def _count_labels(values) -> Dict[Any, int]:
+        counts: Dict[Any, int] = {}
+        for value in values:
+            counts[value] = counts.get(value, 0) + 1
+        return counts
+
+    @staticmethod
+    def _named_counts(counts: Dict[Any, int], label_map: Any) -> Dict[str, int]:
+        label_names = label_map.get("label_names") if isinstance(label_map, dict) else None
+        value_names = (
+            {value: name for name, value in label_names.items()}
+            if isinstance(label_names, dict)
+            else {}
+        )
+        return {
+            value_names.get(value, str(value)): count
+            for value, count in counts.items()
+        }
+
+
+@register_node
 class SplitNode(BaseNode):
     """
     数据分割节点
