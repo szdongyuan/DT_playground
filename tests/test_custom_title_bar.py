@@ -1,11 +1,21 @@
+import copy
 import os
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 
+import pytest
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QApplication, QLabel, QMenuBar, QPushButton, QWidget
 
 from src.app import AudioTrainingApp
+from src.utils.config import config
+
+
+@pytest.fixture(autouse=True)
+def isolate_app_config(monkeypatch):
+    """Keep title-bar tests independent from the user's saved session."""
+    monkeypatch.setattr(config, "config", copy.deepcopy(config.DEFAULT_CONFIG))
+    monkeypatch.setattr(config, "save", lambda: None)
 
 
 def test_main_window_uses_compact_custom_title_bar():
