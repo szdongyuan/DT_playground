@@ -86,7 +86,7 @@ class WorkflowController(QObject):
         Args:
             workflow: 工作流对象
         """
-        if self._engine.state in (EngineState.RUNNING, EngineState.PAUSED, EngineState.STOPPED) or self._engine.is_waiting_at_breakpoint():
+        if self._engine.is_active() or self._engine.is_waiting_at_breakpoint():
             self._event_bus.emit_status(tr_("Workflow is active; switching workflow is not allowed"))
             return
 
@@ -189,12 +189,10 @@ class WorkflowController(QObject):
     
     def is_running(self) -> bool:
         """检查工作流是否正在执行"""
-        from src.workflow.engine import EngineState
-        return self._engine.state == EngineState.RUNNING
+        return self._engine.is_active()
     
     def is_paused(self) -> bool:
         """检查工作流是否已暂停"""
-        from src.workflow.engine import EngineState
         return self._engine.state == EngineState.PAUSED
     
     def is_at_breakpoint(self) -> bool:

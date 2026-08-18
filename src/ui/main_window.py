@@ -29,7 +29,7 @@ from src.ui.views.model_builder_view import ModelBuilderView
 from src.ui.views.preview_view import PreviewView
 from src.ui.views.training_view import TrainingView
 from src.ui.views.workflow_tabs_view import WorkflowTabsView
-from src.workflow.engine import WorkflowEngine, ExecutionResult, EngineState
+from src.workflow.engine import WorkflowEngine, ExecutionResult
 from src.workflow.workflow import Workflow
 
 
@@ -625,16 +625,8 @@ class MainWindow(QWidget):
 
     def _is_workflow_run_active(self) -> bool:
         try:
-            state = self._workflow_controller.engine.state
             engine = self._workflow_controller.engine
-            worker = getattr(engine, "_worker", None)
-            if worker is not None:
-                try:
-                    if worker.isRunning():
-                        return True
-                except Exception:
-                    pass
-            return state in (EngineState.RUNNING, EngineState.PAUSED, EngineState.STOPPED)
+            return engine.is_active()
         except Exception:
             return bool(self._workflow_controller.is_running() or self._workflow_controller.is_at_breakpoint())
     

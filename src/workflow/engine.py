@@ -11,7 +11,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Callable, Dict, List, Optional, Set
 
-from PySide6.QtCore import QObject, QThread, Signal
+from PySide6.QtCore import QObject, QThread, Signal, Slot
 
 from src.ui.i18n import tr_
 from .connection import Connection
@@ -27,6 +27,7 @@ class EngineState(Enum):
     IDLE = "idle"
     RUNNING = "running"
     PAUSED = "paused"
+    STOPPING = "stopping"
     STOPPED = "stopped"
     COMPLETED = "completed"
     ERROR = "error"
@@ -39,6 +40,7 @@ class ExecutionResult:
     message: str
     execution_time: float
     node_results: Dict[str, Any]  # node_id -> output data
+    fatal_error: bool = False
 
 
 class WorkflowEngine(QObject):
@@ -89,6 +91,9 @@ class WorkflowEngine(QObject):
         
         # Worker thread
         self._worker: Optional[EngineWorker] = None
+        self._run_counter = 0
+        self._active_run_id: Optional[int] = None
+        self._active_node: Optional[BaseNode] = None
         self._pending_execution_node_ids: Optional[Set[str]] = None
         self._active_execution_node_ids: Optional[Set[str]] = None
     
@@ -132,7 +137,9 @@ class WorkflowEngine(QObject):
                 execution_time=0,
                 node_results={}
             )
-        return self._execute_pending_workflow()
+        result = self._execute_pending_workflow()
+        self._finalize_execution(result)
+        return result
 
     def execute_from_sync(self, start_node_id: str, workflow: Workflow = None) -> ExecutionResult:
         """Synchronously execute a workflow subset from the selected node."""
@@ -144,22 +151,37 @@ class WorkflowEngine(QObject):
                 execution_time=0,
                 node_results={}
             )
-        return self._execute_pending_workflow()
+        result = self._execute_pending_workflow()
+        self._finalize_execution(result)
+        return result
     
     def stop(self):
         """Stop execution"""
+        if not self.is_active():
+            return
         self._stop_requested = True
-        self.state = EngineState.STOPPED
-        logger.info("Workflow execution stopped")
+        self._pause_requested = False
+        self.state = EngineState.STOPPING
+        active_node = self._active_node
+        if active_node is not None:
+            try:
+                active_node.request_stop()
+            except Exception:
+                logger.exception("Active node stop request failed: %s", active_node.node_id)
+        logger.info("Workflow stop requested")
     
     def pause(self):
         """Pause execution"""
+        if self.state != EngineState.RUNNING:
+            return
         self._pause_requested = True
         self.state = EngineState.PAUSED
         logger.info("Workflow execution paused")
     
     def resume(self):
         """Resume execution"""
+        if self.state != EngineState.PAUSED:
+            return
         self._pause_requested = False
         self.state = EngineState.RUNNING
         logger.info("Workflow execution resumed")
@@ -189,6 +211,14 @@ class WorkflowEngine(QObject):
         if self._active_execution_node_ids is None:
             return None
         return set(self._active_execution_node_ids)
+
+    def is_active(self) -> bool:
+        """Return whether an asynchronous execution still owns engine resources."""
+        return self._worker is not None or self.state in (
+            EngineState.RUNNING,
+            EngineState.PAUSED,
+            EngineState.STOPPING,
+        )
     
     def _reset(self, node_ids: Optional[Set[str]] = None):
         """Reset engine state and optionally only a subset of nodes."""
@@ -226,9 +256,14 @@ class WorkflowEngine(QObject):
             self.workflow_error.emit(error or tr_("Workflow not set"))
             return False
 
-        self._worker = EngineWorker(self)
-        self._worker.finished.connect(self._on_worker_finished)
-        self._worker.start()
+        self._run_counter += 1
+        run_id = self._run_counter
+        worker = EngineWorker(self, run_id)
+        self._active_run_id = run_id
+        self._worker = worker
+        worker.finished.connect(self._on_worker_finished)
+        logger.info("Workflow run %s worker starting", run_id)
+        worker.start()
         return True
 
     def _prepare_execution(
@@ -243,12 +278,11 @@ class WorkflowEngine(QObject):
         if not self.workflow:
             return False, tr_("Workflow not set")
 
-        # Prevent starting a new run while the previous worker thread is still finishing.
-        # A terminal state (COMPLETED/STOPPED/ERROR) can be observed before QThread fully exits.
-        if self._worker is not None and self._worker.isRunning():
+        # Worker ownership is released only by the matching finished callback.
+        if self._worker is not None:
             return False, tr_("Workflow is already running")
 
-        if self.state == EngineState.RUNNING:
+        if self.state != EngineState.IDLE:
             return False, tr_("Workflow is already running")
 
         valid, errors = self.workflow.validate()
@@ -343,8 +377,15 @@ class WorkflowEngine(QObject):
         node_results = {}
         
         try:
-            self.state = EngineState.RUNNING
+            self.state = (
+                EngineState.STOPPING
+                if self._stop_requested
+                else EngineState.RUNNING
+            )
             self.workflow_started.emit()
+
+            if self._stop_requested:
+                return self._stopped_result(start_time, node_results)
             
             # Get execution order
             execution_order, has_cycle = self.workflow.get_execution_order()
@@ -361,35 +402,28 @@ class WorkflowEngine(QObject):
 
             if not execution_order:
                 self.state = EngineState.ERROR
-                result = ExecutionResult(
+                return ExecutionResult(
                     success=False,
                     message=tr_("No runnable nodes found"),
                     execution_time=time.time() - start_time,
                     node_results=node_results
                 )
-                self.workflow_finished.emit(result)
-                return result
             
             total_nodes = len(execution_order)
             
             for i, node_id in enumerate(execution_order):
                 # Check stop request
                 if self._stop_requested:
-                    self.state = EngineState.STOPPED
-                    result = ExecutionResult(
-                        success=False,
-                        message=tr_("Execution stopped"),
-                        execution_time=time.time() - start_time,
-                        node_results=node_results
-                    )
-                    self.workflow_finished.emit(result)
-                    return result
+                    return self._stopped_result(start_time, node_results)
                 
                 # Check pause request
                 while self._pause_requested:
                     time.sleep(0.1)
                     if self._stop_requested:
                         break
+
+                if self._stop_requested:
+                    return self._stopped_result(start_time, node_results)
                 
                 node = self.workflow.get_node(node_id)
                 if not node:
@@ -404,10 +438,13 @@ class WorkflowEngine(QObject):
                 
                 # Execute node
                 success = self._execute_node(node)
+
+                if self._stop_requested:
+                    return self._stopped_result(start_time, node_results)
                 
                 if not success:
                     self.state = EngineState.ERROR
-                    result = ExecutionResult(
+                    return ExecutionResult(
                         success=False,
                         message=tr_("Node '{name}' failed: {error}").format(
                             name=node.display_name,
@@ -416,8 +453,6 @@ class WorkflowEngine(QObject):
                         execution_time=time.time() - start_time,
                         node_results=node_results
                     )
-                    self.workflow_finished.emit(result)
-                    return result
                 
                 # Collect results
                 node_results[node_id] = {
@@ -426,26 +461,38 @@ class WorkflowEngine(QObject):
                 }
             
             self.state = EngineState.COMPLETED
-            result = ExecutionResult(
+            return ExecutionResult(
                 success=True,
                 message=tr_("Workflow finished"),
                 execution_time=time.time() - start_time,
                 node_results=node_results
             )
-            self.workflow_finished.emit(result)
-            return result
             
         except Exception as e:
             logger.exception("Workflow execution exception")
             self.state = EngineState.ERROR
             error_msg = tr_("Execution error: {error}").format(error=str(e))
-            self.workflow_error.emit(error_msg)
             return ExecutionResult(
                 success=False,
                 message=error_msg,
                 execution_time=time.time() - start_time,
-                node_results=node_results
+                node_results=node_results,
+                fatal_error=True,
             )
+
+    def _stopped_result(
+        self,
+        start_time: float,
+        node_results: Dict[str, Any],
+    ) -> ExecutionResult:
+        """Build the canonical result for a requested stop."""
+        self.state = EngineState.STOPPED
+        return ExecutionResult(
+            success=False,
+            message=tr_("Execution stopped"),
+            execution_time=time.time() - start_time,
+            node_results=node_results,
+        )
     
     def _execute_node(self, node: BaseNode) -> bool:
         """
@@ -457,6 +504,7 @@ class WorkflowEngine(QObject):
         Returns:
             Whether execution was successful
         """
+        self._active_node = node
         try:
             self.node_started.emit(node.node_id)
             node.state = NodeState.RUNNING
@@ -511,6 +559,9 @@ class WorkflowEngine(QObject):
             node.error_message = str(e)
             self.node_finished.emit(node.node_id, False)
             return False
+        finally:
+            if self._active_node is node:
+                self._active_node = None
     
     def _check_and_handle_breakpoint(self, node: BaseNode) -> bool:
         """
@@ -573,12 +624,43 @@ class WorkflowEngine(QObject):
         # Data is already stored in output ports, downstream nodes will get it via _collect_node_inputs
         pass
     
+    @Slot()
     def _on_worker_finished(self):
-        """Worker thread completion callback"""
+        """Finalize only the run that still owns the engine worker slot."""
+        worker = self.sender()
+        if not isinstance(worker, EngineWorker):
+            logger.error("Workflow worker finished without a valid sender")
+            return
+
+        if worker is not self._worker or worker.run_id != self._active_run_id:
+            logger.warning("Ignoring stale workflow worker callback for run %s", worker.run_id)
+            worker.deleteLater()
+            return
+
+        result = worker.result
+        if result is None:
+            result = ExecutionResult(
+                success=False,
+                message=tr_("Execution error"),
+                execution_time=0,
+                node_results={},
+                fatal_error=True,
+            )
+
+        logger.info("Workflow run %s worker finished", worker.run_id)
         self._worker = None
-        # Once the worker thread exits, the engine is ready for the next execution.
-        if self.state in (EngineState.COMPLETED, EngineState.ERROR, EngineState.STOPPED):
-            self.state = EngineState.IDLE
+        self._active_run_id = None
+        worker.deleteLater()
+        self._finalize_execution(result)
+
+    def _finalize_execution(self, result: ExecutionResult):
+        """Release terminal state before publishing the canonical result signal."""
+        self._active_node = None
+        self.state = EngineState.IDLE
+        if result.fatal_error:
+            self.workflow_error.emit(result.message)
+        else:
+            self.workflow_finished.emit(result)
     
     def get_node_output(self, node_id: str, port_name: str = None) -> Any:
         """
@@ -613,11 +695,13 @@ class WorkflowEngine(QObject):
 class EngineWorker(QThread):
     """Workflow execution thread"""
     
-    def __init__(self, engine: WorkflowEngine):
+    def __init__(self, engine: WorkflowEngine, run_id: int):
         super().__init__()
         self.engine = engine
+        self.run_id = run_id
+        self.result: Optional[ExecutionResult] = None
     
     def run(self):
         """Thread execution"""
-        self.engine._execute_pending_workflow()
+        self.result = self.engine._execute_pending_workflow()
 
