@@ -326,6 +326,10 @@ class BaseNode(ABC):
             True for execution success, False for failure
         """
         pass
+
+    def request_stop(self):
+        """Request cooperative cancellation; overrides must be thread-safe and prompt."""
+        pass
     
     def reset(self):
         """Reset node state"""

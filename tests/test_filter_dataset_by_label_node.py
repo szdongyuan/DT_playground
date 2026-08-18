@@ -1,3 +1,5 @@
+import logging
+
 import numpy as np
 import pytest
 
@@ -76,6 +78,33 @@ def test_filter_by_names_preserves_sample_order_and_reencodes_by_requested_order
     assert "removed 1" in statuses[-1]
     assert "NG=2" in statuses[-1]
     assert "OK=1" in statuses[-1]
+
+
+def test_filter_logs_one_summary_without_full_label_maps(caplog):
+    node = _node()
+    node.set_parameter("keep_labels", "OK")
+    _set_inputs(
+        node,
+        data=["audio-a", "audio-b"],
+        labels=[0, 1],
+        file_paths=["sensitive-a.wav", "sensitive-b.wav"],
+        label_map={
+            "label_names": {"OK": 0, "NG": 1},
+            "filename_map": {"sensitive-a.wav": 0, "sensitive-b.wav": 1},
+        },
+    )
+
+    with caplog.at_level(logging.INFO, logger="src.workflow.nodes.control"):
+        assert node.execute(), node.error_message
+
+    messages = [record.getMessage() for record in caplog.records]
+    assert len(messages) == 1
+    assert "input 2" in messages[0]
+    assert "kept 1" in messages[0]
+    assert "removed 1" in messages[0]
+    assert "OK=1" in messages[0]
+    assert "filename_map" not in messages[0]
+    assert "sensitive-a.wav" not in messages[0]
 
 
 def test_filter_without_mapping_matches_string_label_values():

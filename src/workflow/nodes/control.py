@@ -231,24 +231,6 @@ class FilterDatasetByLabelNode(BaseNode):
             )
             self.report_status(message)
             logger.info(message)
-            input_counts = self._count_labels(labels)
-            kept_counts = self._count_labels(
-                labels[index] for index in selected_indices
-            )
-            removed_counts = {
-                label: count - kept_counts.get(label, 0)
-                for label, count in input_counts.items()
-                if count - kept_counts.get(label, 0) > 0
-            }
-            logger.info(
-                "Dataset label filter details: input_counts=%s, kept_counts=%s, "
-                "removed_counts=%s, original_label_map=%s, output_label_map=%s",
-                self._named_counts(input_counts, label_map_input),
-                self._named_counts(kept_counts, label_map_input),
-                self._named_counts(removed_counts, label_map_input),
-                label_map_input,
-                filtered_label_map["label_names"],
-            )
             return True
         except (TypeError, ValueError) as exc:
             self.error_message = str(exc)
@@ -406,27 +388,6 @@ class FilterDatasetByLabelNode(BaseNode):
     @staticmethod
     def _format_values(values: List[Any]) -> str:
         return ", ".join(str(value) for value in values)
-
-    @staticmethod
-    def _count_labels(values) -> Dict[Any, int]:
-        counts: Dict[Any, int] = {}
-        for value in values:
-            counts[value] = counts.get(value, 0) + 1
-        return counts
-
-    @staticmethod
-    def _named_counts(counts: Dict[Any, int], label_map: Any) -> Dict[str, int]:
-        label_names = label_map.get("label_names") if isinstance(label_map, dict) else None
-        value_names = (
-            {value: name for name, value in label_names.items()}
-            if isinstance(label_names, dict)
-            else {}
-        )
-        return {
-            value_names.get(value, str(value)): count
-            for value, count in counts.items()
-        }
-
 
 @register_node
 class SplitNode(BaseNode):

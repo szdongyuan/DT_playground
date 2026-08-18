@@ -281,6 +281,11 @@ class WorkflowTabsView(QWidget):
         stop_enabled: bool,
         stop_text: Optional[str] = None,
     ) -> None:
+        self._running_controls = _RunControlsState(
+            run_enabled=run_enabled,
+            stop_enabled=stop_enabled,
+            stop_text=stop_text,
+        )
         if self._running_tab_index is None:
             self._toolbar.set_run_controls_state(
                 run_enabled=run_enabled,
@@ -289,11 +294,6 @@ class WorkflowTabsView(QWidget):
             )
             return
 
-        self._running_controls = _RunControlsState(
-            run_enabled=run_enabled,
-            stop_enabled=stop_enabled,
-            stop_text=stop_text,
-        )
         self._apply_toolbar_state_for_current_tab()
 
     # ===== Running tab tracking =====
@@ -541,6 +541,11 @@ class WorkflowTabsView(QWidget):
         if self._running_tab_index is None:
             if self._breakpoint_active:
                 self._toolbar.show_breakpoint_mode(False)
+            self._toolbar.set_run_controls_state(
+                run_enabled=self._running_controls.run_enabled,
+                stop_enabled=self._running_controls.stop_enabled,
+                stop_text=self._running_controls.stop_text,
+            )
             return
 
         if self.is_current_tab_running():
@@ -706,6 +711,16 @@ class WorkflowTabsView(QWidget):
             editor.delete_selected()
 
     def _on_stop_workflow(self):
+        if self._controller is not None and not self._controller.is_running():
+            self.clear_breakpoint_mode()
+            self.clear_running_tab()
+            self.set_run_controls_state(
+                run_enabled=True,
+                stop_enabled=False,
+                stop_text=None,
+            )
+            return
+
         self.set_run_controls_state(
             run_enabled=False,
             stop_enabled=False,
