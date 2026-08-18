@@ -21,6 +21,7 @@ build/
 dist/
 *.exe
 *.spec
+!SaltGenerator.spec
 
 # 补丁包
 patch/
