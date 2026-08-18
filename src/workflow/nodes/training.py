@@ -580,7 +580,7 @@ class TrainerNode(BaseNode):
                     batch_size=self.get_parameter("batch_size"),
                     validation_data=validation_data,
                     callbacks=callbacks,
-                    verbose=1
+                    verbose=0
                 )
             finally:
                 try:
