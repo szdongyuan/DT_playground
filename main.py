@@ -66,7 +66,7 @@ os.environ['QT_LOGGING_RULES'] = '*.debug=false;qt.qpa.*=false'
 os.environ['PYQTGRAPH_QT_LIB'] = 'PySide6'
 
 # 必须先导入Qt并创建QApplication
-from PySide6.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication, QMessageBox
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QFont, QIcon
 
@@ -103,6 +103,23 @@ def main():
     
     # 创建QApplication
     app = QApplication(sys.argv)
+
+    try:
+        from src.utils.config import config
+        from src.ui.i18n import install as install_i18n
+
+        install_i18n(config.get("ui.language", "zh_CN"))
+    except Exception:
+        # Never block license validation if i18n initialization fails.
+        pass
+
+    from src.license_validation import get_license_failure_text, validate_license
+
+    if not validate_license(app_root):
+        title, message = get_license_failure_text()
+        logger.error(message)
+        QMessageBox.critical(None, title, message)
+        return
 
     from src.ui.startup_splash import StartupSplash, get_app_icon_path
 
