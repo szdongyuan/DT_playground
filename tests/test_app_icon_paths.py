@@ -20,9 +20,22 @@ def test_get_app_icon_path_in_dev_mode(monkeypatch):
 
 def test_get_app_icon_path_in_frozen_mode(monkeypatch):
     exe_path = Path("D:/dist/AudioTrainingPlatform/AudioTrainingPlatform.exe")
-    expected_path = exe_path.parent / "assets" / "DTPG_logo.ico"
+    bundle_root = exe_path.parent / "_internal"
+    expected_path = bundle_root / "assets" / "DTPG_logo.ico"
 
     monkeypatch.setattr(startup_splash.sys, "frozen", True, raising=False)
     monkeypatch.setattr(startup_splash.sys, "executable", str(exe_path))
+    monkeypatch.setattr(startup_splash.sys, "_MEIPASS", str(bundle_root), raising=False)
+
+    assert startup_splash.get_app_icon_path() == expected_path
+
+
+def test_get_app_icon_path_in_frozen_mode_without_meipass(monkeypatch):
+    exe_path = Path("D:/dist/AudioTrainingPlatform/AudioTrainingPlatform.exe")
+    expected_path = exe_path.parent / "_internal" / "assets" / "DTPG_logo.ico"
+
+    monkeypatch.setattr(startup_splash.sys, "frozen", True, raising=False)
+    monkeypatch.setattr(startup_splash.sys, "executable", str(exe_path))
+    monkeypatch.delattr(startup_splash.sys, "_MEIPASS", raising=False)
 
     assert startup_splash.get_app_icon_path() == expected_path

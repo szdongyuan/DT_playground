@@ -14,9 +14,12 @@ from PySide6.QtWidgets import QApplication, QLabel, QProgressBar, QSplashScreen
 
 
 def get_app_root_path() -> Path:
-    """Return the portable app root path for dev and frozen runs."""
+    """Return the resource root path for development and frozen runs."""
     if getattr(sys, "frozen", False):
-        return Path(sys.executable).resolve().parent
+        bundle_root = getattr(sys, "_MEIPASS", None)
+        if bundle_root:
+            return Path(bundle_root).resolve()
+        return Path(sys.executable).resolve().parent / "_internal"
     return Path(__file__).resolve().parents[2]
 
 
