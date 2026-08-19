@@ -150,6 +150,14 @@ class TimeVaryingSoundLevelNode(_SoundLevelNode):
     def _setup_parameters(self):
         self._setup_common_parameters()
         self.add_parameter(
+            "sound_level_correction_db",
+            "float",
+            0.0,
+            display_name=tr_("Sound-level correction (dB)"),
+            min_value=-200.0,
+            max_value=200.0,
+        )
+        self.add_parameter(
             "calculation_mode",
             "choice",
             "sliding_leq",
@@ -214,6 +222,9 @@ class TimeVaryingSoundLevelNode(_SoundLevelNode):
     def _calculate_item(self, audio: AudioData) -> CurveData:
         pressure, warnings, metadata = self._prepare_audio(audio)
         _, reference_pressure, _, floor = self._common_values()
+        correction = float(self.get_parameter("sound_level_correction_db"))
+        if not np.isfinite(correction):
+            raise ValueError(tr_("Sound-level correction must be finite"))
         mode = self.get_parameter("calculation_mode")
         if mode == "sliding_leq":
             integration = float(self.get_parameter("integration_time_seconds"))
@@ -253,6 +264,8 @@ class TimeVaryingSoundLevelNode(_SoundLevelNode):
                 "output_step_seconds": step,
                 "startup_transient_seconds": time_constant,
             })
+        levels = np.maximum(levels + correction, floor)
+        metadata["sound_level_correction_db"] = correction
         metadata["warnings"] = warnings
         return CurveData(
             data=levels,

@@ -117,6 +117,94 @@ def test_calibration_factor_is_required_and_has_no_default():
     assert "Calibration factor" in message
 
 
+def test_sound_level_correction_parameter_is_scoped_and_bounded():
+    time_node = create_node("time_varying_sound_level")
+    frequency_node = create_node("steady_state_frequency_sound_level")
+    parameter = time_node.parameters["sound_level_correction_db"]
+    restored_old_node = type(time_node).from_dict({
+        "parameters": {"calibration_factor": 1.0},
+    })
+
+    assert time_node.get_parameter("sound_level_correction_db") == 0.0
+    assert restored_old_node.get_parameter("sound_level_correction_db") == 0.0
+    assert parameter.min_value == -200.0
+    assert parameter.max_value == 200.0
+    assert "sound_level_correction_db" not in frequency_node.parameters
+    assert time_node.set_parameter("sound_level_correction_db", -200.0)[0]
+    assert time_node.set_parameter("sound_level_correction_db", 200.0)[0]
+    assert not time_node.set_parameter("sound_level_correction_db", -200.1)[0]
+    assert not time_node.set_parameter("sound_level_correction_db", 200.1)[0]
+
+
+def test_sound_level_correction_rejects_non_finite_runtime_value():
+    node = create_node("time_varying_sound_level")
+    node.inputs["audio"].data = _tone(duration=2.0)
+    node.set_parameter("calibration_factor", 1.0)
+    node.set_parameter("sound_level_correction_db", float("nan"))
+
+    assert not node.execute()
+    assert node.error_message == "Sound-level correction must be finite"
+
+
+@pytest.mark.parametrize(
+    "calculation_mode,correction,mode_parameters",
+    [
+        (
+            "sliding_leq",
+            3.5,
+            {"integration_time_seconds": 1.0, "leq_step_seconds": 0.5},
+        ),
+        (
+            "exponential",
+            -6.0,
+            {"time_weighting": "fast", "exponential_step_seconds": 0.05},
+        ),
+    ],
+)
+def test_sound_level_correction_applies_to_all_channels_and_modes(
+    calculation_mode,
+    correction,
+    mode_parameters,
+):
+    audio = _tone(rms=0.05, duration=2.0, channels=2)
+    base = _run_node(
+        "time_varying_sound_level",
+        audio,
+        calibration_factor=1.0,
+        calculation_mode=calculation_mode,
+        **mode_parameters,
+    )
+    corrected = _run_node(
+        "time_varying_sound_level",
+        audio,
+        calibration_factor=1.0,
+        calculation_mode=calculation_mode,
+        sound_level_correction_db=correction,
+        **mode_parameters,
+    )
+
+    np.testing.assert_allclose(
+        corrected.data,
+        np.maximum(base.data + correction, -200.0),
+        atol=1.0e-10,
+    )
+    assert base.metadata["sound_level_correction_db"] == 0.0
+    assert corrected.metadata["sound_level_correction_db"] == correction
+
+
+def test_negative_sound_level_correction_respects_final_floor():
+    curve = _run_node(
+        "time_varying_sound_level",
+        AudioData(np.zeros((1, 8192), dtype=np.float32), 8192, "silent.wav"),
+        calibration_factor=1.0,
+        level_floor_db=-180.0,
+        sound_level_correction_db=-10.0,
+    )
+
+    np.testing.assert_allclose(curve.data, -180.0)
+    assert curve.metadata["sound_level_correction_db"] == -10.0
+
+
 def test_sliding_leq_matches_known_rms_and_calibration_scaling():
     audio = _tone(rms=0.1)
     first = _run_node(
@@ -167,6 +255,7 @@ def test_sound_level_batch_returns_one_curve_data_per_audio_record():
     node = create_node("time_varying_sound_level")
     node.inputs["audio"].data = [first, second]
     node.set_parameter("calibration_factor", 1.0)
+    node.set_parameter("sound_level_correction_db", 4.0)
 
     assert node.execute(), node.error_message
     output = node.outputs["curve"].data
@@ -175,6 +264,7 @@ def test_sound_level_batch_returns_one_curve_data_per_audio_record():
     assert len(output) == 2
     assert all(isinstance(item, CurveData) for item in output)
     assert [item.source_file for item in output] == ["first.wav", "second.wav"]
+    assert all(item.metadata["sound_level_correction_db"] == 4.0 for item in output)
 
 
 def test_fast_response_rises_faster_than_slow_response():

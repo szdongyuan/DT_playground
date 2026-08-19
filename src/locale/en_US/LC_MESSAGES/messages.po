@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-19 10:44+0800\n"
+"POT-Creation-Date: 2026-08-19 17:45+0800\n"
 "PO-Revision-Date: 2026-08-12 11:15+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1964,7 +1964,7 @@ msgstr "Settings"
 #: src/workflow/nodes/preprocessing.py:1138
 #: src/workflow/nodes/preprocessing.py:1139
 #: src/workflow/nodes/feature/acoustic.py:147
-#: src/workflow/nodes/feature/acoustic.py:285
+#: src/workflow/nodes/feature/acoustic.py:298
 #: src/workflow/nodes/feature/dim1d/fft.py:37
 #: src/workflow/nodes/feature/dim1d/pitch.py:38
 #: src/workflow/nodes/feature/dim1d/spectral_flatness.py:40
@@ -3174,7 +3174,7 @@ msgstr "  Median: {value:.6f}"
 
 #: src/ui/widgets/preview/feature_1d_preview.py:43
 #: src/ui/widgets/preview/feature_1d_preview.py:57
-#: src/workflow/nodes/feature/acoustic.py:511
+#: src/workflow/nodes/feature/acoustic.py:524
 msgid "1D feature"
 msgstr "1D feature"
 
@@ -3737,7 +3737,7 @@ msgstr "Decision count must match score count"
 msgid "Feature vectorizer"
 msgstr "Feature vectorizer"
 
-#: src/workflow/nodes/anomaly.py:154 src/workflow/nodes/feature/acoustic.py:490
+#: src/workflow/nodes/anomaly.py:154 src/workflow/nodes/feature/acoustic.py:503
 msgid "Feature post-processing"
 msgstr "Feature post-processing"
 
@@ -6300,7 +6300,7 @@ msgid "Time-varying total sound level"
 msgstr "Time-varying total sound level"
 
 #: src/workflow/nodes/feature/acoustic.py:140
-#: src/workflow/nodes/feature/acoustic.py:278
+#: src/workflow/nodes/feature/acoustic.py:291
 msgid "Acoustic analysis"
 msgstr "Acoustic analysis"
 
@@ -6309,188 +6309,196 @@ msgid "Calculate calibrated time-varying total sound pressure level"
 msgstr "Calculate calibrated time-varying total sound pressure level"
 
 #: src/workflow/nodes/feature/acoustic.py:148
-#: src/workflow/nodes/feature/acoustic.py:286
+#: src/workflow/nodes/feature/acoustic.py:299
 msgid "Sound-level curve"
 msgstr "Sound-level curve"
 
 #: src/workflow/nodes/feature/acoustic.py:156
+msgid "Sound-level correction (dB)"
+msgstr "Sound-level correction (dB)"
+
+#: src/workflow/nodes/feature/acoustic.py:164
 msgid "Calculation mode"
 msgstr "Calculation mode"
 
-#: src/workflow/nodes/feature/acoustic.py:163
+#: src/workflow/nodes/feature/acoustic.py:171
 msgid "Integration time (s)"
 msgstr "Integration time (s)"
 
-#: src/workflow/nodes/feature/acoustic.py:172
-#: src/workflow/nodes/feature/acoustic.py:189
+#: src/workflow/nodes/feature/acoustic.py:180
+#: src/workflow/nodes/feature/acoustic.py:197
 msgid "Output step (s)"
 msgstr "Output step (s)"
 
-#: src/workflow/nodes/feature/acoustic.py:181
+#: src/workflow/nodes/feature/acoustic.py:189
 msgid "Time weighting"
 msgstr "Time weighting"
 
-#: src/workflow/nodes/feature/acoustic.py:207
+#: src/workflow/nodes/feature/acoustic.py:215
 #, python-brace-format
 msgid ""
 "Time-varying sound level ready: {count} record(s), {warnings} warning(s)"
 msgstr ""
 "Time-varying sound level ready: {count} record(s), {warnings} warning(s)"
 
-#: src/workflow/nodes/feature/acoustic.py:260
+#: src/workflow/nodes/feature/acoustic.py:227
+msgid "Sound-level correction must be finite"
+msgstr "Sound-level correction must be finite"
+
+#: src/workflow/nodes/feature/acoustic.py:273
 msgid "Time"
 msgstr "Time"
 
-#: src/workflow/nodes/feature/acoustic.py:262
-#: src/workflow/nodes/feature/acoustic.py:474
+#: src/workflow/nodes/feature/acoustic.py:275
+#: src/workflow/nodes/feature/acoustic.py:487
 msgid "Sound pressure level"
 msgstr "Sound pressure level"
 
-#: src/workflow/nodes/feature/acoustic.py:276
+#: src/workflow/nodes/feature/acoustic.py:289
 msgid "Steady-state frequency sound level"
 msgstr "Steady-state frequency sound level"
 
-#: src/workflow/nodes/feature/acoustic.py:281
+#: src/workflow/nodes/feature/acoustic.py:294
 msgid ""
 "Calculate calibrated narrowband or fractional-octave sound pressure levels"
 msgstr ""
 "Calculate calibrated narrowband or fractional-octave sound pressure levels"
 
-#: src/workflow/nodes/feature/acoustic.py:294
+#: src/workflow/nodes/feature/acoustic.py:307
 msgid "Analysis type"
 msgstr "Analysis type"
 
-#: src/workflow/nodes/feature/acoustic.py:301
+#: src/workflow/nodes/feature/acoustic.py:314
 msgid "Spectral estimator"
 msgstr "Spectral estimator"
 
-#: src/workflow/nodes/feature/acoustic.py:309
+#: src/workflow/nodes/feature/acoustic.py:322
 #: src/workflow/nodes/feature/dim1d/fft.py:43
 msgid "FFT size"
 msgstr "FFT size"
 
-#: src/workflow/nodes/feature/acoustic.py:317
+#: src/workflow/nodes/feature/acoustic.py:330
 msgid "Window"
 msgstr "Window"
 
-#: src/workflow/nodes/feature/acoustic.py:328
+#: src/workflow/nodes/feature/acoustic.py:341
 msgid "Welch segment length"
 msgstr "Welch segment length"
 
-#: src/workflow/nodes/feature/acoustic.py:337
+#: src/workflow/nodes/feature/acoustic.py:350
 msgid "Welch overlap (%)"
 msgstr "Welch overlap (%)"
 
-#: src/workflow/nodes/feature/acoustic.py:346
+#: src/workflow/nodes/feature/acoustic.py:359
 msgid "Welch average"
 msgstr "Welch average"
 
-#: src/workflow/nodes/feature/acoustic.py:354
+#: src/workflow/nodes/feature/acoustic.py:367
 msgid "Octave-band fraction"
 msgstr "Octave-band fraction"
 
-#: src/workflow/nodes/feature/acoustic.py:362
+#: src/workflow/nodes/feature/acoustic.py:375
 msgid "Minimum frequency (Hz)"
 msgstr "Minimum frequency (Hz)"
 
-#: src/workflow/nodes/feature/acoustic.py:370
+#: src/workflow/nodes/feature/acoustic.py:383
 msgid "Maximum frequency (Hz)"
 msgstr "Maximum frequency (Hz)"
 
-#: src/workflow/nodes/feature/acoustic.py:382
+#: src/workflow/nodes/feature/acoustic.py:395
 msgid "Minimum frequency must be lower than maximum frequency"
 msgstr "Minimum frequency must be lower than maximum frequency"
 
-#: src/workflow/nodes/feature/acoustic.py:397
+#: src/workflow/nodes/feature/acoustic.py:410
 #, python-brace-format
 msgid "Frequency sound level ready: {count} record(s), {warnings} warning(s)"
 msgstr "Frequency sound level ready: {count} record(s), {warnings} warning(s)"
 
-#: src/workflow/nodes/feature/acoustic.py:411
+#: src/workflow/nodes/feature/acoustic.py:424
 msgid "Frequency range must overlap the audio Nyquist range"
 msgstr "Frequency range must overlap the audio Nyquist range"
 
-#: src/workflow/nodes/feature/acoustic.py:414
+#: src/workflow/nodes/feature/acoustic.py:427
 #, python-brace-format
 msgid ""
 "Maximum frequency was limited to the Nyquist frequency ({frequency:.3f} Hz)"
 msgstr ""
 "Maximum frequency was limited to the Nyquist frequency ({frequency:.3f} Hz)"
 
-#: src/workflow/nodes/feature/acoustic.py:472
+#: src/workflow/nodes/feature/acoustic.py:485
 msgid "Frequency"
 msgstr "Frequency"
 
-#: src/workflow/nodes/feature/acoustic.py:488
+#: src/workflow/nodes/feature/acoustic.py:501
 msgid "Curve to 1D feature"
 msgstr "Curve to 1D feature"
 
-#: src/workflow/nodes/feature/acoustic.py:493
+#: src/workflow/nodes/feature/acoustic.py:506
 msgid "Preserve complete aligned curves as AI-ready one-dimensional features"
 msgstr "Preserve complete aligned curves as AI-ready one-dimensional features"
 
-#: src/workflow/nodes/feature/acoustic.py:510
+#: src/workflow/nodes/feature/acoustic.py:523
 msgid "Curve"
 msgstr "Curve"
 
-#: src/workflow/nodes/feature/acoustic.py:518
+#: src/workflow/nodes/feature/acoustic.py:531
 msgid "Alignment mode"
 msgstr "Alignment mode"
 
-#: src/workflow/nodes/feature/acoustic.py:525
+#: src/workflow/nodes/feature/acoustic.py:538
 msgid "Target points"
 msgstr "Target points"
 
-#: src/workflow/nodes/feature/acoustic.py:534
+#: src/workflow/nodes/feature/acoustic.py:547
 msgid "Grid spacing"
 msgstr "Grid spacing"
 
-#: src/workflow/nodes/feature/acoustic.py:542
+#: src/workflow/nodes/feature/acoustic.py:555
 msgid "Grid start (automatic when empty)"
 msgstr "Grid start (automatic when empty)"
 
-#: src/workflow/nodes/feature/acoustic.py:550
+#: src/workflow/nodes/feature/acoustic.py:563
 msgid "Grid end (automatic when empty)"
 msgstr "Grid end (automatic when empty)"
 
-#: src/workflow/nodes/feature/acoustic.py:570
+#: src/workflow/nodes/feature/acoustic.py:583
 #, python-brace-format
 msgid "Curve features ready: {count} sample(s), {points} points"
 msgstr "Curve features ready: {count} sample(s), {points} points"
 
-#: src/workflow/nodes/feature/acoustic.py:582
+#: src/workflow/nodes/feature/acoustic.py:595
 #, python-brace-format
 msgid "Curve sample {index} contains NaN or infinite values"
 msgstr "Curve sample {index} contains NaN or infinite values"
 
-#: src/workflow/nodes/feature/acoustic.py:586
+#: src/workflow/nodes/feature/acoustic.py:599
 #, python-brace-format
 msgid "Curve sample {index} has a different channel count"
 msgstr "Curve sample {index} has a different channel count"
 
-#: src/workflow/nodes/feature/acoustic.py:593
+#: src/workflow/nodes/feature/acoustic.py:606
 #, python-brace-format
 msgid "Curve sample {index} differs in '{field}'"
 msgstr "Curve sample {index} differs in '{field}'"
 
-#: src/workflow/nodes/feature/acoustic.py:617
+#: src/workflow/nodes/feature/acoustic.py:630
 #, python-brace-format
 msgid "Curve sample {index} has different physical coordinates"
 msgstr "Curve sample {index} has different physical coordinates"
 
-#: src/workflow/nodes/feature/acoustic.py:624
+#: src/workflow/nodes/feature/acoustic.py:637
 msgid "Fractional-octave curves cannot be resampled between band grids"
 msgstr "Fractional-octave curves cannot be resampled between band grids"
 
-#: src/workflow/nodes/feature/acoustic.py:630
+#: src/workflow/nodes/feature/acoustic.py:643
 msgid "The fixed curve grid must have a finite increasing range"
 msgstr "The fixed curve grid must have a finite increasing range"
 
-#: src/workflow/nodes/feature/acoustic.py:632
+#: src/workflow/nodes/feature/acoustic.py:645
 msgid "The fixed curve grid must lie inside every source curve"
 msgstr "The fixed curve grid must lie inside every source curve"
 
-#: src/workflow/nodes/feature/acoustic.py:637
+#: src/workflow/nodes/feature/acoustic.py:650
 msgid "Logarithmic curve grids require a positive start"
 msgstr "Logarithmic curve grids require a positive start"
 

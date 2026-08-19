@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-19 10:44+0800\n"
+"POT-Creation-Date: 2026-08-19 17:45+0800\n"
 "PO-Revision-Date: 2026-02-04 17:15+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1961,7 +1961,7 @@ msgstr "设置"
 #: src/workflow/nodes/preprocessing.py:1138
 #: src/workflow/nodes/preprocessing.py:1139
 #: src/workflow/nodes/feature/acoustic.py:147
-#: src/workflow/nodes/feature/acoustic.py:285
+#: src/workflow/nodes/feature/acoustic.py:298
 #: src/workflow/nodes/feature/dim1d/fft.py:37
 #: src/workflow/nodes/feature/dim1d/pitch.py:38
 #: src/workflow/nodes/feature/dim1d/spectral_flatness.py:40
@@ -3173,7 +3173,7 @@ msgstr "  中位数：{value:.6f}"
 
 #: src/ui/widgets/preview/feature_1d_preview.py:43
 #: src/ui/widgets/preview/feature_1d_preview.py:57
-#: src/workflow/nodes/feature/acoustic.py:511
+#: src/workflow/nodes/feature/acoustic.py:524
 msgid "1D feature"
 msgstr "1D 特征"
 
@@ -3732,7 +3732,7 @@ msgstr "判定数量必须与分数数量一致"
 msgid "Feature vectorizer"
 msgstr "特征向量化"
 
-#: src/workflow/nodes/anomaly.py:154 src/workflow/nodes/feature/acoustic.py:490
+#: src/workflow/nodes/anomaly.py:154 src/workflow/nodes/feature/acoustic.py:503
 msgid "Feature post-processing"
 msgstr "特征后处理"
 
@@ -6266,7 +6266,7 @@ msgid "Time-varying total sound level"
 msgstr "时变总声压级"
 
 #: src/workflow/nodes/feature/acoustic.py:140
-#: src/workflow/nodes/feature/acoustic.py:278
+#: src/workflow/nodes/feature/acoustic.py:291
 msgid "Acoustic analysis"
 msgstr "声学分析"
 
@@ -6275,185 +6275,193 @@ msgid "Calculate calibrated time-varying total sound pressure level"
 msgstr "计算经过校准的时变总声压级"
 
 #: src/workflow/nodes/feature/acoustic.py:148
-#: src/workflow/nodes/feature/acoustic.py:286
+#: src/workflow/nodes/feature/acoustic.py:299
 msgid "Sound-level curve"
 msgstr "声压级曲线"
 
 #: src/workflow/nodes/feature/acoustic.py:156
+msgid "Sound-level correction (dB)"
+msgstr "声压级修正（dB）"
+
+#: src/workflow/nodes/feature/acoustic.py:164
 msgid "Calculation mode"
 msgstr "计算模式"
 
-#: src/workflow/nodes/feature/acoustic.py:163
+#: src/workflow/nodes/feature/acoustic.py:171
 msgid "Integration time (s)"
 msgstr "积分时间（s）"
 
-#: src/workflow/nodes/feature/acoustic.py:172
-#: src/workflow/nodes/feature/acoustic.py:189
+#: src/workflow/nodes/feature/acoustic.py:180
+#: src/workflow/nodes/feature/acoustic.py:197
 msgid "Output step (s)"
 msgstr "输出步长（s）"
 
-#: src/workflow/nodes/feature/acoustic.py:181
+#: src/workflow/nodes/feature/acoustic.py:189
 msgid "Time weighting"
 msgstr "时间计权"
 
-#: src/workflow/nodes/feature/acoustic.py:207
+#: src/workflow/nodes/feature/acoustic.py:215
 #, python-brace-format
 msgid ""
 "Time-varying sound level ready: {count} record(s), {warnings} warning(s)"
 msgstr "时变声压级已就绪：{count} 条记录，{warnings} 条警告"
 
-#: src/workflow/nodes/feature/acoustic.py:260
+#: src/workflow/nodes/feature/acoustic.py:227
+msgid "Sound-level correction must be finite"
+msgstr "声压级修正必须是有限数值"
+
+#: src/workflow/nodes/feature/acoustic.py:273
 msgid "Time"
 msgstr "时间"
 
-#: src/workflow/nodes/feature/acoustic.py:262
-#: src/workflow/nodes/feature/acoustic.py:474
+#: src/workflow/nodes/feature/acoustic.py:275
+#: src/workflow/nodes/feature/acoustic.py:487
 msgid "Sound pressure level"
 msgstr "声压级"
 
-#: src/workflow/nodes/feature/acoustic.py:276
+#: src/workflow/nodes/feature/acoustic.py:289
 msgid "Steady-state frequency sound level"
 msgstr "稳态频率声压级"
 
-#: src/workflow/nodes/feature/acoustic.py:281
+#: src/workflow/nodes/feature/acoustic.py:294
 msgid ""
 "Calculate calibrated narrowband or fractional-octave sound pressure levels"
 msgstr "计算经过校准的窄带或分数倍频程声压级"
 
-#: src/workflow/nodes/feature/acoustic.py:294
+#: src/workflow/nodes/feature/acoustic.py:307
 msgid "Analysis type"
 msgstr "分析类型"
 
-#: src/workflow/nodes/feature/acoustic.py:301
+#: src/workflow/nodes/feature/acoustic.py:314
 msgid "Spectral estimator"
 msgstr "频谱估计方法"
 
-#: src/workflow/nodes/feature/acoustic.py:309
+#: src/workflow/nodes/feature/acoustic.py:322
 #: src/workflow/nodes/feature/dim1d/fft.py:43
 msgid "FFT size"
 msgstr "FFT 大小"
 
-#: src/workflow/nodes/feature/acoustic.py:317
+#: src/workflow/nodes/feature/acoustic.py:330
 msgid "Window"
 msgstr "窗函数"
 
-#: src/workflow/nodes/feature/acoustic.py:328
+#: src/workflow/nodes/feature/acoustic.py:341
 msgid "Welch segment length"
 msgstr "Welch 分段长度"
 
-#: src/workflow/nodes/feature/acoustic.py:337
+#: src/workflow/nodes/feature/acoustic.py:350
 msgid "Welch overlap (%)"
 msgstr "Welch 重叠率（%）"
 
-#: src/workflow/nodes/feature/acoustic.py:346
+#: src/workflow/nodes/feature/acoustic.py:359
 msgid "Welch average"
 msgstr "Welch 平均方式"
 
-#: src/workflow/nodes/feature/acoustic.py:354
+#: src/workflow/nodes/feature/acoustic.py:367
 msgid "Octave-band fraction"
 msgstr "倍频程分数"
 
-#: src/workflow/nodes/feature/acoustic.py:362
+#: src/workflow/nodes/feature/acoustic.py:375
 msgid "Minimum frequency (Hz)"
 msgstr "最低频率（Hz）"
 
-#: src/workflow/nodes/feature/acoustic.py:370
+#: src/workflow/nodes/feature/acoustic.py:383
 msgid "Maximum frequency (Hz)"
 msgstr "最高频率（Hz）"
 
-#: src/workflow/nodes/feature/acoustic.py:382
+#: src/workflow/nodes/feature/acoustic.py:395
 msgid "Minimum frequency must be lower than maximum frequency"
 msgstr "最低频率必须小于最高频率"
 
-#: src/workflow/nodes/feature/acoustic.py:397
+#: src/workflow/nodes/feature/acoustic.py:410
 #, python-brace-format
 msgid "Frequency sound level ready: {count} record(s), {warnings} warning(s)"
 msgstr "频率声压级已就绪：{count} 条记录，{warnings} 条警告"
 
-#: src/workflow/nodes/feature/acoustic.py:411
+#: src/workflow/nodes/feature/acoustic.py:424
 msgid "Frequency range must overlap the audio Nyquist range"
 msgstr "频率范围必须与音频的奈奎斯特范围重叠"
 
-#: src/workflow/nodes/feature/acoustic.py:414
+#: src/workflow/nodes/feature/acoustic.py:427
 #, python-brace-format
 msgid ""
 "Maximum frequency was limited to the Nyquist frequency ({frequency:.3f} Hz)"
 msgstr "最高频率已限制为奈奎斯特频率（{frequency:.3f} Hz）"
 
-#: src/workflow/nodes/feature/acoustic.py:472
+#: src/workflow/nodes/feature/acoustic.py:485
 msgid "Frequency"
 msgstr "频率"
 
-#: src/workflow/nodes/feature/acoustic.py:488
+#: src/workflow/nodes/feature/acoustic.py:501
 msgid "Curve to 1D feature"
 msgstr "曲线转一维特征"
 
-#: src/workflow/nodes/feature/acoustic.py:493
+#: src/workflow/nodes/feature/acoustic.py:506
 msgid "Preserve complete aligned curves as AI-ready one-dimensional features"
 msgstr "将完整且已对齐的曲线保留为可供 AI 使用的一维特征"
 
-#: src/workflow/nodes/feature/acoustic.py:510
+#: src/workflow/nodes/feature/acoustic.py:523
 msgid "Curve"
 msgstr "曲线"
 
-#: src/workflow/nodes/feature/acoustic.py:518
+#: src/workflow/nodes/feature/acoustic.py:531
 msgid "Alignment mode"
 msgstr "对齐模式"
 
-#: src/workflow/nodes/feature/acoustic.py:525
+#: src/workflow/nodes/feature/acoustic.py:538
 msgid "Target points"
 msgstr "目标点数"
 
-#: src/workflow/nodes/feature/acoustic.py:534
+#: src/workflow/nodes/feature/acoustic.py:547
 msgid "Grid spacing"
 msgstr "网格间距"
 
-#: src/workflow/nodes/feature/acoustic.py:542
+#: src/workflow/nodes/feature/acoustic.py:555
 msgid "Grid start (automatic when empty)"
 msgstr "网格起点（留空时自动）"
 
-#: src/workflow/nodes/feature/acoustic.py:550
+#: src/workflow/nodes/feature/acoustic.py:563
 msgid "Grid end (automatic when empty)"
 msgstr "网格终点（留空时自动）"
 
-#: src/workflow/nodes/feature/acoustic.py:570
+#: src/workflow/nodes/feature/acoustic.py:583
 #, python-brace-format
 msgid "Curve features ready: {count} sample(s), {points} points"
 msgstr "曲线特征已就绪：{count} 个样本，{points} 个点"
 
-#: src/workflow/nodes/feature/acoustic.py:582
+#: src/workflow/nodes/feature/acoustic.py:595
 #, python-brace-format
 msgid "Curve sample {index} contains NaN or infinite values"
 msgstr "曲线样本 {index} 包含 NaN 或无穷值"
 
-#: src/workflow/nodes/feature/acoustic.py:586
+#: src/workflow/nodes/feature/acoustic.py:599
 #, python-brace-format
 msgid "Curve sample {index} has a different channel count"
 msgstr "曲线样本 {index} 的通道数不同"
 
-#: src/workflow/nodes/feature/acoustic.py:593
+#: src/workflow/nodes/feature/acoustic.py:606
 #, python-brace-format
 msgid "Curve sample {index} differs in '{field}'"
 msgstr "曲线样本 {index} 的“{field}”不同"
 
-#: src/workflow/nodes/feature/acoustic.py:617
+#: src/workflow/nodes/feature/acoustic.py:630
 #, python-brace-format
 msgid "Curve sample {index} has different physical coordinates"
 msgstr "曲线样本 {index} 的物理坐标不同"
 
-#: src/workflow/nodes/feature/acoustic.py:624
+#: src/workflow/nodes/feature/acoustic.py:637
 msgid "Fractional-octave curves cannot be resampled between band grids"
 msgstr "分数倍频程曲线不能在不同频带网格之间重采样"
 
-#: src/workflow/nodes/feature/acoustic.py:630
+#: src/workflow/nodes/feature/acoustic.py:643
 msgid "The fixed curve grid must have a finite increasing range"
 msgstr "固定曲线网格必须具有有限且递增的范围"
 
-#: src/workflow/nodes/feature/acoustic.py:632
+#: src/workflow/nodes/feature/acoustic.py:645
 msgid "The fixed curve grid must lie inside every source curve"
 msgstr "固定曲线网格必须位于每条源曲线的范围内"
 
-#: src/workflow/nodes/feature/acoustic.py:637
+#: src/workflow/nodes/feature/acoustic.py:650
 msgid "Logarithmic curve grids require a positive start"
 msgstr "对数曲线网格要求起点为正数"
 
