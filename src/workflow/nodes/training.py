@@ -13,6 +13,8 @@ from typing import Any, Dict, List, Optional
 from ..node_base import BaseNode, NodeCategory, register_node
 from ..port import DataType
 from src.ui.i18n import tr_
+from src.utils.runtime import get_training_verbose
+
 logger = logging.getLogger(__name__)
 
 
@@ -580,7 +582,7 @@ class TrainerNode(BaseNode):
                     batch_size=self.get_parameter("batch_size"),
                     validation_data=validation_data,
                     callbacks=callbacks,
-                    verbose=1
+                    verbose=get_training_verbose()
                 )
             finally:
                 try:
