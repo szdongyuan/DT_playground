@@ -21,6 +21,9 @@ from tensorflow import keras
 # 从 callbacks 模块导入基础回调
 from .callbacks import TrainingCallback as BaseTrainingCallback
 from src.ui.i18n import tr_
+from src.utils.runtime import get_training_verbose
+
+
 class TrainerCallback(BaseTrainingCallback):
     """
     TrainerWorker 专用回调
@@ -195,7 +198,7 @@ class TrainerWorker(QThread):
                     validation_data=self.val_data,
                     epochs=epochs,
                     callbacks=callbacks,
-                    verbose=0
+                    verbose=get_training_verbose()
                 )
             else:
                 # 数组数据
@@ -208,7 +211,7 @@ class TrainerWorker(QThread):
                     batch_size=batch_size,
                     epochs=epochs,
                     callbacks=callbacks,
-                    verbose=0
+                    verbose=get_training_verbose()
                 )
             
             # 返回训练历史
@@ -481,7 +484,7 @@ class TrainingPipeline:
             validation_data=val_data,
             epochs=epochs,
             callbacks=callbacks,
-            verbose=1
+            verbose=get_training_verbose()
         )
         
         self.history = history.history
