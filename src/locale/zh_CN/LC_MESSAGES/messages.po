@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-19 17:45+0800\n"
+"POT-Creation-Date: 2026-08-19 18:01+0800\n"
 "PO-Revision-Date: 2026-02-04 17:15+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -73,6 +73,7 @@ msgstr ""
 "(*)"
 
 #: src/app.py:374 src/ui/dialogs/export_dialog.py:191
+#: src/ui/widgets/preview/multi_curve_preview.py:485
 msgid "Success"
 msgstr "成功"
 
@@ -1800,6 +1801,7 @@ msgstr "验证/测试"
 
 #: src/ui/dialogs/dataset_dialog.py:158 src/ui/dialogs/export_dialog.py:106
 #: src/ui/dialogs/settings_dialog.py:60
+#: src/ui/widgets/preview/multi_curve_export.py:254
 msgid "Cancel"
 msgstr "取消"
 
@@ -1875,6 +1877,7 @@ msgid "Export weights only"
 msgstr "仅导出权重"
 
 #: src/ui/dialogs/export_dialog.py:110
+#: src/ui/widgets/preview/multi_curve_export.py:251
 msgid "Export"
 msgstr "导出"
 
@@ -2776,7 +2779,7 @@ msgstr "指标"
 #: src/ui/views/training_view.py:133
 #: src/ui/widgets/preview/feature_1d_preview.py:74
 #: src/ui/widgets/preview/metrics_preview.py:70
-#: src/ui/widgets/preview/multi_curve_preview.py:117
+#: src/ui/widgets/preview/multi_curve_preview.py:128
 #: src/workflow/nodes/visualization.py:331
 #: src/workflow/nodes/visualization.py:382
 msgid "Value"
@@ -3043,7 +3046,7 @@ msgstr "数量"
 #: src/ui/widgets/preview/feature_1d_preview.py:85
 #: src/ui/widgets/preview/label_preview.py:105
 #: src/ui/widgets/preview/metrics_preview.py:75
-#: src/ui/widgets/preview/multi_curve_preview.py:126
+#: src/ui/widgets/preview/multi_curve_preview.py:137
 msgid "Please install pyqtgraph to display charts"
 msgstr "请安装 pyqtgraph 以显示图表"
 
@@ -3393,46 +3396,157 @@ msgstr "❌ 未编译"
 msgid "Compile status"
 msgstr "编译状态"
 
-#: src/ui/widgets/preview/multi_curve_preview.py:53
+#: src/ui/widgets/preview/multi_curve_export.py:47
+msgid "Select at least one curve to export"
+msgstr "请至少选择一条要导出的曲线"
+
+#: src/ui/widgets/preview/multi_curve_export.py:55
+#, python-brace-format
+msgid "Curve {name} must contain one-dimensional coordinates"
+msgstr "曲线 {name} 的坐标必须为一维"
+
+#: src/ui/widgets/preview/multi_curve_export.py:61
+#, python-brace-format
+msgid "Curve {name} contains no exportable points"
+msgstr "曲线 {name} 没有可导出的数据点"
+
+#: src/ui/widgets/preview/multi_curve_export.py:67
+#, python-brace-format
+msgid "Curve {name} has mismatched coordinate and value lengths"
+msgstr "曲线 {name} 的坐标和值长度不一致"
+
+#: src/ui/widgets/preview/multi_curve_export.py:73
+#, python-brace-format
+msgid "Curve {name} contains non-finite export values"
+msgstr "曲线 {name} 包含非有限导出值"
+
+#: src/ui/widgets/preview/multi_curve_export.py:169
+msgid "Export curves to CSV"
+msgstr "将曲线导出为 CSV"
+
+#: src/ui/widgets/preview/multi_curve_export.py:201
+msgid "Select visible curves and edit their CSV column names."
+msgstr "选择可见曲线并编辑其 CSV 列名。"
+
+#: src/ui/widgets/preview/multi_curve_export.py:204
+msgid "Select all"
+msgstr "全选"
+
+#: src/ui/widgets/preview/multi_curve_export.py:220
+msgid "Summary curves"
+msgstr "统计曲线"
+
+#: src/ui/widgets/preview/multi_curve_export.py:236
+msgid "Original curves"
+msgstr "原始曲线"
+
+#: src/ui/widgets/preview/multi_curve_export.py:279
+msgid "CSV column name"
+msgstr "CSV 列名"
+
+#: src/ui/widgets/preview/multi_curve_preview.py:64
 #: src/workflow/nodes/visualization.py:419
 msgid "Multi-curve viewer"
 msgstr "多曲线查看器"
 
-#: src/ui/widgets/preview/multi_curve_preview.py:97
+#: src/ui/widgets/preview/multi_curve_preview.py:108
 msgid "Data series"
 msgstr "数据系列"
 
-#: src/ui/widgets/preview/multi_curve_preview.py:100
+#: src/ui/widgets/preview/multi_curve_preview.py:111
 msgid "Search series..."
 msgstr "搜索数据系列..."
 
-#: src/ui/widgets/preview/multi_curve_preview.py:150
+#: src/ui/widgets/preview/multi_curve_preview.py:153
+#: src/ui/widgets/preview/multi_curve_preview.py:452
+#: src/ui/widgets/preview/multi_curve_preview.py:478
+msgid "Export CSV"
+msgstr "导出 CSV"
+
+#: src/ui/widgets/preview/multi_curve_preview.py:156
+#: src/ui/widgets/preview/multi_curve_preview.py:430
+#: src/ui/widgets/preview/multi_curve_preview.py:444
+#: src/ui/widgets/preview/multi_curve_preview.py:497
+msgid "No summary curves are available to export"
+msgstr "当前没有可导出的统计曲线"
+
+#: src/ui/widgets/preview/multi_curve_preview.py:174
 #, python-brace-format
 msgid "MULTI_CURVE  curves={curves}"
 msgstr "多曲线  曲线数={curves}"
 
-#: src/ui/widgets/preview/multi_curve_preview.py:282
+#: src/ui/widgets/preview/multi_curve_preview.py:306
 msgid "Aggregate"
 msgstr "汇总"
 
-#: src/ui/widgets/preview/multi_curve_preview.py:310
+#: src/ui/widgets/preview/multi_curve_preview.py:334
 #, python-brace-format
 msgid "{visible} / {total} curves visible"
 msgstr "已显示 {visible} / {total} 条曲线"
 
-#: src/ui/widgets/preview/multi_curve_preview.py:315
+#: src/ui/widgets/preview/multi_curve_preview.py:339
 #, python-brace-format
 msgid "{total} curves"
 msgstr "{total} 条曲线"
 
-#: src/ui/widgets/preview/multi_curve_preview.py:318
+#: src/ui/widgets/preview/multi_curve_preview.py:342
 msgid "display downsampling active"
 msgstr "已启用显示降采样"
 
-#: src/ui/widgets/preview/multi_curve_preview.py:323
+#: src/ui/widgets/preview/multi_curve_preview.py:347
 #, python-brace-format
 msgid "{count} more warning(s)"
 msgstr "另有 {count} 条警告"
+
+#: src/ui/widgets/preview/multi_curve_preview.py:368
+msgid "Mean curve"
+msgstr "平均曲线"
+
+#: src/ui/widgets/preview/multi_curve_preview.py:371
+msgid "Median curve"
+msgstr "中位曲线"
+
+#: src/ui/widgets/preview/multi_curve_preview.py:390
+msgid "Lower variability bound"
+msgstr "波动下界"
+
+#: src/ui/widgets/preview/multi_curve_preview.py:400
+msgid "Upper variability bound"
+msgstr "波动上界"
+
+#: src/ui/widgets/preview/multi_curve_preview.py:442
+msgid "High-performance mode exports summary curves only"
+msgstr "高性能模式仅导出统计曲线"
+
+#: src/ui/widgets/preview/multi_curve_preview.py:453
+msgid "No visible curves are available for export."
+msgstr "没有可导出的可见曲线。"
+
+#: src/ui/widgets/preview/multi_curve_preview.py:464
+msgid "Save curve CSV"
+msgstr "保存曲线 CSV"
+
+#: src/ui/widgets/preview/multi_curve_preview.py:466
+msgid "CSV files (*.csv)"
+msgstr "CSV 文件 (*.csv)"
+
+#: src/ui/widgets/preview/multi_curve_preview.py:479
+#, python-brace-format
+msgid ""
+"Failed to export curve data:\n"
+"{error}"
+msgstr ""
+"曲线数据导出失败：\n"
+"{error}"
+
+#: src/ui/widgets/preview/multi_curve_preview.py:486
+#, python-brace-format
+msgid ""
+"Curve data exported to:\n"
+"{path}"
+msgstr ""
+"曲线数据已导出到：\n"
+"{path}"
 
 #: src/utils/dataset_manager.py:169
 msgid "No dataset loaded"

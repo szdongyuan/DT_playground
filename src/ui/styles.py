@@ -63,8 +63,38 @@ class Styles:
         'waiting': '⏸️',
     }
     
+    # ===== Checkbox controls =====
+    CHECKBOX_CONTROLS = """
+        QCheckBox {
+            color: #cdd6f4;
+            spacing: 8px;
+        }
+        QCheckBox::indicator {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #7f849c;
+            border-radius: 3px;
+            background-color: #313244;
+        }
+        QCheckBox::indicator:hover {
+            border-color: #89b4fa;
+        }
+        QCheckBox::indicator:checked {
+            background-color: #89b4fa;
+            border-color: #b4befe;
+        }
+        QCheckBox::indicator:indeterminate {
+            background-color: #89b4fa;
+            border-color: #f9e2af;
+        }
+        QCheckBox::indicator:disabled {
+            background-color: #313244;
+            border-color: #45475a;
+        }
+    """
+
     # ===== 通用表单控件样式 =====
-    FORM_CONTROLS = """
+    FORM_CONTROLS = CHECKBOX_CONTROLS + """
         QLabel {
             color: #cdd6f4;
         }
@@ -95,21 +125,6 @@ class Styles:
             background-color: #313244;
             color: #cdd6f4;
             selection-background-color: #45475a;
-        }
-        QCheckBox {
-            color: #cdd6f4;
-            spacing: 8px;
-        }
-        QCheckBox::indicator {
-            width: 16px;
-            height: 16px;
-            border: 1px solid #45475a;
-            border-radius: 3px;
-            background-color: #313244;
-        }
-        QCheckBox::indicator:checked {
-            background-color: #89b4fa;
-            border-color: #89b4fa;
         }
         QPushButton {
             background-color: #45475a;

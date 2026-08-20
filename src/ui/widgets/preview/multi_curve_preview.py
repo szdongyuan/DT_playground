@@ -3,16 +3,22 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any, List, Optional
 
 import numpy as np
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QFont
 from PySide6.QtWidgets import (
+    QDialog,
+    QFileDialog,
+    QHBoxLayout,
     QLabel,
     QLineEdit,
     QListWidget,
     QListWidgetItem,
+    QMessageBox,
+    QPushButton,
     QSplitter,
     QVBoxLayout,
     QWidget,
@@ -23,6 +29,11 @@ from src.ui.styles import Styles
 from src.workflow.nodes.visualization import MultiCurvePreviewData
 
 from .base_preview import BasePreviewWidget, register_preview
+from .multi_curve_export import (
+    CurveExportItem,
+    MultiCurveExportDialog,
+    write_curve_csv,
+)
 
 try:
     import pyqtgraph as pg
@@ -131,11 +142,23 @@ class MultiCurvePreviewWidget(BasePreviewWidget):
         splitter.setStretchFactor(1, 1)
         layout.addWidget(splitter, 1)
 
+        status_layout = QHBoxLayout()
+        status_layout.setContentsMargins(0, 0, 0, 0)
         self._status_label = QLabel()
         self._status_label.setStyleSheet(
             f"color: {Styles.COLORS['subtext1']}; padding: 4px;"
         )
-        layout.addWidget(self._status_label)
+        status_layout.addWidget(self._status_label, 1)
+
+        self._export_csv_button = QPushButton(tr_("Export CSV"))
+        self._export_csv_button.setStyleSheet(Styles.FORM_CONTROLS)
+        self._export_csv_button.setToolTip(
+            tr_("No summary curves are available to export")
+        )
+        self._export_csv_button.setEnabled(False)
+        self._export_csv_button.clicked.connect(self._export_csv)
+        status_layout.addWidget(self._export_csv_button)
+        layout.addLayout(status_layout)
 
     def set_data(self, data: Any) -> bool:
         if not isinstance(data, MultiCurvePreviewData):
@@ -145,6 +168,7 @@ class MultiCurvePreviewWidget(BasePreviewWidget):
         selectable = data.interaction_mode == "series_toggle"
         self._series_panel.setVisible(selectable)
         self._populate_series_list() if selectable else self._clear_series_list()
+        self._update_export_button_state()
 
         self._update_data_info(
             tr_("MULTI_CURVE  curves={curves}").format(curves=len(data.series))
@@ -333,12 +357,145 @@ class MultiCurvePreviewWidget(BasePreviewWidget):
             item = self._series_list.item(row)
             item.setHidden(bool(needle) and needle not in item.text().casefold())
 
+    def _build_export_candidates(self) -> List[CurveExportItem]:
+        if not isinstance(self._current_data, MultiCurvePreviewData):
+            return []
+
+        data = self._current_data
+        candidates: List[CurveExportItem] = []
+        if data.aggregate_x is not None and data.aggregate_y is not None:
+            if data.aggregate_mode == "mean":
+                aggregate_label = tr_("Mean curve")
+                aggregate_name = "mean"
+            elif data.aggregate_mode == "median":
+                aggregate_label = tr_("Median curve")
+                aggregate_name = "median"
+            else:
+                aggregate_label = ""
+                aggregate_name = ""
+            if aggregate_name:
+                candidates.append(
+                    CurveExportItem(
+                        label=aggregate_label,
+                        export_name=aggregate_name,
+                        x=data.aggregate_x,
+                        y=data.aggregate_y,
+                        is_statistic=True,
+                    )
+                )
+
+        if data.aggregate_x is not None and data.lower_y is not None:
+            candidates.append(
+                CurveExportItem(
+                    label=tr_("Lower variability bound"),
+                    export_name="lowerbound",
+                    x=data.aggregate_x,
+                    y=data.lower_y,
+                    is_statistic=True,
+                )
+            )
+        if data.aggregate_x is not None and data.upper_y is not None:
+            candidates.append(
+                CurveExportItem(
+                    label=tr_("Upper variability bound"),
+                    export_name="upperbound",
+                    x=data.aggregate_x,
+                    y=data.upper_y,
+                    is_statistic=True,
+                )
+            )
+
+        for row in range(self._series_list.count()):
+            item = self._series_list.item(row)
+            if item.checkState() != Qt.CheckState.Checked:
+                continue
+            series_index = int(item.data(Qt.ItemDataRole.UserRole))
+            if series_index < 0 or series_index >= len(data.series):
+                continue
+            series = data.series[series_index]
+            candidates.append(
+                CurveExportItem(
+                    label=series.name,
+                    export_name=series.name,
+                    x=series.x,
+                    y=series.y,
+                )
+            )
+        return candidates
+
+    def _update_export_button_state(self) -> None:
+        if not isinstance(self._current_data, MultiCurvePreviewData):
+            self._export_csv_button.setEnabled(False)
+            self._export_csv_button.setToolTip(
+                tr_("No summary curves are available to export")
+            )
+            return
+
+        if self._current_data.interaction_mode == "series_toggle":
+            self._export_csv_button.setEnabled(True)
+            self._export_csv_button.setToolTip("")
+            return
+
+        has_statistics = bool(self._build_export_candidates())
+        self._export_csv_button.setEnabled(has_statistics)
+        if has_statistics:
+            tooltip = tr_("High-performance mode exports summary curves only")
+        else:
+            tooltip = tr_("No summary curves are available to export")
+        self._export_csv_button.setToolTip(tooltip)
+
+    def _export_csv(self) -> None:
+        candidates = self._build_export_candidates()
+        if not candidates:
+            QMessageBox.warning(
+                self,
+                tr_("Export CSV"),
+                tr_("No visible curves are available for export."),
+            )
+            return
+
+        dialog = MultiCurveExportDialog(candidates, self)
+        if dialog.exec() != QDialog.DialogCode.Accepted:
+            return
+
+        selected_curves = dialog.selected_curves()
+        file_path, _ = QFileDialog.getSaveFileName(
+            self,
+            tr_("Save curve CSV"),
+            "multi_curve_export.csv",
+            tr_("CSV files (*.csv)"),
+        )
+        if not file_path:
+            return
+        if not Path(file_path).suffix:
+            file_path = f"{file_path}.csv"
+
+        try:
+            write_curve_csv(file_path, selected_curves)
+        except (OSError, ValueError) as error:
+            QMessageBox.critical(
+                self,
+                tr_("Export CSV"),
+                tr_("Failed to export curve data:\n{error}").format(error=error),
+            )
+            return
+
+        QMessageBox.information(
+            self,
+            tr_("Success"),
+            tr_("Curve data exported to:\n{path}").format(path=file_path),
+        )
+
     def clear(self):
         self._current_data = None
         self._data_info = ""
         self._clear_series_list()
         self._series_panel.hide()
         self._status_label.clear()
+        self._export_csv_button.setEnabled(False)
+        self._export_csv_button.setToolTip(
+            tr_("No summary curves are available to export")
+        )
         self._curve_items = []
         self._series_curve_items = []
         if HAS_PYQTGRAPH and self._plot_widget is not None:
