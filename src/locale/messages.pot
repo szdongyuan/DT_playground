@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-19 17:45+0800\n"
+"POT-Creation-Date: 2026-08-19 18:01+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -72,6 +72,7 @@ msgid ""
 msgstr ""
 
 #: src/app.py:374 src/ui/dialogs/export_dialog.py:191
+#: src/ui/widgets/preview/multi_curve_preview.py:485
 msgid "Success"
 msgstr ""
 
@@ -1782,6 +1783,7 @@ msgstr ""
 
 #: src/ui/dialogs/dataset_dialog.py:158 src/ui/dialogs/export_dialog.py:106
 #: src/ui/dialogs/settings_dialog.py:60
+#: src/ui/widgets/preview/multi_curve_export.py:254
 msgid "Cancel"
 msgstr ""
 
@@ -1857,6 +1859,7 @@ msgid "Export weights only"
 msgstr ""
 
 #: src/ui/dialogs/export_dialog.py:110
+#: src/ui/widgets/preview/multi_curve_export.py:251
 msgid "Export"
 msgstr ""
 
@@ -2732,7 +2735,7 @@ msgstr ""
 #: src/ui/views/training_view.py:133
 #: src/ui/widgets/preview/feature_1d_preview.py:74
 #: src/ui/widgets/preview/metrics_preview.py:70
-#: src/ui/widgets/preview/multi_curve_preview.py:117
+#: src/ui/widgets/preview/multi_curve_preview.py:128
 #: src/workflow/nodes/visualization.py:331
 #: src/workflow/nodes/visualization.py:382
 msgid "Value"
@@ -2997,7 +3000,7 @@ msgstr ""
 #: src/ui/widgets/preview/feature_1d_preview.py:85
 #: src/ui/widgets/preview/label_preview.py:105
 #: src/ui/widgets/preview/metrics_preview.py:75
-#: src/ui/widgets/preview/multi_curve_preview.py:126
+#: src/ui/widgets/preview/multi_curve_preview.py:137
 msgid "Please install pyqtgraph to display charts"
 msgstr ""
 
@@ -3341,45 +3344,152 @@ msgstr ""
 msgid "Compile status"
 msgstr ""
 
-#: src/ui/widgets/preview/multi_curve_preview.py:53
+#: src/ui/widgets/preview/multi_curve_export.py:47
+msgid "Select at least one curve to export"
+msgstr ""
+
+#: src/ui/widgets/preview/multi_curve_export.py:55
+#, python-brace-format
+msgid "Curve {name} must contain one-dimensional coordinates"
+msgstr ""
+
+#: src/ui/widgets/preview/multi_curve_export.py:61
+#, python-brace-format
+msgid "Curve {name} contains no exportable points"
+msgstr ""
+
+#: src/ui/widgets/preview/multi_curve_export.py:67
+#, python-brace-format
+msgid "Curve {name} has mismatched coordinate and value lengths"
+msgstr ""
+
+#: src/ui/widgets/preview/multi_curve_export.py:73
+#, python-brace-format
+msgid "Curve {name} contains non-finite export values"
+msgstr ""
+
+#: src/ui/widgets/preview/multi_curve_export.py:169
+msgid "Export curves to CSV"
+msgstr ""
+
+#: src/ui/widgets/preview/multi_curve_export.py:201
+msgid "Select visible curves and edit their CSV column names."
+msgstr ""
+
+#: src/ui/widgets/preview/multi_curve_export.py:204
+msgid "Select all"
+msgstr ""
+
+#: src/ui/widgets/preview/multi_curve_export.py:220
+msgid "Summary curves"
+msgstr ""
+
+#: src/ui/widgets/preview/multi_curve_export.py:236
+msgid "Original curves"
+msgstr ""
+
+#: src/ui/widgets/preview/multi_curve_export.py:279
+msgid "CSV column name"
+msgstr ""
+
+#: src/ui/widgets/preview/multi_curve_preview.py:64
 #: src/workflow/nodes/visualization.py:419
 msgid "Multi-curve viewer"
 msgstr ""
 
-#: src/ui/widgets/preview/multi_curve_preview.py:97
+#: src/ui/widgets/preview/multi_curve_preview.py:108
 msgid "Data series"
 msgstr ""
 
-#: src/ui/widgets/preview/multi_curve_preview.py:100
+#: src/ui/widgets/preview/multi_curve_preview.py:111
 msgid "Search series..."
 msgstr ""
 
-#: src/ui/widgets/preview/multi_curve_preview.py:150
+#: src/ui/widgets/preview/multi_curve_preview.py:153
+#: src/ui/widgets/preview/multi_curve_preview.py:452
+#: src/ui/widgets/preview/multi_curve_preview.py:478
+msgid "Export CSV"
+msgstr ""
+
+#: src/ui/widgets/preview/multi_curve_preview.py:156
+#: src/ui/widgets/preview/multi_curve_preview.py:430
+#: src/ui/widgets/preview/multi_curve_preview.py:444
+#: src/ui/widgets/preview/multi_curve_preview.py:497
+msgid "No summary curves are available to export"
+msgstr ""
+
+#: src/ui/widgets/preview/multi_curve_preview.py:174
 #, python-brace-format
 msgid "MULTI_CURVE  curves={curves}"
 msgstr ""
 
-#: src/ui/widgets/preview/multi_curve_preview.py:282
+#: src/ui/widgets/preview/multi_curve_preview.py:306
 msgid "Aggregate"
 msgstr ""
 
-#: src/ui/widgets/preview/multi_curve_preview.py:310
+#: src/ui/widgets/preview/multi_curve_preview.py:334
 #, python-brace-format
 msgid "{visible} / {total} curves visible"
 msgstr ""
 
-#: src/ui/widgets/preview/multi_curve_preview.py:315
+#: src/ui/widgets/preview/multi_curve_preview.py:339
 #, python-brace-format
 msgid "{total} curves"
 msgstr ""
 
-#: src/ui/widgets/preview/multi_curve_preview.py:318
+#: src/ui/widgets/preview/multi_curve_preview.py:342
 msgid "display downsampling active"
 msgstr ""
 
-#: src/ui/widgets/preview/multi_curve_preview.py:323
+#: src/ui/widgets/preview/multi_curve_preview.py:347
 #, python-brace-format
 msgid "{count} more warning(s)"
+msgstr ""
+
+#: src/ui/widgets/preview/multi_curve_preview.py:368
+msgid "Mean curve"
+msgstr ""
+
+#: src/ui/widgets/preview/multi_curve_preview.py:371
+msgid "Median curve"
+msgstr ""
+
+#: src/ui/widgets/preview/multi_curve_preview.py:390
+msgid "Lower variability bound"
+msgstr ""
+
+#: src/ui/widgets/preview/multi_curve_preview.py:400
+msgid "Upper variability bound"
+msgstr ""
+
+#: src/ui/widgets/preview/multi_curve_preview.py:442
+msgid "High-performance mode exports summary curves only"
+msgstr ""
+
+#: src/ui/widgets/preview/multi_curve_preview.py:453
+msgid "No visible curves are available for export."
+msgstr ""
+
+#: src/ui/widgets/preview/multi_curve_preview.py:464
+msgid "Save curve CSV"
+msgstr ""
+
+#: src/ui/widgets/preview/multi_curve_preview.py:466
+msgid "CSV files (*.csv)"
+msgstr ""
+
+#: src/ui/widgets/preview/multi_curve_preview.py:479
+#, python-brace-format
+msgid ""
+"Failed to export curve data:\n"
+"{error}"
+msgstr ""
+
+#: src/ui/widgets/preview/multi_curve_preview.py:486
+#, python-brace-format
+msgid ""
+"Curve data exported to:\n"
+"{path}"
 msgstr ""
 
 #: src/utils/dataset_manager.py:169
