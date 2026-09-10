@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-19 18:01+0800\n"
+"POT-Creation-Date: 2026-09-10 16:17+0800\n"
 "PO-Revision-Date: 2026-02-04 17:15+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -407,8 +407,8 @@ msgstr "工作流"
 
 #: src/controllers/navigation_controller.py:83 src/ui/main_window.py:376
 #: src/ui/dialogs/settings_dialog.py:42 src/workflow/nodes/training.py:363
-#: src/workflow/nodes/training.py:832 src/workflow/nodes/training.py:1238
-#: src/workflow/nodes/training.py:1578 src/workflow/nodes/training.py:1614
+#: src/workflow/nodes/training.py:832 src/workflow/nodes/training.py:1232
+#: src/workflow/nodes/training.py:1572 src/workflow/nodes/training.py:1608
 #: src/workflow/nodes/feature/ai_embedding.py:47
 #: src/workflow/nodes/feature/grad_cam.py:50
 msgid "Model"
@@ -697,7 +697,7 @@ msgid "Output"
 msgstr "输出"
 
 #: src/model_builder/model_graph.py:42 src/model_builder/model_graph.py:223
-#: src/model_builder/model_graph.py:629
+#: src/model_builder/model_graph.py:633
 msgid "Untitled model"
 msgstr "未命名模型"
 
@@ -1227,7 +1227,7 @@ msgstr "训练损失函数"
 
 #: src/model_builder/layers/input_layers.py:142
 #: src/ui/widgets/preview/metrics_preview.py:42
-#: src/workflow/nodes/training.py:842 src/workflow/nodes/training.py:1176
+#: src/workflow/nodes/training.py:842 src/workflow/nodes/training.py:1170
 msgid "Metrics"
 msgstr "指标"
 
@@ -3020,7 +3020,7 @@ msgid "Samples"
 msgstr "采样点"
 
 #: src/ui/widgets/preview/anomaly_result_preview.py:51
-#: src/workflow/nodes/anomaly.py:585
+#: src/workflow/nodes/anomaly.py:578
 msgid "Anomaly explorer"
 msgstr "异常检测浏览器"
 
@@ -3659,6 +3659,90 @@ msgstr "右"
 msgid "Waveform envelope"
 msgstr "波形包络"
 
+#: src/workflow/anomaly_io.py:49
+msgid "Output directory is required"
+msgstr "必须指定输出目录"
+
+#: src/workflow/anomaly_io.py:54
+msgid "Output name must be a valid single filename"
+msgstr "输出名称必须是有效的单个文件名"
+
+#: src/workflow/anomaly_io.py:61 src/workflow/anomaly_io.py:290
+#, python-brace-format
+msgid "Output already exists: {path}"
+msgstr "输出目标已存在：{path}"
+
+#: src/workflow/anomaly_io.py:74
+#, python-brace-format
+msgid "Invalid or misaligned anomaly array: {name}"
+msgstr "异常检测数组无效或未对齐：{name}"
+
+#: src/workflow/anomaly_io.py:86
+msgid "File does not contain an anomaly model artifact"
+msgstr "文件不包含异常检测模型产物"
+
+#: src/workflow/anomaly_io.py:90 src/workflow/anomaly_io.py:93
+#: src/workflow/anomaly_io.py:96 src/workflow/anomaly_io.py:99
+#: src/workflow/anomaly_io.py:107 src/workflow/anomaly_io.py:109
+#: src/workflow/anomaly_io.py:111 src/workflow/anomaly_io.py:183
+#: src/workflow/anomaly_io.py:186
+msgid "Invalid anomaly model scoring state"
+msgstr "异常检测模型的评分状态无效"
+
+#: src/workflow/anomaly_io.py:143 src/workflow/anomaly_io.py:148
+#: src/workflow/anomaly_io.py:168
+msgid "Anomaly model exceeds the supported size limit"
+msgstr "异常检测模型超过支持的大小限制"
+
+#: src/workflow/anomaly_io.py:165
+msgid "Invalid anomaly model archive"
+msgstr "异常检测模型归档无效"
+
+#: src/workflow/anomaly_io.py:173
+msgid "Unsupported anomaly model format version"
+msgstr "不支持的异常检测模型格式版本"
+
+#: src/workflow/anomaly_io.py:175
+msgid "Anomaly model runtime versions do not match this environment"
+msgstr "异常检测模型的运行库版本与当前环境不匹配"
+
+#: src/workflow/anomaly_io.py:190
+msgid "Anomaly model payload checksum mismatch"
+msgstr "异常检测模型载荷的校验和不匹配"
+
+#: src/workflow/anomaly_io.py:203 src/workflow/nodes/anomaly_files.py:96
+msgid ""
+"Loading joblib can execute code; explicitly trust the model before loading"
+msgstr "加载 joblib 可能执行代码；加载前必须显式信任此模型"
+
+#: src/workflow/anomaly_io.py:210 src/workflow/nodes/anomaly_files.py:105
+msgid "Legacy joblib model: runtime version compatibility cannot be verified"
+msgstr "旧版 joblib 模型：无法核验运行库版本兼容性"
+
+#: src/workflow/anomaly_io.py:215 src/workflow/nodes/anomaly_files.py:101
+msgid "Unsupported anomaly model format"
+msgstr "不支持的异常检测模型格式"
+
+#: src/workflow/anomaly_io.py:220
+msgid "Anomaly model metadata does not match scoring state"
+msgstr "异常检测模型元数据与评分状态不一致"
+
+#: src/workflow/anomaly_io.py:231 src/workflow/nodes/anomaly_files.py:148
+msgid "Export requires anomaly scores or an anomaly result"
+msgstr "导出需要异常分数或异常检测结果"
+
+#: src/workflow/anomaly_io.py:238 src/workflow/nodes/anomaly.py:117
+msgid "Score arrays and sample IDs must have the same length"
+msgstr "分数数组与样本 ID 的长度必须一致"
+
+#: src/workflow/anomaly_io.py:240
+msgid "Normalized anomaly scores must be between 0 and 100"
+msgstr "归一化异常分数必须介于 0 和 100 之间"
+
+#: src/workflow/anomaly_io.py:257 src/workflow/anomaly_io.py:262
+msgid "Invalid or misaligned anomaly decisions"
+msgstr "异常判定无效或未对齐"
+
 #: src/workflow/curve.py:33
 msgid "Curve data must have shape (channels, points)"
 msgstr "曲线数据形状必须为（通道，点）"
@@ -3805,280 +3889,389 @@ msgstr "工作流为空"
 msgid "Node '{node}' input port '{port}' is not connected"
 msgstr "节点“{node}”输入端口“{port}”未连接"
 
-#: src/workflow/nodes/anomaly.py:34 src/workflow/nodes/anomaly.py:58
+#: src/workflow/nodes/anomaly_files.py:35
+msgid "Anomaly file operation completed"
+msgstr "异常检测文件操作已完成"
+
+#: src/workflow/nodes/anomaly_files.py:38
+#, python-brace-format
+msgid "Anomaly file operation failed: {error}"
+msgstr "异常检测文件操作失败：{error}"
+
+#: src/workflow/nodes/anomaly_files.py:45
+msgid "Save anomaly model"
+msgstr "保存异常检测模型"
+
+#: src/workflow/nodes/anomaly_files.py:47
+#: src/workflow/nodes/anomaly_files.py:77 src/workflow/nodes/training.py:84
+#: src/workflow/nodes/training.py:223
+msgid "Model management"
+msgstr "模型管理"
+
+#: src/workflow/nodes/anomaly_files.py:50
+msgid ""
+"Save scoring state without overwriting; keep the decision workflow for "
+"reproduction"
+msgstr "保存评分状态且不覆盖已有文件；复现时需保留判定工作流"
+
+#: src/workflow/nodes/anomaly_files.py:54
+#: src/workflow/nodes/anomaly_files.py:84 src/workflow/nodes/anomaly.py:257
+#: src/workflow/nodes/anomaly.py:402
+msgid "Anomaly model"
+msgstr "异常检测模型"
+
+#: src/workflow/nodes/anomaly_files.py:55 src/workflow/nodes/training.py:231
+msgid "Saved path"
+msgstr "保存路径"
+
+#: src/workflow/nodes/anomaly_files.py:58
+#: src/workflow/nodes/anomaly_files.py:128
+msgid "Output directory"
+msgstr "输出目录"
+
+#: src/workflow/nodes/anomaly_files.py:60 src/workflow/nodes/training.py:248
+msgid "Filename"
+msgstr "文件名"
+
+#: src/workflow/nodes/anomaly_files.py:65
+msgid "Anomaly model filename must end with .anomaly.zip"
+msgstr "异常检测模型文件名必须以 .anomaly.zip 结尾"
+
+#: src/workflow/nodes/anomaly_files.py:75
+msgid "Load anomaly model"
+msgstr "加载异常检测模型"
+
+#: src/workflow/nodes/anomaly_files.py:80
+msgid "Load explicitly trusted anomaly scoring state; joblib can execute code"
+msgstr "加载显式信任的异常评分状态；joblib 可能执行代码"
+
+#: src/workflow/nodes/anomaly_files.py:87 src/workflow/nodes/training.py:98
+msgid "Model path"
+msgstr "模型路径"
+
+#: src/workflow/nodes/anomaly_files.py:88
+msgid "Anomaly models (*.anomaly.zip *.joblib);;All files (*)"
+msgstr "异常检测模型 (*.anomaly.zip *.joblib);;所有文件 (*)"
+
+#: src/workflow/nodes/anomaly_files.py:89
+msgid "Model format"
+msgstr "模型格式"
+
+#: src/workflow/nodes/anomaly_files.py:91
+msgid "Trust this model (allows code execution)"
+msgstr "信任此模型（允许执行代码）"
+
+#: src/workflow/nodes/anomaly_files.py:92
+msgid ""
+"Saved in the workflow. Enable only for a trusted model; hashes and type "
+"checks do not make joblib safe."
+msgstr ""
+"此设置会保存在工作流中。仅对可信模型启用；哈希与类型检查不能使 joblib 安全。"
+
+#: src/workflow/nodes/anomaly_files.py:99 src/workflow/nodes/training.py:113
+#, python-brace-format
+msgid "Model file does not exist: {path}"
+msgstr "模型文件不存在：{path}"
+
+#: src/workflow/nodes/anomaly_files.py:114
+msgid "Export anomaly results"
+msgstr "导出异常检测结果"
+
+#: src/workflow/nodes/anomaly_files.py:116
+msgid "Result export"
+msgstr "结果导出"
+
+#: src/workflow/nodes/anomaly_files.py:119
+msgid ""
+"Export every aligned score or decision to CSV and JSON in a new directory"
+msgstr "将全部对齐的评分或判定导出到新目录中的 CSV 和 JSON 文件"
+
+#: src/workflow/nodes/anomaly_files.py:123 src/workflow/nodes/anomaly.py:404
+#: src/workflow/nodes/anomaly.py:453
+msgid "Anomaly scores"
+msgstr "异常分数"
+
+#: src/workflow/nodes/anomaly_files.py:124 src/workflow/nodes/anomaly.py:454
+#: src/workflow/nodes/anomaly.py:587 src/workflow/nodes/anomaly.py:588
+msgid "Anomaly result"
+msgstr "异常检测结果"
+
+#: src/workflow/nodes/anomaly_files.py:125
+msgid "Export summary"
+msgstr "导出摘要"
+
+#: src/workflow/nodes/anomaly_files.py:129
+msgid "Result directory name"
+msgstr "结果目录名称"
+
+#: src/workflow/nodes/anomaly_files.py:130
+msgid "Spreadsheet-safe sample IDs"
+msgstr "电子表格安全样本 ID"
+
+#: src/workflow/nodes/anomaly_files.py:131
+msgid ""
+"Prefix every sample ID with an apostrophe; remove exactly one prefix to "
+"recover the original ID"
+msgstr "为每个样本 ID 添加一个单引号前缀；移除恰好一个前缀即可恢复原始 ID"
+
+#: src/workflow/nodes/anomaly_files.py:139
+#: src/workflow/nodes/anomaly_files.py:145
+msgid "Connect exactly one anomaly scores or result input"
+msgstr "必须且只能连接一个异常分数或结果输入"
+
+#: src/workflow/nodes/anomaly.py:33 src/workflow/nodes/anomaly.py:57
 msgid "Feature matrix must be two-dimensional"
 msgstr "特征矩阵必须是二维的"
 
-#: src/workflow/nodes/anomaly.py:36
+#: src/workflow/nodes/anomaly.py:35
 msgid "Sample ID count must match feature matrix rows"
 msgstr "样本 ID 数量必须与特征矩阵行数一致"
 
-#: src/workflow/nodes/anomaly.py:38
+#: src/workflow/nodes/anomaly.py:37
 msgid "Source item count must match feature matrix rows"
 msgstr "源条目数量必须与特征矩阵行数一致"
 
-#: src/workflow/nodes/anomaly.py:61
+#: src/workflow/nodes/anomaly.py:60
 #, python-brace-format
 msgid "Feature count mismatch: expected {expected}, got {actual}"
 msgstr "特征数量不匹配：期望 {expected}，实际 {actual}"
 
-#: src/workflow/nodes/anomaly.py:67 src/workflow/nodes/anomaly.py:328
+#: src/workflow/nodes/anomaly.py:66 src/workflow/nodes/anomaly.py:321
 msgid "Feature matrix contains NaN or infinite values"
 msgstr "特征矩阵包含 NaN 或无穷值"
 
-#: src/workflow/nodes/anomaly.py:98
-msgid "File does not contain an anomaly model artifact"
-msgstr "文件不包含异常检测模型产物"
-
-#: src/workflow/nodes/anomaly.py:124
-msgid "Score arrays and sample IDs must have the same length"
-msgstr "分数数组与样本 ID 的长度必须一致"
-
-#: src/workflow/nodes/anomaly.py:126
+#: src/workflow/nodes/anomaly.py:119
 msgid "Source item count must match score count"
 msgstr "源条目数量必须与分数数量一致"
 
-#: src/workflow/nodes/anomaly.py:144
+#: src/workflow/nodes/anomaly.py:137
 msgid "Decision count must match score count"
 msgstr "判定数量必须与分数数量一致"
 
-#: src/workflow/nodes/anomaly.py:152
+#: src/workflow/nodes/anomaly.py:145
 msgid "Feature vectorizer"
 msgstr "特征向量化"
 
-#: src/workflow/nodes/anomaly.py:154 src/workflow/nodes/feature/acoustic.py:503
+#: src/workflow/nodes/anomaly.py:147 src/workflow/nodes/feature/acoustic.py:503
 msgid "Feature post-processing"
 msgstr "特征后处理"
 
-#: src/workflow/nodes/anomaly.py:157
+#: src/workflow/nodes/anomaly.py:150
 msgid ""
 "Convert features into aligned fixed-length vectors for classical machine "
 "learning"
 msgstr "将特征转换为对齐的定长向量，供传统机器学习使用"
 
-#: src/workflow/nodes/anomaly.py:161
+#: src/workflow/nodes/anomaly.py:154
 msgid "Features"
 msgstr "特征"
 
-#: src/workflow/nodes/anomaly.py:162 src/workflow/nodes/anomaly.py:410
+#: src/workflow/nodes/anomaly.py:155 src/workflow/nodes/anomaly.py:403
 msgid "Feature matrix"
 msgstr "特征矩阵"
 
-#: src/workflow/nodes/anomaly.py:169
+#: src/workflow/nodes/anomaly.py:162
 #: src/workflow/nodes/feature/dim1d/spectral_flatness.py:56
 #: src/workflow/nodes/feature/dim1d/statistics.py:59
 msgid "Aggregation"
 msgstr "聚合方式"
 
-#: src/workflow/nodes/anomaly.py:171
+#: src/workflow/nodes/anomaly.py:164
 msgid "How to reduce each sample to a fixed-length vector"
 msgstr "如何将每个样本归约为定长向量"
 
-#: src/workflow/nodes/anomaly.py:178
+#: src/workflow/nodes/anomaly.py:171
 msgid "No features provided"
 msgstr "未提供特征"
 
-#: src/workflow/nodes/anomaly.py:185
+#: src/workflow/nodes/anomaly.py:178
 msgid "Vectorized samples have inconsistent feature counts"
 msgstr "向量化后的样本具有不一致的特征数量"
 
-#: src/workflow/nodes/anomaly.py:190
+#: src/workflow/nodes/anomaly.py:183
 msgid "Feature matrix contains empty, NaN, or infinite values"
 msgstr "特征矩阵包含空值、NaN 或无穷值"
 
-#: src/workflow/nodes/anomaly.py:201
+#: src/workflow/nodes/anomaly.py:194
 #, python-brace-format
 msgid "Feature matrix ready: {samples} samples, {features} features"
 msgstr "特征矩阵已就绪：{samples} 个样本，{features} 个特征"
 
-#: src/workflow/nodes/anomaly.py:208
+#: src/workflow/nodes/anomaly.py:201
 #, python-brace-format
 msgid "Feature vectorization failed: {error}"
 msgstr "特征向量化失败：{error}"
 
-#: src/workflow/nodes/anomaly.py:227
+#: src/workflow/nodes/anomaly.py:220
 msgid "Feature sample is empty"
 msgstr "特征样本为空"
 
-#: src/workflow/nodes/anomaly.py:254
+#: src/workflow/nodes/anomaly.py:247
 msgid "Anomaly detector trainer"
 msgstr "异常检测器训练"
 
-#: src/workflow/nodes/anomaly.py:256 src/workflow/nodes/training.py:797
+#: src/workflow/nodes/anomaly.py:249 src/workflow/nodes/training.py:797
 #: src/workflow/nodes/training.py:812
 msgid "Model training"
 msgstr "模型训练"
 
-#: src/workflow/nodes/anomaly.py:259
+#: src/workflow/nodes/anomaly.py:252
 msgid "Fit an unsupervised anomaly detector on mostly-normal reference data"
 msgstr "使用以正常样本为主的参考数据拟合无监督异常检测器"
 
-#: src/workflow/nodes/anomaly.py:263
+#: src/workflow/nodes/anomaly.py:256
 msgid "Reference feature matrix"
 msgstr "参考特征矩阵"
 
-#: src/workflow/nodes/anomaly.py:264 src/workflow/nodes/anomaly.py:409
-msgid "Anomaly model"
-msgstr "异常检测模型"
-
-#: src/workflow/nodes/anomaly.py:265
+#: src/workflow/nodes/anomaly.py:258
 msgid "Reference scores"
 msgstr "参考分数"
 
-#: src/workflow/nodes/anomaly.py:266
+#: src/workflow/nodes/anomaly.py:259
 msgid "Training summary"
 msgstr "训练概要"
 
-#: src/workflow/nodes/anomaly.py:273
+#: src/workflow/nodes/anomaly.py:266
 msgid "Algorithm"
 msgstr "算法"
 
-#: src/workflow/nodes/anomaly.py:280
+#: src/workflow/nodes/anomaly.py:273
 msgid "Feature scaling"
 msgstr "特征缩放"
 
-#: src/workflow/nodes/anomaly.py:287 src/workflow/nodes/anomaly.py:475
+#: src/workflow/nodes/anomaly.py:280 src/workflow/nodes/anomaly.py:468
 msgid "Expected anomaly ratio"
 msgstr "预期异常比例"
 
-#: src/workflow/nodes/anomaly.py:295
+#: src/workflow/nodes/anomaly.py:288
 msgid "Number of trees"
 msgstr "树的数量"
 
-#: src/workflow/nodes/anomaly.py:303
+#: src/workflow/nodes/anomaly.py:296
 msgid "Sample fraction per tree"
 msgstr "每棵树的样本比例"
 
-#: src/workflow/nodes/anomaly.py:311 src/workflow/nodes/control.py:448
+#: src/workflow/nodes/anomaly.py:304 src/workflow/nodes/control.py:448
 msgid "Random seed"
 msgstr "随机种子"
 
-#: src/workflow/nodes/anomaly.py:322
+#: src/workflow/nodes/anomaly.py:315
 msgid "Anomaly trainer requires feature matrix data"
 msgstr "异常检测器训练需要特征矩阵数据"
 
-#: src/workflow/nodes/anomaly.py:325
+#: src/workflow/nodes/anomaly.py:318
 msgid "At least two reference samples are required"
 msgstr "至少需要两个参考样本"
 
-#: src/workflow/nodes/anomaly.py:384
+#: src/workflow/nodes/anomaly.py:377
 #, python-brace-format
 msgid "Anomaly detector fitted: {samples} reference samples"
 msgstr "异常检测器拟合完成：{samples} 个参考样本"
 
-#: src/workflow/nodes/anomaly.py:390
+#: src/workflow/nodes/anomaly.py:383
 #, python-brace-format
 msgid "Anomaly detector training failed: {error}"
 msgstr "异常检测器训练失败：{error}"
 
-#: src/workflow/nodes/anomaly.py:400
+#: src/workflow/nodes/anomaly.py:393
 msgid "Anomaly scorer"
 msgstr "异常评分"
 
-#: src/workflow/nodes/anomaly.py:402 src/workflow/nodes/anomaly.py:453
-#: src/workflow/nodes/training.py:1571 src/workflow/nodes/training.py:1607
+#: src/workflow/nodes/anomaly.py:395 src/workflow/nodes/anomaly.py:446
+#: src/workflow/nodes/training.py:1565 src/workflow/nodes/training.py:1601
 msgid "Inference and decision"
 msgstr "推理与判定"
 
-#: src/workflow/nodes/anomaly.py:405
+#: src/workflow/nodes/anomaly.py:398
 msgid "Calculate raw and normalized anomaly scores for each sample"
 msgstr "计算每个样本的原始异常分数和归一化异常分数"
 
-#: src/workflow/nodes/anomaly.py:411 src/workflow/nodes/anomaly.py:460
-msgid "Anomaly scores"
-msgstr "异常分数"
-
-#: src/workflow/nodes/anomaly.py:418
+#: src/workflow/nodes/anomaly.py:411
 msgid "No valid anomaly model provided"
 msgstr "未提供有效的异常检测模型"
 
-#: src/workflow/nodes/anomaly.py:421
+#: src/workflow/nodes/anomaly.py:414
 msgid "Anomaly scorer requires feature matrix data"
 msgstr "异常评分需要特征矩阵数据"
 
-#: src/workflow/nodes/anomaly.py:437
+#: src/workflow/nodes/anomaly.py:430
 #, python-brace-format
 msgid "Anomaly scoring finished: {samples} samples"
 msgstr "异常评分完成：{samples} 个样本"
 
-#: src/workflow/nodes/anomaly.py:441
+#: src/workflow/nodes/anomaly.py:434
 #, python-brace-format
 msgid "Anomaly scoring failed: {error}"
 msgstr "异常评分失败：{error}"
 
-#: src/workflow/nodes/anomaly.py:451
+#: src/workflow/nodes/anomaly.py:444
 msgid "Anomaly decision"
 msgstr "异常判定"
 
-#: src/workflow/nodes/anomaly.py:456
+#: src/workflow/nodes/anomaly.py:449
 msgid "Apply a configurable threshold without retraining the detector"
 msgstr "无需重新训练检测器即可应用可配置阈值"
 
-#: src/workflow/nodes/anomaly.py:461 src/workflow/nodes/anomaly.py:594
-#: src/workflow/nodes/anomaly.py:595
-msgid "Anomaly result"
-msgstr "异常检测结果"
-
-#: src/workflow/nodes/anomaly.py:468
+#: src/workflow/nodes/anomaly.py:461
 msgid "Threshold strategy"
 msgstr "阈值策略"
 
-#: src/workflow/nodes/anomaly.py:483
+#: src/workflow/nodes/anomaly.py:476
 msgid "Standard deviation multiplier"
 msgstr "标准差倍数"
 
-#: src/workflow/nodes/anomaly.py:491
+#: src/workflow/nodes/anomaly.py:484
 msgid "MAD multiplier"
 msgstr "MAD 倍数"
 
-#: src/workflow/nodes/anomaly.py:499
+#: src/workflow/nodes/anomaly.py:492
 msgid "Manual threshold (0-100)"
 msgstr "手动阈值（0-100）"
 
-#: src/workflow/nodes/anomaly.py:507
+#: src/workflow/nodes/anomaly.py:500
 msgid "Attention threshold ratio"
 msgstr "关注阈值比例"
 
-#: src/workflow/nodes/anomaly.py:516
+#: src/workflow/nodes/anomaly.py:509
 msgid "No valid anomaly scores provided"
 msgstr "未提供有效的异常分数"
 
-#: src/workflow/nodes/anomaly.py:519
+#: src/workflow/nodes/anomaly.py:512
 msgid "Anomaly scores are empty"
 msgstr "异常分数为空"
 
-#: src/workflow/nodes/anomaly.py:525
+#: src/workflow/nodes/anomaly.py:518
 msgid "Reference scores are required for the selected threshold strategy"
 msgstr "所选阈值策略需要参考分数"
 
-#: src/workflow/nodes/anomaly.py:546
+#: src/workflow/nodes/anomaly.py:539
 #, python-brace-format
 msgid "Anomaly decision finished: {anomalies} anomalies from {samples} samples"
 msgstr "异常判定完成：{samples} 个样本中有 {anomalies} 个异常"
 
-#: src/workflow/nodes/anomaly.py:553
+#: src/workflow/nodes/anomaly.py:546
 #, python-brace-format
 msgid "Anomaly decision failed: {error}"
 msgstr "异常判定失败：{error}"
 
-#: src/workflow/nodes/anomaly.py:573
+#: src/workflow/nodes/anomaly.py:566
 #, python-brace-format
 msgid "Unsupported threshold strategy: {strategy}"
 msgstr "不支持的阈值策略：{strategy}"
 
-#: src/workflow/nodes/anomaly.py:587 src/workflow/nodes/visualization.py:421
+#: src/workflow/nodes/anomaly.py:580 src/workflow/nodes/visualization.py:421
 msgid "Result viewing"
 msgstr "结果查看"
 
-#: src/workflow/nodes/anomaly.py:590
+#: src/workflow/nodes/anomaly.py:583
 msgid "Inspect ranked anomaly results, thresholds, and source samples"
 msgstr "查看异常结果排名、阈值和源样本"
 
-#: src/workflow/nodes/anomaly.py:600
+#: src/workflow/nodes/anomaly.py:593
 msgid "No valid anomaly result provided"
 msgstr "未提供有效的异常检测结果"
 
-#: src/workflow/nodes/anomaly.py:604
+#: src/workflow/nodes/anomaly.py:597
 #, python-brace-format
 msgid "Anomaly explorer ready: {samples} samples"
 msgstr "异常检测浏览器已就绪：{samples} 个样本"
@@ -5671,10 +5864,6 @@ msgstr "滤波器设计失败：{error}"
 msgid "Filtering failed: {error}"
 msgstr "滤波失败：{error}"
 
-#: src/workflow/nodes/training.py:84 src/workflow/nodes/training.py:223
-msgid "Model management"
-msgstr "模型管理"
-
 #: src/workflow/nodes/training.py:88
 msgid ""
 "Load model files (Keras models or model editor definitions) and use the "
@@ -5684,10 +5873,6 @@ msgstr "加载模型文件（Keras 模型或模型编辑器定义），并使用
 #: src/workflow/nodes/training.py:93
 msgid "Loaded model"
 msgstr "已加载的模型"
-
-#: src/workflow/nodes/training.py:98
-msgid "Model path"
-msgstr "模型路径"
 
 #: src/workflow/nodes/training.py:99
 msgid "Keras model (.h5/.keras) or model definition (.model.json)"
@@ -5700,11 +5885,6 @@ msgstr "编译模型"
 #: src/workflow/nodes/training.py:106
 msgid "Compile using built-in configuration (applies to .model.json only)"
 msgstr "使用内置配置编译（仅适用于 .model.json）"
-
-#: src/workflow/nodes/training.py:113
-#, python-brace-format
-msgid "Model file does not exist: {path}"
-msgstr "模型文件不存在：{path}"
 
 #: src/workflow/nodes/training.py:130
 #, python-brace-format
@@ -5734,10 +5914,6 @@ msgstr "将训练后的模型保存到文件"
 msgid "Model to save"
 msgstr "待保存模型"
 
-#: src/workflow/nodes/training.py:231
-msgid "Saved path"
-msgstr "保存路径"
-
 #: src/workflow/nodes/training.py:236
 msgid "Save mode"
 msgstr "保存模式"
@@ -5754,10 +5930,6 @@ msgstr "保存目录"
 #: src/workflow/nodes/training.py:243
 msgid "Directory to save the model (new_file mode)"
 msgstr "保存模型的目录（new_file 模式）"
-
-#: src/workflow/nodes/training.py:248
-msgid "Filename"
-msgstr "文件名"
 
 #: src/workflow/nodes/training.py:249
 msgid "Model filename (including .keras/.h5 extension)"
@@ -5788,7 +5960,7 @@ msgid "Log a warning when overwriting an existing file"
 msgstr "覆盖现有文件时记录警告"
 
 #: src/workflow/nodes/training.py:274 src/workflow/nodes/training.py:438
-#: src/workflow/nodes/training.py:861 src/workflow/nodes/training.py:1275
+#: src/workflow/nodes/training.py:861 src/workflow/nodes/training.py:1269
 #: src/workflow/nodes/feature/ai_embedding.py:89
 #: src/workflow/nodes/feature/grad_cam.py:141
 msgid "No model provided"
@@ -5819,7 +5991,7 @@ msgstr "训练器"
 msgid "Run model training with model config or overridden parameters"
 msgstr "使用模型配置或覆盖参数运行模型训练"
 
-#: src/workflow/nodes/training.py:370 src/workflow/nodes/training.py:1084
+#: src/workflow/nodes/training.py:370 src/workflow/nodes/training.py:1078
 msgid "Training history"
 msgstr "训练历史"
 
@@ -5832,8 +6004,8 @@ msgid "Epochs"
 msgstr "训练轮数"
 
 #: src/workflow/nodes/training.py:383 src/workflow/nodes/training.py:847
-#: src/workflow/nodes/training.py:1253 src/workflow/nodes/training.py:1588
-#: src/workflow/nodes/training.py:1623
+#: src/workflow/nodes/training.py:1247 src/workflow/nodes/training.py:1582
+#: src/workflow/nodes/training.py:1617
 #: src/workflow/nodes/feature/ai_embedding.py:80
 #: src/workflow/nodes/feature/grad_cam.py:131
 msgid "Batch size"
@@ -5975,133 +6147,133 @@ msgstr "回归模型评估需要连续数值目标"
 msgid "Evaluation targets are invalid"
 msgstr "评估目标无效"
 
-#: src/workflow/nodes/training.py:912
+#: src/workflow/nodes/training.py:906
 #, python-brace-format
 msgid "Evaluation finished: {loss}"
 msgstr "评估完成：{loss}"
 
-#: src/workflow/nodes/training.py:918
+#: src/workflow/nodes/training.py:912
 #, python-brace-format
 msgid "Evaluation failed: {error}"
 msgstr "评估失败：{error}"
 
-#: src/workflow/nodes/training.py:1048
+#: src/workflow/nodes/training.py:1042
 msgid "Classification model evaluation"
 msgstr "分类模型评估"
 
-#: src/workflow/nodes/training.py:1049
+#: src/workflow/nodes/training.py:1043
 msgid "Evaluate a classification model with categorical targets"
 msgstr "使用分类目标评估分类模型"
 
-#: src/workflow/nodes/training.py:1050 src/workflow/nodes/training.py:1064
+#: src/workflow/nodes/training.py:1044 src/workflow/nodes/training.py:1058
 msgid "Model evaluation"
 msgstr "模型评估"
 
-#: src/workflow/nodes/training.py:1062
+#: src/workflow/nodes/training.py:1056
 msgid "Regression model evaluation"
 msgstr "回归模型评估"
 
-#: src/workflow/nodes/training.py:1063
+#: src/workflow/nodes/training.py:1057
 msgid "Evaluate a regression model with continuous numeric targets"
 msgstr "使用连续数值目标评估回归模型"
 
-#: src/workflow/nodes/training.py:1075
+#: src/workflow/nodes/training.py:1069
 msgid "Show training history"
 msgstr "显示训练历史"
 
-#: src/workflow/nodes/training.py:1077 src/workflow/nodes/training.py:1169
+#: src/workflow/nodes/training.py:1071 src/workflow/nodes/training.py:1163
 msgid "Training results"
 msgstr "训练结果"
 
-#: src/workflow/nodes/training.py:1080
+#: src/workflow/nodes/training.py:1074
 msgid "Visualize training history curves"
 msgstr "可视化训练历史曲线"
 
-#: src/workflow/nodes/training.py:1085
+#: src/workflow/nodes/training.py:1079
 msgid "Training history (passthrough)"
 msgstr "训练历史（透传）"
 
-#: src/workflow/nodes/training.py:1090
+#: src/workflow/nodes/training.py:1084
 msgid "Show loss curve"
 msgstr "显示损失曲线"
 
-#: src/workflow/nodes/training.py:1094
+#: src/workflow/nodes/training.py:1088
 msgid "Show accuracy curve"
 msgstr "显示准确率曲线"
 
-#: src/workflow/nodes/training.py:1098
+#: src/workflow/nodes/training.py:1092
 msgid "Save path"
 msgstr "保存路径"
 
-#: src/workflow/nodes/training.py:1099
+#: src/workflow/nodes/training.py:1093
 msgid "Optional. Save the chart to a file."
 msgstr "可选。将图表保存到文件。"
 
-#: src/workflow/nodes/training.py:1106
+#: src/workflow/nodes/training.py:1100
 msgid "No training history provided"
 msgstr "未提供训练历史"
 
-#: src/workflow/nodes/training.py:1156
+#: src/workflow/nodes/training.py:1150
 #, python-brace-format
 msgid "Failed to show training history: {error}"
 msgstr "显示训练历史失败：{error}"
 
-#: src/workflow/nodes/training.py:1167
+#: src/workflow/nodes/training.py:1161
 msgid "Show metrics"
 msgstr "显示指标"
 
-#: src/workflow/nodes/training.py:1172
+#: src/workflow/nodes/training.py:1166
 msgid "Show model evaluation metrics"
 msgstr "显示模型评估指标"
 
-#: src/workflow/nodes/training.py:1177
+#: src/workflow/nodes/training.py:1171
 msgid "Metrics (passthrough)"
 msgstr "指标（透传）"
 
-#: src/workflow/nodes/training.py:1182
+#: src/workflow/nodes/training.py:1176
 msgid "Verbose logs"
 msgstr "详细日志"
 
-#: src/workflow/nodes/training.py:1183
+#: src/workflow/nodes/training.py:1177
 msgid "Output detailed metrics logs (dialog removed)"
 msgstr "输出详细指标日志（已移除对话框）"
 
-#: src/workflow/nodes/training.py:1189
+#: src/workflow/nodes/training.py:1183
 msgid "No metrics provided"
 msgstr "未提供指标"
 
-#: src/workflow/nodes/training.py:1216
+#: src/workflow/nodes/training.py:1210
 #, python-brace-format
 msgid "Failed to show metrics: {error}"
 msgstr "显示指标失败：{error}"
 
-#: src/workflow/nodes/training.py:1230
+#: src/workflow/nodes/training.py:1224
 msgid "Predict"
 msgstr "预测"
 
-#: src/workflow/nodes/training.py:1232
+#: src/workflow/nodes/training.py:1226
 msgid "Run prediction using a trained model"
 msgstr "使用已训练模型进行预测"
 
-#: src/workflow/nodes/training.py:1239 src/workflow/nodes/training.py:1579
-#: src/workflow/nodes/training.py:1615
+#: src/workflow/nodes/training.py:1233 src/workflow/nodes/training.py:1573
+#: src/workflow/nodes/training.py:1609
 #: src/workflow/nodes/feature/ai_embedding.py:48
 #: src/workflow/nodes/feature/grad_cam.py:51
 msgid "Input data"
 msgstr "输入数据"
 
-#: src/workflow/nodes/training.py:1240
+#: src/workflow/nodes/training.py:1234
 msgid "Predictions"
 msgstr "预测结果"
 
-#: src/workflow/nodes/training.py:1245
+#: src/workflow/nodes/training.py:1239
 #: src/workflow/nodes/feature/ai_embedding.py:64
 #: src/workflow/nodes/feature/dim1d/fft.py:49
 #: src/workflow/nodes/feature/dim2d/stft.py:53
 msgid "Output type"
 msgstr "输出类型"
 
-#: src/workflow/nodes/training.py:1248
+#: src/workflow/nodes/training.py:1242
 msgid ""
 "Type of prediction result: label=class label, raw=model output, "
 "regression=continuous values, vector=vector output, audio=audio, "
@@ -6110,65 +6282,65 @@ msgstr ""
 "预测结果类型：label=类别标签，raw=模型原始输出，regression=连续值，vector=向"
 "量输出，audio=音频，feature_1d=1D 特征，feature_2d=2D 特征"
 
-#: src/workflow/nodes/training.py:1255 src/workflow/nodes/training.py:1590
-#: src/workflow/nodes/training.py:1625
+#: src/workflow/nodes/training.py:1249 src/workflow/nodes/training.py:1584
+#: src/workflow/nodes/training.py:1619
 msgid "Batch size for prediction"
 msgstr "预测批大小"
 
-#: src/workflow/nodes/training.py:1259
+#: src/workflow/nodes/training.py:1253
 msgid "Sample rate"
 msgstr "采样率"
 
-#: src/workflow/nodes/training.py:1262
+#: src/workflow/nodes/training.py:1256
 msgid "Output audio sample rate (only for output_type=audio)"
 msgstr "输出音频采样率（仅适用于 output_type=audio）"
 
-#: src/workflow/nodes/training.py:1279
+#: src/workflow/nodes/training.py:1273
 #: src/workflow/nodes/feature/ai_embedding.py:92
 #: src/workflow/nodes/feature/grad_cam.py:144
 msgid "No input data provided"
 msgstr "未提供输入数据"
 
-#: src/workflow/nodes/training.py:1287
+#: src/workflow/nodes/training.py:1281
 #, python-brace-format
 msgid "Predicting... (batch_size={batch_size})"
 msgstr "正在预测...（batch_size={batch_size}）"
 
-#: src/workflow/nodes/training.py:1296
+#: src/workflow/nodes/training.py:1290
 #, python-brace-format
 msgid "Prediction finished: {count} samples, output_type={type}"
 msgstr "预测完成：{count} 个样本，output_type={type}"
 
-#: src/workflow/nodes/training.py:1306
+#: src/workflow/nodes/training.py:1300
 #, python-brace-format
 msgid "Prediction failed: {error}"
 msgstr "预测失败：{error}"
 
-#: src/workflow/nodes/training.py:1569
+#: src/workflow/nodes/training.py:1563
 msgid "Classification model prediction"
 msgstr "分类模型预测"
 
-#: src/workflow/nodes/training.py:1570
+#: src/workflow/nodes/training.py:1564
 msgid "Predict class labels and expose the model's raw output"
 msgstr "预测类别并输出模型原始结果"
 
-#: src/workflow/nodes/training.py:1580
+#: src/workflow/nodes/training.py:1574
 msgid "Predicted classes"
 msgstr "预测类别"
 
-#: src/workflow/nodes/training.py:1581
+#: src/workflow/nodes/training.py:1575
 msgid "Raw model output"
 msgstr "模型原始输出"
 
-#: src/workflow/nodes/training.py:1605
+#: src/workflow/nodes/training.py:1599
 msgid "Regression model prediction"
 msgstr "回归模型预测"
 
-#: src/workflow/nodes/training.py:1606
+#: src/workflow/nodes/training.py:1600
 msgid "Predict continuous values from a regression model"
 msgstr "使用回归模型预测连续值"
 
-#: src/workflow/nodes/training.py:1616
+#: src/workflow/nodes/training.py:1610
 msgid "Predicted values"
 msgstr "预测值"
 

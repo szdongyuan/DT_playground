@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-19 18:01+0800\n"
+"POT-Creation-Date: 2026-09-10 16:17+0800\n"
 "PO-Revision-Date: 2026-08-12 11:15+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -411,8 +411,8 @@ msgstr "Workflow"
 
 #: src/controllers/navigation_controller.py:83 src/ui/main_window.py:376
 #: src/ui/dialogs/settings_dialog.py:42 src/workflow/nodes/training.py:363
-#: src/workflow/nodes/training.py:832 src/workflow/nodes/training.py:1238
-#: src/workflow/nodes/training.py:1578 src/workflow/nodes/training.py:1614
+#: src/workflow/nodes/training.py:832 src/workflow/nodes/training.py:1232
+#: src/workflow/nodes/training.py:1572 src/workflow/nodes/training.py:1608
 #: src/workflow/nodes/feature/ai_embedding.py:47
 #: src/workflow/nodes/feature/grad_cam.py:50
 msgid "Model"
@@ -699,7 +699,7 @@ msgid "Output"
 msgstr "Output"
 
 #: src/model_builder/model_graph.py:42 src/model_builder/model_graph.py:223
-#: src/model_builder/model_graph.py:629
+#: src/model_builder/model_graph.py:633
 msgid "Untitled model"
 msgstr "Untitled model"
 
@@ -1230,7 +1230,7 @@ msgstr "Training loss function"
 
 #: src/model_builder/layers/input_layers.py:142
 #: src/ui/widgets/preview/metrics_preview.py:42
-#: src/workflow/nodes/training.py:842 src/workflow/nodes/training.py:1176
+#: src/workflow/nodes/training.py:842 src/workflow/nodes/training.py:1170
 msgid "Metrics"
 msgstr "Metrics"
 
@@ -3021,7 +3021,7 @@ msgid "Samples"
 msgstr "Samples"
 
 #: src/ui/widgets/preview/anomaly_result_preview.py:51
-#: src/workflow/nodes/anomaly.py:585
+#: src/workflow/nodes/anomaly.py:578
 msgid "Anomaly explorer"
 msgstr "Anomaly explorer"
 
@@ -3664,6 +3664,91 @@ msgstr "Right"
 msgid "Waveform envelope"
 msgstr "Waveform envelope"
 
+#: src/workflow/anomaly_io.py:49
+msgid "Output directory is required"
+msgstr "Output directory is required"
+
+#: src/workflow/anomaly_io.py:54
+msgid "Output name must be a valid single filename"
+msgstr "Output name must be a valid single filename"
+
+#: src/workflow/anomaly_io.py:61 src/workflow/anomaly_io.py:290
+#, python-brace-format
+msgid "Output already exists: {path}"
+msgstr "Output already exists: {path}"
+
+#: src/workflow/anomaly_io.py:74
+#, python-brace-format
+msgid "Invalid or misaligned anomaly array: {name}"
+msgstr "Invalid or misaligned anomaly array: {name}"
+
+#: src/workflow/anomaly_io.py:86
+msgid "File does not contain an anomaly model artifact"
+msgstr "File does not contain an anomaly model artifact"
+
+#: src/workflow/anomaly_io.py:90 src/workflow/anomaly_io.py:93
+#: src/workflow/anomaly_io.py:96 src/workflow/anomaly_io.py:99
+#: src/workflow/anomaly_io.py:107 src/workflow/anomaly_io.py:109
+#: src/workflow/anomaly_io.py:111 src/workflow/anomaly_io.py:183
+#: src/workflow/anomaly_io.py:186
+msgid "Invalid anomaly model scoring state"
+msgstr "Invalid anomaly model scoring state"
+
+#: src/workflow/anomaly_io.py:143 src/workflow/anomaly_io.py:148
+#: src/workflow/anomaly_io.py:168
+msgid "Anomaly model exceeds the supported size limit"
+msgstr "Anomaly model exceeds the supported size limit"
+
+#: src/workflow/anomaly_io.py:165
+msgid "Invalid anomaly model archive"
+msgstr "Invalid anomaly model archive"
+
+#: src/workflow/anomaly_io.py:173
+msgid "Unsupported anomaly model format version"
+msgstr "Unsupported anomaly model format version"
+
+#: src/workflow/anomaly_io.py:175
+msgid "Anomaly model runtime versions do not match this environment"
+msgstr "Anomaly model runtime versions do not match this environment"
+
+#: src/workflow/anomaly_io.py:190
+msgid "Anomaly model payload checksum mismatch"
+msgstr "Anomaly model payload checksum mismatch"
+
+#: src/workflow/anomaly_io.py:203 src/workflow/nodes/anomaly_files.py:96
+msgid ""
+"Loading joblib can execute code; explicitly trust the model before loading"
+msgstr ""
+"Loading joblib can execute code; explicitly trust the model before loading"
+
+#: src/workflow/anomaly_io.py:210 src/workflow/nodes/anomaly_files.py:105
+msgid "Legacy joblib model: runtime version compatibility cannot be verified"
+msgstr "Legacy joblib model: runtime version compatibility cannot be verified"
+
+#: src/workflow/anomaly_io.py:215 src/workflow/nodes/anomaly_files.py:101
+msgid "Unsupported anomaly model format"
+msgstr "Unsupported anomaly model format"
+
+#: src/workflow/anomaly_io.py:220
+msgid "Anomaly model metadata does not match scoring state"
+msgstr "Anomaly model metadata does not match scoring state"
+
+#: src/workflow/anomaly_io.py:231 src/workflow/nodes/anomaly_files.py:148
+msgid "Export requires anomaly scores or an anomaly result"
+msgstr "Export requires anomaly scores or an anomaly result"
+
+#: src/workflow/anomaly_io.py:238 src/workflow/nodes/anomaly.py:117
+msgid "Score arrays and sample IDs must have the same length"
+msgstr "Score arrays and sample IDs must have the same length"
+
+#: src/workflow/anomaly_io.py:240
+msgid "Normalized anomaly scores must be between 0 and 100"
+msgstr "Normalized anomaly scores must be between 0 and 100"
+
+#: src/workflow/anomaly_io.py:257 src/workflow/anomaly_io.py:262
+msgid "Invalid or misaligned anomaly decisions"
+msgstr "Invalid or misaligned anomaly decisions"
+
 #: src/workflow/curve.py:33
 msgid "Curve data must have shape (channels, points)"
 msgstr "Curve data must have shape (channels, points)"
@@ -3810,52 +3895,180 @@ msgstr "Workflow is empty"
 msgid "Node '{node}' input port '{port}' is not connected"
 msgstr "Node '{node}' input port '{port}' is not connected"
 
-#: src/workflow/nodes/anomaly.py:34 src/workflow/nodes/anomaly.py:58
+#: src/workflow/nodes/anomaly_files.py:35
+msgid "Anomaly file operation completed"
+msgstr "Anomaly file operation completed"
+
+#: src/workflow/nodes/anomaly_files.py:38
+#, python-brace-format
+msgid "Anomaly file operation failed: {error}"
+msgstr "Anomaly file operation failed: {error}"
+
+#: src/workflow/nodes/anomaly_files.py:45
+msgid "Save anomaly model"
+msgstr "Save anomaly model"
+
+#: src/workflow/nodes/anomaly_files.py:47
+#: src/workflow/nodes/anomaly_files.py:77 src/workflow/nodes/training.py:84
+#: src/workflow/nodes/training.py:223
+msgid "Model management"
+msgstr "Model management"
+
+#: src/workflow/nodes/anomaly_files.py:50
+msgid ""
+"Save scoring state without overwriting; keep the decision workflow for "
+"reproduction"
+msgstr ""
+"Save scoring state without overwriting; keep the decision workflow for "
+"reproduction"
+
+#: src/workflow/nodes/anomaly_files.py:54
+#: src/workflow/nodes/anomaly_files.py:84 src/workflow/nodes/anomaly.py:257
+#: src/workflow/nodes/anomaly.py:402
+msgid "Anomaly model"
+msgstr "Anomaly model"
+
+#: src/workflow/nodes/anomaly_files.py:55 src/workflow/nodes/training.py:231
+msgid "Saved path"
+msgstr "Saved path"
+
+#: src/workflow/nodes/anomaly_files.py:58
+#: src/workflow/nodes/anomaly_files.py:128
+msgid "Output directory"
+msgstr "Output directory"
+
+#: src/workflow/nodes/anomaly_files.py:60 src/workflow/nodes/training.py:248
+msgid "Filename"
+msgstr "Filename"
+
+#: src/workflow/nodes/anomaly_files.py:65
+msgid "Anomaly model filename must end with .anomaly.zip"
+msgstr "Anomaly model filename must end with .anomaly.zip"
+
+#: src/workflow/nodes/anomaly_files.py:75
+msgid "Load anomaly model"
+msgstr "Load anomaly model"
+
+#: src/workflow/nodes/anomaly_files.py:80
+msgid "Load explicitly trusted anomaly scoring state; joblib can execute code"
+msgstr "Load explicitly trusted anomaly scoring state; joblib can execute code"
+
+#: src/workflow/nodes/anomaly_files.py:87 src/workflow/nodes/training.py:98
+msgid "Model path"
+msgstr "Model path"
+
+#: src/workflow/nodes/anomaly_files.py:88
+msgid "Anomaly models (*.anomaly.zip *.joblib);;All files (*)"
+msgstr "Anomaly models (*.anomaly.zip *.joblib);;All files (*)"
+
+#: src/workflow/nodes/anomaly_files.py:89
+msgid "Model format"
+msgstr "Model format"
+
+#: src/workflow/nodes/anomaly_files.py:91
+msgid "Trust this model (allows code execution)"
+msgstr "Trust this model (allows code execution)"
+
+#: src/workflow/nodes/anomaly_files.py:92
+msgid ""
+"Saved in the workflow. Enable only for a trusted model; hashes and type "
+"checks do not make joblib safe."
+msgstr ""
+"Saved in the workflow. Enable only for a trusted model; hashes and type "
+"checks do not make joblib safe."
+
+#: src/workflow/nodes/anomaly_files.py:99 src/workflow/nodes/training.py:113
+#, python-brace-format
+msgid "Model file does not exist: {path}"
+msgstr "Model file does not exist: {path}"
+
+#: src/workflow/nodes/anomaly_files.py:114
+msgid "Export anomaly results"
+msgstr "Export anomaly results"
+
+#: src/workflow/nodes/anomaly_files.py:116
+msgid "Result export"
+msgstr "Result export"
+
+#: src/workflow/nodes/anomaly_files.py:119
+msgid ""
+"Export every aligned score or decision to CSV and JSON in a new directory"
+msgstr ""
+"Export every aligned score or decision to CSV and JSON in a new directory"
+
+#: src/workflow/nodes/anomaly_files.py:123 src/workflow/nodes/anomaly.py:404
+#: src/workflow/nodes/anomaly.py:453
+msgid "Anomaly scores"
+msgstr "Anomaly scores"
+
+#: src/workflow/nodes/anomaly_files.py:124 src/workflow/nodes/anomaly.py:454
+#: src/workflow/nodes/anomaly.py:587 src/workflow/nodes/anomaly.py:588
+msgid "Anomaly result"
+msgstr "Anomaly result"
+
+#: src/workflow/nodes/anomaly_files.py:125
+msgid "Export summary"
+msgstr "Export summary"
+
+#: src/workflow/nodes/anomaly_files.py:129
+msgid "Result directory name"
+msgstr "Result directory name"
+
+#: src/workflow/nodes/anomaly_files.py:130
+msgid "Spreadsheet-safe sample IDs"
+msgstr "Spreadsheet-safe sample IDs"
+
+#: src/workflow/nodes/anomaly_files.py:131
+msgid ""
+"Prefix every sample ID with an apostrophe; remove exactly one prefix to "
+"recover the original ID"
+msgstr ""
+"Prefix every sample ID with an apostrophe; remove exactly one prefix to "
+"recover the original ID"
+
+#: src/workflow/nodes/anomaly_files.py:139
+#: src/workflow/nodes/anomaly_files.py:145
+msgid "Connect exactly one anomaly scores or result input"
+msgstr "Connect exactly one anomaly scores or result input"
+
+#: src/workflow/nodes/anomaly.py:33 src/workflow/nodes/anomaly.py:57
 msgid "Feature matrix must be two-dimensional"
 msgstr "Feature matrix must be two-dimensional"
 
-#: src/workflow/nodes/anomaly.py:36
+#: src/workflow/nodes/anomaly.py:35
 msgid "Sample ID count must match feature matrix rows"
 msgstr "Sample ID count must match feature matrix rows"
 
-#: src/workflow/nodes/anomaly.py:38
+#: src/workflow/nodes/anomaly.py:37
 msgid "Source item count must match feature matrix rows"
 msgstr "Source item count must match feature matrix rows"
 
-#: src/workflow/nodes/anomaly.py:61
+#: src/workflow/nodes/anomaly.py:60
 #, python-brace-format
 msgid "Feature count mismatch: expected {expected}, got {actual}"
 msgstr "Feature count mismatch: expected {expected}, got {actual}"
 
-#: src/workflow/nodes/anomaly.py:67 src/workflow/nodes/anomaly.py:328
+#: src/workflow/nodes/anomaly.py:66 src/workflow/nodes/anomaly.py:321
 msgid "Feature matrix contains NaN or infinite values"
 msgstr "Feature matrix contains NaN or infinite values"
 
-#: src/workflow/nodes/anomaly.py:98
-msgid "File does not contain an anomaly model artifact"
-msgstr "File does not contain an anomaly model artifact"
-
-#: src/workflow/nodes/anomaly.py:124
-msgid "Score arrays and sample IDs must have the same length"
-msgstr "Score arrays and sample IDs must have the same length"
-
-#: src/workflow/nodes/anomaly.py:126
+#: src/workflow/nodes/anomaly.py:119
 msgid "Source item count must match score count"
 msgstr "Source item count must match score count"
 
-#: src/workflow/nodes/anomaly.py:144
+#: src/workflow/nodes/anomaly.py:137
 msgid "Decision count must match score count"
 msgstr "Decision count must match score count"
 
-#: src/workflow/nodes/anomaly.py:152
+#: src/workflow/nodes/anomaly.py:145
 msgid "Feature vectorizer"
 msgstr "Feature vectorizer"
 
-#: src/workflow/nodes/anomaly.py:154 src/workflow/nodes/feature/acoustic.py:503
+#: src/workflow/nodes/anomaly.py:147 src/workflow/nodes/feature/acoustic.py:503
 msgid "Feature post-processing"
 msgstr "Feature post-processing"
 
-#: src/workflow/nodes/anomaly.py:157
+#: src/workflow/nodes/anomaly.py:150
 msgid ""
 "Convert features into aligned fixed-length vectors for classical machine "
 "learning"
@@ -3863,230 +4076,217 @@ msgstr ""
 "Convert features into aligned fixed-length vectors for classical machine "
 "learning"
 
-#: src/workflow/nodes/anomaly.py:161
+#: src/workflow/nodes/anomaly.py:154
 msgid "Features"
 msgstr "Features"
 
-#: src/workflow/nodes/anomaly.py:162 src/workflow/nodes/anomaly.py:410
+#: src/workflow/nodes/anomaly.py:155 src/workflow/nodes/anomaly.py:403
 msgid "Feature matrix"
 msgstr "Feature matrix"
 
-#: src/workflow/nodes/anomaly.py:169
+#: src/workflow/nodes/anomaly.py:162
 #: src/workflow/nodes/feature/dim1d/spectral_flatness.py:56
 #: src/workflow/nodes/feature/dim1d/statistics.py:59
 msgid "Aggregation"
 msgstr "Aggregation"
 
-#: src/workflow/nodes/anomaly.py:171
+#: src/workflow/nodes/anomaly.py:164
 msgid "How to reduce each sample to a fixed-length vector"
 msgstr "How to reduce each sample to a fixed-length vector"
 
-#: src/workflow/nodes/anomaly.py:178
+#: src/workflow/nodes/anomaly.py:171
 msgid "No features provided"
 msgstr "No features provided"
 
-#: src/workflow/nodes/anomaly.py:185
+#: src/workflow/nodes/anomaly.py:178
 msgid "Vectorized samples have inconsistent feature counts"
 msgstr "Vectorized samples have inconsistent feature counts"
 
-#: src/workflow/nodes/anomaly.py:190
+#: src/workflow/nodes/anomaly.py:183
 msgid "Feature matrix contains empty, NaN, or infinite values"
 msgstr "Feature matrix contains empty, NaN, or infinite values"
 
-#: src/workflow/nodes/anomaly.py:201
+#: src/workflow/nodes/anomaly.py:194
 #, python-brace-format
 msgid "Feature matrix ready: {samples} samples, {features} features"
 msgstr "Feature matrix ready: {samples} samples, {features} features"
 
-#: src/workflow/nodes/anomaly.py:208
+#: src/workflow/nodes/anomaly.py:201
 #, python-brace-format
 msgid "Feature vectorization failed: {error}"
 msgstr "Feature vectorization failed: {error}"
 
-#: src/workflow/nodes/anomaly.py:227
+#: src/workflow/nodes/anomaly.py:220
 msgid "Feature sample is empty"
 msgstr "Feature sample is empty"
 
-#: src/workflow/nodes/anomaly.py:254
+#: src/workflow/nodes/anomaly.py:247
 msgid "Anomaly detector trainer"
 msgstr "Anomaly detector trainer"
 
-#: src/workflow/nodes/anomaly.py:256 src/workflow/nodes/training.py:797
+#: src/workflow/nodes/anomaly.py:249 src/workflow/nodes/training.py:797
 #: src/workflow/nodes/training.py:812
 msgid "Model training"
 msgstr "Model training"
 
-#: src/workflow/nodes/anomaly.py:259
+#: src/workflow/nodes/anomaly.py:252
 msgid "Fit an unsupervised anomaly detector on mostly-normal reference data"
 msgstr "Fit an unsupervised anomaly detector on mostly-normal reference data"
 
-#: src/workflow/nodes/anomaly.py:263
+#: src/workflow/nodes/anomaly.py:256
 msgid "Reference feature matrix"
 msgstr "Reference feature matrix"
 
-#: src/workflow/nodes/anomaly.py:264 src/workflow/nodes/anomaly.py:409
-msgid "Anomaly model"
-msgstr "Anomaly model"
-
-#: src/workflow/nodes/anomaly.py:265
+#: src/workflow/nodes/anomaly.py:258
 msgid "Reference scores"
 msgstr "Reference scores"
 
-#: src/workflow/nodes/anomaly.py:266
+#: src/workflow/nodes/anomaly.py:259
 msgid "Training summary"
 msgstr "Training summary"
 
-#: src/workflow/nodes/anomaly.py:273
+#: src/workflow/nodes/anomaly.py:266
 msgid "Algorithm"
 msgstr "Algorithm"
 
-#: src/workflow/nodes/anomaly.py:280
+#: src/workflow/nodes/anomaly.py:273
 msgid "Feature scaling"
 msgstr "Feature scaling"
 
-#: src/workflow/nodes/anomaly.py:287 src/workflow/nodes/anomaly.py:475
+#: src/workflow/nodes/anomaly.py:280 src/workflow/nodes/anomaly.py:468
 msgid "Expected anomaly ratio"
 msgstr "Expected anomaly ratio"
 
-#: src/workflow/nodes/anomaly.py:295
+#: src/workflow/nodes/anomaly.py:288
 msgid "Number of trees"
 msgstr "Number of trees"
 
-#: src/workflow/nodes/anomaly.py:303
+#: src/workflow/nodes/anomaly.py:296
 msgid "Sample fraction per tree"
 msgstr "Sample fraction per tree"
 
-#: src/workflow/nodes/anomaly.py:311 src/workflow/nodes/control.py:448
+#: src/workflow/nodes/anomaly.py:304 src/workflow/nodes/control.py:448
 msgid "Random seed"
 msgstr "Random seed"
 
-#: src/workflow/nodes/anomaly.py:322
+#: src/workflow/nodes/anomaly.py:315
 msgid "Anomaly trainer requires feature matrix data"
 msgstr "Anomaly trainer requires feature matrix data"
 
-#: src/workflow/nodes/anomaly.py:325
+#: src/workflow/nodes/anomaly.py:318
 msgid "At least two reference samples are required"
 msgstr "At least two reference samples are required"
 
-#: src/workflow/nodes/anomaly.py:384
+#: src/workflow/nodes/anomaly.py:377
 #, python-brace-format
 msgid "Anomaly detector fitted: {samples} reference samples"
 msgstr "Anomaly detector fitted: {samples} reference samples"
 
-#: src/workflow/nodes/anomaly.py:390
+#: src/workflow/nodes/anomaly.py:383
 #, python-brace-format
 msgid "Anomaly detector training failed: {error}"
 msgstr "Anomaly detector training failed: {error}"
 
-#: src/workflow/nodes/anomaly.py:400
+#: src/workflow/nodes/anomaly.py:393
 msgid "Anomaly scorer"
 msgstr "Anomaly scorer"
 
-#: src/workflow/nodes/anomaly.py:402 src/workflow/nodes/anomaly.py:453
-#: src/workflow/nodes/training.py:1571 src/workflow/nodes/training.py:1607
+#: src/workflow/nodes/anomaly.py:395 src/workflow/nodes/anomaly.py:446
+#: src/workflow/nodes/training.py:1565 src/workflow/nodes/training.py:1601
 msgid "Inference and decision"
 msgstr "Inference and decision"
 
-#: src/workflow/nodes/anomaly.py:405
+#: src/workflow/nodes/anomaly.py:398
 msgid "Calculate raw and normalized anomaly scores for each sample"
 msgstr "Calculate raw and normalized anomaly scores for each sample"
 
-#: src/workflow/nodes/anomaly.py:411 src/workflow/nodes/anomaly.py:460
-msgid "Anomaly scores"
-msgstr "Anomaly scores"
-
-#: src/workflow/nodes/anomaly.py:418
+#: src/workflow/nodes/anomaly.py:411
 msgid "No valid anomaly model provided"
 msgstr "No valid anomaly model provided"
 
-#: src/workflow/nodes/anomaly.py:421
+#: src/workflow/nodes/anomaly.py:414
 msgid "Anomaly scorer requires feature matrix data"
 msgstr "Anomaly scorer requires feature matrix data"
 
-#: src/workflow/nodes/anomaly.py:437
+#: src/workflow/nodes/anomaly.py:430
 #, python-brace-format
 msgid "Anomaly scoring finished: {samples} samples"
 msgstr "Anomaly scoring finished: {samples} samples"
 
-#: src/workflow/nodes/anomaly.py:441
+#: src/workflow/nodes/anomaly.py:434
 #, python-brace-format
 msgid "Anomaly scoring failed: {error}"
 msgstr "Anomaly scoring failed: {error}"
 
-#: src/workflow/nodes/anomaly.py:451
+#: src/workflow/nodes/anomaly.py:444
 msgid "Anomaly decision"
 msgstr "Anomaly decision"
 
-#: src/workflow/nodes/anomaly.py:456
+#: src/workflow/nodes/anomaly.py:449
 msgid "Apply a configurable threshold without retraining the detector"
 msgstr "Apply a configurable threshold without retraining the detector"
 
-#: src/workflow/nodes/anomaly.py:461 src/workflow/nodes/anomaly.py:594
-#: src/workflow/nodes/anomaly.py:595
-msgid "Anomaly result"
-msgstr "Anomaly result"
-
-#: src/workflow/nodes/anomaly.py:468
+#: src/workflow/nodes/anomaly.py:461
 msgid "Threshold strategy"
 msgstr "Threshold strategy"
 
-#: src/workflow/nodes/anomaly.py:483
+#: src/workflow/nodes/anomaly.py:476
 msgid "Standard deviation multiplier"
 msgstr "Standard deviation multiplier"
 
-#: src/workflow/nodes/anomaly.py:491
+#: src/workflow/nodes/anomaly.py:484
 msgid "MAD multiplier"
 msgstr "MAD multiplier"
 
-#: src/workflow/nodes/anomaly.py:499
+#: src/workflow/nodes/anomaly.py:492
 msgid "Manual threshold (0-100)"
 msgstr "Manual threshold (0-100)"
 
-#: src/workflow/nodes/anomaly.py:507
+#: src/workflow/nodes/anomaly.py:500
 msgid "Attention threshold ratio"
 msgstr "Attention threshold ratio"
 
-#: src/workflow/nodes/anomaly.py:516
+#: src/workflow/nodes/anomaly.py:509
 msgid "No valid anomaly scores provided"
 msgstr "No valid anomaly scores provided"
 
-#: src/workflow/nodes/anomaly.py:519
+#: src/workflow/nodes/anomaly.py:512
 msgid "Anomaly scores are empty"
 msgstr "Anomaly scores are empty"
 
-#: src/workflow/nodes/anomaly.py:525
+#: src/workflow/nodes/anomaly.py:518
 msgid "Reference scores are required for the selected threshold strategy"
 msgstr "Reference scores are required for the selected threshold strategy"
 
-#: src/workflow/nodes/anomaly.py:546
+#: src/workflow/nodes/anomaly.py:539
 #, python-brace-format
 msgid "Anomaly decision finished: {anomalies} anomalies from {samples} samples"
 msgstr ""
 "Anomaly decision finished: {anomalies} anomalies from {samples} samples"
 
-#: src/workflow/nodes/anomaly.py:553
+#: src/workflow/nodes/anomaly.py:546
 #, python-brace-format
 msgid "Anomaly decision failed: {error}"
 msgstr "Anomaly decision failed: {error}"
 
-#: src/workflow/nodes/anomaly.py:573
+#: src/workflow/nodes/anomaly.py:566
 #, python-brace-format
 msgid "Unsupported threshold strategy: {strategy}"
 msgstr "Unsupported threshold strategy: {strategy}"
 
-#: src/workflow/nodes/anomaly.py:587 src/workflow/nodes/visualization.py:421
+#: src/workflow/nodes/anomaly.py:580 src/workflow/nodes/visualization.py:421
 msgid "Result viewing"
 msgstr "Result viewing"
 
-#: src/workflow/nodes/anomaly.py:590
+#: src/workflow/nodes/anomaly.py:583
 msgid "Inspect ranked anomaly results, thresholds, and source samples"
 msgstr "Inspect ranked anomaly results, thresholds, and source samples"
 
-#: src/workflow/nodes/anomaly.py:600
+#: src/workflow/nodes/anomaly.py:593
 msgid "No valid anomaly result provided"
 msgstr "No valid anomaly result provided"
 
-#: src/workflow/nodes/anomaly.py:604
+#: src/workflow/nodes/anomaly.py:597
 #, python-brace-format
 msgid "Anomaly explorer ready: {samples} samples"
 msgstr "Anomaly explorer ready: {samples} samples"
@@ -5692,10 +5892,6 @@ msgstr "Filter design failed: {error}"
 msgid "Filtering failed: {error}"
 msgstr "Filtering failed: {error}"
 
-#: src/workflow/nodes/training.py:84 src/workflow/nodes/training.py:223
-msgid "Model management"
-msgstr "Model management"
-
 #: src/workflow/nodes/training.py:88
 msgid ""
 "Load model files (Keras models or model editor definitions) and use the "
@@ -5708,10 +5904,6 @@ msgstr ""
 msgid "Loaded model"
 msgstr "Loaded model"
 
-#: src/workflow/nodes/training.py:98
-msgid "Model path"
-msgstr "Model path"
-
 #: src/workflow/nodes/training.py:99
 msgid "Keras model (.h5/.keras) or model definition (.model.json)"
 msgstr "Keras model (.h5/.keras) or model definition (.model.json)"
@@ -5723,11 +5915,6 @@ msgstr "Compile model"
 #: src/workflow/nodes/training.py:106
 msgid "Compile using built-in configuration (applies to .model.json only)"
 msgstr "Compile using built-in configuration (applies to .model.json only)"
-
-#: src/workflow/nodes/training.py:113
-#, python-brace-format
-msgid "Model file does not exist: {path}"
-msgstr "Model file does not exist: {path}"
 
 #: src/workflow/nodes/training.py:130
 #, python-brace-format
@@ -5757,10 +5944,6 @@ msgstr "Save the trained model to a file"
 msgid "Model to save"
 msgstr "Model to save"
 
-#: src/workflow/nodes/training.py:231
-msgid "Saved path"
-msgstr "Saved path"
-
 #: src/workflow/nodes/training.py:236
 msgid "Save mode"
 msgstr "Save mode"
@@ -5778,10 +5961,6 @@ msgstr "Save directory"
 #: src/workflow/nodes/training.py:243
 msgid "Directory to save the model (new_file mode)"
 msgstr "Directory to save the model (new_file mode)"
-
-#: src/workflow/nodes/training.py:248
-msgid "Filename"
-msgstr "Filename"
 
 #: src/workflow/nodes/training.py:249
 msgid "Model filename (including .keras/.h5 extension)"
@@ -5812,7 +5991,7 @@ msgid "Log a warning when overwriting an existing file"
 msgstr "Log a warning when overwriting an existing file"
 
 #: src/workflow/nodes/training.py:274 src/workflow/nodes/training.py:438
-#: src/workflow/nodes/training.py:861 src/workflow/nodes/training.py:1275
+#: src/workflow/nodes/training.py:861 src/workflow/nodes/training.py:1269
 #: src/workflow/nodes/feature/ai_embedding.py:89
 #: src/workflow/nodes/feature/grad_cam.py:141
 msgid "No model provided"
@@ -5843,7 +6022,7 @@ msgstr "Trainer"
 msgid "Run model training with model config or overridden parameters"
 msgstr "Run model training with model config or overridden parameters"
 
-#: src/workflow/nodes/training.py:370 src/workflow/nodes/training.py:1084
+#: src/workflow/nodes/training.py:370 src/workflow/nodes/training.py:1078
 msgid "Training history"
 msgstr "Training history"
 
@@ -5856,8 +6035,8 @@ msgid "Epochs"
 msgstr "Epochs"
 
 #: src/workflow/nodes/training.py:383 src/workflow/nodes/training.py:847
-#: src/workflow/nodes/training.py:1253 src/workflow/nodes/training.py:1588
-#: src/workflow/nodes/training.py:1623
+#: src/workflow/nodes/training.py:1247 src/workflow/nodes/training.py:1582
+#: src/workflow/nodes/training.py:1617
 #: src/workflow/nodes/feature/ai_embedding.py:80
 #: src/workflow/nodes/feature/grad_cam.py:131
 msgid "Batch size"
@@ -6006,133 +6185,133 @@ msgstr "Regression evaluator requires continuous numeric targets"
 msgid "Evaluation targets are invalid"
 msgstr "Evaluation targets are invalid"
 
-#: src/workflow/nodes/training.py:912
+#: src/workflow/nodes/training.py:906
 #, python-brace-format
 msgid "Evaluation finished: {loss}"
 msgstr "Evaluation finished: {loss}"
 
-#: src/workflow/nodes/training.py:918
+#: src/workflow/nodes/training.py:912
 #, python-brace-format
 msgid "Evaluation failed: {error}"
 msgstr "Evaluation failed: {error}"
 
-#: src/workflow/nodes/training.py:1048
+#: src/workflow/nodes/training.py:1042
 msgid "Classification model evaluation"
 msgstr "Classification model evaluation"
 
-#: src/workflow/nodes/training.py:1049
+#: src/workflow/nodes/training.py:1043
 msgid "Evaluate a classification model with categorical targets"
 msgstr "Evaluate a classification model with categorical targets"
 
-#: src/workflow/nodes/training.py:1050 src/workflow/nodes/training.py:1064
+#: src/workflow/nodes/training.py:1044 src/workflow/nodes/training.py:1058
 msgid "Model evaluation"
 msgstr "Model evaluation"
 
-#: src/workflow/nodes/training.py:1062
+#: src/workflow/nodes/training.py:1056
 msgid "Regression model evaluation"
 msgstr "Regression model evaluation"
 
-#: src/workflow/nodes/training.py:1063
+#: src/workflow/nodes/training.py:1057
 msgid "Evaluate a regression model with continuous numeric targets"
 msgstr "Evaluate a regression model with continuous numeric targets"
 
-#: src/workflow/nodes/training.py:1075
+#: src/workflow/nodes/training.py:1069
 msgid "Show training history"
 msgstr "Show training history"
 
-#: src/workflow/nodes/training.py:1077 src/workflow/nodes/training.py:1169
+#: src/workflow/nodes/training.py:1071 src/workflow/nodes/training.py:1163
 msgid "Training results"
 msgstr "Training results"
 
-#: src/workflow/nodes/training.py:1080
+#: src/workflow/nodes/training.py:1074
 msgid "Visualize training history curves"
 msgstr "Visualize training history curves"
 
-#: src/workflow/nodes/training.py:1085
+#: src/workflow/nodes/training.py:1079
 msgid "Training history (passthrough)"
 msgstr "Training history (passthrough)"
 
-#: src/workflow/nodes/training.py:1090
+#: src/workflow/nodes/training.py:1084
 msgid "Show loss curve"
 msgstr "Show loss curve"
 
-#: src/workflow/nodes/training.py:1094
+#: src/workflow/nodes/training.py:1088
 msgid "Show accuracy curve"
 msgstr "Show accuracy curve"
 
-#: src/workflow/nodes/training.py:1098
+#: src/workflow/nodes/training.py:1092
 msgid "Save path"
 msgstr "Save path"
 
-#: src/workflow/nodes/training.py:1099
+#: src/workflow/nodes/training.py:1093
 msgid "Optional. Save the chart to a file."
 msgstr "Optional. Save the chart to a file."
 
-#: src/workflow/nodes/training.py:1106
+#: src/workflow/nodes/training.py:1100
 msgid "No training history provided"
 msgstr "No training history provided"
 
-#: src/workflow/nodes/training.py:1156
+#: src/workflow/nodes/training.py:1150
 #, python-brace-format
 msgid "Failed to show training history: {error}"
 msgstr "Failed to show training history: {error}"
 
-#: src/workflow/nodes/training.py:1167
+#: src/workflow/nodes/training.py:1161
 msgid "Show metrics"
 msgstr "Show metrics"
 
-#: src/workflow/nodes/training.py:1172
+#: src/workflow/nodes/training.py:1166
 msgid "Show model evaluation metrics"
 msgstr "Show model evaluation metrics"
 
-#: src/workflow/nodes/training.py:1177
+#: src/workflow/nodes/training.py:1171
 msgid "Metrics (passthrough)"
 msgstr "Metrics (passthrough)"
 
-#: src/workflow/nodes/training.py:1182
+#: src/workflow/nodes/training.py:1176
 msgid "Verbose logs"
 msgstr "Verbose logs"
 
-#: src/workflow/nodes/training.py:1183
+#: src/workflow/nodes/training.py:1177
 msgid "Output detailed metrics logs (dialog removed)"
 msgstr "Output detailed metrics logs (dialog removed)"
 
-#: src/workflow/nodes/training.py:1189
+#: src/workflow/nodes/training.py:1183
 msgid "No metrics provided"
 msgstr "No metrics provided"
 
-#: src/workflow/nodes/training.py:1216
+#: src/workflow/nodes/training.py:1210
 #, python-brace-format
 msgid "Failed to show metrics: {error}"
 msgstr "Failed to show metrics: {error}"
 
-#: src/workflow/nodes/training.py:1230
+#: src/workflow/nodes/training.py:1224
 msgid "Predict"
 msgstr "Predict"
 
-#: src/workflow/nodes/training.py:1232
+#: src/workflow/nodes/training.py:1226
 msgid "Run prediction using a trained model"
 msgstr "Run prediction using a trained model"
 
-#: src/workflow/nodes/training.py:1239 src/workflow/nodes/training.py:1579
-#: src/workflow/nodes/training.py:1615
+#: src/workflow/nodes/training.py:1233 src/workflow/nodes/training.py:1573
+#: src/workflow/nodes/training.py:1609
 #: src/workflow/nodes/feature/ai_embedding.py:48
 #: src/workflow/nodes/feature/grad_cam.py:51
 msgid "Input data"
 msgstr "Input data"
 
-#: src/workflow/nodes/training.py:1240
+#: src/workflow/nodes/training.py:1234
 msgid "Predictions"
 msgstr "Predictions"
 
-#: src/workflow/nodes/training.py:1245
+#: src/workflow/nodes/training.py:1239
 #: src/workflow/nodes/feature/ai_embedding.py:64
 #: src/workflow/nodes/feature/dim1d/fft.py:49
 #: src/workflow/nodes/feature/dim2d/stft.py:53
 msgid "Output type"
 msgstr "Output type"
 
-#: src/workflow/nodes/training.py:1248
+#: src/workflow/nodes/training.py:1242
 msgid ""
 "Type of prediction result: label=class label, raw=model output, "
 "regression=continuous values, vector=vector output, audio=audio, "
@@ -6142,65 +6321,65 @@ msgstr ""
 "regression=continuous values, vector=vector output, audio=audio, "
 "feature_1d=1D feature, feature_2d=2D feature"
 
-#: src/workflow/nodes/training.py:1255 src/workflow/nodes/training.py:1590
-#: src/workflow/nodes/training.py:1625
+#: src/workflow/nodes/training.py:1249 src/workflow/nodes/training.py:1584
+#: src/workflow/nodes/training.py:1619
 msgid "Batch size for prediction"
 msgstr "Batch size for prediction"
 
-#: src/workflow/nodes/training.py:1259
+#: src/workflow/nodes/training.py:1253
 msgid "Sample rate"
 msgstr "Sample rate"
 
-#: src/workflow/nodes/training.py:1262
+#: src/workflow/nodes/training.py:1256
 msgid "Output audio sample rate (only for output_type=audio)"
 msgstr "Output audio sample rate (only for output_type=audio)"
 
-#: src/workflow/nodes/training.py:1279
+#: src/workflow/nodes/training.py:1273
 #: src/workflow/nodes/feature/ai_embedding.py:92
 #: src/workflow/nodes/feature/grad_cam.py:144
 msgid "No input data provided"
 msgstr "No input data provided"
 
-#: src/workflow/nodes/training.py:1287
+#: src/workflow/nodes/training.py:1281
 #, python-brace-format
 msgid "Predicting... (batch_size={batch_size})"
 msgstr "Predicting... (batch_size={batch_size})"
 
-#: src/workflow/nodes/training.py:1296
+#: src/workflow/nodes/training.py:1290
 #, python-brace-format
 msgid "Prediction finished: {count} samples, output_type={type}"
 msgstr "Prediction finished: {count} samples, output_type={type}"
 
-#: src/workflow/nodes/training.py:1306
+#: src/workflow/nodes/training.py:1300
 #, python-brace-format
 msgid "Prediction failed: {error}"
 msgstr "Prediction failed: {error}"
 
-#: src/workflow/nodes/training.py:1569
+#: src/workflow/nodes/training.py:1563
 msgid "Classification model prediction"
 msgstr "Classification model prediction"
 
-#: src/workflow/nodes/training.py:1570
+#: src/workflow/nodes/training.py:1564
 msgid "Predict class labels and expose the model's raw output"
 msgstr "Predict class labels and expose the model's raw output"
 
-#: src/workflow/nodes/training.py:1580
+#: src/workflow/nodes/training.py:1574
 msgid "Predicted classes"
 msgstr "Predicted classes"
 
-#: src/workflow/nodes/training.py:1581
+#: src/workflow/nodes/training.py:1575
 msgid "Raw model output"
 msgstr "Raw model output"
 
-#: src/workflow/nodes/training.py:1605
+#: src/workflow/nodes/training.py:1599
 msgid "Regression model prediction"
 msgstr "Regression model prediction"
 
-#: src/workflow/nodes/training.py:1606
+#: src/workflow/nodes/training.py:1600
 msgid "Predict continuous values from a regression model"
 msgstr "Predict continuous values from a regression model"
 
-#: src/workflow/nodes/training.py:1616
+#: src/workflow/nodes/training.py:1610
 msgid "Predicted values"
 msgstr "Predicted values"
 

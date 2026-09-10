@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import logging
-import os
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Sequence, Tuple
 
@@ -80,23 +79,17 @@ class AnomalyModelArtifact:
         return np.clip((values - low) / span * 100.0, 0.0, 100.0)
 
     def save(self, path: str):
-        """Persist the complete artifact with joblib."""
-        import joblib
+        """Persist a versioned bundle without overwriting an existing file."""
+        from ..anomaly_io import save_model
 
-        parent = os.path.dirname(path)
-        if parent:
-            os.makedirs(parent, exist_ok=True)
-        joblib.dump(self, path)
+        return save_model(self, path)
 
     @classmethod
-    def load(cls, path: str) -> "AnomalyModelArtifact":
-        """Load and type-check a persisted artifact."""
-        import joblib
+    def load(cls, path: str, *, trusted=False, format="anomaly_zip") -> "AnomalyModelArtifact":
+        """Load explicitly trusted state; legacy files require an explicit format."""
+        from ..anomaly_io import load_model
 
-        artifact = joblib.load(path)
-        if not isinstance(artifact, cls):
-            raise TypeError(tr_("File does not contain an anomaly model artifact"))
-        return artifact
+        return load_model(path, trusted=trusted, format=format)
 
 
 @dataclass

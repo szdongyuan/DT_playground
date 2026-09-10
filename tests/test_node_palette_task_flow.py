@@ -68,7 +68,7 @@ def test_palette_contains_every_visible_node_once(qapp):
         for category in NodeCategory
         for node_class in get_nodes_by_category(category)
     ]
-    assert len(actual_types) == 60
+    assert len(actual_types) == 63
     assert len(actual_types) == len(set(actual_types))
     assert set(actual_types) == set(expected_types)
 

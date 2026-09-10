@@ -149,6 +149,9 @@ def _execute_workflow(
                 "events": str(events_path),
                 "manifest": str(target_dir / "manifest.json"),
                 "produced_files": produced_files,
+                "sha256": {
+                    name: _file_sha256(target_dir / name) for name in produced_files
+                },
             },
         }
     )
@@ -244,12 +247,20 @@ def _write_json(path: Path, data: dict[str, Any]) -> None:
 
 def _package_versions() -> dict[str, str]:
     versions = {}
-    for distribution in ("tensorflow", "numpy", "librosa", "scikit-learn", "PySide6"):
+    for distribution in ("tensorflow", "numpy", "scipy", "joblib", "librosa", "scikit-learn", "PySide6"):
         try:
             versions[distribution] = importlib.metadata.version(distribution)
         except importlib.metadata.PackageNotFoundError:
             versions[distribution] = "not-installed"
     return versions
+
+
+def _file_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 def _resolve_workflow_paths(workflow, definition_dir: Path, run_dir: Path, report) -> None:
@@ -264,6 +275,16 @@ def _resolve_workflow_paths(workflow, definition_dir: Path, run_dir: Path, repor
 
         if node.node_type == "save_audio":
             _set_confined_output(node, "output_folder", run_dir, report)
+        elif node.node_type in {"save_anomaly_model", "export_anomaly_results"}:
+            _set_confined_output(node, "output_folder", run_dir, report)
+            try:
+                from src.workflow.anomaly_io import output_target
+
+                name = "file_name" if node.node_type == "save_anomaly_model" else "directory_name"
+                target = output_target(node.get_parameter("output_folder"), node.get_parameter(name))
+                _resolve_output_path(target, run_dir)
+            except ValueError as exc:
+                report.error("output.invalid_target", str(exc), node_id=node.node_id)
         elif node.node_type == "save_model":
             parameter = "existing_file" if node.get_parameter("save_mode") == "overwrite" else "save_dir"
             _set_confined_output(node, parameter, run_dir, report)
