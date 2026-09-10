@@ -20,6 +20,7 @@ import numpy as np
 
 from src.cli.contracts import CLI_SCHEMA_VERSION, EventWriter, json_safe, utc_now
 from src.cli.output import isolated_event_output
+from src.cli.run_lock import RunDirectoryBusyError, run_directory_lock
 from src.cli.validation import INPUT_PATH_PARAMETERS, validate_workflow_file
 from src.core.event_bus import get_event_bus
 from src.workflow.engine import WorkflowEngine
@@ -36,10 +37,16 @@ def execute_workflow(
 ) -> tuple[bool, dict[str, Any]]:
     """Validate and synchronously execute one workflow in a managed run directory."""
     with isolated_event_output(writer):
-        return _execute_workflow(
-            workflow_path, run_dir, writer=writer, seed=seed,
-            overwrite=overwrite, checkpoint=checkpoint,
-        )
+        try:
+            with run_directory_lock(run_dir) as target_dir:
+                return _execute_workflow(
+                    workflow_path, target_dir, writer=writer, seed=seed,
+                    overwrite=overwrite, checkpoint=checkpoint,
+                )
+        except RunDirectoryBusyError as exc:
+            writer.emit("workflow_failed", str(exc), success=False,
+                        phase="directory_lock", code="run_dir.busy")
+            raise
 
 
 def _execute_workflow(
