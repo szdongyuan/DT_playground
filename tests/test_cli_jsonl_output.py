@@ -111,4 +111,5 @@ def test_real_training_stdout_is_jsonl(tmp_path):
     assert any("loss" in e["data"]["payload"] and "accuracy" in e["data"]["payload"] for e in progress)
     assert (tmp_path / "run/models/trained.keras").is_file()
     disk = [json.loads(line) for line in (tmp_path / "run/events.jsonl").read_text(encoding="utf-8").splitlines()]
-    assert [(e["event"], e["data"]) for e in events] == [(e["event"], e["data"]) for e in disk]
+    assert disk[-1]["event"] == "workflow_execution_finished"
+    assert [(e["event"], e["data"]) for e in events[:-1]] == [(e["event"], e["data"]) for e in disk]

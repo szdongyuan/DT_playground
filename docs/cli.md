@@ -124,7 +124,29 @@ Each run directory contains:
 
 ## JSON Lines events
 
-`--events jsonl` writes one JSON object per line to stdout and to `events.jsonl`. Every record contains `schema_version`, `timestamp`, `event`, `message`, and `data`. Runtime arrays and models are summarized by type and shape; raw datasets are never written to stdout.
+`--events jsonl` writes one JSON object per line. Execution events go to stdout
+and `events.jsonl`; finalization notifications go only to stdout. Every record
+contains `schema_version`, `timestamp`, `event`, `message`, and `data`. Runtime
+arrays and models are summarized by type and shape; raw datasets are never
+written to stdout.
+
+`workflow_execution_finished` closes the execution log: its `success` describes
+node execution only, not successful artifact publication. The CLI then hashes
+the sealed log and other artifacts and atomically publishes `manifest.json`
+using a same-directory temporary file. Only after publication does stdout emit
+`workflow_completed` (or `workflow_failed` for a failed execution). Finalization
+errors instead emit `workflow_failed` with `data.phase="finalization"` when the
+output stream remains usable, and exit nonzero. The log is not appended after
+hashing, so its manifest hash always describes the complete persisted file.
+
+Consumers must require exit code 0, the final stdout `workflow_completed`
+notification, and a valid completed manifest with the required artifacts.
+File-only consumers use the manifest and artifact hashes, not the last execution
+event, as the completion record. Older clients expecting `workflow_completed`
+at the end of `events.jsonl` must adopt this distinction. A missing notification,
+missing/invalid manifest, or abnormal exit is not a successful run. Atomic
+replacement prevents partial JSON publication; it does not guarantee recovery
+after power loss or that a forcibly terminated process can publish a failure.
 
 During JSONL execution, Keras progress bars are disabled; epoch metrics still
 arrive as `node_progress` events. Ordinary Python output and stdout logging are

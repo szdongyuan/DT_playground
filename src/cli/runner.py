@@ -11,6 +11,7 @@ import random
 import shutil
 import signal
 import sys
+import tempfile
 import time
 from pathlib import Path
 from typing import Any
@@ -121,41 +122,58 @@ def _execute_workflow(
         }
         status = "completed" if result.success else "failed"
         emit(
-            "workflow_completed" if result.success else "workflow_failed",
+            "workflow_execution_finished",
             result.message,
             success=result.success,
             execution_time_seconds=result.execution_time,
         )
 
-    manifest = _manifest_base(source_path, target_dir, seed, started_at)
-    produced_files = sorted(
-        str(path.relative_to(target_dir))
-        for path in target_dir.rglob("*")
-        if path.is_file() and path.name != "manifest.json"
-    )
-    manifest.update(
-        {
-            "finished_at": utc_now(),
-            "wall_time_seconds": time.monotonic() - start_time,
-            "status": status,
-            "success": result.success,
-            "message": result.message,
-            "execution_time_seconds": result.execution_time,
-            "validation": report.to_dict(),
-            "node_outputs": output_summary,
-            "artifacts": {
-                "workflow": str(target_dir / "workflow.json"),
-                "resolved_workflow": str(target_dir / "workflow.resolved.json"),
-                "events": str(events_path),
-                "manifest": str(target_dir / "manifest.json"),
-                "produced_files": produced_files,
-                "sha256": {
-                    name: _file_sha256(target_dir / name) for name in produced_files
+    # Seal the execution log before hashing it. Finalization notifications are
+    # caller-only, so they cannot invalidate the persisted log's full-file hash.
+    try:
+        manifest = _manifest_base(source_path, target_dir, seed, started_at)
+        produced_files = sorted(
+            str(path.relative_to(target_dir))
+            for path in target_dir.rglob("*")
+            if path.is_file() and path.name != "manifest.json"
+        )
+        manifest.update(
+            {
+                "finished_at": utc_now(),
+                "wall_time_seconds": time.monotonic() - start_time,
+                "status": status,
+                "success": result.success,
+                "message": result.message,
+                "execution_time_seconds": result.execution_time,
+                "validation": report.to_dict(),
+                "node_outputs": output_summary,
+                "artifacts": {
+                    "workflow": str(target_dir / "workflow.json"),
+                    "resolved_workflow": str(target_dir / "workflow.resolved.json"),
+                    "events": str(events_path),
+                    "manifest": str(target_dir / "manifest.json"),
+                    "produced_files": produced_files,
+                    "sha256": {
+                        name: _file_sha256(target_dir / name) for name in produced_files
+                    },
                 },
-            },
-        }
+            }
+        )
+        _write_json(target_dir / "manifest.json", manifest)
+    except Exception as exc:
+        # Disk or pipe failure must not mask the original finalization error.
+        try:
+            writer.emit("workflow_failed", str(exc), success=False,
+                        phase="finalization", error_type=type(exc).__name__)
+        except (OSError, ValueError):
+            pass
+        raise
+    writer.emit(
+        "workflow_completed" if result.success else "workflow_failed",
+        result.message, success=result.success,
+        execution_time_seconds=result.execution_time,
+        manifest=str(target_dir / "manifest.json"),
     )
-    _write_json(target_dir / "manifest.json", manifest)
     return result.success, manifest
 
 
@@ -242,7 +260,25 @@ def _parse_progress_data(value: str) -> Any:
 
 
 def _write_json(path: Path, data: dict[str, Any]) -> None:
-    path.write_text(json.dumps(json_safe(data), ensure_ascii=False, indent=2), encoding="utf-8")
+    """Atomically publish JSON without exposing a partially written destination."""
+    payload = json.dumps(json_safe(data), ensure_ascii=False, indent=2)
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w", encoding="utf-8", dir=path.parent,
+            prefix=f".{path.name}.", suffix=".tmp", delete=False,
+        ) as stream:
+            temporary = Path(stream.name)
+            stream.write(payload)
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temporary, path)
+    finally:
+        if temporary is not None:
+            try:
+                temporary.unlink(missing_ok=True)
+            except OSError:
+                pass
 
 
 def _package_versions() -> dict[str, str]:

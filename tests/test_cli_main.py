@@ -102,7 +102,7 @@ def test_cli_run_writes_manifest_and_jsonl_events(tmp_path, capsys):
     assert manifest["status"] == "completed"
     assert manifest["seed"] == 42
     assert (run_dir / "workflow.json").is_file()
-    assert events[-1]["event"] == "workflow_completed"
+    assert events[-1]["event"] == "workflow_execution_finished"
     assert stdout_events[-1]["event"] == "workflow_completed"
 
 
