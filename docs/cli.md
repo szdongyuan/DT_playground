@@ -104,6 +104,25 @@ Relative input paths are resolved against the workflow file directory. Relative 
 
 Press `Ctrl+C` to request cooperative cancellation. For training workflows, `--checkpoint checkpoints/interrupted.keras` requests a checkpoint inside the run directory before stopping.
 
+Each canonical run directory is protected by a nonblocking cross-process OS
+file lock before directory checks or cleanup, through execution, artifact
+hashing, manifest publication and the final notification. A competing run,
+including one using `--overwrite`, exits with code 5 and a JSONL
+`workflow_failed` event with `data.code="run_dir.busy"` and
+`data.phase="directory_lock"`; it does not modify the owner's artifacts.
+Independent, non-overlapping run directories remain concurrent.
+
+The persistent `.audio-platform-cli-<hash>.lock` sidecar lives in the run
+directory's parent, outside managed cleanup. Do not delete or replace sidecars
+while CLI processes may be running. File existence does not indicate ownership:
+Windows byte-range locks or POSIX `flock` are released by the OS on process exit,
+including forced termination. A crashed run's partial artifacts still require
+normal directory validation; lock release does not authorize automatic deletion.
+The parent directory must be writable. Use local filesystems with OS-lock
+support; cross-host/network-filesystem locking and overlapping parent/child run
+directories are not supported. External programs that ignore the lock protocol
+are not prevented from changing artifacts.
+
 Each run directory contains:
 
 - `workflow.json`: the original workflow definition.
