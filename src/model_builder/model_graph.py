@@ -602,6 +602,10 @@ class ModelGraph:
             loss=loss,
             metrics=metrics
         )
+
+        # Persist a complete initial optimizer state even before the first batch.
+        # This only affects newly built models, never loaded training checkpoints.
+        optimizer.build(model.trainable_variables)
         
         logger.info(f"Model compiled: optimizer={optimizer_name}, loss={loss}, metrics={metrics}")
     

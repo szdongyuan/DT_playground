@@ -20,10 +20,11 @@ class _PredictModel:
 class _EvaluateModel:
     metrics_names = ["loss", "metric"]
 
-    def evaluate(self, _data, _targets, batch_size, verbose):
+    def evaluate(self, _data, _targets, batch_size, verbose, return_dict):
         assert batch_size == 32
         assert verbose == 0
-        return [0.25, 0.75]
+        assert return_dict is True
+        return {"loss": 0.25, "metric": 0.75}
 
 
 def _set_input(node, name, value):
