@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 import sys
-from dataclasses import asdict, is_dataclass
+from dataclasses import fields, is_dataclass
 from datetime import datetime, timezone
 from enum import IntEnum
 from pathlib import Path
@@ -47,7 +47,7 @@ def json_safe(value: Any) -> Any:
             }
         return [json_safe(item) for item in value]
     if is_dataclass(value):
-        return json_safe(asdict(value))
+        return {item.name: json_safe(getattr(value, item.name)) for item in fields(value)}
     if hasattr(value, "shape") and hasattr(value, "dtype"):
         return {
             "type": type(value).__name__,

@@ -136,3 +136,17 @@ stdout (`2>&1`) when parsing JSONL. Routing is process-wide and intended for the
 synchronous CLI process, not concurrent workflows embedded in a GUI process.
 
 The first contract version supports local audio/acoustic classification, regression, anomaly detection, feature processing, evaluation, and prediction. Network execution, multi-user scheduling, AutoML, and non-audio datasets are outside its scope.
+
+## Anomaly persistence and full results
+
+Use the shared `save_anomaly_model`, `load_anomaly_model` and
+`export_anomaly_results` nodes for anomaly round trips and complete CSV/JSON
+exports. Their output directories are confined to the run directory, and existing
+targets are rejected. Loading requires explicit `trusted=true` authorization:
+joblib can execute code, and a hash or type check does not make it safe.
+`validate` never deserializes anomaly models.
+
+The manifest still summarizes arrays; use the full result files for evaluation.
+`artifacts.sha256` records hashes keyed by the same relative paths as
+`artifacts.produced_files`. See [the anomaly persistence contract](anomaly-persistence.md)
+for parameters, trust and legacy compatibility, paths, CSV columns and reproduction.

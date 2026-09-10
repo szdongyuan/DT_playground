@@ -19,6 +19,7 @@ INPUT_PATH_PARAMETERS = {
     "label_file": ("file_path",),
     "target_file": ("file_path",),
     "load_model": ("model_path",),
+    "load_anomaly_model": ("model_path",),
 }
 
 
@@ -217,6 +218,16 @@ def _validate_input_paths(node, base_dir: Path, report: ValidationReport) -> Non
                 node_id=node.node_id,
                 parameter=name,
             )
+        elif node.node_type == "load_anomaly_model":
+            if node.get_parameter("format") == "legacy_joblib":
+                report.warning("anomaly.legacy_versions", "Legacy joblib versions cannot be verified; no deserialization was performed.", node_id=node.node_id)
+            else:
+                try:
+                    from src.workflow.anomaly_io import inspect_model
+
+                    inspect_model(resolved)
+                except Exception as exc:
+                    report.error("anomaly.invalid_bundle", str(exc), node_id=node.node_id, parameter=name)
 
 
 def _validate_connections(

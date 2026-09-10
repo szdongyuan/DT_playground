@@ -87,7 +87,7 @@ def test_palette_renders_stage_groups_and_nodes_in_workflow_order(qapp):
         ["classification_predict", "regression_predict", "anomaly_scorer", "anomaly_decision"],
         ["classification_evaluator", "regression_evaluator"],
         ["grad_cam"],
-        ["load_model", "save_model"],
+        ["load_model", "save_model", "load_anomaly_model", "save_anomaly_model"],
     ]
     for group_index, node_types in enumerate(expected_types):
         group = category_item.child(group_index)
@@ -110,6 +110,7 @@ def test_output_nodes_are_grouped_by_user_intent(qapp):
         f"📁 {tr_('Data export')}",
         f"📁 {tr_('Training results')}",
         f"📁 {tr_('Result viewing')}",
+        f"📁 {tr_('Result export')}",
     ]
     assert [
         [
@@ -123,6 +124,7 @@ def test_output_nodes_are_grouped_by_user_intent(qapp):
         ["save_audio"],
         ["show_history", "show_metrics"],
         ["anomaly_explorer", "multi_curve_viewer"],
+        ["export_anomaly_results"],
     ]
 
 

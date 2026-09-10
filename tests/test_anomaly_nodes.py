@@ -86,9 +86,9 @@ def test_isolation_forest_training_scoring_and_serialization(tmp_path):
     assert reference_scores.raw_scores[-1] > np.median(reference_scores.raw_scores[:-1])
     assert trainer.outputs["training_summary"].data["sample_count"] == 31
 
-    path = tmp_path / "detector.joblib"
+    path = tmp_path / "detector.anomaly.zip"
     artifact.save(str(path))
-    loaded = AnomalyModelArtifact.load(str(path))
+    loaded = AnomalyModelArtifact.load(str(path), trusted=True)
     np.testing.assert_allclose(loaded.score(matrix), artifact.score(matrix))
 
     scorer = create_node("anomaly_scorer")
