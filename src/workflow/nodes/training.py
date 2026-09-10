@@ -892,18 +892,12 @@ class EvaluatorNode(BaseNode):
             results = model.evaluate(
                 X, Y,
                 batch_size=self.get_parameter("batch_size"),
-                verbose=0
+                verbose=0,
+                return_dict=True,
             )
-            
-            # 获取指标名称
-            metric_names = model.metrics_names
-            
-            metrics = {}
-            if isinstance(results, list):
-                for name, value in zip(metric_names, results):
-                    metrics[name] = float(value)
-            else:
-                metrics[metric_names[0]] = float(results)
+
+            # Keras may group compiled metrics under a single metrics_names entry.
+            metrics = {name: float(value) for name, value in results.items()}
             
             self.set_output_data("metrics", metrics)
             
