@@ -262,11 +262,12 @@ class AudioFolderNode(BaseNode):
             },
         )
 
-        logger.info(f"加载完成: {len(audio_list)} 个音频, {len(output_label_names)} 个类别")
+        detected_class_count = len(label_map)
+        logger.info(f"加载完成: {len(audio_list)} 个音频, {detected_class_count} 个类别")
         self.report_status(
             tr_("Audio loaded: {files} files, {classes} classes").format(
                 files=len(audio_list),
-                classes=len(output_label_names),
+                classes=detected_class_count,
             )
         )
         return True
@@ -702,6 +703,8 @@ class LabelFileNode(BaseNode):
                 labels, label_map = self._load_json(file_path)
             else:
                 labels, label_map = self._load_txt(file_path)
+
+            label_map = self._with_categorical_metadata(label_map)
             
             self.set_output_data("labels", labels)
             self.set_output_data("label_map", label_map)
@@ -712,6 +715,18 @@ class LabelFileNode(BaseNode):
         except Exception as e:
             self.error_message = tr_("Failed to load labels: {error}").format(error=str(e))
             return False
+
+    @staticmethod
+    def _with_categorical_metadata(label_map: Dict) -> Dict:
+        if (
+            isinstance(label_map.get("filename_map"), dict)
+            or isinstance(label_map.get("label_names"), dict)
+        ):
+            metadata = dict(label_map)
+        else:
+            metadata = {"filename_map": dict(label_map)}
+        metadata["kind"] = "categorical"
+        return metadata
     
     def _load_csv(self, file_path: str) -> Tuple[List, Dict]:
         """加载CSV格式标签"""

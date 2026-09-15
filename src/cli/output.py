@@ -17,7 +17,8 @@ def isolated_event_output(writer):
     failure or cancellation; this process-wide routing is CLI-only.
     """
     if writer.mode != "jsonl":
-        yield
+        with quiet_training_output():
+            yield
         return
     original_stdout = sys.stdout
     original_writer = writer.stream

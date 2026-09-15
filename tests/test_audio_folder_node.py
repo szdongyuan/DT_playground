@@ -117,6 +117,8 @@ class AudioFolderNodeTests(unittest.TestCase):
             node = create_node("audio_folder")
             node.set_parameter("folder_path", str(root))
             node.set_parameter("auto_label", False)
+            statuses = []
+            node.status_callback = statuses.append
 
             with patch("src.workflow.nodes.data_source.librosa.load", side_effect=self._fake_librosa_load):
                 self.assertTrue(node.execute(), msg=getattr(node, "error_message", ""))
@@ -130,6 +132,7 @@ class AudioFolderNodeTests(unittest.TestCase):
                     "filename_map": {path: 0 for path in file_paths},
                 },
             )
+            self.assertIn("0 classes", statuses[-1])
 
     def test_failed_audio_load_is_excluded_from_label_mapping(self):
         with tempfile.TemporaryDirectory() as tmpdir:

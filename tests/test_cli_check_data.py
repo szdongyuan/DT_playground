@@ -186,8 +186,16 @@ def test_corrupt_audio_cli_stderr_is_still_json(tmp_path, capsys):
 @pytest.mark.parametrize("mode", ["basename", "stem", "full_path", "relative_path"])
 def test_alignment_match_modes_follow_node_contract(tmp_path, mode):
     audio = tmp_path / "audio/a.wav"
-    key = {"basename": "a.wav", "stem": "a", "full_path": str(audio), "relative_path": str(audio)}[mode]
-    path = write_workflow(tmp_path, labels={key: 1}, alignment={"match_mode": mode})
+    key = {
+        "basename": "a.wav",
+        "stem": "a",
+        "full_path": str(audio),
+        "relative_path": "audio/a.wav",
+    }[mode]
+    alignment = {"match_mode": mode}
+    if mode == "relative_path":
+        alignment["dataset_root"] = "."
+    path = write_workflow(tmp_path, labels={key: 1}, alignment=alignment)
     wave(audio)
     report, _ = validate_workflow_file(path, check_data=True)
     assert report.valid

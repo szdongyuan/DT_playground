@@ -133,6 +133,9 @@ def check_workflow_data(nodes, connections, base_dir, report):
     for node_id, node in nodes.items():
         if node.node_type != "align_targets":
             continue
+        dataset_root = node.get_parameter("dataset_root")
+        if dataset_root:
+            node.set_parameter("dataset_root", str(_resolve(dataset_root, base_dir)))
         available = {}
         unresolved = []
         for port in ("file_paths", "target_map", "targets"):

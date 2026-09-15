@@ -4,9 +4,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 from typing import Sequence
+
+# Keep third-party runtime diagnostics out of normal CLI output unless the
+# caller explicitly requests a more verbose TensorFlow log level.
+os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")
 
 from src.cli.capabilities import get_capabilities
 from src.cli.contracts import EventWriter, ExitCode, print_payload

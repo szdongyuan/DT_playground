@@ -331,8 +331,7 @@ class SaveModelNode(BaseNode):
             self.set_output_data("model_path", save_path)
             
             # 显示保存信息
-            file_name = os.path.basename(save_path)
-            self.report_status(tr_("Model saved: {name}").format(name=file_name))
+            self.report_status(tr_("Model saved: {path}").format(path=save_path))
             logger.info(f"模型已保存到: {save_path}")
             return True
             
@@ -421,6 +420,7 @@ class TrainerNode(BaseNode):
     def execute(self) -> bool:
         try:
             import numpy as np
+            import tensorflow as tf
             from tensorflow import keras
             from .data_source import AudioData
             from src.model_builder.model_graph import CompileConfig
@@ -476,10 +476,14 @@ class TrainerNode(BaseNode):
                 # 获取已编译模型的配置信息用于日志
                 optimizer_config = model.optimizer.get_config() if model.optimizer else {}
                 optimizer_name = optimizer_config.get('name', 'unknown')
+                learning_rate = optimizer_config.get('learning_rate', 'unknown')
                 loss_name = model.loss if isinstance(model.loss, str) else getattr(model.loss, '__name__', str(model.loss))
                 self.report_status(
-                    tr_("Using model config: optimizer={opt}, loss={loss}").format(
+                    tr_(
+                        "Using model config: optimizer={opt}, learning_rate={rate}, loss={loss}"
+                    ).format(
                         opt=optimizer_name,
+                        rate=learning_rate,
                         loss=loss_name,
                     )
                 )
@@ -502,8 +506,11 @@ class TrainerNode(BaseNode):
                 
                 model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
                 self.report_status(
-                    tr_("Using override config: optimizer={opt}, loss={loss}").format(
+                    tr_(
+                        "Using override config: optimizer={opt}, learning_rate={rate}, loss={loss}"
+                    ).format(
                         opt=optimizer_name,
+                        rate=learning_rate,
                         loss=loss,
                     )
                 )
@@ -516,10 +523,13 @@ class TrainerNode(BaseNode):
             from src.training.callbacks import TrainingCallback
             
             def on_epoch_end(epoch, logs):
-                # epoch 是从 0 开始的
                 current_epoch = epoch + 1
                 progress = current_epoch / total_epochs
-                epoch_metrics = logs or {}
+                epoch_metrics = dict(logs or {})
+                epoch_metrics.update({
+                    "epoch": current_epoch,
+                    "total_epochs": total_epochs,
+                })
                 self.report_progress(progress, f"Epoch {current_epoch}/{total_epochs}", epoch_metrics)
             
             class _TrainingStopAndSaveCallback(TrainingCallback):
@@ -560,18 +570,39 @@ class TrainerNode(BaseNode):
             event_bus.training_stopped.connect(_on_training_stopped)
             event_bus.training_stop_with_checkpoint.connect(_on_training_stop_with_checkpoint)
             
+            early_stopping_callback = None
+            monitor_name = 'val_loss' if validation_data else 'loss'
             if self.get_parameter("early_stopping"):
-                callbacks.append(keras.callbacks.EarlyStopping(
-                    monitor='val_loss' if validation_data else 'loss',
+                early_stopping_callback = keras.callbacks.EarlyStopping(
+                    monitor=monitor_name,
                     patience=self.get_parameter("patience"),
                     restore_best_weights=True
-                ))
+                )
+                callbacks.append(early_stopping_callback)
             
             # 训练
             self.report_status(
                 tr_("Training started: {epochs} epochs, batch_size={batch_size}").format(
                     epochs=total_epochs,
                     batch_size=self.get_parameter("batch_size"),
+                )
+            )
+            gpu_devices = tf.config.list_physical_devices("GPU")
+            device_name = "GPU" if gpu_devices else "CPU"
+            try:
+                parameter_count = int(model.count_params())
+            except (AttributeError, TypeError, ValueError):
+                parameter_count = 0
+            self.report_status(
+                tr_(
+                    "Training context: train_samples={train}, validation_samples={validation}, "
+                    "input_shape={shape}, parameters={parameters}, device={device}"
+                ).format(
+                    train=len(X),
+                    validation=len(validation_data[0]) if validation_data else 0,
+                    shape=tuple(X.shape[1:]),
+                    parameters=parameter_count,
+                    device=device_name,
                 )
             )
 
@@ -597,21 +628,46 @@ class TrainerNode(BaseNode):
             self.set_output_data("trained_model", model)
             self.set_output_data("history", history.history)
             
-            # 获取最终指标
             final_loss = history.history.get('loss', [0])[-1]
             final_val_loss = history.history.get('val_loss', [0])[-1] if 'val_loss' in history.history else None
-            
-            if final_val_loss:
-                self.report_status(
-                    tr_("Training finished: loss={loss:.4f}, val_loss={val_loss:.4f}").format(
-                        loss=final_loss,
-                        val_loss=final_val_loss,
-                    )
-                )
+            epochs_run = len(history.history.get('loss', []))
+            monitor_values = history.history.get(monitor_name, [])
+            finite_indices = [
+                index for index, value in enumerate(monitor_values)
+                if np.isfinite(value)
+            ]
+            best_index = min(finite_indices, key=lambda index: monitor_values[index]) if finite_indices else None
+            best_epoch = best_index + 1 if best_index is not None else epochs_run
+            best_value = monitor_values[best_index] if best_index is not None else final_loss
+            if early_stopping_callback is None:
+                early_stopping_state = tr_("disabled")
+                restored_state = tr_("no")
             else:
-                self.report_status(
-                    tr_("Training finished: loss={loss:.4f}").format(loss=final_loss)
+                early_stopping_state = (
+                    tr_("triggered")
+                    if early_stopping_callback.stopped_epoch > 0
+                    else tr_("not triggered")
                 )
+                restored_state = tr_("yes") if monitor_values else tr_("no")
+            final_metrics = f"loss={float(final_loss):.4f}"
+            if final_val_loss is not None:
+                final_metrics += f", val_loss={float(final_val_loss):.4f}"
+            self.report_status(
+                tr_(
+                    "Training finished: epochs={epochs_run}/{epochs}, best_epoch={best_epoch}, "
+                    "{monitor}={best_value:.4f}, final={final}, early_stopping={early}, "
+                    "best_weights_restored={restored}"
+                ).format(
+                    epochs_run=epochs_run,
+                    epochs=total_epochs,
+                    best_epoch=best_epoch,
+                    monitor=monitor_name,
+                    best_value=float(best_value),
+                    final=final_metrics,
+                    early=early_stopping_state,
+                    restored=restored_state,
+                )
+            )
             
             logger.info("模型训练完成")
             return True
@@ -1046,6 +1102,285 @@ class ClassificationEvaluatorNode(EvaluatorNode):
     palette_order = 10
     visible_in_palette = True
     task_kind = "classification"
+
+    def _setup_ports(self):
+        self.add_input("model", DataType.MODEL, tr_("Model"))
+        self.add_input("x_test", DataType.ANY, tr_("Test data"))
+        self.add_input("y_test", DataType.ANY, tr_("Test targets"))
+        self.add_input(
+            "target_metadata",
+            DataType.ANY,
+            tr_("Target metadata"),
+            required=False,
+        )
+        self.add_input(
+            "file_paths",
+            DataType.ANY,
+            tr_("File paths"),
+            required=False,
+        )
+        self.add_output(
+            "classification_result",
+            DataType.CLASSIFICATION_RESULT,
+            tr_("Classification result"),
+        )
+
+    def execute(self) -> bool:
+        try:
+            import numpy as np
+            from sklearn.metrics import (
+                confusion_matrix,
+                precision_recall_fscore_support,
+            )
+
+            model = self.get_input_data("model")
+            x_test = self.get_input_data("x_test")
+            y_test = self.get_input_data("y_test")
+            target_metadata = self.get_input_data("target_metadata")
+
+            if model is None:
+                self.error_message = tr_("No model provided")
+                return False
+            if x_test is None or y_test is None:
+                self.error_message = tr_("No test data provided")
+                return False
+            if _target_validation_reason(self.task_kind, y_test, target_metadata) is not None:
+                self.error_message = tr_(
+                    "Classification evaluator requires categorical targets"
+                )
+                return False
+
+            X = self._convert_to_array(x_test, model)
+            Y = self._convert_to_array(y_test, model)
+            y_true = self._class_ids_from_targets(Y)
+            file_paths = self._file_paths(len(y_true))
+            batch_size = self.get_parameter("batch_size")
+
+            evaluated = model.evaluate(
+                X,
+                Y,
+                batch_size=batch_size,
+                verbose=0,
+                return_dict=True,
+            )
+            probabilities = np.asarray(
+                model.predict(X, batch_size=batch_size, verbose=0)
+            )
+            y_pred, confidence, predicted_class_count = self._predicted_classes(
+                probabilities
+            )
+            if len(y_pred) != len(y_true):
+                raise ValueError(
+                    tr_(
+                        "Prediction count ({predictions}) does not match target count ({targets})"
+                    ).format(predictions=len(y_pred), targets=len(y_true))
+                )
+
+            classes = self._classes(
+                y_true,
+                y_pred,
+                predicted_class_count,
+                target_metadata,
+            )
+            class_ids = [item["id"] for item in classes]
+            class_names = {item["id"]: item["name"] for item in classes}
+
+            precision, recall, f1, support = precision_recall_fscore_support(
+                y_true,
+                y_pred,
+                labels=class_ids,
+                average=None,
+                zero_division=0,
+            )
+            macro = precision_recall_fscore_support(
+                y_true,
+                y_pred,
+                labels=class_ids,
+                average="macro",
+                zero_division=0,
+            )
+            weighted = precision_recall_fscore_support(
+                y_true,
+                y_pred,
+                labels=class_ids,
+                average="weighted",
+                zero_division=0,
+            )
+            accuracy = float(np.mean(y_true == y_pred))
+            present_recalls = [
+                float(value)
+                for value, count in zip(recall, support)
+                if int(count) > 0
+            ]
+            balanced_accuracy = (
+                float(np.mean(present_recalls)) if present_recalls else 0.0
+            )
+
+            metrics = {name: float(value) for name, value in evaluated.items()}
+            metrics.update({
+                "accuracy": accuracy,
+                "balanced_accuracy": balanced_accuracy,
+                "macro_precision": float(macro[0]),
+                "macro_recall": float(macro[1]),
+                "macro_f1": float(macro[2]),
+                "weighted_precision": float(weighted[0]),
+                "weighted_recall": float(weighted[1]),
+                "weighted_f1": float(weighted[2]),
+            })
+
+            per_class = [
+                {
+                    "class_id": class_id,
+                    "class_name": class_names[class_id],
+                    "precision": float(precision[index]),
+                    "recall": float(recall[index]),
+                    "f1": float(f1[index]),
+                    "support": int(support[index]),
+                }
+                for index, class_id in enumerate(class_ids)
+            ]
+            predictions = [
+                {
+                    "index": index,
+                    "file_path": file_paths[index] if file_paths else None,
+                    "true_class_id": int(true_id),
+                    "true_class_name": class_names.get(int(true_id), str(int(true_id))),
+                    "predicted_class_id": int(predicted_id),
+                    "predicted_class_name": class_names.get(
+                        int(predicted_id), str(int(predicted_id))
+                    ),
+                    "confidence": float(confidence[index]),
+                }
+                for index, (true_id, predicted_id) in enumerate(zip(y_true, y_pred))
+            ]
+            missing_true = [
+                class_id
+                for class_id, count in zip(class_ids, support)
+                if int(count) == 0
+            ]
+            predicted_ids = set(int(value) for value in y_pred)
+            unpredicted = [class_id for class_id in class_ids if class_id not in predicted_ids]
+            warnings = []
+            if missing_true:
+                warnings.append({
+                    "code": "missing_true_classes",
+                    "class_ids": missing_true,
+                })
+            if unpredicted:
+                warnings.append({
+                    "code": "unpredicted_classes",
+                    "class_ids": unpredicted,
+                })
+
+            result = {
+                "schema_version": "1.0",
+                "task": "classification",
+                "sample_count": len(y_true),
+                "classes": classes,
+                "metrics": metrics,
+                "confusion_matrix": confusion_matrix(
+                    y_true,
+                    y_pred,
+                    labels=class_ids,
+                ).astype(int).tolist(),
+                "per_class": per_class,
+                "predictions": predictions,
+                "warnings": warnings,
+            }
+            self.set_output_data("classification_result", result)
+            matrix = result["confusion_matrix"]
+            if len(matrix) <= 10:
+                matrix_summary = str(matrix)
+            else:
+                columns = len(matrix[0]) if matrix else 0
+                matrix_summary = f"shape={len(matrix)}x{columns}"
+            summary = (
+                f"samples={len(y_true)}, accuracy={accuracy:.4f}, "
+                f"balanced_accuracy={balanced_accuracy:.4f}, "
+                f"macro_f1={metrics['macro_f1']:.4f}, "
+                f"weighted_f1={metrics['weighted_f1']:.4f}, "
+                f"confusion_matrix={matrix_summary}"
+            )
+            self.report_status(
+                tr_("Evaluation finished: {loss}").format(loss=summary)
+            )
+            logger.info("Classification evaluation completed: %s", metrics)
+            return True
+        except Exception as e:
+            self.error_message = tr_("Evaluation failed: {error}").format(error=str(e))
+            logger.exception("Classification evaluation failed")
+            return False
+
+    @staticmethod
+    def _class_ids_from_targets(targets):
+        import numpy as np
+
+        values = np.asarray(targets)
+        if values.ndim == 2 and values.shape[1] > 1:
+            return np.argmax(values, axis=1).astype(int)
+        return values.reshape(-1).astype(int)
+
+    @staticmethod
+    def _predicted_classes(probabilities):
+        import numpy as np
+
+        if probabilities.ndim == 1:
+            scores = probabilities
+        elif probabilities.ndim == 2 and probabilities.shape[1] == 1:
+            scores = probabilities[:, 0]
+        elif probabilities.ndim == 2 and probabilities.shape[1] > 1:
+            predicted = np.argmax(probabilities, axis=1).astype(int)
+            confidence = probabilities[np.arange(len(predicted)), predicted]
+            return predicted, confidence, probabilities.shape[1]
+        else:
+            raise ValueError(
+                tr_("Classification predictions must be a one- or two-dimensional array")
+            )
+
+        predicted = (scores >= 0.5).astype(int)
+        confidence = np.where(predicted == 1, scores, 1.0 - scores)
+        return predicted, confidence, 2
+
+    def _file_paths(self, sample_count: int) -> List[str]:
+        import numpy as np
+
+        value = self.get_input_data("file_paths")
+        if value is None:
+            return []
+        if isinstance(value, np.ndarray):
+            paths = value.tolist()
+        elif isinstance(value, (list, tuple)):
+            paths = list(value)
+        else:
+            paths = [value]
+        if len(paths) != sample_count:
+            raise ValueError(
+                tr_(
+                    "File path count ({paths}) does not match target count ({targets})"
+                ).format(paths=len(paths), targets=sample_count)
+            )
+        return [str(path) for path in paths]
+
+    @staticmethod
+    def _classes(y_true, y_pred, predicted_class_count: int, target_metadata) -> List[Dict]:
+        metadata = target_metadata if isinstance(target_metadata, dict) else {}
+        mapping = metadata.get("category_mapping") or metadata.get("label_names")
+        names = {}
+        if isinstance(mapping, dict):
+            for name, class_id in mapping.items():
+                try:
+                    names[int(class_id)] = str(name)
+                except (TypeError, ValueError):
+                    continue
+
+        class_ids = set(range(predicted_class_count))
+        class_ids.update(int(value) for value in y_true)
+        class_ids.update(int(value) for value in y_pred)
+        class_ids.update(names)
+        return [
+            {"id": class_id, "name": names.get(class_id, str(class_id))}
+            for class_id in sorted(class_ids)
+        ]
 
 
 @register_node

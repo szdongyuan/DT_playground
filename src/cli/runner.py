@@ -100,12 +100,17 @@ def _execute_workflow(
                 "node_finished", f"Node finished: {node_id}", node_id=node_id, success=success
             )
         )
-        engine.node_progress.connect(
-            lambda node_id, progress, data: emit(
-                "node_progress", f"Node progress: {node_id}",
-                node_id=node_id, progress=progress, payload=_parse_progress_data(data)
+        def emit_node_progress(node_id: str, progress: float, data: str) -> None:
+            payload = _parse_progress_data(data)
+            emit(
+                "node_progress",
+                _progress_message(node_id, progress, payload),
+                node_id=node_id,
+                progress=progress,
+                payload=payload,
             )
-        )
+
+        engine.node_progress.connect(emit_node_progress)
         engine.status_message.connect(lambda message: emit("status", message))
 
         previous_handler = signal.getsignal(signal.SIGINT)
@@ -175,11 +180,13 @@ def _execute_workflow(
         except (OSError, ValueError):
             pass
         raise
+    manifest_path = target_dir / "manifest.json"
+    completion_message = f"{result.message}. Manifest: {manifest_path}"
     writer.emit(
         "workflow_completed" if result.success else "workflow_failed",
-        result.message, success=result.success,
+        completion_message, success=result.success,
         execution_time_seconds=result.execution_time,
-        manifest=str(target_dir / "manifest.json"),
+        manifest=str(manifest_path),
     )
     return result.success, manifest
 
@@ -264,6 +271,21 @@ def _parse_progress_data(value: str) -> Any:
         return json.loads(value)
     except (TypeError, json.JSONDecodeError):
         return value
+
+
+def _progress_message(node_id: str, progress: float, payload: Any) -> str:
+    """Build a compact text message while retaining the full event payload."""
+    if isinstance(payload, dict) and payload.get("epoch") is not None:
+        epoch = payload["epoch"]
+        total = payload.get("total_epochs", "?")
+        metrics = []
+        for name in ("loss", "accuracy", "val_loss", "val_accuracy"):
+            value = payload.get(name)
+            if isinstance(value, (int, float)):
+                metrics.append(f"{name}={value:.4f}")
+        suffix = f": {', '.join(metrics)}" if metrics else ""
+        return f"Epoch {epoch}/{total}{suffix}"
+    return f"Node progress: {node_id} ({progress * 100:.0f}%)"
 
 
 def _write_json(path: Path, data: dict[str, Any]) -> None:

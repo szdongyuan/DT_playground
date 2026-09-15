@@ -5,7 +5,9 @@ Control Nodes
 Provides workflow control functionality: loops, data splitting, etc.
 """
 
+import json
 import logging
+from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
 import numpy as np
@@ -405,6 +407,7 @@ class SplitNode(BaseNode):
     palette_order = 20
     description = tr_("Split data into train/val/test sets")
     icon = "✂️"
+    MAX_LOGGED_CLASSES = 20
     
     def _setup_ports(self):
         self.add_input("data", DataType.ANY, tr_("Data"))
@@ -499,11 +502,14 @@ class SplitNode(BaseNode):
             and target_kind == "categorical"
             and self._can_stratify_targets(target_values, test_ratio)
         )
+        test_stratified = False
+        validation_stratified = False
         
         try:
             # 第一次分割：分出测试集
             if test_ratio > 0:
                 stratify_arr = self._stratify_array(target_values, stratify, use_target_stratify)
+                test_stratified = stratify_arr is not None
                 train_val_idx, test_idx = train_test_split(
                     indices,
                     test_size=test_ratio,
@@ -525,6 +531,7 @@ class SplitNode(BaseNode):
                     candidate = full_stratify_arr[train_val_idx]
                     if self._can_stratify_targets(candidate, adjusted_val_ratio):
                         stratify_arr = candidate
+                validation_stratified = stratify_arr is not None
                 train_idx, val_idx = train_test_split(
                     train_val_idx,
                     test_size=adjusted_val_ratio,
@@ -566,6 +573,29 @@ class SplitNode(BaseNode):
                 test=len(test_data),
             )
             self.report_status(msg)
+            if target_values is not None:
+                distributions = {
+                    "train": self._class_distribution(train_targets),
+                    "validation": self._class_distribution(val_targets),
+                    "test": self._class_distribution(test_targets),
+                }
+                self.report_status(
+                    tr_(
+                        "Split diagnostics: stratify_requested={requested}, "
+                        "test_stratified={test}, validation_stratified={validation}, "
+                        "target_kind={kind}, class_distribution={distribution}"
+                    ).format(
+                        requested=str(bool(stratify)).lower(),
+                        test=str(test_stratified).lower(),
+                        validation=str(validation_stratified).lower(),
+                        kind=target_kind,
+                        distribution=json.dumps(
+                            distributions,
+                            ensure_ascii=False,
+                            separators=(",", ":"),
+                        ),
+                    )
+                )
             logger.info(msg)
             return True
             
@@ -613,6 +643,28 @@ class SplitNode(BaseNode):
         n_classes = len(values)
         return n_train >= n_classes and n_test >= n_classes
 
+    @staticmethod
+    def _class_distribution(targets) -> Dict[str, Any]:
+        """Return a stable one-dimensional class count for diagnostics."""
+        values = np.asarray(targets)
+        if values.size == 0 or values.ndim != 1:
+            return {}
+        unique, counts = np.unique(values, return_counts=True)
+        distribution = {
+            str(value): int(count)
+            for value, count in sorted(
+                zip(unique.tolist(), counts.tolist()),
+                key=lambda item: str(item[0]),
+            )
+        }
+        if len(distribution) <= SplitNode.MAX_LOGGED_CLASSES:
+            return distribution
+        preview = dict(list(distribution.items())[: SplitNode.MAX_LOGGED_CLASSES])
+        return {
+            "class_count": len(distribution),
+            "preview": preview,
+        }
+
 
 @register_node
 class AlignTargetsNode(BaseNode):
@@ -635,6 +687,7 @@ class AlignTargetsNode(BaseNode):
     MATCH_MODES = ["basename", "relative_path", "full_path", "stem"]
     MISSING_POLICIES = ["error", "drop", "fill"]
     DUPLICATE_POLICIES = ["error", "first", "last"]
+    MAX_DIAGNOSTIC_ITEMS = 5
 
     def _setup_ports(self):
         self.add_input("data", DataType.ANY, tr_("Data"), required=False)
@@ -651,6 +704,13 @@ class AlignTargetsNode(BaseNode):
             "match_mode", "choice", "basename",
             display_name=tr_("Match mode"),
             choices=self.MATCH_MODES,
+        )
+        self.add_parameter(
+            "dataset_root", "folder", "",
+            display_name=tr_("Dataset root"),
+            description=tr_("Root directory used to normalize relative paths"),
+            default_directory="audio_data",
+            required=False,
         )
         self.add_parameter(
             "missing_policy", "choice", "error",
@@ -679,6 +739,8 @@ class AlignTargetsNode(BaseNode):
             if not file_paths:
                 self.error_message = tr_("No file paths provided")
                 return False
+
+            self._prepare_dataset_root()
 
             if data_list is not None and len(data_list) != len(file_paths):
                 self.error_message = tr_(
@@ -709,6 +771,7 @@ class AlignTargetsNode(BaseNode):
         if not isinstance(target_map, dict):
             raise ValueError(tr_("target_map must be a dictionary"))
 
+        target_map = self._filename_target_map(target_map)
         normalized_map, duplicates, source_keys = self._normalize_target_map(target_map)
         missing_policy = self.get_parameter("missing_policy")
         fill_value = self.get_parameter("fill_value")
@@ -722,7 +785,7 @@ class AlignTargetsNode(BaseNode):
         used_keys = set()
 
         for index, file_path in enumerate(file_paths):
-            normalized_key = self._match_key(file_path)
+            normalized_key = self._match_key(file_path, dataset_path=True)
             if normalized_key in normalized_map:
                 used_keys.add(normalized_key)
                 aligned_paths.append(file_path)
@@ -743,9 +806,17 @@ class AlignTargetsNode(BaseNode):
                     aligned_data.append(data_list[index])
 
         if missing_policy == "error" and missing_paths:
+            file_key = self._match_key(missing_paths[0], dataset_path=True)
+            target_key = next(iter(normalized_map), "<none>")
             raise ValueError(
-                tr_("Missing targets for file paths: {paths}").format(
-                    paths=", ".join(str(path) for path in missing_paths)
+                tr_(
+                    "Missing targets for {count} file path(s). Examples: {paths}. "
+                    "Normalized key examples: file={file_key}, target={target_key}"
+                ).format(
+                    count=len(missing_paths),
+                    paths=self._examples(missing_paths),
+                    file_key=file_key,
+                    target_key=target_key,
                 )
             )
 
@@ -774,6 +845,14 @@ class AlignTargetsNode(BaseNode):
             "file_paths": aligned_paths,
             "report": report,
         }
+
+    @staticmethod
+    def _filename_target_map(target_map: Dict) -> Dict:
+        """Accept label maps that bundle filename values with class metadata."""
+        filename_map = target_map.get("filename_map")
+        if isinstance(filename_map, dict):
+            return filename_map
+        return target_map
 
     def _align_from_ordered_targets(self, file_paths: List, data_list: List, targets) -> Dict[str, Any]:
         target_list = self._as_list(targets, "targets")
@@ -827,9 +906,13 @@ class AlignTargetsNode(BaseNode):
 
         if duplicates and duplicate_policy == "error":
             raise ValueError(
-                tr_("Duplicate target keys after {mode} matching: {keys}").format(
+                tr_(
+                    "Duplicate target keys after {mode} matching: {count}. "
+                    "Examples: {keys}"
+                ).format(
                     mode=self.get_parameter("match_mode"),
-                    keys=", ".join(duplicates),
+                    count=len(duplicates),
+                    keys=self._examples(duplicates),
                 )
             )
 
@@ -839,40 +922,96 @@ class AlignTargetsNode(BaseNode):
         seen = set()
         duplicates = []
         for file_path in file_paths:
-            normalized_key = self._match_key(file_path)
+            normalized_key = self._match_key(file_path, dataset_path=True)
             if normalized_key in seen and normalized_key not in duplicates:
                 duplicates.append(normalized_key)
             seen.add(normalized_key)
 
         if duplicates:
             raise ValueError(
-                tr_("Duplicate file path keys after {mode} matching: {keys}").format(
+                tr_(
+                    "Duplicate file path keys after {mode} matching: {count}. "
+                    "Examples: {keys}"
+                ).format(
                     mode=self.get_parameter("match_mode"),
-                    keys=", ".join(duplicates),
+                    count=len(duplicates),
+                    keys=self._examples(duplicates),
                 )
             )
 
+    def _examples(self, values: List) -> str:
+        examples = [str(value) for value in values[: self.MAX_DIAGNOSTIC_ITEMS]]
+        if len(values) > self.MAX_DIAGNOSTIC_ITEMS:
+            examples.append("...")
+        return ", ".join(examples)
+
     def _base_report(self, total_samples: int) -> Dict[str, Any]:
-        return {
+        report = {
             "total_samples": total_samples,
             "match_mode": self.get_parameter("match_mode"),
             "missing_policy": self.get_parameter("missing_policy"),
             "duplicate_policy": self.get_parameter("duplicate_policy"),
         }
+        if self.get_parameter("match_mode") == "relative_path":
+            report["dataset_root"] = str(self._dataset_root_path)
+        return report
 
-    def _match_key(self, path_value) -> str:
+    def _prepare_dataset_root(self):
+        self._dataset_root_path = None
+        if self.get_parameter("match_mode") != "relative_path":
+            return
+
+        configured_root = str(self.get_parameter("dataset_root") or "").strip()
+        if not configured_root:
+            raise ValueError(
+                tr_("Dataset root is required when match mode is relative_path")
+            )
+
+        dataset_root = Path(configured_root).resolve()
+        if not dataset_root.is_dir():
+            raise ValueError(
+                tr_("Dataset root does not exist: {path}").format(path=configured_root)
+            )
+        self._dataset_root_path = dataset_root
+
+    def _match_key(self, path_value, *, dataset_path: bool = False) -> str:
         path = str(path_value).replace("\\", "/").rstrip("/")
         match_mode = self.get_parameter("match_mode")
 
         if match_mode == "full_path":
             return path
         if match_mode == "relative_path":
-            return path[2:] if path.startswith("./") else path
+            if dataset_path or Path(path).is_absolute():
+                candidate = Path(path).resolve()
+                try:
+                    return candidate.relative_to(self._dataset_root_path).as_posix()
+                except ValueError as exc:
+                    raise ValueError(
+                        tr_("Path is outside dataset root: {path}").format(
+                            path=path_value
+                        )
+                    ) from exc
+            return self._normalize_relative_key(path)
 
         basename = path.rsplit("/", 1)[-1]
         if match_mode == "stem":
             return basename.rsplit(".", 1)[0] if "." in basename else basename
         return basename
+
+    @staticmethod
+    def _normalize_relative_key(path: str) -> str:
+        parts = []
+        for part in path.split("/"):
+            if not part or part == ".":
+                continue
+            if part == "..":
+                raise ValueError(
+                    tr_("Relative target path is outside dataset root: {path}").format(
+                        path=path
+                    )
+                )
+            parts.append(part)
+        return "/".join(parts)
 
     def _as_list(self, value, name: str) -> List:
         if value is None:
