@@ -25,6 +25,7 @@ from ..widgets.preview import (
     BasePreviewWidget,
     AnomalyResultPreviewWidget,
     AudioPreviewWidget,
+    ClassificationResultPreviewWidget,
     CurvePreviewWidget,
     Feature1DPreviewWidget,
     Feature2DPreviewWidget,
@@ -95,6 +96,7 @@ class PreviewView(QWidget):
         preview_classes = [
             ('multi_curve', MultiCurvePreviewWidget),
             ('anomaly_result', AnomalyResultPreviewWidget),
+            ('classification_result', ClassificationResultPreviewWidget),
             ('audio', AudioPreviewWidget),
             ('curve', CurvePreviewWidget),
             ('feature_1d', Feature1DPreviewWidget),
@@ -414,6 +416,9 @@ class PreviewView(QWidget):
 
         if AnomalyResultPreviewWidget.can_display(data):
             return self._preview_widgets.get('anomaly_result')
+
+        if ClassificationResultPreviewWidget.can_display(data):
+            return self._preview_widgets.get('classification_result')
 
         # 0. 检查是否是 Keras 模型
         if ModelPreviewWidget.can_display(data):

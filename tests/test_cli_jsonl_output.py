@@ -14,6 +14,7 @@ import soundfile as sf
 
 from src.cli.contracts import EventWriter
 from src.cli.output import isolated_event_output
+from src.cli.runner import _progress_message
 from src.utils.runtime import get_training_verbose
 
 
@@ -49,14 +50,36 @@ def test_output_isolation_and_restoration(monkeypatch, failure):
         logger.removeHandler(handler)
 
 
-def test_text_mode_does_not_change_defaults(monkeypatch):
+def test_text_mode_suppresses_framework_progress(monkeypatch):
     monkeypatch.setattr(sys, "frozen", False, raising=False)
     original = sys.stdout
     with isolated_event_output(EventWriter("text")):
         assert sys.stdout is original
-        assert get_training_verbose() == 1
+        assert get_training_verbose() == 0
+    assert get_training_verbose() == 1
     monkeypatch.setattr(sys, "frozen", True)
     assert get_training_verbose() == 0
+
+
+def test_training_progress_message_keeps_only_research_metrics():
+    message = _progress_message(
+        "train",
+        0.5,
+        {
+            "epoch": 2,
+            "total_epochs": 4,
+            "loss": 0.4,
+            "accuracy": 0.8,
+            "val_loss": 0.5,
+            "val_accuracy": 0.75,
+            "learning_rate": 0.001,
+        },
+    )
+
+    assert message == (
+        "Epoch 2/4: loss=0.4000, accuracy=0.8000, "
+        "val_loss=0.5000, val_accuracy=0.7500"
+    )
 
 
 def test_low_level_output_isolated_in_subprocess():
@@ -109,7 +132,39 @@ def test_real_training_stdout_is_jsonl(tmp_path):
     assert events[-1]["event"] == "workflow_completed"
     progress = [e for e in events if e["event"] == "node_progress" and e["data"]["node_id"] == "train"]
     assert any("loss" in e["data"]["payload"] and "accuracy" in e["data"]["payload"] for e in progress)
+    assert progress[0]["message"].startswith("Epoch 1/1: loss=")
+    statuses = [e["message"] for e in events if e["event"] == "status"]
+    assert any(message.startswith("Training context:") for message in statuses)
+    assert any("best_epoch=1" in message for message in statuses)
+    assert events[-1]["data"]["manifest"] in events[-1]["message"]
     assert (tmp_path / "run/models/trained.keras").is_file()
     disk = [json.loads(line) for line in (tmp_path / "run/events.jsonl").read_text(encoding="utf-8").splitlines()]
     assert disk[-1]["event"] == "workflow_execution_finished"
     assert [(e["event"], e["data"]) for e in events[:-1]] == [(e["event"], e["data"]) for e in disk]
+
+    text_env = {**env, "TF_CPP_MIN_LOG_LEVEL": "2"}
+    text_result = subprocess.run(
+        [
+            sys.executable,
+            str(root / "cli_main.py"),
+            "run",
+            str(workflow),
+            "--run-dir",
+            str(tmp_path / "text-run"),
+            "--events",
+            "text",
+        ],
+        cwd=root,
+        env=text_env,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        timeout=60,
+    )
+    assert text_result.returncode == 0, text_result.stderr + text_result.stdout
+    assert "\x1b" not in text_result.stdout
+    assert "Node progress: train" not in text_result.stdout
+    assert "Epoch 1/1: loss=" in text_result.stdout
+    assert "Training context:" in text_result.stdout
+    assert "Manifest:" in text_result.stdout
+    assert "oneDNN custom operations" not in text_result.stderr

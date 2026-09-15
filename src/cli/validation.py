@@ -18,6 +18,7 @@ INPUT_PATH_PARAMETERS = {
     "audio_file": ("file_path",),
     "label_file": ("file_path",),
     "target_file": ("file_path",),
+    "align_targets": ("dataset_root",),
     "load_model": ("model_path",),
     "load_anomaly_model": ("model_path",),
 }

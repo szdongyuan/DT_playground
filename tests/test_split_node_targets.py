@@ -76,11 +76,15 @@ class SplitNodeTargetsTests(unittest.TestCase):
         node.inputs["data"].data = list(range(20))
         node.inputs["targets"].data = [0] * 10 + [1] * 10
         node.inputs["target_metadata"].data = {"kind": "categorical"}
+        statuses = []
+        node.status_callback = statuses.append
 
         self.assertTrue(node.execute(), msg=node.error_message)
 
         self.assertEqual(node.outputs["test_targets"].data.count(0), 2)
         self.assertEqual(node.outputs["test_targets"].data.count(1), 2)
+        self.assertIn("test_stratified=true", statuses[-1])
+        self.assertIn('"test":{"0":2,"1":2}', statuses[-1])
 
     def test_categorical_targets_with_shuffle_false_do_not_request_stratify(self):
         node = create_node("split")
@@ -110,11 +114,15 @@ class SplitNodeTargetsTests(unittest.TestCase):
         node.inputs["data"].data = list(range(10))
         node.inputs["targets"].data = [0] * 9 + [1]
         node.inputs["target_metadata"].data = {"kind": "categorical"}
+        statuses = []
+        node.status_callback = statuses.append
 
         self.assertTrue(node.execute(), msg=node.error_message)
 
         self.assertEqual(len(node.outputs["train_targets"].data), 8)
         self.assertEqual(len(node.outputs["test_targets"].data), 2)
+        self.assertIn("stratify_requested=true", statuses[-1])
+        self.assertIn("test_stratified=false", statuses[-1])
 
     def test_dict_targets_fail_clearly_instead_of_splitting_keys(self):
         node = self._node()
@@ -132,6 +140,12 @@ class SplitNodeTargetsTests(unittest.TestCase):
 
         self.assertFalse(node.execute())
         self.assertIn("Target count", node.error_message)
+
+    def test_large_class_distribution_is_bounded_in_diagnostics(self):
+        distribution = self._node()._class_distribution(list(range(25)))
+
+        self.assertEqual(distribution["class_count"], 25)
+        self.assertEqual(len(distribution["preview"]), 20)
 
     def test_split_node_no_longer_exposes_legacy_label_ports(self):
         node = self._node()

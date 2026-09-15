@@ -33,6 +33,7 @@ class DataType(Enum):
     # Model related
     MODEL = "model"               # Keras/TensorFlow model
     METRICS = "metrics"           # Training/evaluation metrics
+    CLASSIFICATION_RESULT = "classification_result"
     ANOMALY_MODEL = "anomaly_model"
     ANOMALY_SCORES = "anomaly_scores"
     ANOMALY_RESULT = "anomaly_result"

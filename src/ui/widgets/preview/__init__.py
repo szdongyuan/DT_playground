@@ -8,6 +8,7 @@ Provides visual preview components for various data types.
 from .base_preview import BasePreviewWidget
 from .anomaly_result_preview import AnomalyResultPreviewWidget
 from .audio_preview import AudioPreviewWidget
+from .classification_result_preview import ClassificationResultPreviewWidget
 from .curve_preview import CurvePreviewWidget
 from .feature_1d_preview import Feature1DPreviewWidget
 from .feature_2d_preview import Feature2DPreviewWidget
@@ -20,6 +21,7 @@ __all__ = [
     'BasePreviewWidget',
     'AnomalyResultPreviewWidget',
     'AudioPreviewWidget',
+    'ClassificationResultPreviewWidget',
     'CurvePreviewWidget',
     'Feature1DPreviewWidget',
     'Feature2DPreviewWidget',

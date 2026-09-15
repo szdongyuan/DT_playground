@@ -108,7 +108,7 @@ def test_model_build_failure_keeps_validation_exit_code(tmp_path, capsys):
 
 
 @pytest.mark.parametrize("task", ["classification", "regression"])
-def test_evaluator_returns_all_named_metrics(task):
+def test_evaluator_returns_task_specific_results(task):
     from tensorflow import keras
 
     classification = task == "classification"
@@ -122,7 +122,25 @@ def test_evaluator_returns_all_named_metrics(task):
     node.inputs["x_test"].data = x
     node.inputs["y_test"].data = y
     assert node.execute(), node.error_message
-    actual = node.outputs["metrics"].data
     expected = model.evaluate(x, y, verbose=0, return_dict=True)
-    assert set(actual) == {"loss", *metric_names}
-    assert actual == pytest.approx(expected)
+    if classification:
+        result = node.outputs["classification_result"].data
+        actual = result["metrics"]
+        assert set(actual) == {
+            "loss",
+            *metric_names,
+            "balanced_accuracy",
+            "macro_precision",
+            "macro_recall",
+            "macro_f1",
+            "weighted_precision",
+            "weighted_recall",
+            "weighted_f1",
+        }
+        assert {key: actual[key] for key in expected} == pytest.approx(expected)
+        assert result["sample_count"] == 4
+        assert len(result["predictions"]) == 4
+    else:
+        actual = node.outputs["metrics"].data
+        assert set(actual) == {"loss", *metric_names}
+        assert actual == pytest.approx(expected)
