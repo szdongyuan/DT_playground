@@ -2,6 +2,7 @@ import numpy as np
 import pytest
 
 from src.workflow.node_base import create_node
+from src.workflow.nodes.feature.base import FeatureData
 from src.workflow.port import DataType
 
 
@@ -137,6 +138,31 @@ def test_classification_evaluator_rejects_mismatched_file_path_count():
 
     assert node.execute() is False
     assert "File path count" in node.error_message
+
+
+def test_classification_evaluator_recovers_paths_from_feature_provenance():
+    node = _node(
+        probabilities=[[0.8, 0.2], [0.7, 0.3]],
+        targets=[0, 1],
+        metadata={"kind": "categorical"},
+    )
+    node.inputs["x_test"].data = [
+        FeatureData(
+            data=np.zeros((1, 2), dtype=np.float32),
+            feature_type="test",
+            sample_rate=16000,
+            hop_length=512,
+            source_file=path,
+        )
+        for path in (r"D:\audio\correct.wav", r"D:\audio\wrong.wav")
+    ]
+
+    assert node.execute(), node.error_message
+    predictions = node.outputs["classification_result"].data["predictions"]
+    assert [item["file_path"] for item in predictions] == [
+        r"D:\audio\correct.wav",
+        r"D:\audio\wrong.wav",
+    ]
 
 
 def test_classification_evaluator_bounds_large_confusion_matrix_in_status():

@@ -5,6 +5,7 @@ from typing import Any, Dict, Optional
 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
+    QCheckBox,
     QGroupBox,
     QHeaderView,
     QLabel,
@@ -84,9 +85,16 @@ class ClassificationResultPreviewWidget(BasePreviewWidget):
                 tr_("Confidence"),
             ]
         )
+        self._only_errors = QCheckBox(tr_("Only misclassified"))
+        self._only_errors.toggled.connect(self._refresh_predictions)
         self._tabs.addTab(self._wrap(self._per_class_table), tr_("Per-class metrics"))
         self._tabs.addTab(self._wrap(self._confusion_table), tr_("Confusion matrix"))
-        self._tabs.addTab(self._wrap(self._predictions_table), tr_("Predictions"))
+        predictions_container = QWidget()
+        predictions_layout = QVBoxLayout(predictions_container)
+        predictions_layout.setContentsMargins(0, 0, 0, 0)
+        predictions_layout.addWidget(self._only_errors)
+        predictions_layout.addWidget(self._predictions_table)
+        self._tabs.addTab(predictions_container, tr_("Predictions"))
         layout.addWidget(self._tabs, 1)
 
     @staticmethod
@@ -199,6 +207,17 @@ class ClassificationResultPreviewWidget(BasePreviewWidget):
                 self._confusion_table.setItem(row_index, column, item)
 
     def _update_predictions(self, predictions):
+        self._prediction_rows = list(predictions)
+        self._refresh_predictions()
+
+    def _refresh_predictions(self):
+        predictions = getattr(self, "_prediction_rows", [])
+        if self._only_errors.isChecked():
+            predictions = [
+                row
+                for row in predictions
+                if row.get("true_class_id") != row.get("predicted_class_id")
+            ]
         display_rows = predictions[: self.MAX_PREDICTION_ROWS]
         self._predictions_table.setRowCount(len(display_rows))
         for row_index, row in enumerate(display_rows):
@@ -220,6 +239,8 @@ class ClassificationResultPreviewWidget(BasePreviewWidget):
         self._summary_label.setText("")
         self._warnings_label.setText("")
         self._warnings_label.hide()
+        self._prediction_rows = []
+        self._only_errors.setChecked(False)
         self._per_class_table.setRowCount(0)
         self._confusion_table.setRowCount(0)
         self._confusion_table.setColumnCount(0)

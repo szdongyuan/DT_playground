@@ -16,6 +16,7 @@ from PySide6.QtCore import QObject, QThread, Signal, Slot
 from src.ui.i18n import tr_
 from .connection import Connection
 from .node_base import BaseNode, NodeState
+from .path_resolver import resolve_workflow_input_paths, restore_workflow_input_paths
 from .workflow import Workflow
 
 
@@ -96,6 +97,7 @@ class WorkflowEngine(QObject):
         self._active_node: Optional[BaseNode] = None
         self._pending_execution_node_ids: Optional[Set[str]] = None
         self._active_execution_node_ids: Optional[Set[str]] = None
+        self._resolved_path_originals: Dict[tuple[str, str], Any] = {}
     
     def set_workflow(self, workflow: Workflow):
         """Set workflow to execute"""
@@ -285,18 +287,22 @@ class WorkflowEngine(QObject):
         if self.state != EngineState.IDLE:
             return False, tr_("Workflow is already running")
 
+        self._resolved_path_originals = resolve_workflow_input_paths(self.workflow)
         valid, errors = self.workflow.validate()
         if not valid:
+            self._restore_execution_paths()
             return False, "\n".join(errors)
 
         execution_node_ids: Optional[Set[str]] = None
         if start_node_id is not None:
             execution_node_ids = self._resolve_execution_node_ids(start_node_id)
             if execution_node_ids is None:
+                self._restore_execution_paths()
                 return False, tr_("Start node does not exist")
 
             valid_cache, cache_error = self._validate_cached_inputs_for_subset(execution_node_ids)
             if not valid_cache:
+                self._restore_execution_paths()
                 return False, cache_error
 
         self._pending_execution_node_ids = execution_node_ids
@@ -656,11 +662,18 @@ class WorkflowEngine(QObject):
     def _finalize_execution(self, result: ExecutionResult):
         """Release terminal state before publishing the canonical result signal."""
         self._active_node = None
+        self._restore_execution_paths()
         self.state = EngineState.IDLE
         if result.fatal_error:
             self.workflow_error.emit(result.message)
         else:
             self.workflow_finished.emit(result)
+
+    def _restore_execution_paths(self) -> None:
+        """Restore relative path parameters without marking the workflow dirty."""
+        if self.workflow is not None and self._resolved_path_originals:
+            restore_workflow_input_paths(self.workflow, self._resolved_path_originals)
+        self._resolved_path_originals = {}
     
     def get_node_output(self, node_id: str, port_name: str = None) -> Any:
         """

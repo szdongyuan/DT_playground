@@ -10,18 +10,7 @@ from typing import Any
 from src.model_builder import ModelGraph, get_layer_class
 from src.workflow import Workflow
 from src.workflow.node_base import get_node_class
-
-
-INPUT_PATH_PARAMETERS = {
-    "audio_folder": ("folder_path",),
-    "sqlite_audio_database": ("database_path", "audio_root"),
-    "audio_file": ("file_path",),
-    "label_file": ("file_path",),
-    "target_file": ("file_path",),
-    "align_targets": ("dataset_root",),
-    "load_model": ("model_path",),
-    "load_anomaly_model": ("model_path",),
-}
+from src.workflow.path_resolver import INPUT_PATH_PARAMETERS
 
 
 @dataclass
@@ -116,6 +105,7 @@ def validate_workflow_file(path_value: str | Path, *, headless: bool = True, che
     if report.valid:
         try:
             workflow = Workflow.from_dict(data)
+            workflow._file_path = str(path)
             valid, errors = workflow.validate()
             if not valid:
                 for message in errors:
@@ -215,9 +205,10 @@ def _validate_input_paths(node, base_dir: Path, report: ValidationReport) -> Non
         if not resolved.exists():
             report.error(
                 "path.not_found",
-                f"Input path does not exist: {resolved.resolve()}",
+                f"Input path does not exist for parameter '{name}'.",
                 node_id=node.node_id,
                 parameter=name,
+                reference=str(value),
             )
         elif node.node_type == "load_anomaly_model":
             if node.get_parameter("format") == "legacy_joblib":

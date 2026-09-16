@@ -135,5 +135,19 @@ def test_train_classifier_completes_tiny_audio_experiment(tmp_path):
     assert success
     assert payload["status"] == "completed"
     assert payload["class_mapping"] == {"high": 0, "low": 1}
-    assert (experiment / "run-001" / "manifest.json").is_file()
-    assert (experiment / "run-001" / "models" / "tiny.keras").is_file()
+    run_dir = experiment / "run-001"
+    manifest_path = run_dir / "manifest.json"
+    assert manifest_path.is_file()
+    assert (run_dir / "models" / "tiny.keras").is_file()
+    manifest_text = manifest_path.read_text(encoding="utf-8")
+    manifest = json.loads(manifest_text)
+    result = manifest["node_outputs"]["evaluate"]["classification_result"]
+    predictions = run_dir / result["artifacts"]["predictions"]
+    misclassified = run_dir / result["artifacts"]["misclassified"]
+    prediction_rows = [
+        json.loads(line) for line in predictions.read_text(encoding="utf-8").splitlines()
+    ]
+    assert len(prediction_rows) == result["sample_count"]
+    assert all(row["source_ref"].startswith("dataset://") for row in prediction_rows)
+    assert misclassified.is_file()
+    assert str(tmp_path) not in manifest_text

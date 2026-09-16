@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-15 11:46+0800\n"
+"POT-Creation-Date: 2026-09-16 11:11+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -102,7 +102,7 @@ msgid "Warning"
 msgstr ""
 
 #: src/app.py:443 src/audio/loader.py:58 src/workflow/nodes/data_source.py:616
-#: src/workflow/nodes/data_source.py:683 src/workflow/nodes/data_source.py:871
+#: src/workflow/nodes/data_source.py:683 src/workflow/nodes/data_source.py:876
 #, python-brace-format
 msgid "File does not exist: {path}"
 msgstr ""
@@ -403,8 +403,8 @@ msgstr ""
 #: src/controllers/navigation_controller.py:83 src/ui/main_window.py:376
 #: src/ui/dialogs/settings_dialog.py:42 src/workflow/nodes/training.py:362
 #: src/workflow/nodes/training.py:888 src/workflow/nodes/training.py:1107
-#: src/workflow/nodes/training.py:1567 src/workflow/nodes/training.py:1907
-#: src/workflow/nodes/training.py:1943
+#: src/workflow/nodes/training.py:1590 src/workflow/nodes/training.py:1930
+#: src/workflow/nodes/training.py:1966
 #: src/workflow/nodes/feature/ai_embedding.py:47
 #: src/workflow/nodes/feature/grad_cam.py:50
 msgid "Model"
@@ -506,7 +506,7 @@ msgstr ""
 msgid "Workflow resumed"
 msgstr ""
 
-#: src/controllers/workflow_controller.py:188 src/workflow/engine.py:610
+#: src/controllers/workflow_controller.py:188 src/workflow/engine.py:616
 msgid "Continuing from breakpoint..."
 msgstr ""
 
@@ -531,7 +531,7 @@ msgid "Error: {message}"
 msgstr ""
 
 #: src/controllers/workflow_controller.py:245 src/ui/main_window.py:623
-#: src/ui/main_window.py:642 src/workflow/engine.py:436
+#: src/ui/main_window.py:642 src/workflow/engine.py:442
 #, python-brace-format
 msgid "Running: {name}"
 msgstr ""
@@ -1138,7 +1138,7 @@ msgid "Input data shape, e.g. (128,) or (128, 64) or (32, 32, 3)"
 msgstr ""
 
 #: src/model_builder/layers/input_layers.py:29
-#: src/workflow/nodes/data_source.py:857
+#: src/workflow/nodes/data_source.py:862
 msgid "Data type"
 msgstr ""
 
@@ -1215,7 +1215,7 @@ msgstr ""
 
 #: src/model_builder/layers/input_layers.py:142
 #: src/ui/widgets/preview/metrics_preview.py:42
-#: src/workflow/nodes/training.py:898 src/workflow/nodes/training.py:1505
+#: src/workflow/nodes/training.py:898 src/workflow/nodes/training.py:1528
 msgid "Metrics"
 msgstr ""
 
@@ -1597,7 +1597,7 @@ msgid "⏹️ Stop"
 msgstr ""
 
 #: src/ui/main_window.py:318 src/ui/main_window.py:596
-#: src/workflow/engine.py:644
+#: src/workflow/engine.py:650
 msgid "Execution error"
 msgstr ""
 
@@ -1926,7 +1926,7 @@ msgstr ""
 #: src/workflow/nodes/augmentation.py:511
 #: src/workflow/nodes/augmentation.py:519
 #: src/workflow/nodes/augmentation.py:696 src/workflow/nodes/data_source.py:595
-#: src/workflow/nodes/data_source.py:1105
+#: src/workflow/nodes/data_source.py:1110
 #: src/workflow/nodes/preprocessing.py:125
 #: src/workflow/nodes/preprocessing.py:128
 #: src/workflow/nodes/preprocessing.py:189
@@ -3076,41 +3076,41 @@ msgstr ""
 msgid "Subclasses must implement clear()"
 msgstr ""
 
-#: src/ui/widgets/preview/classification_result_preview.py:31
+#: src/ui/widgets/preview/classification_result_preview.py:32
 #: src/workflow/nodes/training.py:1125
 msgid "Classification result"
 msgstr ""
 
-#: src/ui/widgets/preview/classification_result_preview.py:44
+#: src/ui/widgets/preview/classification_result_preview.py:45
 msgid "Summary metrics"
 msgstr ""
 
-#: src/ui/widgets/preview/classification_result_preview.py:62
+#: src/ui/widgets/preview/classification_result_preview.py:63
 msgid "Class ID"
 msgstr ""
 
-#: src/ui/widgets/preview/classification_result_preview.py:63
+#: src/ui/widgets/preview/classification_result_preview.py:64
 #: src/ui/widgets/preview/label_preview.py:123
 msgid "Class name"
 msgstr ""
 
-#: src/ui/widgets/preview/classification_result_preview.py:64
+#: src/ui/widgets/preview/classification_result_preview.py:65
 msgid "Precision"
 msgstr ""
 
-#: src/ui/widgets/preview/classification_result_preview.py:65
+#: src/ui/widgets/preview/classification_result_preview.py:66
 msgid "Recall"
 msgstr ""
 
-#: src/ui/widgets/preview/classification_result_preview.py:66
+#: src/ui/widgets/preview/classification_result_preview.py:67
 msgid "F1"
 msgstr ""
 
-#: src/ui/widgets/preview/classification_result_preview.py:67
+#: src/ui/widgets/preview/classification_result_preview.py:68
 msgid "Support"
 msgstr ""
 
-#: src/ui/widgets/preview/classification_result_preview.py:80
+#: src/ui/widgets/preview/classification_result_preview.py:81
 #: src/ui/widgets/preview/feature_1d_preview.py:75
 #: src/workflow/nodes/visualization.py:139
 #: src/workflow/nodes/visualization.py:149
@@ -3118,44 +3118,48 @@ msgstr ""
 msgid "Index"
 msgstr ""
 
-#: src/ui/widgets/preview/classification_result_preview.py:81
+#: src/ui/widgets/preview/classification_result_preview.py:82
 #: src/workflow/nodes/data_source.py:600 src/workflow/nodes/data_source.py:658
-#: src/workflow/nodes/data_source.py:830
+#: src/workflow/nodes/data_source.py:835
 msgid "File path"
 msgstr ""
 
-#: src/ui/widgets/preview/classification_result_preview.py:82
+#: src/ui/widgets/preview/classification_result_preview.py:83
 msgid "True class"
 msgstr ""
 
-#: src/ui/widgets/preview/classification_result_preview.py:83
+#: src/ui/widgets/preview/classification_result_preview.py:84
 msgid "Predicted class"
 msgstr ""
 
-#: src/ui/widgets/preview/classification_result_preview.py:84
+#: src/ui/widgets/preview/classification_result_preview.py:85
 msgid "Confidence"
 msgstr ""
 
-#: src/ui/widgets/preview/classification_result_preview.py:87
+#: src/ui/widgets/preview/classification_result_preview.py:88
+msgid "Only misclassified"
+msgstr ""
+
+#: src/ui/widgets/preview/classification_result_preview.py:90
 msgid "Per-class metrics"
 msgstr ""
 
-#: src/ui/widgets/preview/classification_result_preview.py:88
+#: src/ui/widgets/preview/classification_result_preview.py:91
 #: src/visualization/metrics.py:125
 msgid "Confusion matrix"
 msgstr ""
 
-#: src/ui/widgets/preview/classification_result_preview.py:89
-#: src/workflow/nodes/training.py:1569
+#: src/ui/widgets/preview/classification_result_preview.py:97
+#: src/workflow/nodes/training.py:1592
 msgid "Predictions"
 msgstr ""
 
-#: src/ui/widgets/preview/classification_result_preview.py:163
+#: src/ui/widgets/preview/classification_result_preview.py:171
 #, python-brace-format
 msgid "Classes absent from test targets: {classes}"
 msgstr ""
 
-#: src/ui/widgets/preview/classification_result_preview.py:167
+#: src/ui/widgets/preview/classification_result_preview.py:175
 #, python-brace-format
 msgid "Classes never predicted: {classes}"
 msgstr ""
@@ -3785,55 +3789,55 @@ msgstr ""
 msgid "Channel names must match the curve channel count"
 msgstr ""
 
-#: src/workflow/engine.py:136 src/workflow/engine.py:150
-#: src/workflow/engine.py:256 src/workflow/engine.py:279
-#: src/workflow/engine.py:335
+#: src/workflow/engine.py:138 src/workflow/engine.py:152
+#: src/workflow/engine.py:258 src/workflow/engine.py:281
+#: src/workflow/engine.py:341
 msgid "Workflow not set"
 msgstr ""
 
-#: src/workflow/engine.py:283 src/workflow/engine.py:286
+#: src/workflow/engine.py:285 src/workflow/engine.py:288
 msgid "Workflow is already running"
 msgstr ""
 
-#: src/workflow/engine.py:296
+#: src/workflow/engine.py:301
 msgid "Start node does not exist"
 msgstr ""
 
-#: src/workflow/engine.py:355
+#: src/workflow/engine.py:361
 #, python-brace-format
 msgid "Cannot rerun from '{node}'. Upstream connection data is unavailable."
 msgstr ""
 
-#: src/workflow/engine.py:361
+#: src/workflow/engine.py:367
 #, python-brace-format
 msgid ""
 "Cannot rerun from '{node}'. Required cached output from upstream node "
 "'{upstream}' is missing."
 msgstr ""
 
-#: src/workflow/engine.py:407
+#: src/workflow/engine.py:413
 msgid "No runnable nodes found"
 msgstr ""
 
-#: src/workflow/engine.py:449
+#: src/workflow/engine.py:455
 #, python-brace-format
 msgid "Node '{name}' failed: {error}"
 msgstr ""
 
-#: src/workflow/engine.py:466
+#: src/workflow/engine.py:472
 msgid "Workflow finished"
 msgstr ""
 
-#: src/workflow/engine.py:474
+#: src/workflow/engine.py:480
 #, python-brace-format
 msgid "Execution error: {error}"
 msgstr ""
 
-#: src/workflow/engine.py:492
+#: src/workflow/engine.py:498
 msgid "Execution stopped"
 msgstr ""
 
-#: src/workflow/engine.py:595
+#: src/workflow/engine.py:601
 #, python-brace-format
 msgid "Breakpoint paused: {name} - click Continue to proceed"
 msgstr ""
@@ -4189,7 +4193,7 @@ msgid "Anomaly scorer"
 msgstr ""
 
 #: src/workflow/nodes/anomaly.py:395 src/workflow/nodes/anomaly.py:446
-#: src/workflow/nodes/training.py:1900 src/workflow/nodes/training.py:1936
+#: src/workflow/nodes/training.py:1923 src/workflow/nodes/training.py:1959
 msgid "Inference and decision"
 msgstr ""
 
@@ -4297,7 +4301,7 @@ msgstr ""
 
 #: src/workflow/nodes/augmentation.py:40 src/workflow/nodes/augmentation.py:42
 #: src/workflow/nodes/control.py:132 src/workflow/nodes/data_source.py:336
-#: src/workflow/nodes/data_source.py:1112
+#: src/workflow/nodes/data_source.py:1117
 msgid "Labels"
 msgstr ""
 
@@ -4763,7 +4767,7 @@ msgid "Targets"
 msgstr ""
 
 #: src/workflow/nodes/control.py:415 src/workflow/nodes/control.py:422
-#: src/workflow/nodes/data_source.py:825 src/workflow/nodes/training.py:367
+#: src/workflow/nodes/data_source.py:830 src/workflow/nodes/training.py:367
 #: src/workflow/nodes/training.py:894 src/workflow/nodes/training.py:1113
 msgid "Target metadata"
 msgstr ""
@@ -4857,7 +4861,7 @@ msgstr ""
 msgid "Align data and targets by file name or path"
 msgstr ""
 
-#: src/workflow/nodes/control.py:696 src/workflow/nodes/data_source.py:824
+#: src/workflow/nodes/control.py:696 src/workflow/nodes/data_source.py:829
 msgid "Target map"
 msgstr ""
 
@@ -5353,15 +5357,15 @@ msgstr ""
 msgid "Load labels from CSV/JSON/TXT"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:664 src/workflow/nodes/data_source.py:836
+#: src/workflow/nodes/data_source.py:664 src/workflow/nodes/data_source.py:841
 msgid "File format"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:669 src/workflow/nodes/data_source.py:841
+#: src/workflow/nodes/data_source.py:669 src/workflow/nodes/data_source.py:846
 msgid "Filename column"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:670 src/workflow/nodes/data_source.py:842
+#: src/workflow/nodes/data_source.py:670 src/workflow/nodes/data_source.py:847
 msgid "Column name for filename in CSV"
 msgstr ""
 
@@ -5378,160 +5382,160 @@ msgstr ""
 msgid "Failed to load labels: {error}"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:782 src/workflow/nodes/data_source.py:955
+#: src/workflow/nodes/data_source.py:787 src/workflow/nodes/data_source.py:960
 msgid "Unsupported JSON format"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:812
+#: src/workflow/nodes/data_source.py:817
 msgid "Target file"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:815
+#: src/workflow/nodes/data_source.py:820
 msgid "Load generic supervised targets from CSV/JSON/TXT"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:823
+#: src/workflow/nodes/data_source.py:828
 msgid "Target list"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:846
+#: src/workflow/nodes/data_source.py:851
 msgid "Target columns"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:847
+#: src/workflow/nodes/data_source.py:852
 msgid "Comma-separated target column names in CSV"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:851
+#: src/workflow/nodes/data_source.py:856
 msgid "Target kind"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:853
+#: src/workflow/nodes/data_source.py:858
 msgid "Machine-learning target shape, not business type"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:862
+#: src/workflow/nodes/data_source.py:867
 msgid "Output format"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:905
+#: src/workflow/nodes/data_source.py:910
 #, python-brace-format
 msgid "Failed to load targets: {error}"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:947
+#: src/workflow/nodes/data_source.py:952
 msgid "Structured JSON targets must be a list"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:949
+#: src/workflow/nodes/data_source.py:954
 msgid "Structured JSON target_map must be an object"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:970
+#: src/workflow/nodes/data_source.py:975
 msgid "At least one target column is required"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:977
+#: src/workflow/nodes/data_source.py:982
 #, python-brace-format
 msgid "Missing target column: {column}"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:1031
+#: src/workflow/nodes/data_source.py:1036
 msgid "Continuous targets require numeric dtype"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:1093
+#: src/workflow/nodes/data_source.py:1098
 msgid "Export audio"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:1095
+#: src/workflow/nodes/data_source.py:1100
 msgid "Data export"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:1098
+#: src/workflow/nodes/data_source.py:1103
 msgid "Save audio as WAV files, optionally save labels JSON"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:1107
+#: src/workflow/nodes/data_source.py:1112
 msgid "Audio data to save (single item or list)"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:1114
+#: src/workflow/nodes/data_source.py:1119
 msgid "Optional labels corresponding to audio items"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:1120
+#: src/workflow/nodes/data_source.py:1125
 msgid "Output folder"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:1121
+#: src/workflow/nodes/data_source.py:1126
 msgid "Target folder to save audio files"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:1126
+#: src/workflow/nodes/data_source.py:1131
 msgid "Filename prefix"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:1127
+#: src/workflow/nodes/data_source.py:1132
 msgid "Prefix for output audio filenames"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:1131
+#: src/workflow/nodes/data_source.py:1136
 msgid "Save labels file"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:1132
+#: src/workflow/nodes/data_source.py:1137
 msgid "When labels are provided, save labels.json"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:1136
+#: src/workflow/nodes/data_source.py:1141
 msgid "Overwrite existing files"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:1137
+#: src/workflow/nodes/data_source.py:1142
 msgid "Overwrite files if they already exist"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:1153
+#: src/workflow/nodes/data_source.py:1158
 msgid "Please select an output folder"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:1160
+#: src/workflow/nodes/data_source.py:1165
 #, python-brace-format
 msgid "Unable to create output folder: {error}"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:1167
+#: src/workflow/nodes/data_source.py:1172
 msgid "No input audio data"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:1175
+#: src/workflow/nodes/data_source.py:1180
 #, python-brace-format
 msgid "Unsupported audio data type: {type}"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:1192
+#: src/workflow/nodes/data_source.py:1197
 #, python-brace-format
 msgid ""
 "Label count ({labels}) does not match audio count ({audio}); items will be "
 "paired in order and extras will be ignored"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:1197
+#: src/workflow/nodes/data_source.py:1202
 #, python-brace-format
 msgid "Saving {count} audio files..."
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:1248
+#: src/workflow/nodes/data_source.py:1253
 msgid "No audio files were saved successfully"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:1252
+#: src/workflow/nodes/data_source.py:1257
 #, python-brace-format
 msgid "Audio saved: {files} files"
 msgstr ""
 
-#: src/workflow/nodes/data_source.py:1254
+#: src/workflow/nodes/data_source.py:1259
 #, python-brace-format
 msgid ", labels: {count}"
 msgstr ""
@@ -6001,7 +6005,7 @@ msgstr ""
 
 #: src/workflow/nodes/training.py:274 src/workflow/nodes/training.py:438
 #: src/workflow/nodes/training.py:917 src/workflow/nodes/training.py:1142
-#: src/workflow/nodes/training.py:1604
+#: src/workflow/nodes/training.py:1627
 #: src/workflow/nodes/feature/ai_embedding.py:89
 #: src/workflow/nodes/feature/grad_cam.py:141
 msgid "No model provided"
@@ -6032,7 +6036,7 @@ msgstr ""
 msgid "Run model training with model config or overridden parameters"
 msgstr ""
 
-#: src/workflow/nodes/training.py:369 src/workflow/nodes/training.py:1413
+#: src/workflow/nodes/training.py:369 src/workflow/nodes/training.py:1436
 msgid "Training history"
 msgstr ""
 
@@ -6045,8 +6049,8 @@ msgid "Epochs"
 msgstr ""
 
 #: src/workflow/nodes/training.py:382 src/workflow/nodes/training.py:903
-#: src/workflow/nodes/training.py:1582 src/workflow/nodes/training.py:1917
-#: src/workflow/nodes/training.py:1952
+#: src/workflow/nodes/training.py:1605 src/workflow/nodes/training.py:1940
+#: src/workflow/nodes/training.py:1975
 #: src/workflow/nodes/feature/ai_embedding.py:80
 #: src/workflow/nodes/feature/grad_cam.py:131
 msgid "Batch size"
@@ -6232,7 +6236,7 @@ msgstr ""
 msgid "Evaluate a classification model with categorical targets"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1100 src/workflow/nodes/training.py:1393
+#: src/workflow/nodes/training.py:1100 src/workflow/nodes/training.py:1416
 msgid "Model evaluation"
 msgstr ""
 
@@ -6246,177 +6250,183 @@ msgstr ""
 msgid "Classification predictions must be a one- or two-dimensional array"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1359
+#: src/workflow/nodes/training.py:1353
+#, python-brace-format
+msgid ""
+"Inferred file path count ({paths}) does not match target count ({targets})"
+msgstr ""
+
+#: src/workflow/nodes/training.py:1366
 #, python-brace-format
 msgid "File path count ({paths}) does not match target count ({targets})"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1391
+#: src/workflow/nodes/training.py:1414
 msgid "Regression model evaluation"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1392
+#: src/workflow/nodes/training.py:1415
 msgid "Evaluate a regression model with continuous numeric targets"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1404
+#: src/workflow/nodes/training.py:1427
 msgid "Show training history"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1406 src/workflow/nodes/training.py:1498
+#: src/workflow/nodes/training.py:1429 src/workflow/nodes/training.py:1521
 msgid "Training results"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1409
+#: src/workflow/nodes/training.py:1432
 msgid "Visualize training history curves"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1414
+#: src/workflow/nodes/training.py:1437
 msgid "Training history (passthrough)"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1419
+#: src/workflow/nodes/training.py:1442
 msgid "Show loss curve"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1423
+#: src/workflow/nodes/training.py:1446
 msgid "Show accuracy curve"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1427
+#: src/workflow/nodes/training.py:1450
 msgid "Save path"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1428
+#: src/workflow/nodes/training.py:1451
 msgid "Optional. Save the chart to a file."
 msgstr ""
 
-#: src/workflow/nodes/training.py:1435
+#: src/workflow/nodes/training.py:1458
 msgid "No training history provided"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1485
+#: src/workflow/nodes/training.py:1508
 #, python-brace-format
 msgid "Failed to show training history: {error}"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1496
+#: src/workflow/nodes/training.py:1519
 msgid "Show metrics"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1501
+#: src/workflow/nodes/training.py:1524
 msgid "Show model evaluation metrics"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1506
+#: src/workflow/nodes/training.py:1529
 msgid "Metrics (passthrough)"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1511
+#: src/workflow/nodes/training.py:1534
 msgid "Verbose logs"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1512
+#: src/workflow/nodes/training.py:1535
 msgid "Output detailed metrics logs (dialog removed)"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1518
+#: src/workflow/nodes/training.py:1541
 msgid "No metrics provided"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1545
+#: src/workflow/nodes/training.py:1568
 #, python-brace-format
 msgid "Failed to show metrics: {error}"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1559
+#: src/workflow/nodes/training.py:1582
 msgid "Predict"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1561
+#: src/workflow/nodes/training.py:1584
 msgid "Run prediction using a trained model"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1568 src/workflow/nodes/training.py:1908
-#: src/workflow/nodes/training.py:1944
+#: src/workflow/nodes/training.py:1591 src/workflow/nodes/training.py:1931
+#: src/workflow/nodes/training.py:1967
 #: src/workflow/nodes/feature/ai_embedding.py:48
 #: src/workflow/nodes/feature/grad_cam.py:51
 msgid "Input data"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1574
+#: src/workflow/nodes/training.py:1597
 #: src/workflow/nodes/feature/ai_embedding.py:64
 #: src/workflow/nodes/feature/dim1d/fft.py:49
 #: src/workflow/nodes/feature/dim2d/stft.py:53
 msgid "Output type"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1577
+#: src/workflow/nodes/training.py:1600
 msgid ""
 "Type of prediction result: label=class label, raw=model output, "
 "regression=continuous values, vector=vector output, audio=audio, "
 "feature_1d=1D feature, feature_2d=2D feature"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1584 src/workflow/nodes/training.py:1919
-#: src/workflow/nodes/training.py:1954
+#: src/workflow/nodes/training.py:1607 src/workflow/nodes/training.py:1942
+#: src/workflow/nodes/training.py:1977
 msgid "Batch size for prediction"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1588
+#: src/workflow/nodes/training.py:1611
 msgid "Sample rate"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1591
+#: src/workflow/nodes/training.py:1614
 msgid "Output audio sample rate (only for output_type=audio)"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1608
+#: src/workflow/nodes/training.py:1631
 #: src/workflow/nodes/feature/ai_embedding.py:92
 #: src/workflow/nodes/feature/grad_cam.py:144
 msgid "No input data provided"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1616
+#: src/workflow/nodes/training.py:1639
 #, python-brace-format
 msgid "Predicting... (batch_size={batch_size})"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1625
+#: src/workflow/nodes/training.py:1648
 #, python-brace-format
 msgid "Prediction finished: {count} samples, output_type={type}"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1635
+#: src/workflow/nodes/training.py:1658
 #, python-brace-format
 msgid "Prediction failed: {error}"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1898
+#: src/workflow/nodes/training.py:1921
 msgid "Classification model prediction"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1899
+#: src/workflow/nodes/training.py:1922
 msgid "Predict class labels and expose the model's raw output"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1909
+#: src/workflow/nodes/training.py:1932
 msgid "Predicted classes"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1910
+#: src/workflow/nodes/training.py:1933
 msgid "Raw model output"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1934
+#: src/workflow/nodes/training.py:1957
 msgid "Regression model prediction"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1935
+#: src/workflow/nodes/training.py:1958
 msgid "Predict continuous values from a regression model"
 msgstr ""
 
-#: src/workflow/nodes/training.py:1945
+#: src/workflow/nodes/training.py:1968
 msgid "Predicted values"
 msgstr ""
 

@@ -77,6 +77,10 @@ def test_create_workflow_definition_is_valid(tmp_path):
     assert len(definition["nodes"]) == 18
     assert len(definition["connections"]) == 27
     assert next(node for node in definition["nodes"] if node["id"] == "split")["parameters"]["stratify"] is True
+    parameters = {node["id"]: node["parameters"] for node in definition["nodes"]}
+    assert parameters["audio"]["folder_path"] == "audio"
+    assert parameters["labels"]["file_path"] == "labels.csv"
+    assert parameters["model"]["model_path"] == "initial.keras"
 
 
 def test_create_workflow_rejects_invalid_ratios_before_writing(tmp_path):

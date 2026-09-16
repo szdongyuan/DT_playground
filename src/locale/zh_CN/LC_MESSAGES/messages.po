@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-15 11:46+0800\n"
+"POT-Creation-Date: 2026-09-16 11:11+0800\n"
 "PO-Revision-Date: 2026-02-04 17:15+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -103,7 +103,7 @@ msgid "Warning"
 msgstr "警告"
 
 #: src/app.py:443 src/audio/loader.py:58 src/workflow/nodes/data_source.py:616
-#: src/workflow/nodes/data_source.py:683 src/workflow/nodes/data_source.py:871
+#: src/workflow/nodes/data_source.py:683 src/workflow/nodes/data_source.py:876
 #, python-brace-format
 msgid "File does not exist: {path}"
 msgstr "文件不存在：{path}"
@@ -408,8 +408,8 @@ msgstr "工作流"
 #: src/controllers/navigation_controller.py:83 src/ui/main_window.py:376
 #: src/ui/dialogs/settings_dialog.py:42 src/workflow/nodes/training.py:362
 #: src/workflow/nodes/training.py:888 src/workflow/nodes/training.py:1107
-#: src/workflow/nodes/training.py:1567 src/workflow/nodes/training.py:1907
-#: src/workflow/nodes/training.py:1943
+#: src/workflow/nodes/training.py:1590 src/workflow/nodes/training.py:1930
+#: src/workflow/nodes/training.py:1966
 #: src/workflow/nodes/feature/ai_embedding.py:47
 #: src/workflow/nodes/feature/grad_cam.py:50
 msgid "Model"
@@ -519,7 +519,7 @@ msgstr "工作流已暂停"
 msgid "Workflow resumed"
 msgstr "工作流已恢复"
 
-#: src/controllers/workflow_controller.py:188 src/workflow/engine.py:610
+#: src/controllers/workflow_controller.py:188 src/workflow/engine.py:616
 msgid "Continuing from breakpoint..."
 msgstr "正在从断点继续..."
 
@@ -544,7 +544,7 @@ msgid "Error: {message}"
 msgstr "错误：{message}"
 
 #: src/controllers/workflow_controller.py:245 src/ui/main_window.py:623
-#: src/ui/main_window.py:642 src/workflow/engine.py:436
+#: src/ui/main_window.py:642 src/workflow/engine.py:442
 #, python-brace-format
 msgid "Running: {name}"
 msgstr "正在运行：{name}"
@@ -1151,7 +1151,7 @@ msgid "Input data shape, e.g. (128,) or (128, 64) or (32, 32, 3)"
 msgstr "输入数据形状，例如 (128,) 或 (128, 64) 或 (32, 32, 3)"
 
 #: src/model_builder/layers/input_layers.py:29
-#: src/workflow/nodes/data_source.py:857
+#: src/workflow/nodes/data_source.py:862
 msgid "Data type"
 msgstr "数据类型"
 
@@ -1228,7 +1228,7 @@ msgstr "训练损失函数"
 
 #: src/model_builder/layers/input_layers.py:142
 #: src/ui/widgets/preview/metrics_preview.py:42
-#: src/workflow/nodes/training.py:898 src/workflow/nodes/training.py:1505
+#: src/workflow/nodes/training.py:898 src/workflow/nodes/training.py:1528
 msgid "Metrics"
 msgstr "指标"
 
@@ -1610,7 +1610,7 @@ msgid "⏹️ Stop"
 msgstr "⏹️ 停止"
 
 #: src/ui/main_window.py:318 src/ui/main_window.py:596
-#: src/workflow/engine.py:644
+#: src/workflow/engine.py:650
 msgid "Execution error"
 msgstr "执行错误"
 
@@ -1948,7 +1948,7 @@ msgstr "设置"
 #: src/workflow/nodes/augmentation.py:511
 #: src/workflow/nodes/augmentation.py:519
 #: src/workflow/nodes/augmentation.py:696 src/workflow/nodes/data_source.py:595
-#: src/workflow/nodes/data_source.py:1105
+#: src/workflow/nodes/data_source.py:1110
 #: src/workflow/nodes/preprocessing.py:125
 #: src/workflow/nodes/preprocessing.py:128
 #: src/workflow/nodes/preprocessing.py:189
@@ -3128,41 +3128,41 @@ msgstr "子类必须实现 set_data()"
 msgid "Subclasses must implement clear()"
 msgstr "子类必须实现 clear()"
 
-#: src/ui/widgets/preview/classification_result_preview.py:31
+#: src/ui/widgets/preview/classification_result_preview.py:32
 #: src/workflow/nodes/training.py:1125
 msgid "Classification result"
 msgstr "分类评估结果"
 
-#: src/ui/widgets/preview/classification_result_preview.py:44
+#: src/ui/widgets/preview/classification_result_preview.py:45
 msgid "Summary metrics"
 msgstr "汇总指标"
 
-#: src/ui/widgets/preview/classification_result_preview.py:62
+#: src/ui/widgets/preview/classification_result_preview.py:63
 msgid "Class ID"
 msgstr "类别 ID"
 
-#: src/ui/widgets/preview/classification_result_preview.py:63
+#: src/ui/widgets/preview/classification_result_preview.py:64
 #: src/ui/widgets/preview/label_preview.py:123
 msgid "Class name"
 msgstr "类别名称"
 
-#: src/ui/widgets/preview/classification_result_preview.py:64
+#: src/ui/widgets/preview/classification_result_preview.py:65
 msgid "Precision"
 msgstr "精确率"
 
-#: src/ui/widgets/preview/classification_result_preview.py:65
+#: src/ui/widgets/preview/classification_result_preview.py:66
 msgid "Recall"
 msgstr "召回率"
 
-#: src/ui/widgets/preview/classification_result_preview.py:66
+#: src/ui/widgets/preview/classification_result_preview.py:67
 msgid "F1"
 msgstr "F1"
 
-#: src/ui/widgets/preview/classification_result_preview.py:67
+#: src/ui/widgets/preview/classification_result_preview.py:68
 msgid "Support"
 msgstr "样本数"
 
-#: src/ui/widgets/preview/classification_result_preview.py:80
+#: src/ui/widgets/preview/classification_result_preview.py:81
 #: src/ui/widgets/preview/feature_1d_preview.py:75
 #: src/workflow/nodes/visualization.py:139
 #: src/workflow/nodes/visualization.py:149
@@ -3170,44 +3170,48 @@ msgstr "样本数"
 msgid "Index"
 msgstr "索引"
 
-#: src/ui/widgets/preview/classification_result_preview.py:81
+#: src/ui/widgets/preview/classification_result_preview.py:82
 #: src/workflow/nodes/data_source.py:600 src/workflow/nodes/data_source.py:658
-#: src/workflow/nodes/data_source.py:830
+#: src/workflow/nodes/data_source.py:835
 msgid "File path"
 msgstr "文件路径"
 
-#: src/ui/widgets/preview/classification_result_preview.py:82
+#: src/ui/widgets/preview/classification_result_preview.py:83
 msgid "True class"
 msgstr "真实类别"
 
-#: src/ui/widgets/preview/classification_result_preview.py:83
+#: src/ui/widgets/preview/classification_result_preview.py:84
 msgid "Predicted class"
 msgstr "预测类别"
 
-#: src/ui/widgets/preview/classification_result_preview.py:84
+#: src/ui/widgets/preview/classification_result_preview.py:85
 msgid "Confidence"
 msgstr "置信度"
 
-#: src/ui/widgets/preview/classification_result_preview.py:87
+#: src/ui/widgets/preview/classification_result_preview.py:88
+msgid "Only misclassified"
+msgstr "仅显示误分类"
+
+#: src/ui/widgets/preview/classification_result_preview.py:90
 msgid "Per-class metrics"
 msgstr "按类别指标"
 
-#: src/ui/widgets/preview/classification_result_preview.py:88
+#: src/ui/widgets/preview/classification_result_preview.py:91
 #: src/visualization/metrics.py:125
 msgid "Confusion matrix"
 msgstr "混淆矩阵"
 
-#: src/ui/widgets/preview/classification_result_preview.py:89
-#: src/workflow/nodes/training.py:1569
+#: src/ui/widgets/preview/classification_result_preview.py:97
+#: src/workflow/nodes/training.py:1592
 msgid "Predictions"
 msgstr "预测结果"
 
-#: src/ui/widgets/preview/classification_result_preview.py:163
+#: src/ui/widgets/preview/classification_result_preview.py:171
 #, python-brace-format
 msgid "Classes absent from test targets: {classes}"
 msgstr "测试目标中缺少类别：{classes}"
 
-#: src/ui/widgets/preview/classification_result_preview.py:167
+#: src/ui/widgets/preview/classification_result_preview.py:175
 #, python-brace-format
 msgid "Classes never predicted: {classes}"
 msgstr "从未预测到的类别：{classes}"
@@ -3841,57 +3845,57 @@ msgstr "曲线坐标必须严格递增"
 msgid "Channel names must match the curve channel count"
 msgstr "通道名称数量必须与曲线通道数一致"
 
-#: src/workflow/engine.py:136 src/workflow/engine.py:150
-#: src/workflow/engine.py:256 src/workflow/engine.py:279
-#: src/workflow/engine.py:335
+#: src/workflow/engine.py:138 src/workflow/engine.py:152
+#: src/workflow/engine.py:258 src/workflow/engine.py:281
+#: src/workflow/engine.py:341
 msgid "Workflow not set"
 msgstr "未设置工作流"
 
-#: src/workflow/engine.py:283 src/workflow/engine.py:286
+#: src/workflow/engine.py:285 src/workflow/engine.py:288
 msgid "Workflow is already running"
 msgstr "工作流已在运行"
 
-#: src/workflow/engine.py:296
+#: src/workflow/engine.py:301
 #, fuzzy
 msgid "Start node does not exist"
 msgstr "目标节点 {id} 不存在"
 
-#: src/workflow/engine.py:355
+#: src/workflow/engine.py:361
 #, python-brace-format
 msgid "Cannot rerun from '{node}'. Upstream connection data is unavailable."
 msgstr ""
 
-#: src/workflow/engine.py:361
+#: src/workflow/engine.py:367
 #, python-brace-format
 msgid ""
 "Cannot rerun from '{node}'. Required cached output from upstream node "
 "'{upstream}' is missing."
 msgstr ""
 
-#: src/workflow/engine.py:407
+#: src/workflow/engine.py:413
 #, fuzzy
 msgid "No runnable nodes found"
 msgstr "没有可运行的工作流。"
 
-#: src/workflow/engine.py:449
+#: src/workflow/engine.py:455
 #, python-brace-format
 msgid "Node '{name}' failed: {error}"
 msgstr "节点“{name}”失败：{error}"
 
-#: src/workflow/engine.py:466
+#: src/workflow/engine.py:472
 msgid "Workflow finished"
 msgstr "工作流已结束"
 
-#: src/workflow/engine.py:474
+#: src/workflow/engine.py:480
 #, python-brace-format
 msgid "Execution error: {error}"
 msgstr "执行错误：{error}"
 
-#: src/workflow/engine.py:492
+#: src/workflow/engine.py:498
 msgid "Execution stopped"
 msgstr "执行已停止"
 
-#: src/workflow/engine.py:595
+#: src/workflow/engine.py:601
 #, python-brace-format
 msgid "Breakpoint paused: {name} - click Continue to proceed"
 msgstr "断点暂停：{name} - 点击“继续”以继续执行"
@@ -4248,7 +4252,7 @@ msgid "Anomaly scorer"
 msgstr "异常评分"
 
 #: src/workflow/nodes/anomaly.py:395 src/workflow/nodes/anomaly.py:446
-#: src/workflow/nodes/training.py:1900 src/workflow/nodes/training.py:1936
+#: src/workflow/nodes/training.py:1923 src/workflow/nodes/training.py:1959
 msgid "Inference and decision"
 msgstr "推理与判定"
 
@@ -4356,7 +4360,7 @@ msgstr "同步复制音频和标签以扩增样本"
 
 #: src/workflow/nodes/augmentation.py:40 src/workflow/nodes/augmentation.py:42
 #: src/workflow/nodes/control.py:132 src/workflow/nodes/data_source.py:336
-#: src/workflow/nodes/data_source.py:1112
+#: src/workflow/nodes/data_source.py:1117
 msgid "Labels"
 msgstr "标签"
 
@@ -4822,7 +4826,7 @@ msgid "Targets"
 msgstr "目标"
 
 #: src/workflow/nodes/control.py:415 src/workflow/nodes/control.py:422
-#: src/workflow/nodes/data_source.py:825 src/workflow/nodes/training.py:367
+#: src/workflow/nodes/data_source.py:830 src/workflow/nodes/training.py:367
 #: src/workflow/nodes/training.py:894 src/workflow/nodes/training.py:1113
 msgid "Target metadata"
 msgstr "目标元数据"
@@ -4918,7 +4922,7 @@ msgstr "对齐目标"
 msgid "Align data and targets by file name or path"
 msgstr "按文件名或路径对齐数据和目标"
 
-#: src/workflow/nodes/control.py:696 src/workflow/nodes/data_source.py:824
+#: src/workflow/nodes/control.py:696 src/workflow/nodes/data_source.py:829
 msgid "Target map"
 msgstr "目标映射"
 
@@ -5418,15 +5422,15 @@ msgstr "标签文件"
 msgid "Load labels from CSV/JSON/TXT"
 msgstr "从 CSV/JSON/TXT 加载标签"
 
-#: src/workflow/nodes/data_source.py:664 src/workflow/nodes/data_source.py:836
+#: src/workflow/nodes/data_source.py:664 src/workflow/nodes/data_source.py:841
 msgid "File format"
 msgstr "文件格式"
 
-#: src/workflow/nodes/data_source.py:669 src/workflow/nodes/data_source.py:841
+#: src/workflow/nodes/data_source.py:669 src/workflow/nodes/data_source.py:846
 msgid "Filename column"
 msgstr "文件名列"
 
-#: src/workflow/nodes/data_source.py:670 src/workflow/nodes/data_source.py:842
+#: src/workflow/nodes/data_source.py:670 src/workflow/nodes/data_source.py:847
 msgid "Column name for filename in CSV"
 msgstr "CSV 中表示文件名的列名"
 
@@ -5443,139 +5447,139 @@ msgstr "CSV 中表示标签的列名"
 msgid "Failed to load labels: {error}"
 msgstr "加载标签失败：{error}"
 
-#: src/workflow/nodes/data_source.py:782 src/workflow/nodes/data_source.py:955
+#: src/workflow/nodes/data_source.py:787 src/workflow/nodes/data_source.py:960
 msgid "Unsupported JSON format"
 msgstr "不支持的 JSON 格式"
 
-#: src/workflow/nodes/data_source.py:812
+#: src/workflow/nodes/data_source.py:817
 msgid "Target file"
 msgstr "目标文件"
 
-#: src/workflow/nodes/data_source.py:815
+#: src/workflow/nodes/data_source.py:820
 msgid "Load generic supervised targets from CSV/JSON/TXT"
 msgstr "从 CSV/JSON/TXT 加载通用监督目标"
 
-#: src/workflow/nodes/data_source.py:823
+#: src/workflow/nodes/data_source.py:828
 msgid "Target list"
 msgstr "目标列表"
 
-#: src/workflow/nodes/data_source.py:846
+#: src/workflow/nodes/data_source.py:851
 msgid "Target columns"
 msgstr "目标列"
 
-#: src/workflow/nodes/data_source.py:847
+#: src/workflow/nodes/data_source.py:852
 msgid "Comma-separated target column names in CSV"
 msgstr "CSV 中以逗号分隔的目标列名"
 
-#: src/workflow/nodes/data_source.py:851
+#: src/workflow/nodes/data_source.py:856
 msgid "Target kind"
 msgstr "目标形态"
 
-#: src/workflow/nodes/data_source.py:853
+#: src/workflow/nodes/data_source.py:858
 msgid "Machine-learning target shape, not business type"
 msgstr "机器学习目标形态，不是业务类型"
 
-#: src/workflow/nodes/data_source.py:862
+#: src/workflow/nodes/data_source.py:867
 msgid "Output format"
 msgstr "输出格式"
 
-#: src/workflow/nodes/data_source.py:905
+#: src/workflow/nodes/data_source.py:910
 #, python-brace-format
 msgid "Failed to load targets: {error}"
 msgstr "加载目标失败：{error}"
 
-#: src/workflow/nodes/data_source.py:947
+#: src/workflow/nodes/data_source.py:952
 msgid "Structured JSON targets must be a list"
 msgstr "结构化 JSON 的 targets 必须是列表"
 
-#: src/workflow/nodes/data_source.py:949
+#: src/workflow/nodes/data_source.py:954
 msgid "Structured JSON target_map must be an object"
 msgstr "结构化 JSON 的 target_map 必须是对象"
 
-#: src/workflow/nodes/data_source.py:970
+#: src/workflow/nodes/data_source.py:975
 msgid "At least one target column is required"
 msgstr "至少需要一个目标列"
 
-#: src/workflow/nodes/data_source.py:977
+#: src/workflow/nodes/data_source.py:982
 #, python-brace-format
 msgid "Missing target column: {column}"
 msgstr "缺少目标列：{column}"
 
-#: src/workflow/nodes/data_source.py:1031
+#: src/workflow/nodes/data_source.py:1036
 msgid "Continuous targets require numeric dtype"
 msgstr "连续目标需要数值 dtype"
 
-#: src/workflow/nodes/data_source.py:1093
+#: src/workflow/nodes/data_source.py:1098
 msgid "Export audio"
 msgstr "导出音频"
 
-#: src/workflow/nodes/data_source.py:1095
+#: src/workflow/nodes/data_source.py:1100
 msgid "Data export"
 msgstr "数据导出"
 
-#: src/workflow/nodes/data_source.py:1098
+#: src/workflow/nodes/data_source.py:1103
 msgid "Save audio as WAV files, optionally save labels JSON"
 msgstr "将音频保存为 WAV 文件，可选保存标签 JSON"
 
-#: src/workflow/nodes/data_source.py:1107
+#: src/workflow/nodes/data_source.py:1112
 msgid "Audio data to save (single item or list)"
 msgstr "要保存的音频数据（单个或列表）"
 
-#: src/workflow/nodes/data_source.py:1114
+#: src/workflow/nodes/data_source.py:1119
 msgid "Optional labels corresponding to audio items"
 msgstr "可选：与音频对应的标签"
 
-#: src/workflow/nodes/data_source.py:1120
+#: src/workflow/nodes/data_source.py:1125
 msgid "Output folder"
 msgstr "输出文件夹"
 
-#: src/workflow/nodes/data_source.py:1121
+#: src/workflow/nodes/data_source.py:1126
 msgid "Target folder to save audio files"
 msgstr "保存音频文件的目标文件夹"
 
-#: src/workflow/nodes/data_source.py:1126
+#: src/workflow/nodes/data_source.py:1131
 msgid "Filename prefix"
 msgstr "文件名前缀"
 
-#: src/workflow/nodes/data_source.py:1127
+#: src/workflow/nodes/data_source.py:1132
 msgid "Prefix for output audio filenames"
 msgstr "输出音频文件名的前缀"
 
-#: src/workflow/nodes/data_source.py:1131
+#: src/workflow/nodes/data_source.py:1136
 msgid "Save labels file"
 msgstr "保存标签文件"
 
-#: src/workflow/nodes/data_source.py:1132
+#: src/workflow/nodes/data_source.py:1137
 msgid "When labels are provided, save labels.json"
 msgstr "提供标签时，保存 labels.json"
 
-#: src/workflow/nodes/data_source.py:1136
+#: src/workflow/nodes/data_source.py:1141
 msgid "Overwrite existing files"
 msgstr "覆盖已有文件"
 
-#: src/workflow/nodes/data_source.py:1137
+#: src/workflow/nodes/data_source.py:1142
 msgid "Overwrite files if they already exist"
 msgstr "若文件已存在则覆盖"
 
-#: src/workflow/nodes/data_source.py:1153
+#: src/workflow/nodes/data_source.py:1158
 msgid "Please select an output folder"
 msgstr "请选择输出文件夹"
 
-#: src/workflow/nodes/data_source.py:1160
+#: src/workflow/nodes/data_source.py:1165
 #, python-brace-format
 msgid "Unable to create output folder: {error}"
 msgstr "无法创建输出文件夹：{error}"
 
-#: src/workflow/nodes/data_source.py:1167
+#: src/workflow/nodes/data_source.py:1172
 msgid "No input audio data"
 msgstr "没有输入音频数据"
 
-#: src/workflow/nodes/data_source.py:1175
+#: src/workflow/nodes/data_source.py:1180
 #, python-brace-format
 msgid "Unsupported audio data type: {type}"
 msgstr "不支持的音频数据类型：{type}"
 
-#: src/workflow/nodes/data_source.py:1192
+#: src/workflow/nodes/data_source.py:1197
 #, python-brace-format
 msgid ""
 "Label count ({labels}) does not match audio count ({audio}); items will be "
@@ -5583,21 +5587,21 @@ msgid ""
 msgstr ""
 "标签数量（{labels}）与音频数量（{audio}）不匹配；将按顺序配对，多余项会被忽略"
 
-#: src/workflow/nodes/data_source.py:1197
+#: src/workflow/nodes/data_source.py:1202
 #, python-brace-format
 msgid "Saving {count} audio files..."
 msgstr "正在保存 {count} 个音频文件..."
 
-#: src/workflow/nodes/data_source.py:1248
+#: src/workflow/nodes/data_source.py:1253
 msgid "No audio files were saved successfully"
 msgstr "没有任何音频文件成功保存"
 
-#: src/workflow/nodes/data_source.py:1252
+#: src/workflow/nodes/data_source.py:1257
 #, python-brace-format
 msgid "Audio saved: {files} files"
 msgstr "音频已保存：{files} 个文件"
 
-#: src/workflow/nodes/data_source.py:1254
+#: src/workflow/nodes/data_source.py:1259
 #, python-brace-format
 msgid ", labels: {count}"
 msgstr "，标签：{count}"
@@ -6071,7 +6075,7 @@ msgstr "覆盖现有文件时记录警告"
 
 #: src/workflow/nodes/training.py:274 src/workflow/nodes/training.py:438
 #: src/workflow/nodes/training.py:917 src/workflow/nodes/training.py:1142
-#: src/workflow/nodes/training.py:1604
+#: src/workflow/nodes/training.py:1627
 #: src/workflow/nodes/feature/ai_embedding.py:89
 #: src/workflow/nodes/feature/grad_cam.py:141
 msgid "No model provided"
@@ -6102,7 +6106,7 @@ msgstr "训练器"
 msgid "Run model training with model config or overridden parameters"
 msgstr "使用模型配置或覆盖参数运行模型训练"
 
-#: src/workflow/nodes/training.py:369 src/workflow/nodes/training.py:1413
+#: src/workflow/nodes/training.py:369 src/workflow/nodes/training.py:1436
 msgid "Training history"
 msgstr "训练历史"
 
@@ -6115,8 +6119,8 @@ msgid "Epochs"
 msgstr "训练轮数"
 
 #: src/workflow/nodes/training.py:382 src/workflow/nodes/training.py:903
-#: src/workflow/nodes/training.py:1582 src/workflow/nodes/training.py:1917
-#: src/workflow/nodes/training.py:1952
+#: src/workflow/nodes/training.py:1605 src/workflow/nodes/training.py:1940
+#: src/workflow/nodes/training.py:1975
 #: src/workflow/nodes/feature/ai_embedding.py:80
 #: src/workflow/nodes/feature/grad_cam.py:131
 msgid "Batch size"
@@ -6306,7 +6310,7 @@ msgstr "分类模型评估"
 msgid "Evaluate a classification model with categorical targets"
 msgstr "使用分类目标评估分类模型"
 
-#: src/workflow/nodes/training.py:1100 src/workflow/nodes/training.py:1393
+#: src/workflow/nodes/training.py:1100 src/workflow/nodes/training.py:1416
 msgid "Model evaluation"
 msgstr "模型评估"
 
@@ -6320,112 +6324,118 @@ msgstr "预测数量（{predictions}）与目标数量（{targets}）不一致"
 msgid "Classification predictions must be a one- or two-dimensional array"
 msgstr "分类预测必须是一维或二维数组"
 
-#: src/workflow/nodes/training.py:1359
+#: src/workflow/nodes/training.py:1353
+#, python-brace-format
+msgid ""
+"Inferred file path count ({paths}) does not match target count ({targets})"
+msgstr "推断出的文件路径数量（{paths}）与目标数量（{targets}）不一致"
+
+#: src/workflow/nodes/training.py:1366
 #, python-brace-format
 msgid "File path count ({paths}) does not match target count ({targets})"
 msgstr "文件路径数量（{paths}）与目标数量（{targets}）不一致"
 
-#: src/workflow/nodes/training.py:1391
+#: src/workflow/nodes/training.py:1414
 msgid "Regression model evaluation"
 msgstr "回归模型评估"
 
-#: src/workflow/nodes/training.py:1392
+#: src/workflow/nodes/training.py:1415
 msgid "Evaluate a regression model with continuous numeric targets"
 msgstr "使用连续数值目标评估回归模型"
 
-#: src/workflow/nodes/training.py:1404
+#: src/workflow/nodes/training.py:1427
 msgid "Show training history"
 msgstr "显示训练历史"
 
-#: src/workflow/nodes/training.py:1406 src/workflow/nodes/training.py:1498
+#: src/workflow/nodes/training.py:1429 src/workflow/nodes/training.py:1521
 msgid "Training results"
 msgstr "训练结果"
 
-#: src/workflow/nodes/training.py:1409
+#: src/workflow/nodes/training.py:1432
 msgid "Visualize training history curves"
 msgstr "可视化训练历史曲线"
 
-#: src/workflow/nodes/training.py:1414
+#: src/workflow/nodes/training.py:1437
 msgid "Training history (passthrough)"
 msgstr "训练历史（透传）"
 
-#: src/workflow/nodes/training.py:1419
+#: src/workflow/nodes/training.py:1442
 msgid "Show loss curve"
 msgstr "显示损失曲线"
 
-#: src/workflow/nodes/training.py:1423
+#: src/workflow/nodes/training.py:1446
 msgid "Show accuracy curve"
 msgstr "显示准确率曲线"
 
-#: src/workflow/nodes/training.py:1427
+#: src/workflow/nodes/training.py:1450
 msgid "Save path"
 msgstr "保存路径"
 
-#: src/workflow/nodes/training.py:1428
+#: src/workflow/nodes/training.py:1451
 msgid "Optional. Save the chart to a file."
 msgstr "可选。将图表保存到文件。"
 
-#: src/workflow/nodes/training.py:1435
+#: src/workflow/nodes/training.py:1458
 msgid "No training history provided"
 msgstr "未提供训练历史"
 
-#: src/workflow/nodes/training.py:1485
+#: src/workflow/nodes/training.py:1508
 #, python-brace-format
 msgid "Failed to show training history: {error}"
 msgstr "显示训练历史失败：{error}"
 
-#: src/workflow/nodes/training.py:1496
+#: src/workflow/nodes/training.py:1519
 msgid "Show metrics"
 msgstr "显示指标"
 
-#: src/workflow/nodes/training.py:1501
+#: src/workflow/nodes/training.py:1524
 msgid "Show model evaluation metrics"
 msgstr "显示模型评估指标"
 
-#: src/workflow/nodes/training.py:1506
+#: src/workflow/nodes/training.py:1529
 msgid "Metrics (passthrough)"
 msgstr "指标（透传）"
 
-#: src/workflow/nodes/training.py:1511
+#: src/workflow/nodes/training.py:1534
 msgid "Verbose logs"
 msgstr "详细日志"
 
-#: src/workflow/nodes/training.py:1512
+#: src/workflow/nodes/training.py:1535
 msgid "Output detailed metrics logs (dialog removed)"
 msgstr "输出详细指标日志（已移除对话框）"
 
-#: src/workflow/nodes/training.py:1518
+#: src/workflow/nodes/training.py:1541
 msgid "No metrics provided"
 msgstr "未提供指标"
 
-#: src/workflow/nodes/training.py:1545
+#: src/workflow/nodes/training.py:1568
 #, python-brace-format
 msgid "Failed to show metrics: {error}"
 msgstr "显示指标失败：{error}"
 
-#: src/workflow/nodes/training.py:1559
+#: src/workflow/nodes/training.py:1582
 msgid "Predict"
 msgstr "预测"
 
-#: src/workflow/nodes/training.py:1561
+#: src/workflow/nodes/training.py:1584
 msgid "Run prediction using a trained model"
 msgstr "使用已训练模型进行预测"
 
-#: src/workflow/nodes/training.py:1568 src/workflow/nodes/training.py:1908
-#: src/workflow/nodes/training.py:1944
+#: src/workflow/nodes/training.py:1591 src/workflow/nodes/training.py:1931
+#: src/workflow/nodes/training.py:1967
 #: src/workflow/nodes/feature/ai_embedding.py:48
 #: src/workflow/nodes/feature/grad_cam.py:51
 msgid "Input data"
 msgstr "输入数据"
 
-#: src/workflow/nodes/training.py:1574
+#: src/workflow/nodes/training.py:1597
 #: src/workflow/nodes/feature/ai_embedding.py:64
 #: src/workflow/nodes/feature/dim1d/fft.py:49
 #: src/workflow/nodes/feature/dim2d/stft.py:53
 msgid "Output type"
 msgstr "输出类型"
 
-#: src/workflow/nodes/training.py:1577
+#: src/workflow/nodes/training.py:1600
 msgid ""
 "Type of prediction result: label=class label, raw=model output, "
 "regression=continuous values, vector=vector output, audio=audio, "
@@ -6434,65 +6444,65 @@ msgstr ""
 "预测结果类型：label=类别标签，raw=模型原始输出，regression=连续值，vector=向"
 "量输出，audio=音频，feature_1d=1D 特征，feature_2d=2D 特征"
 
-#: src/workflow/nodes/training.py:1584 src/workflow/nodes/training.py:1919
-#: src/workflow/nodes/training.py:1954
+#: src/workflow/nodes/training.py:1607 src/workflow/nodes/training.py:1942
+#: src/workflow/nodes/training.py:1977
 msgid "Batch size for prediction"
 msgstr "预测批大小"
 
-#: src/workflow/nodes/training.py:1588
+#: src/workflow/nodes/training.py:1611
 msgid "Sample rate"
 msgstr "采样率"
 
-#: src/workflow/nodes/training.py:1591
+#: src/workflow/nodes/training.py:1614
 msgid "Output audio sample rate (only for output_type=audio)"
 msgstr "输出音频采样率（仅适用于 output_type=audio）"
 
-#: src/workflow/nodes/training.py:1608
+#: src/workflow/nodes/training.py:1631
 #: src/workflow/nodes/feature/ai_embedding.py:92
 #: src/workflow/nodes/feature/grad_cam.py:144
 msgid "No input data provided"
 msgstr "未提供输入数据"
 
-#: src/workflow/nodes/training.py:1616
+#: src/workflow/nodes/training.py:1639
 #, python-brace-format
 msgid "Predicting... (batch_size={batch_size})"
 msgstr "正在预测...（batch_size={batch_size}）"
 
-#: src/workflow/nodes/training.py:1625
+#: src/workflow/nodes/training.py:1648
 #, python-brace-format
 msgid "Prediction finished: {count} samples, output_type={type}"
 msgstr "预测完成：{count} 个样本，output_type={type}"
 
-#: src/workflow/nodes/training.py:1635
+#: src/workflow/nodes/training.py:1658
 #, python-brace-format
 msgid "Prediction failed: {error}"
 msgstr "预测失败：{error}"
 
-#: src/workflow/nodes/training.py:1898
+#: src/workflow/nodes/training.py:1921
 msgid "Classification model prediction"
 msgstr "分类模型预测"
 
-#: src/workflow/nodes/training.py:1899
+#: src/workflow/nodes/training.py:1922
 msgid "Predict class labels and expose the model's raw output"
 msgstr "预测类别并输出模型原始结果"
 
-#: src/workflow/nodes/training.py:1909
+#: src/workflow/nodes/training.py:1932
 msgid "Predicted classes"
 msgstr "预测类别"
 
-#: src/workflow/nodes/training.py:1910
+#: src/workflow/nodes/training.py:1933
 msgid "Raw model output"
 msgstr "模型原始输出"
 
-#: src/workflow/nodes/training.py:1934
+#: src/workflow/nodes/training.py:1957
 msgid "Regression model prediction"
 msgstr "回归模型预测"
 
-#: src/workflow/nodes/training.py:1935
+#: src/workflow/nodes/training.py:1958
 msgid "Predict continuous values from a regression model"
 msgstr "使用回归模型预测连续值"
 
-#: src/workflow/nodes/training.py:1945
+#: src/workflow/nodes/training.py:1968
 msgid "Predicted values"
 msgstr "预测值"
 
