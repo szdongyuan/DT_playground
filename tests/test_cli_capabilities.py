@@ -16,6 +16,9 @@ def test_capabilities_are_sorted_and_describe_contracts():
     assert "classification_trainer" in node_types
     assert "trainer" not in node_types
     assert "input" in layer_types
+    assert "create-model" in payload["commands"]
+    assert "create-workflow" in payload["commands"]
+    assert "train-classifier" in payload["commands"]
 
     audio_folder = next(item for item in payload["nodes"] if item["type"] == "audio_folder")
     assert any(item["name"] == "folder_path" for item in audio_folder["parameters"])

@@ -1,6 +1,6 @@
 # Audio Training Platform CLI
 
-The CLI is a deterministic, headless interface for audio and acoustic workflows. It does not choose features, model architectures, or hyperparameters. Automation clients must provide explicit workflow and model definitions.
+The CLI is a deterministic, headless interface for audio and acoustic workflows. It can generate a supported audio-classification baseline or execute fully explicit workflow and model definitions. Generated definitions remain inspectable and reproducible.
 
 ## Entry point
 
@@ -93,6 +93,64 @@ Evaluation nodes return semantic metric keys such as `loss`, `accuracy`, `mae`
 and `mse` using Keras' named evaluation results, instead of `compile_metrics`.
 Clients consuming that previous aggregate key should use the configured metric
 names instead. The same correction applies to GUI and CLI evaluation nodes.
+
+### Generate a classification model definition
+
+```powershell
+& './.venv/Scripts/python.exe' ./cli_main.py create-model classifier.model.json --classes 3 --template mel-cnn --json
+```
+
+Phase 1 supports the `classification` task and `mel-cnn` template. Optional flags
+set the channels-last input shape, learning rate, dropout, and model name. The
+command validates the graph and atomically publishes JSON; it does not build or
+train a Keras model. Existing files require `--overwrite`.
+
+### Generate a classification workflow
+
+```powershell
+& './.venv/Scripts/python.exe' ./cli_main.py create-workflow train.workflow.json `
+  --dataset D:/datasets/audio `
+  --labels D:/datasets/audio/labels.csv `
+  --model initial.keras `
+  --output-model classifier.keras `
+  --json
+```
+
+The generated workflow performs strict filename alignment, a seeded stratified
+train/validation/test split, mono mapping, trim/pad, peak normalization, Mel
+feature extraction, classification training, model saving, and test evaluation.
+`--model` is an already-built `.keras` or `.h5` artifact. This command validates
+structure and paths but does not decode the complete dataset or train.
+
+### Train a classifier end to end
+
+```powershell
+& './.venv/Scripts/python.exe' ./cli_main.py train-classifier `
+  --dataset D:/datasets/audio `
+  --labels D:/datasets/audio/labels.csv `
+  --experiment-dir outputs/experiment-001 `
+  --model-name classifier `
+  --events jsonl
+```
+
+`train-classifier` inspects the dataset, requires exact label alignment, assigns
+stable class IDs sorted by label text, generates and builds a Mel-CNN, generates
+the workflow, performs full data preflight, runs training, and verifies both the
+completed manifest and saved model. It uses a seeded, stratified sample-level
+split; it does not isolate samples by actor or speaker.
+
+The experiment directory contains `dataset-profile.json`, canonical `labels.json`,
+`model.json`, `initial.keras`, `workflow.json`, `experiment.json`, and the managed
+`run-001` directory. A non-empty directory is rejected. `--overwrite` is accepted
+only for a compatible CLI-managed classification experiment.
+
+CSV labels require `filename,label` columns and reject duplicate filenames. JSON
+labels may be a direct filename-to-label object or contain a `labels` mapping. At
+least two scalar classes are required.
+
+With `--events jsonl`, stdout remains a pure JSON Lines stream and the final
+`classification_completed` event contains the result. `--json` prints a standalone
+result only with text events, matching the `run` command contract.
 
 ### Run a workflow
 

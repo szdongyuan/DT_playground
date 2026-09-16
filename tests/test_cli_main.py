@@ -214,3 +214,29 @@ def test_cli_build_model_creates_keras_artifact(tmp_path):
 
     assert exit_code == 0
     assert output.is_file()
+
+
+def test_cli_create_model_emits_json_result(tmp_path, capsys):
+    output = tmp_path / "generated.model.json"
+
+    exit_code = main(
+        ["create-model", str(output), "--classes", "2", "--json"]
+    )
+
+    payload = json.loads(capsys.readouterr().out)
+    assert exit_code == 0
+    assert payload["output"] == str(output.resolve())
+    assert payload["validation"]["valid"] is True
+
+
+def test_cli_create_model_reports_validation_error_as_json(tmp_path, capsys):
+    output = tmp_path / "generated.model.json"
+
+    exit_code = main(
+        ["create-model", str(output), "--classes", "1", "--json"]
+    )
+
+    payload = json.loads(capsys.readouterr().err)
+    assert exit_code == 3
+    assert payload["valid"] is False
+    assert not output.exists()

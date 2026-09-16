@@ -80,7 +80,16 @@ def get_capabilities(include_hidden: bool = False) -> dict[str, Any]:
         "model_version": "1.0",
         "nodes": node_items,
         "layers": layer_items,
-        "commands": ["capabilities", "inspect", "validate", "build-model", "run"],
+        "commands": [
+            "capabilities",
+            "inspect",
+            "validate",
+            "build-model",
+            "create-model",
+            "create-workflow",
+            "train-classifier",
+            "run",
+        ],
     }
 
 

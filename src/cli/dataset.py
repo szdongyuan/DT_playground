@@ -51,7 +51,7 @@ def inspect_dataset(
                 {"path": path.relative_to(root).as_posix(), "error": str(exc)}
             )
 
-    external_labels = _load_label_mapping(labels_path) if labels_path else None
+    external_labels = load_label_mapping(labels_path) if labels_path else None
     alignment = _label_alignment(valid, external_labels) if external_labels is not None else None
     durations = [item["duration_seconds"] for item in valid]
     warnings = []
@@ -104,13 +104,25 @@ def _read_audio_info(path: Path) -> tuple[int, int, float]:
         return int(sample_rate), channels, samples / float(sample_rate)
 
 
-def _load_label_mapping(path_value: str | Path) -> dict[str, Any]:
+def load_label_mapping(path_value: str | Path) -> dict[str, Any]:
+    """Load a filename-to-label mapping and reject duplicate filenames."""
     path = Path(path_value).expanduser().resolve()
     if not path.is_file():
         raise FileNotFoundError(f"Label file does not exist: {path}")
     suffix = path.suffix.lower()
     if suffix == ".json":
-        data = json.loads(path.read_text(encoding="utf-8"))
+        def reject_duplicate_keys(pairs):
+            result = {}
+            for key, value in pairs:
+                if key in result:
+                    raise ValueError(f"Duplicate key in JSON label file: {key}")
+                result[key] = value
+            return result
+
+        data = json.loads(
+            path.read_text(encoding="utf-8"),
+            object_pairs_hook=reject_duplicate_keys,
+        )
         if isinstance(data, dict) and isinstance(data.get("labels"), dict):
             data = data["labels"]
         if not isinstance(data, dict):
@@ -121,11 +133,20 @@ def _load_label_mapping(path_value: str | Path) -> dict[str, Any]:
             reader = csv.DictReader(handle)
             if not reader.fieldnames or "filename" not in reader.fieldnames or "label" not in reader.fieldnames:
                 raise ValueError("CSV labels require 'filename' and 'label' columns.")
-            return {
-                str(row["filename"]).replace("\\", "/"): row["label"]
-                for row in reader if row.get("filename")
-            }
+            labels = {}
+            for row in reader:
+                if not row.get("filename"):
+                    continue
+                name = str(row["filename"]).replace("\\", "/")
+                if name in labels:
+                    raise ValueError(f"Duplicate filename in label file: {name}")
+                labels[name] = row["label"]
+            return labels
     raise ValueError("Dataset inspection supports CSV or JSON filename mappings.")
+
+
+# Retain the private name for callers written against the initial CLI module.
+_load_label_mapping = load_label_mapping
 
 
 def _label_alignment(files: list[dict[str, Any]], labels: dict[str, Any]) -> dict[str, Any]:
