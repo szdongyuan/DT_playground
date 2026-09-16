@@ -774,6 +774,11 @@ class LabelFileNode(BaseNode):
                 # 嵌套格式: {"version": "1.0", "labels": {...}, ...}
                 label_map = data["labels"]
                 labels = list(label_map.values())
+                if isinstance(data.get("label_names"), dict):
+                    return labels, {
+                        "filename_map": label_map,
+                        "label_names": data["label_names"],
+                    }
             else:
                 # 简单字典格式: {"filename": label}
                 label_map = data
