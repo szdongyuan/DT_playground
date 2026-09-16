@@ -1153,7 +1153,7 @@ class ClassificationEvaluatorNode(EvaluatorNode):
             X = self._convert_to_array(x_test, model)
             Y = self._convert_to_array(y_test, model)
             y_true = self._class_ids_from_targets(Y)
-            file_paths = self._file_paths(len(y_true))
+            file_paths = self._file_paths(len(y_true), x_test)
             batch_size = self.get_parameter("batch_size")
 
             evaluated = model.evaluate(
@@ -1341,12 +1341,19 @@ class ClassificationEvaluatorNode(EvaluatorNode):
         confidence = np.where(predicted == 1, scores, 1.0 - scores)
         return predicted, confidence, 2
 
-    def _file_paths(self, sample_count: int) -> List[str]:
+    def _file_paths(self, sample_count: int, samples=None) -> List[str]:
         import numpy as np
 
         value = self.get_input_data("file_paths")
         if value is None:
-            return []
+            inferred = self._source_paths(samples)
+            if inferred and len(inferred) != sample_count:
+                raise ValueError(
+                    tr_(
+                        "Inferred file path count ({paths}) does not match target count ({targets})"
+                    ).format(paths=len(inferred), targets=sample_count)
+                )
+            return inferred
         if isinstance(value, np.ndarray):
             paths = value.tolist()
         elif isinstance(value, (list, tuple)):
@@ -1360,6 +1367,22 @@ class ClassificationEvaluatorNode(EvaluatorNode):
                 ).format(paths=len(paths), targets=sample_count)
             )
         return [str(path) for path in paths]
+
+    @staticmethod
+    def _source_paths(samples) -> List[str]:
+        """Recover source paths from audio or feature sample provenance."""
+        if not isinstance(samples, (list, tuple)):
+            return []
+        paths = []
+        for sample in samples:
+            source = (
+                getattr(sample, "source_file", "")
+                or getattr(sample, "file_path", "")
+            )
+            if not source:
+                return []
+            paths.append(str(source))
+        return paths
 
     @staticmethod
     def _classes(y_true, y_pred, predicted_class_count: int, target_metadata) -> List[Dict]:

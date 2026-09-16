@@ -81,7 +81,11 @@ def create_workflow_definition(request: WorkflowGenerationRequest) -> dict[str, 
     """Validate and atomically publish a classification workflow."""
     normalized = _validate_workflow_request(request)
     output = _output_path(request.output, request.overwrite)
-    definition = _classification_workflow(request, **normalized)
+    definition = _classification_workflow(
+        request,
+        definition_dir=output.parent,
+        **normalized,
+    )
     report = _validate_then_publish(
         output,
         definition,
@@ -290,10 +294,14 @@ def _classification_workflow(
     labels: Path,
     model: Path,
     output_model: str,
+    definition_dir: Path,
 ) -> dict[str, Any]:
+    dataset_ref = _portable_reference(dataset, definition_dir)
+    labels_ref = _portable_reference(labels, definition_dir)
+    model_ref = _portable_reference(model, definition_dir)
     nodes = [
-        _node("audio", "audio_folder", 0, 0, {"folder_path": str(dataset), "recursive": True, "auto_label": False, "target_sr": request.sample_rate, "max_files": 0, "selection_mode": "first_n"}),
-        _node("labels", "label_file", 0, 180, {"file_path": str(labels), "format": labels.suffix.lower().lstrip("."), "filename_column": "filename", "label_column": "label"}),
+        _node("audio", "audio_folder", 0, 0, {"folder_path": dataset_ref, "recursive": True, "auto_label": False, "target_sr": request.sample_rate, "max_files": 0, "selection_mode": "first_n"}),
+        _node("labels", "label_file", 0, 180, {"file_path": labels_ref, "format": labels.suffix.lower().lstrip("."), "filename_column": "filename", "label_column": "label"}),
         _node("mono", "channel_mapper", 180, 0, {"map1": "0", "map2": "", "map3": "", "map4": ""}),
         _node("align", "align_targets", 360, 0, {"match_mode": "basename", "missing_policy": "error", "duplicate_policy": "error", "fill_value": ""}),
         _node("split", "split", 540, 0, {"train_ratio": request.train_ratio, "val_ratio": request.val_ratio, "test_ratio": request.test_ratio, "shuffle": True, "stratify": True, "random_seed": request.seed}),
@@ -308,7 +316,7 @@ def _classification_workflow(
         )
     nodes.extend(
         [
-            _node("model", "load_model", 1080, -360, {"model_path": str(model), "compile_model": True}),
+            _node("model", "load_model", 1080, -360, {"model_path": model_ref, "compile_model": True}),
             _node("trainer", "classification_trainer", 1260, 0, {"epochs": request.epochs, "batch_size": request.batch_size, "use_model_config": True, "optimizer": "Adam", "learning_rate": 0.001, "loss": "auto", "early_stopping": True, "patience": request.patience}),
             _node("save", "save_model", 1440, -90, {"save_mode": "new_file", "save_dir": "models", "file_name": output_model, "existing_file": "", "save_format": "keras", "confirm_overwrite": True}),
             _node("evaluate", "classification_evaluator", 1440, 90, {"batch_size": request.batch_size}),
@@ -356,6 +364,14 @@ def _classification_workflow(
         "nodes": nodes,
         "connections": connections,
     }
+
+
+def _portable_reference(path: Path, definition_dir: Path) -> str:
+    """Prefer a workflow-relative reference, with cross-drive fallback."""
+    try:
+        return Path(os.path.relpath(path, definition_dir)).as_posix()
+    except ValueError:
+        return str(path)
 
 
 def _node(node_id: str, node_type: str, x: int, y: int, parameters: dict[str, Any]) -> dict[str, Any]:

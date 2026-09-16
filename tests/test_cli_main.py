@@ -203,6 +203,21 @@ def test_cli_run_rejects_external_output_path(tmp_path):
     assert manifest["validation"]["errors"][0]["code"] == "output.outside_run_dir"
 
 
+def test_validation_failure_manifest_does_not_persist_absolute_input_path(tmp_path):
+    missing = tmp_path / "private" / "missing.wav"
+    workflow = tmp_path / "workflow.json"
+    run_dir = tmp_path / "run"
+    _audio_file_workflow(workflow, missing)
+
+    assert main(["run", str(workflow), "--run-dir", str(run_dir)]) == 3
+
+    manifest_text = (run_dir / "manifest.json").read_text(encoding="utf-8")
+    manifest = json.loads(manifest_text)
+    context = manifest["validation"]["errors"][0]["context"]
+    assert str(tmp_path) not in manifest_text
+    assert context["reference"].startswith("dataset://")
+
+
 def test_cli_build_model_creates_keras_artifact(tmp_path):
     definition = tmp_path / "model.model.json"
     output = tmp_path / "model.keras"

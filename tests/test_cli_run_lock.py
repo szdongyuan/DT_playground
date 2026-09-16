@@ -140,17 +140,16 @@ def test_successful_run_can_be_overwritten_after_lock_release(tmp_path, workflow
     assert len(list(tmp_path.glob(".audio-platform-cli-*.lock"))) == 1
 
 
-def test_killed_owner_keeps_partial_artifact_protection(tmp_path, workflow):
+def test_killed_owner_can_recover_managed_partial_run(tmp_path, workflow):
     with owner(tmp_path, workflow, "manifest") as process:
         process.kill()
         process.wait(timeout=10)
         run = tmp_path / "run"
-        before = {p.name: p.read_bytes() for p in run.iterdir() if p.is_file()}
         result = invoke(workflow, run, "--overwrite")
-        assert result.returncode == 5
-        assert "already in use" not in result.stderr
-        assert "not created by this CLI" in result.stderr
-        assert before == {p.name: p.read_bytes() for p in run.iterdir() if p.is_file()}
+        assert result.returncode == 0, result.stderr
+        marker = json.loads((run / ".audio-platform-run.json").read_text(encoding="utf-8"))
+        manifest = json.loads((run / "manifest.json").read_text(encoding="utf-8"))
+        assert marker["run_id"] == manifest["run_id"]
 
 
 def test_validation_failure_releases_lock(tmp_path, workflow):

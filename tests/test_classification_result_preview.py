@@ -83,6 +83,9 @@ def test_classification_result_preview_shows_all_research_views():
         assert widget._confusion_table.item(1, 0).text() == "1"
         assert widget._predictions_table.rowCount() == 2
         assert widget._predictions_table.item(1, 1).text() == "dog.wav"
+        widget._only_errors.setChecked(True)
+        assert widget._predictions_table.rowCount() == 1
+        assert widget._predictions_table.item(0, 1).text() == "dog.wav"
     finally:
         widget.close()
         app.processEvents()
