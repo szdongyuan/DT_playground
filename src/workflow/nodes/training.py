@@ -18,6 +18,21 @@ from src.utils.runtime import get_training_verbose
 logger = logging.getLogger(__name__)
 
 
+def _validate_feature_matrix_inputs(x, y, x_val=None, y_val=None):
+    """Validate typed row identities before converting to plain numeric arrays."""
+    from .anomaly import FeatureMatrixData
+    for inputs, targets in ((x, y), (x_val, y_val)):
+        if isinstance(inputs, FeatureMatrixData) and isinstance(targets, FeatureMatrixData):
+            if inputs.sample_ids != targets.sample_ids:
+                raise ValueError(tr_("Feature inputs and targets must have identical row identities"))
+    for train, validation in ((x, x_val), (y, y_val)):
+        if isinstance(train, FeatureMatrixData) and isinstance(validation, FeatureMatrixData):
+            if train.schema != validation.schema:
+                raise ValueError(tr_("Training and validation feature schemas must match"))
+            if set(train.parent_ids) & set(validation.parent_ids):
+                raise ValueError(tr_("Training and validation must not share parent samples"))
+
+
 def _target_validation_reason(
     task_kind: str,
     targets,
@@ -28,6 +43,9 @@ def _target_validation_reason(
 
     metadata = target_metadata if isinstance(target_metadata, dict) else {}
     target_kind = str(metadata.get("kind", "auto")).lower()
+    from .anomaly import FeatureMatrixData
+    if isinstance(targets, FeatureMatrixData):
+        targets = targets.matrix
     values = np.asarray(targets)
 
     if values.size == 0:
@@ -327,6 +345,11 @@ class SaveModelNode(BaseNode):
                 model.save(save_path, save_format='tf')
             else:
                 model.save(save_path)
+            training_state = getattr(model, "_dt_training_state", None)
+            if training_state is not None:
+                import json
+                from pathlib import Path
+                Path(save_path + ".training.json").write_text(json.dumps(training_state, indent=2), encoding="utf-8")
             
             self.set_output_data("model_path", save_path)
             
@@ -368,6 +391,7 @@ class TrainerNode(BaseNode):
         
         self.add_output("history", DataType.ANY, tr_("Training history"))
         self.add_output("trained_model", DataType.MODEL, tr_("Trained model"))
+        self.add_output("training_summary", DataType.METRICS, tr_("Training summary"))
     
     def _setup_parameters(self):
         from src.model_builder.model_graph import CompileConfig
@@ -433,6 +457,7 @@ class TrainerNode(BaseNode):
             x_val = self.get_input_data("x_val")
             y_val = self.get_input_data("y_val")
             target_metadata = self.get_input_data("target_metadata") or {}
+            _validate_feature_matrix_inputs(x_train, y_train, x_val, y_val)
             
             if model is None:
                 self.error_message = tr_("No model provided")
@@ -536,6 +561,11 @@ class TrainerNode(BaseNode):
                 def __init__(self, *args, **kwargs):
                     super().__init__(*args, **kwargs)
                     self._checkpoint_path: Optional[str] = None
+                    self._completed_epochs = 0
+
+                def on_epoch_end(self, epoch, logs=None):
+                    self._completed_epochs = epoch + 1
+                    super().on_epoch_end(epoch, logs)
 
                 def set_checkpoint_path(self, path: str):
                     self._checkpoint_path = path
@@ -550,6 +580,13 @@ class TrainerNode(BaseNode):
                             os.makedirs(dir_path, exist_ok=True)
                         # Save full model checkpoint (can be large).
                         self.model.save(self._checkpoint_path)
+                        import json
+                        from pathlib import Path
+                        state = {"weights": "last_epoch", "completed_epochs_this_run": self._completed_epochs,
+                                 "optimizer_iterations": int(self.model.optimizer.iterations.numpy()),
+                                 "resume_level": "model_optimizer", "callback_state_restored": False,
+                                 "rng_state_restored": False}
+                        Path(self._checkpoint_path + ".training.json").write_text(json.dumps(state, indent=2), encoding="utf-8")
                     except Exception:
                         # Do not raise from callback; training is already stopping.
                         pass
@@ -573,7 +610,8 @@ class TrainerNode(BaseNode):
             early_stopping_callback = None
             monitor_name = 'val_loss' if validation_data else 'loss'
             if self.get_parameter("early_stopping"):
-                early_stopping_callback = keras.callbacks.EarlyStopping(
+                from src.training.consistent_early_stopping import ConsistentEarlyStopping
+                early_stopping_callback = ConsistentEarlyStopping(
                     monitor=monitor_name,
                     patience=self.get_parameter("patience"),
                     restore_best_weights=True
@@ -638,6 +676,15 @@ class TrainerNode(BaseNode):
             ]
             best_index = min(finite_indices, key=lambda index: monitor_values[index]) if finite_indices else None
             best_epoch = best_index + 1 if best_index is not None else epochs_run
+            training_summary = {
+                "completed_epochs_this_run": epochs_run, "best_epoch_this_run": best_epoch,
+                "weights": "best_epoch" if early_stopping_callback is not None else "last_epoch",
+                "optimizer_matches_weights": True,
+                "optimizer_iterations": int(model.optimizer.iterations.numpy()),
+                "resume_level": "model_optimizer", "callback_state_restored": False, "rng_state_restored": False,
+            }
+            model._dt_training_state = training_summary
+            self.set_output_data("training_summary", training_summary)
             best_value = monitor_values[best_index] if best_index is not None else final_loss
             if early_stopping_callback is None:
                 early_stopping_state = tr_("disabled")
@@ -744,6 +791,9 @@ class TrainerNode(BaseNode):
         from .data_source import AudioData
         from .feature import FeatureData
         
+        from .anomaly import FeatureMatrixData
+        if isinstance(data, FeatureMatrixData):
+            return data.matrix
         if isinstance(data, np.ndarray):
             arr = data
         elif isinstance(data, list) and len(data) > 0:
@@ -912,6 +962,7 @@ class EvaluatorNode(BaseNode):
             model = self.get_input_data("model")
             x_test = self.get_input_data("x_test")
             y_test = self.get_input_data("y_test")
+            _validate_feature_matrix_inputs(x_test, y_test)
             
             if model is None:
                 self.error_message = tr_("No model provided")
@@ -990,6 +1041,9 @@ class EvaluatorNode(BaseNode):
         from .data_source import AudioData
         from .feature import FeatureData
         
+        from .anomaly import FeatureMatrixData
+        if isinstance(data, FeatureMatrixData):
+            return data.matrix
         if isinstance(data, np.ndarray):
             arr = data
         elif isinstance(data, list) and len(data) > 0:
@@ -1680,6 +1734,9 @@ class PredictNode(BaseNode):
         from .data_source import AudioData
         from .feature import FeatureData
         
+        from .anomaly import FeatureMatrixData
+        if isinstance(data, FeatureMatrixData):
+            return data.matrix
         if isinstance(data, np.ndarray):
             arr = data
         elif isinstance(data, list) and len(data) > 0:

@@ -84,13 +84,29 @@ def validate_model(artifact):
 
     if not isinstance(artifact, AnomalyModelArtifact):
         raise TypeError(tr_("File does not contain an anomaly model artifact"))
-    if (artifact.algorithm != "isolation_forest" or type(artifact.estimator) is not IsolationForest
+    if (artifact.algorithm not in ("isolation_forest", "knn", "autoencoder")
             or type(artifact.feature_count) not in (int, np.int64, np.int32)
             or artifact.feature_count < 1):
         raise ValueError(tr_("Invalid anomaly model scoring state"))
-    check_is_fitted(artifact.estimator)
-    if artifact.estimator.n_features_in_ != artifact.feature_count:
-        raise ValueError(tr_("Invalid anomaly model scoring state"))
+    if artifact.algorithm == "isolation_forest":
+        if type(artifact.estimator) is not IsolationForest:
+            raise ValueError(tr_("Invalid anomaly model scoring state"))
+        check_is_fitted(artifact.estimator)
+        if artifact.estimator.n_features_in_ != artifact.feature_count:
+            raise ValueError(tr_("Invalid anomaly model scoring state"))
+    elif artifact.algorithm == "knn":
+        from .anomaly_backends import KNNReference
+        if type(artifact.estimator) is not KNNReference:
+            raise ValueError(tr_("Invalid anomaly model scoring state"))
+        artifact.estimator.validate()
+        if artifact.estimator.matrix.shape[1] != artifact.feature_count:
+            raise ValueError(tr_("Invalid anomaly model scoring state"))
+    else:
+        import tensorflow as tf
+        if (not isinstance(artifact.estimator, tf.keras.Model)
+                or tuple(artifact.estimator.input_shape) != (None, artifact.feature_count)
+                or tuple(artifact.estimator.output_shape) != (None, artifact.feature_count)):
+            raise ValueError(tr_("Invalid anomaly model scoring state"))
     if artifact.scaler is not None:
         if type(artifact.scaler) not in (StandardScaler, RobustScaler):
             raise ValueError(tr_("Invalid anomaly model scoring state"))
@@ -111,6 +127,18 @@ def validate_model(artifact):
         raise ValueError(tr_("Invalid anomaly model scoring state"))
     _json_bytes(artifact.feature_schema)
     _json_bytes(artifact.training_summary)
+    parents = getattr(artifact, "reference_parent_ids", [])
+    ids = getattr(artifact, "reference_sample_ids", [])
+    if (parents and (len(parents) != len(reference) or not all(isinstance(x, str) and x for x in parents))
+            or ids and (len(ids) != len(reference) or len(set(ids)) != len(ids))):
+        raise ValueError(tr_("Invalid anomaly model scoring state"))
+    state = getattr(artifact, "preprocessing_state", None)
+    if state is not None:
+        from .feature_contract import FeatureStandardizationState
+        FeatureStandardizationState.from_dict(state.to_dict())
+        fingerprint = artifact.feature_schema.get("preprocessing") or artifact.feature_schema.get("layout", {}).get("preprocessing")
+        if state.fingerprint != fingerprint:
+            raise ValueError(tr_("Preprocessing state differs from the feature schema"))
 
 
 def _model_metadata(artifact):
@@ -132,6 +160,9 @@ def save_model(artifact, path):
     import joblib
 
     validate_model(artifact)
+    if artifact.algorithm != "isolation_forest" or getattr(artifact, "preprocessing_state", None) is not None:
+        from .anomaly_bundle_v2 import save_bundle
+        return save_bundle(artifact, path)
     target = _new_target(path)
     descriptor, staging = tempfile.mkstemp(prefix=".anomaly-", suffix=".tmp", dir=target.parent)
     try:
@@ -161,6 +192,9 @@ def save_model(artifact, path):
 def _read_bundle(path):
     """Inspect JSON and bytes only. Never import or call joblib here."""
     with zipfile.ZipFile(path) as archive:
+        if "state.json" in archive.namelist():
+            from .anomaly_bundle_v2 import read_bundle
+            return read_bundle(path)
         if sorted(archive.namelist()) != ["metadata.json", "model.joblib"]:
             raise ValueError(tr_("Invalid anomaly model archive"))
         if (archive.getinfo("metadata.json").file_size > MAX_METADATA_BYTES
@@ -205,6 +239,9 @@ def load_model(path, *, trusted=False, format="anomaly_zip"):
 
     if format == "anomaly_zip":
         metadata, payload = _read_bundle(path)
+        if metadata["format_version"] == 2:
+            from .anomaly_bundle_v2 import deserialize_bundle
+            return deserialize_bundle(metadata, payload)
         artifact = joblib.load(io.BytesIO(payload))
     elif format == "legacy_joblib":
         warnings.warn(tr_("Legacy joblib model: runtime version compatibility cannot be verified"),
@@ -246,6 +283,12 @@ def export_results(data, path, *, spreadsheet_safe=False):
         "score_metadata": scores.metadata,
     }
     fields = ["row_index", "sample_id", "raw_score", "normalized_score"]
+    provenance = scores.metadata.get("provenance", [])
+    provenance_fields = ["parent_sample_id", "window_index", "start_frame", "end_frame",
+                         "padded_frames", "start_seconds", "end_seconds"] if provenance else []
+    if provenance and (len(provenance) != count or not all(isinstance(row, dict) for row in provenance)):
+        raise ValueError(tr_("Provenance count must match feature matrix rows"))
+    fields += provenance_fields
     if result is not None:
         decisions = np.asarray(result.is_anomaly)
         if (decisions.ndim != 1 or decisions.dtype != np.bool_ or len(decisions) != count
@@ -276,6 +319,11 @@ def export_results(data, path, *, spreadsheet_safe=False):
                 sample_id = scores.sample_ids[index]
                 row = [index, "'" + sample_id if spreadsheet_safe else sample_id,
                        float(raw[index]), float(normalized[index])]
+                if provenance:
+                    values = [provenance[index].get(key, "") for key in provenance_fields]
+                    if spreadsheet_safe:
+                        values[0] = "'" + str(values[0])
+                    row += values
                 if result is not None:
                     row += [int(result.is_anomaly[index]), result.severities[index]]
                 writer.writerow(row)

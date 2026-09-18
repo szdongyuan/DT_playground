@@ -1,0 +1,23 @@
+{
+  "version": "1.0",
+  "name": "Dense_AE_320_128_64_16",
+  "layers": [
+    {"id": "input", "type": "input", "parameters": {"shape": "(320,)"}},
+    {"id": "encoder_1", "type": "dense", "parameters": {"units": 128, "activation": "relu"}},
+    {"id": "encoder_2", "type": "dense", "parameters": {"units": 64, "activation": "relu"}},
+    {"id": "latent", "type": "dense", "parameters": {"units": 16, "activation": "relu"}},
+    {"id": "decoder_1", "type": "dense", "parameters": {"units": 64, "activation": "relu"}},
+    {"id": "decoder_2", "type": "dense", "parameters": {"units": 128, "activation": "relu"}},
+    {"id": "reconstruction", "type": "dense", "parameters": {"units": 320, "activation": "linear"}},
+    {"id": "output", "type": "output", "parameters": {"activation": "linear", "loss": "mse", "metrics": ["mse"], "learning_rate": 0.001}}
+  ],
+  "connections": [
+    {"source": "input", "target": "encoder_1"},
+    {"source": "encoder_1", "target": "encoder_2"},
+    {"source": "encoder_2", "target": "latent"},
+    {"source": "latent", "target": "decoder_1"},
+    {"source": "decoder_1", "target": "decoder_2"},
+    {"source": "decoder_2", "target": "reconstruction"},
+    {"source": "reconstruction", "target": "output"}
+  ]
+}

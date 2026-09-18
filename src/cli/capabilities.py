@@ -87,6 +87,7 @@ def get_capabilities(include_hidden: bool = False) -> dict[str, Any]:
             "build-model",
             "create-model",
             "create-workflow",
+            "create-anomaly-workflow",
             "train-classifier",
             "run",
         ],

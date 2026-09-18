@@ -109,7 +109,10 @@ class MelSpectrogramNode(BaseNode):
                 feature_type="mel_spectrogram",
                 sample_rate=audio.sample_rate,
                 hop_length=hop_length,
-                source_file=audio.file_path
+                source_file=audio.file_path,
+                metadata={"extraction": {"n_fft": n_fft, "n_mels": n_mels,
+                                         "power_to_db": power_to_db, "db_reference": "sample_max",
+                                         "fmin": 0.0, "fmax": audio.sample_rate / 2}},
             )
         
         result = extract_from_audio_or_list(audio_input, extract_mel)

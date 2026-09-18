@@ -51,10 +51,16 @@ class SaveAnomalyModelNode(_AnomalyFileNode):
     icon = "📤"
 
     def _setup_ports(self):
-        self.add_input("anomaly_model", DataType.ANOMALY_MODEL, tr_("Anomaly model"))
+        self.add_input("anomaly_model", DataType.ANOMALY_MODEL, tr_("Anomaly model"), required=False)
+        self.add_input("model", DataType.MODEL, tr_("Reconstruction model"), required=False)
+        self.add_input("reference_features", DataType.FEATURE_MATRIX, tr_("Normal reference features"), required=False)
+        self.add_input("preprocessing_state", DataType.ANY, tr_("Preprocessing state"), required=False)
         self.add_output("model_path", DataType.ANY, tr_("Saved path"))
+        self.add_output("anomaly_model", DataType.ANOMALY_MODEL, tr_("Anomaly model"))
 
     def _setup_parameters(self):
+        self.add_parameter("mode", "choice", "artifact", display_name=tr_("Packaging mode"),
+                           choices=["artifact", "autoencoder"])
         self.add_parameter("output_folder", "folder", ".", display_name=tr_("Output directory"))
         self.add_parameter("file_name", "str", "anomaly_model.anomaly.zip",
                            display_name=tr_("Filename"))
@@ -64,9 +70,46 @@ class SaveAnomalyModelNode(_AnomalyFileNode):
         if not target.name.endswith(".anomaly.zip"):
             raise ValueError(tr_("Anomaly model filename must end with .anomaly.zip"))
 
+    def validate(self):
+        valid, message = super().validate()
+        if not valid:
+            return valid, message
+        required = ["anomaly_model"] if self.get_parameter("mode") == "artifact" else ["model", "reference_features"]
+        if any(not self.inputs[name].is_connected for name in required):
+            return False, tr_("Connect all inputs required by the packaging mode")
+        return True, ""
+
     def _execute_file_operation(self):
+        from dataclasses import replace
+        import numpy as np
+        from .anomaly import AnomalyModelArtifact, FeatureMatrixData
+        from ..feature_contract import FeatureStandardizationState
+        artifact = self.get_input_data("anomaly_model")
+        state = self.get_input_data("preprocessing_state")
+        if state is not None and not isinstance(state, FeatureStandardizationState):
+            raise ValueError(tr_("Invalid preprocessing state"))
+        if self.get_parameter("mode") == "autoencoder":
+            reference = self.get_input_data("reference_features")
+            model = self.get_input_data("model")
+            if not isinstance(reference, FeatureMatrixData) or model is None:
+                raise ValueError(tr_("Autoencoder packaging requires a model and normal reference features"))
+            artifact = AnomalyModelArtifact("autoencoder", model, None, reference.matrix.shape[1],
+                                            (0., 1.), np.zeros(len(reference.matrix)),
+                                            {"reference_role": "explicit_normal_reference", "resumable": False,
+                                             "training_state": dict(getattr(model, "_dt_training_state", {}))},
+                                            dict(reference.schema), state, reference.parent_ids, list(reference.sample_ids))
+            artifact.reference_scores = artifact.score(reference.matrix)
+            artifact.score_bounds = tuple(map(float, np.quantile(artifact.reference_scores, [0.01, 0.99])))
+        elif state is not None:
+            artifact = replace(artifact, preprocessing_state=state)
+        if state is not None:
+            schema = artifact.feature_schema
+            fingerprint = schema.get("preprocessing") or schema.get("layout", {}).get("preprocessing")
+            if fingerprint != state.fingerprint:
+                raise ValueError(tr_("Preprocessing state differs from the feature schema"))
         target = output_target(self.get_parameter("output_folder"), self.get_parameter("file_name"))
-        self.set_output_data("model_path", save_model(self.get_input_data("anomaly_model"), target))
+        self.set_output_data("model_path", save_model(artifact, target))
+        self.set_output_data("anomaly_model", artifact)
 
 
 @register_node
@@ -82,6 +125,7 @@ class LoadAnomalyModelNode(_AnomalyFileNode):
 
     def _setup_ports(self):
         self.add_output("anomaly_model", DataType.ANOMALY_MODEL, tr_("Anomaly model"))
+        self.add_output("preprocessing_state", DataType.ANY, tr_("Preprocessing state"))
 
     def _setup_parameters(self):
         self.add_parameter("model_path", "file", "", display_name=tr_("Model path"),
@@ -106,6 +150,7 @@ class LoadAnomalyModelNode(_AnomalyFileNode):
         model = load_model(Path(self.get_parameter("model_path")).expanduser(),
                            trusted=self.get_parameter("trusted"), format=self.get_parameter("format"))
         self.set_output_data("anomaly_model", model)
+        self.set_output_data("preprocessing_state", getattr(model, "preprocessing_state", None))
 
 
 @register_node
