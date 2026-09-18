@@ -9,9 +9,11 @@ Provides various data processing and training nodes.
 from . import augmentation
 from . import anomaly
 from . import anomaly_files
+from . import anomaly_evaluation
 from . import control
 from . import data_source
 from . import feature
+from . import feature_standardization
 from . import preprocessing
 from . import training
 from . import visualization

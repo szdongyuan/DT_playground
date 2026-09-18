@@ -26,6 +26,7 @@ class FeatureMatrixData:
     sample_ids: List[str]
     source_items: List[Any] = field(default_factory=list)
     schema: Dict[str, Any] = field(default_factory=dict)
+    provenance: List[Dict[str, Any]] = field(default_factory=list)
 
     def __post_init__(self):
         self.matrix = np.asarray(self.matrix, dtype=np.float64)
@@ -35,6 +36,16 @@ class FeatureMatrixData:
             raise ValueError(tr_("Sample ID count must match feature matrix rows"))
         if self.source_items and len(self.source_items) != len(self.matrix):
             raise ValueError(tr_("Source item count must match feature matrix rows"))
+        if self.provenance and len(self.provenance) != len(self.matrix):
+            raise ValueError(tr_("Provenance count must match feature matrix rows"))
+        if len(set(self.sample_ids)) != len(self.sample_ids):
+            raise ValueError(tr_("Sample IDs must be unique"))
+        if not self.matrix.size or not np.isfinite(self.matrix).all():
+            raise ValueError(tr_("Feature matrix contains empty, NaN, or infinite values"))
+
+    @property
+    def parent_ids(self):
+        return [row["parent_sample_id"] for row in self.provenance] if self.provenance else list(self.sample_ids)
 
 
 @dataclass
@@ -49,6 +60,9 @@ class AnomalyModelArtifact:
     reference_scores: np.ndarray
     training_summary: Dict[str, Any] = field(default_factory=dict)
     feature_schema: Dict[str, Any] = field(default_factory=dict)
+    preprocessing_state: Any = None
+    reference_parent_ids: List[str] = field(default_factory=list)
+    reference_sample_ids: List[str] = field(default_factory=list)
 
     def transform(self, matrix: np.ndarray) -> np.ndarray:
         """Validate and transform a matrix exactly as during fitting."""
@@ -66,9 +80,14 @@ class AnomalyModelArtifact:
             raise ValueError(tr_("Feature matrix contains NaN or infinite values"))
         return self.scaler.transform(values) if self.scaler is not None else values
 
-    def score(self, matrix: np.ndarray) -> np.ndarray:
+    def score(self, matrix: np.ndarray, sample_ids=None, parent_ids=None, batch_size=256) -> np.ndarray:
         """Return raw scores where larger values are always more anomalous."""
         transformed = self.transform(matrix)
+        if self.algorithm == "knn":
+            return self.estimator.score(transformed, sample_ids, parent_ids, batch_size)
+        if self.algorithm == "autoencoder":
+            from ..anomaly_backends import reconstruction_scores
+            return reconstruction_scores(self.estimator, transformed, batch_size)
         return -np.asarray(self.estimator.score_samples(transformed), dtype=np.float64)
 
     def normalize_scores(self, scores: Sequence[float]) -> np.ndarray:
@@ -155,6 +174,14 @@ class FeatureVectorizerNode(BaseNode):
         self.add_output("feature_matrix", DataType.FEATURE_MATRIX, tr_("Feature matrix"))
 
     def _setup_parameters(self):
+        self.add_parameter("mode", "choice", "whole_sample", display_name=tr_("Vectorization mode"),
+                           choices=["whole_sample", "sliding_window"])
+        self.add_parameter("window_length", "int", 5, display_name=tr_("Window length (frames)"), min_value=1)
+        self.add_parameter("window_stride", "int", 5, display_name=tr_("Window stride (frames)"), min_value=1)
+        self.add_parameter("tail_policy", "choice", "include_last", display_name=tr_("Tail policy"),
+                           choices=["include_last", "drop"])
+        self.add_parameter("short_policy", "choice", "error", display_name=tr_("Short sample policy"),
+                           choices=["error", "pad_edge"])
         self.add_parameter(
             "aggregation",
             "choice",
@@ -165,6 +192,7 @@ class FeatureVectorizerNode(BaseNode):
         )
 
     def execute(self) -> bool:
+        self.outputs["feature_matrix"].clear()
         try:
             samples = self._as_samples(self.get_input_data("features"))
             if not samples:
@@ -172,7 +200,48 @@ class FeatureVectorizerNode(BaseNode):
                 return False
 
             aggregation = self.get_parameter("aggregation")
-            vectors = [self._vectorize(item, aggregation) for item in samples]
+            from ..feature_contract import temporal_layout
+            mode = self.get_parameter("mode")
+            vectors, sample_ids, sources, provenance = [], [], [], []
+            layout = None
+            for index, item in enumerate(samples):
+                parent = self._sample_id(item, index)
+                array = self._array_for_item(item)
+                if hasattr(item, "feature_type"):
+                    current = temporal_layout(item)
+                    if layout is not None and current != layout:
+                        raise ValueError(tr_("Temporal feature layouts must match"))
+                    layout = current
+                if mode == "whole_sample":
+                    vectors.append(self._vectorize(item, aggregation))
+                    sample_ids.append(parent)
+                    sources.append(item)
+                    continue
+                if array.ndim < 2:
+                    raise ValueError(tr_("Windowing requires a temporal feature axis"))
+                width, stride = int(self.get_parameter("window_length")), int(self.get_parameter("window_stride"))
+                if width < 1 or stride < 1:
+                    raise ValueError(tr_("Window length and stride must be positive"))
+                frames = array.shape[-1]
+                if frames < width:
+                    if self.get_parameter("short_policy") == "error" or frames == 0:
+                        raise ValueError(tr_("Feature sample is shorter than the window"))
+                    array = np.pad(array, [(0, 0)] * (array.ndim - 1) + [(0, width - frames)], mode="edge")
+                starts = list(range(0, array.shape[-1] - width + 1, stride))
+                last = array.shape[-1] - width
+                if self.get_parameter("tail_policy") == "include_last" and starts[-1] != last:
+                    starts.append(last)
+                for window_index, start in enumerate(starts):
+                    vectors.append(self._vectorize(array[..., start:start + width], aggregation))
+                    sample_ids.append(f"{parent}::window:{start}:{width}")
+                    sources.append(item)
+                    row = {"parent_sample_id": parent, "window_index": window_index,
+                           "start_frame": start, "end_frame": min(start + width, frames),
+                           "padded_frames": max(0, start + width - frames)}
+                    if getattr(item, "sample_rate", 0) and getattr(item, "hop_length", 0):
+                        seconds = item.hop_length / item.sample_rate
+                        row.update(start_seconds=start * seconds, end_seconds=min(start + width, frames) * seconds)
+                    provenance.append(row)
             vector_sizes = {vector.size for vector in vectors}
             if len(vector_sizes) != 1:
                 self.error_message = tr_("Vectorized samples have inconsistent feature counts")
@@ -183,12 +252,17 @@ class FeatureVectorizerNode(BaseNode):
                 self.error_message = tr_("Feature matrix contains empty, NaN, or infinite values")
                 return False
 
-            sample_ids = [self._sample_id(item, index) for index, item in enumerate(samples)]
             schema = {
                 "aggregation": aggregation,
                 "feature_count": int(matrix.shape[1]),
             }
-            result = FeatureMatrixData(matrix, sample_ids, list(samples), schema)
+            if layout is not None:
+                schema["layout"] = layout
+            if mode == "sliding_window":
+                schema.update(mode=mode, window_length=width, window_stride=stride,
+                              tail_policy=self.get_parameter("tail_policy"),
+                              short_policy=self.get_parameter("short_policy"), flatten_order="C")
+            result = FeatureMatrixData(matrix, sample_ids, sources, schema, provenance)
             self.set_output_data("feature_matrix", result)
             self.report_status(
                 tr_("Feature matrix ready: {samples} samples, {features} features").format(
@@ -214,7 +288,7 @@ class FeatureVectorizerNode(BaseNode):
 
     @staticmethod
     def _array_for_item(item: Any) -> np.ndarray:
-        value = getattr(item, "data", item)
+        value = item if isinstance(item, np.ndarray) else getattr(item, "data", item)
         array = np.asarray(value, dtype=np.float64)
         if array.size == 0:
             raise ValueError(tr_("Feature sample is empty"))
@@ -254,6 +328,8 @@ class AnomalyDetectorTrainerNode(BaseNode):
 
     def _setup_ports(self):
         self.add_input("feature_matrix", DataType.FEATURE_MATRIX, tr_("Reference feature matrix"))
+        self.add_input("calibration_features", DataType.FEATURE_MATRIX, tr_("Independent normal calibration features"), required=False)
+        self.add_input("preprocessing_state", DataType.ANY, tr_("Preprocessing state"), required=False)
         self.add_output("anomaly_model", DataType.ANOMALY_MODEL, tr_("Anomaly model"))
         self.add_output("reference_scores", DataType.ANOMALY_SCORES, tr_("Reference scores"))
         self.add_output("training_summary", DataType.METRICS, tr_("Training summary"))
@@ -264,8 +340,13 @@ class AnomalyDetectorTrainerNode(BaseNode):
             "choice",
             "isolation_forest",
             display_name=tr_("Algorithm"),
-            choices=["isolation_forest"],
+            choices=["isolation_forest", "knn"],
         )
+        self.add_parameter("n_neighbors", "int", 5, display_name=tr_("Number of neighbors"), min_value=1)
+        self.add_parameter("distance", "choice", "euclidean", display_name=tr_("Distance metric"),
+                           choices=["euclidean", "cosine"])
+        self.add_parameter("reference_exclusion", "choice", "parent", display_name=tr_("Reference exclusion"),
+                           choices=["parent", "sample"])
         self.add_parameter(
             "scaling",
             "choice",
@@ -306,6 +387,8 @@ class AnomalyDetectorTrainerNode(BaseNode):
         )
 
     def execute(self) -> bool:
+        for port in self.outputs.values():
+            port.clear()
         try:
             from sklearn.ensemble import IsolationForest
             from sklearn.preprocessing import RobustScaler, StandardScaler
@@ -322,6 +405,12 @@ class AnomalyDetectorTrainerNode(BaseNode):
                 return False
 
             scaling = self.get_parameter("scaling")
+            fingerprint = features.schema.get("preprocessing") or features.schema.get("layout", {}).get("preprocessing")
+            if fingerprint and scaling != "none":
+                raise ValueError(tr_("Already standardized features require scaling=none"))
+            state = self.get_input_data("preprocessing_state")
+            if state is not None and state.fingerprint != fingerprint:
+                raise ValueError(tr_("Preprocessing state differs from the feature schema"))
             scaler = None
             if scaling == "standard":
                 scaler = StandardScaler()
@@ -329,6 +418,7 @@ class AnomalyDetectorTrainerNode(BaseNode):
                 scaler = RobustScaler()
 
             transformed = scaler.fit_transform(features.matrix) if scaler is not None else features.matrix
+            algorithm = self.get_parameter("algorithm")
             estimator = IsolationForest(
                 n_estimators=self.get_parameter("n_estimators"),
                 max_samples=self.get_parameter("max_samples"),
@@ -336,23 +426,44 @@ class AnomalyDetectorTrainerNode(BaseNode):
                 random_state=self.get_parameter("random_seed"),
                 n_jobs=-1,
             )
-            estimator.fit(transformed)
-            raw_scores = -np.asarray(estimator.score_samples(transformed), dtype=np.float64)
+            if algorithm == "knn":
+                from ..anomaly_backends import KNNReference
+                estimator = KNNReference(transformed, list(features.sample_ids), features.parent_ids,
+                                         int(self.get_parameter("n_neighbors")), self.get_parameter("distance"),
+                                         self.get_parameter("reference_exclusion"))
+                estimator.validate()
+            else:
+                estimator.fit(transformed)
+            reference = self.get_input_data("calibration_features")
+            if reference is not None:
+                if not isinstance(reference, FeatureMatrixData) or reference.schema != features.schema:
+                    raise ValueError(tr_("Feature schema differs from the model training schema"))
+                if set(reference.parent_ids) & set(features.parent_ids):
+                    raise ValueError(tr_("Independent calibration must not overlap training files"))
+            else:
+                reference = features
+            if len(reference.matrix) < 2:
+                raise ValueError(tr_("At least two reference samples are required"))
+            reference_matrix = scaler.transform(reference.matrix) if scaler is not None else reference.matrix
+            raw_scores = (estimator.score(reference_matrix, reference.sample_ids, reference.parent_ids)
+                          if algorithm == "knn" else -np.asarray(estimator.score_samples(reference_matrix), dtype=float))
             low, high = np.quantile(raw_scores, [0.01, 0.99])
             contamination = float(self.get_parameter("contamination"))
             suspected_threshold = float(np.quantile(raw_scores, 1.0 - contamination))
             suspected_count = int(np.count_nonzero(raw_scores >= suspected_threshold))
             summary = {
-                "algorithm": "isolation_forest",
+                "algorithm": algorithm,
                 "sample_count": int(features.matrix.shape[0]),
                 "feature_count": int(features.matrix.shape[1]),
                 "contamination": contamination,
                 "suspected_reference_count": suspected_count,
                 "raw_score_min": float(np.min(raw_scores)),
                 "raw_score_max": float(np.max(raw_scores)),
+                "reference_role": "training_exclusion" if reference is features and algorithm == "knn" else
+                                  "training" if reference is features else "independent_normal_calibration",
             }
             artifact = AnomalyModelArtifact(
-                algorithm="isolation_forest",
+                algorithm=algorithm,
                 estimator=estimator,
                 scaler=scaler,
                 feature_count=features.matrix.shape[1],
@@ -360,15 +471,20 @@ class AnomalyDetectorTrainerNode(BaseNode):
                 reference_scores=raw_scores,
                 training_summary=summary,
                 feature_schema=dict(features.schema),
+                preprocessing_state=state,
+                reference_parent_ids=reference.parent_ids,
+                reference_sample_ids=list(reference.sample_ids),
             )
             normalized = artifact.normalize_scores(raw_scores)
             reference_scores = AnomalyScoresData(
                 raw_scores=raw_scores,
                 normalized_scores=normalized,
-                sample_ids=list(features.sample_ids),
-                source_items=list(features.source_items),
+                sample_ids=list(reference.sample_ids),
+                source_items=list(reference.source_items),
                 reference_normalized_scores=normalized,
-                metadata={"source": "reference", "algorithm": artifact.algorithm},
+                metadata={"source": "reference", "algorithm": artifact.algorithm,
+                          "granularity": "window" if reference.provenance else "sample",
+                          "provenance": reference.provenance},
             )
             self.set_output_data("anomaly_model", artifact)
             self.set_output_data("reference_scores", reference_scores)
@@ -402,8 +518,18 @@ class AnomalyScorerNode(BaseNode):
         self.add_input("anomaly_model", DataType.ANOMALY_MODEL, tr_("Anomaly model"))
         self.add_input("feature_matrix", DataType.FEATURE_MATRIX, tr_("Feature matrix"))
         self.add_output("anomaly_scores", DataType.ANOMALY_SCORES, tr_("Anomaly scores"))
+        self.add_output("detailed_scores", DataType.ANOMALY_SCORES, tr_("Detailed scores"))
+
+    def _setup_parameters(self):
+        self.add_parameter("aggregation", "choice", "none", display_name=tr_("Score aggregation"),
+                           choices=["none", "mean", "max", "top_fraction_mean"])
+        self.add_parameter("top_fraction", "float", 0.1, display_name=tr_("Top fraction"),
+                           min_value=0.000001, max_value=1.0)
+        self.add_parameter("batch_size", "int", 256, display_name=tr_("Batch size"), min_value=1)
 
     def execute(self) -> bool:
+        for port in self.outputs.values():
+            port.clear()
         try:
             artifact = self.get_input_data("anomaly_model")
             features = self.get_input_data("feature_matrix")
@@ -414,7 +540,17 @@ class AnomalyScorerNode(BaseNode):
                 self.error_message = tr_("Anomaly scorer requires feature matrix data")
                 return False
 
-            raw_scores = artifact.score(features.matrix)
+            legacy_schema = (artifact.algorithm == "isolation_forest"
+                             and set(artifact.feature_schema) <= {"aggregation", "feature_count"}
+                             and not features.schema.get("mode")
+                             and not features.schema.get("preprocessing")
+                             and not features.schema.get("layout", {}).get("preprocessing"))
+            schema_matches = (all(features.schema.get(key) == value for key, value in artifact.feature_schema.items())
+                              if legacy_schema else artifact.feature_schema == features.schema)
+            if not schema_matches:
+                raise ValueError(tr_("Feature schema differs from the model training schema"))
+            raw_scores = artifact.score(features.matrix, features.sample_ids, features.parent_ids,
+                                        int(self.get_parameter("batch_size")))
             normalized = artifact.normalize_scores(raw_scores)
             reference_normalized = artifact.normalize_scores(artifact.reference_scores)
             result = AnomalyScoresData(
@@ -423,11 +559,30 @@ class AnomalyScorerNode(BaseNode):
                 sample_ids=list(features.sample_ids),
                 source_items=list(features.source_items),
                 reference_normalized_scores=reference_normalized,
-                metadata={"algorithm": artifact.algorithm},
+                metadata={"algorithm": artifact.algorithm, "granularity": "window" if features.provenance else "sample",
+                          "provenance": features.provenance},
             )
+            self.set_output_data("detailed_scores", result)
+            method = self.get_parameter("aggregation")
+            if method != "none":
+                from ..feature_contract import aggregate_scores
+                parents = getattr(artifact, "reference_parent_ids", [])
+                if not parents:
+                    raise ValueError(tr_("Score aggregation requires normal reference parent IDs"))
+                fraction = float(self.get_parameter("top_fraction"))
+                raw, ids, first = aggregate_scores(raw_scores, features.parent_ids, method, fraction)
+                reference, _, _ = aggregate_scores(artifact.reference_scores, parents, method, fraction)
+                low, high = np.quantile(reference, [0.01, 0.99])
+                span = max(float(high - low), abs(float(high)) * 1e-6, 1e-9)
+                result = AnomalyScoresData(raw, np.clip((raw - low) / span * 100, 0, 100), ids,
+                                           [features.source_items[i] for i in first] if features.source_items else [],
+                                           np.clip((reference - low) / span * 100, 0, 100),
+                                           {"algorithm": artifact.algorithm, "granularity": "sample",
+                                            "aggregation": method, "top_fraction": fraction,
+                                            "score_bounds": [float(low), float(high)]})
             self.set_output_data("anomaly_scores", result)
             self.report_status(
-                tr_("Anomaly scoring finished: {samples} samples").format(samples=len(raw_scores))
+                tr_("Anomaly scoring finished: {samples} samples").format(samples=len(result.raw_scores))
             )
             return True
         except Exception as exc:

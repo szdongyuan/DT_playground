@@ -87,6 +87,22 @@ def build_parser() -> argparse.ArgumentParser:
     create_model.add_argument("--overwrite", action="store_true")
     create_model.add_argument("--json", action="store_true", help="Print JSON to stdout.")
 
+    anomaly_workflow = subparsers.add_parser("create-anomaly-workflow", help="Generate a native anomaly training or scoring workflow.")
+    anomaly_workflow.add_argument("output")
+    anomaly_workflow.add_argument("--dataset", required=True)
+    anomaly_workflow.add_argument("--phase", choices=("train", "score"), default="train")
+    anomaly_workflow.add_argument("--algorithm", choices=("knn", "autoencoder"), default="knn")
+    anomaly_workflow.add_argument("--model")
+    anomaly_workflow.add_argument("--validation-dataset")
+    anomaly_workflow.add_argument("--labels", help="Exact scored sample ID to binary label mapping; evaluation only.")
+    anomaly_workflow.add_argument("--protocol", choices=("generic", "dcase"), default="generic")
+    anomaly_workflow.add_argument("--aggregation", choices=("none", "mean", "max", "top_fraction_mean"), default="top_fraction_mean")
+    anomaly_workflow.add_argument("--k", type=int, default=5)
+    anomaly_workflow.add_argument("--epochs", type=int, default=40)
+    anomaly_workflow.add_argument("--trust-model", action="store_true")
+    anomaly_workflow.add_argument("--overwrite", action="store_true")
+    anomaly_workflow.add_argument("--json", action="store_true")
+
     create_workflow = subparsers.add_parser(
         "create-workflow", help="Generate a validated classification workflow."
     )
@@ -234,6 +250,19 @@ def main(argv: Sequence[str] | None = None) -> int:
                         overwrite=args.overwrite,
                     )
                 )
+            except ValueError as exc:
+                print_payload({"summary": str(exc), "valid": False}, args.json, sys.stderr)
+                return int(ExitCode.VALIDATION_ERROR)
+            print_payload(payload, args.json)
+            return int(ExitCode.SUCCESS)
+
+        if args.command == "create-anomaly-workflow":
+            from .anomaly_generation import create_anomaly_workflow
+            try:
+                payload = create_anomaly_workflow(args.output, args.dataset, phase=args.phase, algorithm=args.algorithm,
+                    model=args.model, validation_dataset=args.validation_dataset, aggregation=args.aggregation,
+                    k=args.k, epochs=args.epochs, overwrite=args.overwrite, trust_model=args.trust_model,
+                    labels=args.labels, protocol=args.protocol)
             except ValueError as exc:
                 print_payload({"summary": str(exc), "valid": False}, args.json, sys.stderr)
                 return int(ExitCode.VALIDATION_ERROR)

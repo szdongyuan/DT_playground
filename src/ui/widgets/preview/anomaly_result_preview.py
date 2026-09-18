@@ -199,7 +199,7 @@ class AnomalyResultPreviewWidget(BasePreviewWidget):
             "attention": tr_("Attention"),
             "anomaly": tr_("Anomaly"),
         }
-        self._row_indices = np.argsort(normalized)[::-1].astype(int).tolist()
+        self._row_indices = np.argsort(-result.scores.raw_scores, kind="stable").astype(int).tolist()
         self._table.blockSignals(True)
         self._table.setRowCount(len(self._row_indices))
         for row, sample_index in enumerate(self._row_indices):
@@ -215,6 +215,9 @@ class AnomalyResultPreviewWidget(BasePreviewWidget):
             for column, value in enumerate(values):
                 item = QTableWidgetItem(value)
                 item.setData(Qt.ItemDataRole.UserRole, sample_index)
+                provenance = result.scores.metadata.get("provenance", [])
+                detail = str(provenance[sample_index]) if provenance else ""
+                item.setToolTip(f"{sample_id}\n{detail}".strip())
                 self._table.setItem(row, column, item)
         self._table.blockSignals(False)
         if self._row_indices:

@@ -934,13 +934,23 @@ class TargetFileNode(BaseNode):
 
                 filename = row.get(filename_col, "")
                 if filename:
+                    if filename in target_map:
+                        raise ValueError(tr_("Duplicate target identity: {identity}").format(identity=filename))
                     target_map[filename] = target
 
         return targets, target_map, columns
 
     def _load_json(self, file_path: str) -> Tuple[List, Dict, List[str]]:
+        def unique_object(pairs):
+            result = {}
+            for key, value in pairs:
+                if key in result:
+                    raise ValueError(tr_("Duplicate target identity: {identity}").format(identity=key))
+                result[key] = value
+            return result
+
         with open(file_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
+            data = json.load(f, object_pairs_hook=unique_object)
 
         if isinstance(data, list):
             return data, {}, []

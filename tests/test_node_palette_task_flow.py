@@ -68,7 +68,7 @@ def test_palette_contains_every_visible_node_once(qapp):
         for category in NodeCategory
         for node_class in get_nodes_by_category(category)
     ]
-    assert len(actual_types) == 63
+    assert len(actual_types) == 65
     assert len(actual_types) == len(set(actual_types))
     assert set(actual_types) == set(expected_types)
 
@@ -161,7 +161,7 @@ def test_feature_groups_follow_approved_task_order(qapp):
         "spectral_contrast",
     ]
     assert _node_types(category.child(3)) == ["ai_feature_extraction"]
-    assert _node_types(category.child(4)) == ["feature_vectorizer", "curve_to_feature"]
+    assert _node_types(category.child(4)) == ["feature_vectorizer", "curve_to_feature", "feature_standardization"]
 
 
 def test_search_matches_only_node_name_and_restores_expansion(qapp):
