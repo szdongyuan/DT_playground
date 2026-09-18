@@ -1,6 +1,5 @@
 """Version two bundles separate neural networks from portable scoring metadata."""
 
-from src.ui.i18n import tr_
 from dataclasses import replace
 import hashlib
 import io
@@ -10,6 +9,7 @@ from pathlib import Path
 import tempfile
 import zipfile
 
+from src.ui.i18n import tr_
 from . import anomaly_io as legacy
 
 

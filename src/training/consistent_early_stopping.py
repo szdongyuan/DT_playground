@@ -1,7 +1,8 @@
 """Restore optimizer slots together with best network weights."""
 
-from src.ui.i18n import tr_
 from tensorflow import keras
+
+from src.ui.i18n import tr_
 
 
 class ConsistentEarlyStopping(keras.callbacks.EarlyStopping):

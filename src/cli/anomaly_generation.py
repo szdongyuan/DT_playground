@@ -1,6 +1,7 @@
 """Native anomaly workflow templates shared by CLI and GUI execution."""
 
 from pathlib import Path
+
 from .generation import _node, _connection, _output_path, _validate_then_publish, _portable_reference
 from .validation import validate_workflow_file
 from .contracts import CLI_SCHEMA_VERSION

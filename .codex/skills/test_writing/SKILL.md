@@ -9,6 +9,12 @@ description: Write Python tests with pytest using fixtures, parametrization, moc
 
 Comprehensive guide for writing Python tests using pytest framework with advanced mocking techniques. Covers test structure, fixtures, parametrization, and mocking external dependencies.
 
+## Python Code Style
+
+Before creating or modifying Python files, read and follow [Python import standards](../code_implementing_features/python-style.md).
+Group imports as standard library, third-party packages, then local application code,
+with a blank line between groups. Include import-order verification in self-review.
+
 ## Workflow
 
 ```

@@ -1,11 +1,12 @@
 """Serializable feature preprocessing and provenance shared by workflow nodes."""
 
-from src.ui.i18n import tr_
 from dataclasses import dataclass, replace
 import hashlib
 import json
 
 import numpy as np
+
+from src.ui.i18n import tr_
 
 
 def signature(value):

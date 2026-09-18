@@ -81,7 +81,9 @@ class SaveAnomalyModelNode(_AnomalyFileNode):
 
     def _execute_file_operation(self):
         from dataclasses import replace
+
         import numpy as np
+
         from .anomaly import AnomalyModelArtifact, FeatureMatrixData
         from ..feature_contract import FeatureStandardizationState
         artifact = self.get_input_data("anomaly_model")

@@ -10,7 +10,6 @@ from typing import Any, Dict, List, Sequence, Tuple
 import numpy as np
 
 from src.ui.i18n import tr_
-
 from ..node_base import BaseNode, NodeCategory, register_node
 from ..port import DataType
 

@@ -1,8 +1,10 @@
 """Exact nearest-neighbor and batched reconstruction anomaly scoring."""
 
-from src.ui.i18n import tr_
 from dataclasses import dataclass
+
 import numpy as np
+
+from src.ui.i18n import tr_
 
 
 @dataclass

@@ -2,6 +2,7 @@
 
 import json
 import zipfile
+
 import numpy as np
 import pytest
 
@@ -176,6 +177,7 @@ def test_best_epoch_restores_matching_optimizer(tmp_path):
 @pytest.mark.parametrize("algorithm", ["knn", "autoencoder"])
 def test_native_cli_train_reload_and_gui_parity(tmp_path, qapp, algorithm):
     import soundfile as sf
+
     from src.cli.main import main
     from src.workflow import Workflow
     from src.workflow.engine import WorkflowEngine
@@ -225,6 +227,7 @@ def test_legacy_if_schema_remains_usable():
 
 def test_typed_training_inputs_reject_identity_schema_and_split_leakage():
     from dataclasses import replace
+
     from src.workflow.nodes.training import _validate_feature_matrix_inputs
     matrix = FeatureMatrixData(np.ones((2, 2)), ["a", "b"], schema={"feature_count": 2})
     with pytest.raises(ValueError, match="identities"):
