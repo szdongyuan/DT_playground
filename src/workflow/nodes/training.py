@@ -443,13 +443,15 @@ class TrainerNode(BaseNode):
     
     def execute(self) -> bool:
         try:
+            import os
+
             import numpy as np
             import tensorflow as tf
             from tensorflow import keras
+
             from .data_source import AudioData
             from src.model_builder.model_graph import CompileConfig
             from src.core.event_bus import get_event_bus
-            import os
             
             model = self.get_input_data("model")
             x_train = self.get_input_data("x_train")
@@ -788,9 +790,9 @@ class TrainerNode(BaseNode):
             转换后的numpy数组
         """
         import numpy as np
+
         from .data_source import AudioData
         from .feature import FeatureData
-        
         from .anomaly import FeatureMatrixData
         if isinstance(data, FeatureMatrixData):
             return data.matrix
@@ -957,6 +959,7 @@ class EvaluatorNode(BaseNode):
     def execute(self) -> bool:
         try:
             import numpy as np
+
             from .data_source import AudioData
             
             model = self.get_input_data("model")
@@ -1038,9 +1041,9 @@ class EvaluatorNode(BaseNode):
             转换后的numpy数组
         """
         import numpy as np
+
         from .data_source import AudioData
         from .feature import FeatureData
-        
         from .anomaly import FeatureMatrixData
         if isinstance(data, FeatureMatrixData):
             return data.matrix
@@ -1513,8 +1516,9 @@ class ShowHistoryNode(BaseNode):
             return False
         
         try:
-            from src.visualization.metrics import MetricsPlotter
             import matplotlib.pyplot as plt
+
+            from src.visualization.metrics import MetricsPlotter
             
             # 确定要显示的指标
             metrics = []
@@ -1671,6 +1675,7 @@ class PredictNode(BaseNode):
     def execute(self) -> bool:
         try:
             import numpy as np
+
             from .data_source import AudioData
             from .feature import FeatureData
             
@@ -1731,9 +1736,9 @@ class PredictNode(BaseNode):
         - 已经是numpy数组
         """
         import numpy as np
+
         from .data_source import AudioData
         from .feature import FeatureData
-        
         from .anomaly import FeatureMatrixData
         if isinstance(data, FeatureMatrixData):
             return data.matrix
@@ -1838,6 +1843,7 @@ class PredictNode(BaseNode):
             处理后的输出数据
         """
         import numpy as np
+
         from .data_source import AudioData
         from .feature import FeatureData
         

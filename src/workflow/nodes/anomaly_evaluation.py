@@ -1,7 +1,9 @@
 """Identity-aligned anomaly metrics; labels are consumed only for evaluation."""
 
 import re
+
 import numpy as np
+
 from src.ui.i18n import tr_
 from ..node_base import BaseNode, NodeCategory, register_node
 from ..port import DataType

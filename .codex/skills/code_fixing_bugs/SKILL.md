@@ -24,6 +24,12 @@ Rationale:
 - Maintains consistency across the codebase
 - Aligns with common open-source practices
 
+## Python Code Style
+
+Before creating or modifying Python files, read and follow [Python import standards](../code_implementing_features/python-style.md).
+Group imports as standard library, third-party packages, then local application code,
+with a blank line between groups. Include import-order verification in self-review.
+
 ## Workflow
 
 ```

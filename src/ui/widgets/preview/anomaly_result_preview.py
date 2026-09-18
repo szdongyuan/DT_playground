@@ -8,7 +8,6 @@ import os
 from typing import Any, List, Optional
 
 import numpy as np
-
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QGroupBox,
@@ -26,7 +25,6 @@ from PySide6.QtWidgets import (
 from src.ui.i18n import tr_
 from src.ui.styles import Styles
 from src.workflow.nodes.anomaly import AnomalyResultData
-
 from .audio_preview import AudioPreviewWidget
 from .base_preview import BasePreviewWidget, register_preview
 from .feature_1d_preview import Feature1DPreviewWidget

@@ -80,6 +80,7 @@ def validate_model(artifact):
     from sklearn.ensemble import IsolationForest
     from sklearn.preprocessing import RobustScaler, StandardScaler
     from sklearn.utils.validation import check_is_fitted
+
     from .nodes.anomaly import AnomalyModelArtifact
 
     if not isinstance(artifact, AnomalyModelArtifact):
