@@ -337,6 +337,10 @@ class PropertyPanel(QWidget):
 
     def _get_choice_display_text(self, param: NodeParameter, choice: Any) -> str:
         """Return the user-visible text for a choice value."""
+        if param.name == "model_source":
+            return {"upstream": tr_("Upstream model"), "local": tr_("Local feature model")}.get(choice, str(choice))
+        if param.name == "model_adapter" and choice == "fisher":
+            return "FISHER-small-0723"
         if param.name == "selection_mode":
             display_text = {
                 "first_n": tr_("First N in order"),

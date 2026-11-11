@@ -122,6 +122,29 @@ feature extraction, classification training, model saving, and test evaluation.
 `--model` is an already-built `.keras` or `.h5` artifact. This command validates
 structure and paths but does not decode the complete dataset or train.
 
+### Use local FISHER embeddings
+
+Install the optional runtime in the project environment and download the
+[FISHER-small-0723 snapshot](https://huggingface.co/jiangab/FISHER-small-0723/tree/1fb316962ebb863d570217b12b40fb0ec1e957c5).
+The model folder must contain `config.json` and `model.safetensors`.
+Extraction uses the bundled inference implementation and runs offline.
+
+```powershell
+& './.venv/Scripts/python.exe' -m pip install -r requirements-fisher.txt
+```
+
+In a workflow JSON, set the `ai_feature_extraction` parameters
+`model_source=local`, `model_adapter=fisher`, `model_dir` and `sample_rate`.
+The model folder can be relative to the workflow file. Feed mono audio at the
+configured rate. The adapter accepts clips whose 25 ms STFT with a 10 ms hop
+yields 16–1024 frames. Segment longer recordings upstream.
+
+Connect the feature output to `feature_vectorizer` with
+`mode=whole_sample` and `aggregation=flatten` to feed a dense classification
+head. At 16 kHz the head input shape is `(1536,)`. Keep the model, sample
+rate and audio preparation consistent between training and prediction.
+Use `validate --check-data` and `run` with the resulting workflow file.
+
 ### Train a classifier end to end
 
 ```powershell

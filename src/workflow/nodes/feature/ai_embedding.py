@@ -2,23 +2,26 @@
 """
 AI embedding / activation feature extraction node.
 
-This node runs a provided Keras model on the input data and extracts the
-activations from a selected layer, then wraps the result as FeatureData.
+The node extracts activations from an upstream Keras model or embeddings
+from a local feature model.
 """
 
 from __future__ import annotations
 
 import logging
-from typing import Any, Dict, List, Optional, Sequence, Tuple, Union
+from typing import Any, Dict, List, Tuple, Union
 
 import numpy as np
 
-from ...node_base import BaseNode, NodeCategory, register_node
-from ...port import DataType
-from .base import AudioData, FeatureData
 from src.ui.i18n import tr_
 
+from ...node_base import BaseNode, NodeCategory, register_node
+from ...port import DataType
+from . import fisher_embedding
+from .base import AudioData, FeatureData
+
 logger = logging.getLogger(__name__)
+LOCAL_ADAPTERS = {"fisher": fisher_embedding}
 
 
 @register_node
@@ -49,6 +52,24 @@ class AIFeatureExtractionNode(BaseNode):
         self.add_output("feature", DataType.FEATURE, tr_("AI features"))
 
     def _setup_parameters(self):
+        self.add_parameter(
+            "model_source", "choice", "upstream", choices=["upstream", "local"],
+            display_name=tr_("Model source"),
+        )
+        local = {"model_source": "local"}
+        upstream = {"model_source": "upstream"}
+        self.add_parameter(
+            "model_adapter", "choice", "fisher", choices=list(LOCAL_ADAPTERS), visible_when=local,
+            display_name=tr_("Feature model type"),
+        )
+        self.add_parameter(
+            "model_dir", "folder", "", visible_when=local,
+            display_name=tr_("Local model folder"),
+        )
+        self.add_parameter(
+            "sample_rate", "int", 16000, min_value=8000, max_value=48000, visible_when=local,
+            display_name=tr_("Expected sample rate"),
+        )
         # Keep naming aligned with PredictNode where possible.
         self.add_parameter(
             "layer_name",
@@ -56,6 +77,7 @@ class AIFeatureExtractionNode(BaseNode):
             "",
             display_name=tr_("Layer name (optional)"),
             description=tr_("If set, extract activations from this layer name; otherwise auto-select"),
+            visible_when=upstream,
         )
         self.add_parameter(
             "output_type",
@@ -64,6 +86,7 @@ class AIFeatureExtractionNode(BaseNode):
             display_name=tr_("Output type"),
             choices=["feature_1d", "feature_2d"],
             description=tr_("feature_1d: (channels, features); feature_2d: (channels, features, frames)"),
+            visible_when=upstream,
         )
         self.add_parameter(
             "auto_layer_strategy",
@@ -72,6 +95,7 @@ class AIFeatureExtractionNode(BaseNode):
             display_name=tr_("Auto layer strategy"),
             choices=["last_hidden", "last_non_input", "model_output"],
             description=tr_("How to auto-select layer when layer name is empty"),
+            visible_when=upstream,
         )
         self.add_parameter(
             "batch_size",
@@ -81,15 +105,53 @@ class AIFeatureExtractionNode(BaseNode):
             min_value=1,
         )
 
+    def is_input_required(self, name: str) -> bool:
+        if name == "model" and self.get_parameter("model_source") == "local":
+            return False
+        return super().is_input_required(name)
+
+    def validate_local_model(self, path):
+        LOCAL_ADAPTERS[self.get_parameter("model_adapter")].model_files(path)
+
+    def validate(self) -> Tuple[bool, str]:
+        valid, message = super().validate()
+        if not valid:
+            return valid, message
+        if self.get_parameter("model_source") == "local":
+            if self.inputs["model"].is_connected:
+                return False, tr_("Disconnect the upstream model to use a local feature model")
+            if not self.get_parameter("model_dir").strip():
+                return False, tr_("Select a local model folder")
+        return True, ""
+
     def execute(self) -> bool:
+        self.outputs["feature"].clear()
         model = self.get_input_data("model")
         input_data = self.get_input_data("input_data")
 
-        if model is None:
-            self.error_message = tr_("No model provided")
-            return False
         if input_data is None:
             self.error_message = tr_("No input data provided")
+            return False
+        if self.get_parameter("model_source") == "local":
+            if model is not None or self.inputs["model"].is_connected:
+                self.error_message = tr_("Disconnect the upstream model to use a local feature model")
+                return False
+            try:
+                self.report_status(tr_("Extracting FISHER features"))
+                adapter = LOCAL_ADAPTERS[self.get_parameter("model_adapter")]
+                features = adapter.extract(
+                    input_data, self.get_parameter("model_dir"),
+                    self.get_parameter("sample_rate"), self.get_parameter("batch_size"),
+                    self.report_progress,
+                )
+                self.set_output_data("feature", features)
+                return True
+            except Exception as e:
+                self.error_message = tr_("AI feature extraction failed: {error}").format(error=str(e))
+                logger.exception("FISHER feature extraction failed")
+                return False
+        if model is None:
+            self.error_message = tr_("No model provided")
             return False
 
         try:

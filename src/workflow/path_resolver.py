@@ -14,6 +14,7 @@ INPUT_PATH_PARAMETERS = {
     "target_file": ("file_path",),
     "align_targets": ("dataset_root",),
     "load_model": ("model_path",),
+    "ai_feature_extraction": ("model_dir",),
     "load_anomaly_model": ("model_path",),
 }
 
@@ -42,6 +43,8 @@ def resolve_workflow_input_paths(
     originals: dict[tuple[str, str], Any] = {}
     for node in workflow.nodes.values():
         for name in INPUT_PATH_PARAMETERS.get(node.node_type, ()):
+            if not node.is_parameter_active(name):
+                continue
             value = node.get_parameter(name)
             if not value:
                 continue

@@ -1,0 +1,3 @@
+# Optional CPU-capable runtime for the local FISHER adapter.
+torch==2.8.0
+safetensors==0.6.2

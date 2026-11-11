@@ -352,7 +352,7 @@ class WorkflowEngine(QObject):
                     continue
 
                 input_port = node.inputs[conn.target_port]
-                if not input_port.required or input_port.default_value is not None:
+                if not node.is_input_required(conn.target_port) or input_port.default_value is not None:
                     continue
 
                 source_node = self.workflow.get_node(conn.source_node_id)
