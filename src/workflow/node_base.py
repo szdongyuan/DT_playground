@@ -270,6 +270,10 @@ class BaseNode(ABC):
             if port.data is not None
         }
     
+    def is_input_required(self, name: str) -> bool:
+        """Return whether the current configuration requires this input."""
+        return self.inputs[name].required
+
     def validate(self) -> Tuple[bool, str]:
         """
         Validate node configuration
@@ -279,7 +283,7 @@ class BaseNode(ABC):
         """
         # Check required input ports
         for name, port in self.inputs.items():
-            if port.required and not port.is_connected and port.default_value is None:
+            if self.is_input_required(name) and not port.is_connected and port.default_value is None:
                 return False, tr_("Input port '{name}' is not connected").format(
                     name=port.display_name
                 )

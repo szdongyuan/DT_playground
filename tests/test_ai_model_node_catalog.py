@@ -85,7 +85,7 @@ def test_palette_renders_stage_groups_and_nodes_in_workflow_order(qapp):
     expected_types = [
         ["classification_trainer", "regression_trainer", "anomaly_detector_trainer"],
         ["classification_predict", "regression_predict", "anomaly_scorer", "anomaly_decision"],
-        ["classification_evaluator", "regression_evaluator"],
+        ["classification_evaluator", "regression_evaluator", "anomaly_evaluation"],
         ["grad_cam"],
         ["load_model", "save_model", "load_anomaly_model", "save_anomaly_model"],
     ]

@@ -197,6 +197,8 @@ def _read_json(path: Path, report: ValidationReport, kind: str) -> Any | None:
 
 def _validate_input_paths(node, base_dir: Path, report: ValidationReport) -> None:
     for name in INPUT_PATH_PARAMETERS.get(node.node_type, ()):
+        if not node.is_parameter_active(name):
+            continue
         value = node.get_parameter(name)
         if not value:
             continue
@@ -210,6 +212,11 @@ def _validate_input_paths(node, base_dir: Path, report: ValidationReport) -> Non
                 parameter=name,
                 reference=str(value),
             )
+        elif node.node_type == "ai_feature_extraction":
+            try:
+                node.validate_local_model(resolved)
+            except (OSError, ValueError) as exc:
+                report.error("model.invalid_fisher", str(exc), node_id=node.node_id, parameter=name)
         elif node.node_type == "load_anomaly_model":
             if node.get_parameter("format") == "legacy_joblib":
                 report.warning("anomaly.legacy_versions", "Legacy joblib versions cannot be verified; no deserialization was performed.", node_id=node.node_id)

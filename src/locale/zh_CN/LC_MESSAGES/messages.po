@@ -7661,3 +7661,73 @@ msgstr "提取 STFT 频谱图"
 
 #~ msgid "Denoise"
 #~ msgstr "降噪"
+
+#: src/ui/node_editor/property_panel.py:341
+msgid "Upstream model"
+msgstr "上游模型"
+
+#: src/ui/node_editor/property_panel.py:341
+msgid "Local feature model"
+msgstr "本地特征模型"
+
+#: src/workflow/nodes/feature/ai_embedding.py:57
+msgid "Model source"
+msgstr "模型来源"
+
+#: src/workflow/nodes/feature/ai_embedding.py:63
+msgid "Feature model type"
+msgstr "特征模型类型"
+
+#: src/workflow/nodes/feature/ai_embedding.py:67
+msgid "Local model folder"
+msgstr "本地模型目录"
+
+#: src/workflow/nodes/feature/ai_embedding.py:71
+msgid "Expected sample rate"
+msgstr "预期采样率"
+
+#: src/workflow/nodes/feature/ai_embedding.py:122
+#: src/workflow/nodes/feature/ai_embedding.py:137
+msgid "Disconnect the upstream model to use a local feature model"
+msgstr "使用本地特征模型前，请断开上游模型连线"
+
+#: src/workflow/nodes/feature/ai_embedding.py:124
+msgid "Select a local model folder"
+msgstr "请选择本地模型目录"
+
+#: src/workflow/nodes/feature/ai_embedding.py:140
+msgid "Extracting FISHER features"
+msgstr "正在提取 FISHER 特征"
+
+#: src/workflow/nodes/feature/fisher_embedding.py:35
+#, python-brace-format
+msgid "Required FISHER model file is missing: {path}"
+msgstr "缺少 FISHER 模型所需文件：{path}"
+
+#: src/workflow/nodes/feature/fisher_embedding.py:38
+msgid "Expected a FISHER-small-0723 model configuration"
+msgstr "需要 FISHER-small-0723 模型配置"
+
+#: src/workflow/nodes/feature/fisher_embedding.py:46
+msgid "FISHER requires mono audio. Select one channel before extraction."
+msgstr "FISHER 需要单声道音频，请先选择一个声道。"
+
+#: src/workflow/nodes/feature/fisher_embedding.py:49
+#, python-brace-format
+msgid "FISHER expects {rate} Hz audio. Resample this input: {sample}"
+msgstr "FISHER 需要 {rate} Hz 音频，请对该样本重采样：{sample}"
+
+#: src/workflow/nodes/feature/fisher_embedding.py:55
+#, python-brace-format
+msgid ""
+"FISHER audio must contain 16 to 1024 finite STFT frames. Check or segment "
+"this input: {sample}"
+msgstr "FISHER 音频必须包含 16 至 1024 个有效 STFT 帧，请检查或切分该样本：{sample}"
+
+#: src/workflow/nodes/feature/fisher_embedding.py:88
+msgid "Install the optional FISHER runtime from requirements-fisher.txt"
+msgstr "请从 requirements-fisher.txt 安装可选的 FISHER 运行依赖"
+
+#: src/workflow/nodes/feature/fisher_embedding.py:110
+msgid "FISHER returned non-finite features"
+msgstr "FISHER 返回了非有限特征值"

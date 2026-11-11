@@ -316,7 +316,7 @@ class Workflow:
         # Check for disconnected required input ports
         for node in self.nodes.values():
             for port_name, port in node.inputs.items():
-                if port.required and not port.is_connected and port.default_value is None:
+                if node.is_input_required(port_name) and not port.is_connected and port.default_value is None:
                     errors.append(
                         tr_("Node '{node}' input port '{port}' is not connected").format(
                             node=node.display_name,
